@@ -17,6 +17,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
+            'class' => 'common\models\WebUser',
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
@@ -37,14 +38,21 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+            'view' => [
+                'theme' => [
+                    'pathMap' => [
+                       '@app/views' => '@app/views/themes/admin-lte'
+                    ],
+                ],
+            ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'categories/children-<id:\d+>' => 'categories/children-category',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

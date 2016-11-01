@@ -16,7 +16,7 @@ class m161028_134921_users extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'cities_id' => $this->integer()->unsigned()->notNull(),
             'email' => $this->string(100)->notNull(),
-            'password' => $this->string()->notNull(),
+            'password_hash' => $this->string()->notNull(),
             'first_name' => $this->string()->notNull(),
             'last_name' => $this->string()->notNull(),
             'patronymic' => $this->string()->notNull(),

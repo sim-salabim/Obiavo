@@ -8,36 +8,33 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * User model
+ * This is the model class for table "users".
  *
  * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
+ * @property integer $cities_id
  * @property string $email
- * @property string $auth_key
- * @property integer $status
+ * @property string $password
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $patronymic
+ * @property string $sex
  * @property integer $created_at
  * @property integer $updated_at
- * @property string $password write-only password
+ *
+ * @property Ads[] $ads
+ * @property Cities $cities
+ * @property UsersMessages[] $usersMessages
+ * @property UsersMessages[] $usersMessages0
  */
+
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
 
-
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
-        return '{{%user}}';
+        return '{{%users}}';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
@@ -45,23 +42,37 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['cities_id', 'email', 'password', 'first_name', 'last_name', 'patronymic', 'created_at', 'updated_at'], 'required'],
+            [['cities_id', 'created_at', 'updated_at'], 'integer'],
+            [['sex'], 'string'],
+            [['email'], 'string', 'max' => 100],
+            [['password', 'first_name', 'last_name', 'patronymic'], 'string', 'max' => 255],
+            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['cities_id' => 'id']],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'cities_id' => 'Cities ID',
+            'email' => 'Email',
+            'password' => 'Password',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'patronymic' => 'Patronymic',
+            'sex' => 'Sex',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+        ];
+    }
+
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id]);
     }
 
     /**
@@ -80,7 +91,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $username]);
     }
 
     /**
@@ -97,7 +108,6 @@ class User extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -118,20 +128,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $timestamp + $expire >= time();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getId()
     {
         return $this->getPrimaryKey();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthKey()
     {
-        return $this->auth_key;
+//        return $this->auth_key;
     }
 
     /**
@@ -139,7 +143,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->getAuthKey() === $authKey;
+//        return $this->getAuthKey() === $authKey;
     }
 
     /**
@@ -168,7 +172,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateAuthKey()
     {
-        $this->auth_key = Yii::$app->security->generateRandomString();
+//        $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
@@ -176,7 +180,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+//        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
@@ -184,6 +188,26 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function removePasswordResetToken()
     {
-        $this->password_reset_token = null;
+//        $this->password_reset_token = null;
+    }
+
+    public function getAds()
+    {
+        return $this->hasMany(Ads::className(), ['users_id' => 'id']);
+    }
+
+    public function getCities()
+    {
+        return $this->hasOne(Cities::className(), ['id' => 'cities_id']);
+    }
+
+    public function getUsersMessagesToUser()
+    {
+        return $this->hasMany(UsersMessages::className(), ['to_users_id' => 'id']);
+    }
+
+    public function getUsersMessagesFromUser()
+    {
+        return $this->hasMany(UsersMessages::className(), ['from_users_id' => 'id']);
     }
 }
