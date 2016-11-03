@@ -73,7 +73,7 @@ class CategoriesController extends Controller
     public function actionEditCategory($id) {
         $category = Category::findOne($id);
 
-        return $this->render('edit-form',[
+        return $this->render('edit',[
             'category' => $category
         ]);
     }

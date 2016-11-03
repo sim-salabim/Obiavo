@@ -1,23 +1,31 @@
 <?php
 
-namespace backend\assets;
+namespace common\assets;
 
 use yii\web\AssetBundle;
 
 /**
  * Main backend application asset bundle.
  */
-class AppAsset extends AssetBundle
+class CommonAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $sourcePath = '@common/web';
+    
     public $css = [
-        'css/site.css',
     ];
     public $js = [
+        'js/core.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    public $jsOptions = [
+        'position' => \yii\web\View::POS_HEAD
+    ];
+
+    public $publishOptions = [
+        'forceCopy'=>true,
+      ];
 }
