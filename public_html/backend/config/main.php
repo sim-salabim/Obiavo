@@ -11,7 +11,6 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -19,6 +18,7 @@ return [
         'user' => [
             'class' => 'common\models\WebUser',
             'identityClass' => 'common\models\User',
+            'loginUrl' => '/login',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -50,9 +50,28 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'categories/children-<id:\d+>' => 'categories/children-category',
+                'login' => 'site/login',
+                'categories/children-element-<id:\d+>' => 'categories/get-children-categories',
+                'categories/edit-<id:\d+>' => 'categories/edit-category',
             ],
         ],
     ],
     'params' => $params,
+//    'as access' => [
+//        'class' => 'yii\filters\AccessControl',
+//        'except' => ['site/login','site/error'],
+//        'rules' => [
+//            [
+//                'allow' => true,
+//                'actions' => ['site/login', 'site/error'],
+//                'roles' => ['?'],
+//            ],
+//            [
+//                'allow' => true,
+//                'roles' => ['@'],
+//            ],
+//        ],
+//        'denyCallback' => function ($rule, $action) {
+//        },
+//    ],
 ];

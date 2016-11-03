@@ -31,7 +31,7 @@ Use yii\helpers\Url;
             <?php foreach ($categories as $category) : ?>
               <tr>
                 <td><?php echo $category->id?></td>
-                <td><a href="<?php echo Url::toRoute(['children-category','id' => $category->id])?>"><?php echo $category->techname?></td>
+                <td><a href="<?php echo Url::toRoute(['get-children-categories','id' => $category->id])?>"><?php echo $category->techname?></td>
                 <td><?php echo ($category->active) ? 'Активно' : 'Не активно'?></td>
               </tr>
             <?php endforeach; ?>

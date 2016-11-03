@@ -22,7 +22,6 @@ class CategoriesController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','children-category'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -62,12 +61,20 @@ class CategoriesController extends Controller
         ]);
     }
 
-    public function actionChildrenCategory($id) {
+    public function actionGetChildrenCategories($id) {
         $childCategories = Category::find()
                             ->where(['parent_id' => $id])->all();
 
         return $this->render('index',[
             'categories' => $childCategories
+        ]);
+    }
+
+    public function actionEditCategory($id) {
+        $category = Category::findOne($id);
+
+        return $this->render('edit-form',[
+            'category' => $category
         ]);
     }
 }
