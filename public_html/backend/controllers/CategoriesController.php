@@ -56,6 +56,12 @@ class CategoriesController extends Controller
     {
         $mainCategories = Category::getMainCategories();
 
+        if (\Yii::$app->request->getQueryParam('onlycontent',false)){
+            return $this->renderAjax('index',[
+                        'categories' => $mainCategories
+                    ]);
+        };
+
         return $this->render('index',[
             'categories' => $mainCategories
         ]);
@@ -65,6 +71,12 @@ class CategoriesController extends Controller
         $childCategories = Category::find()
                             ->where(['parent_id' => $id])->all();
 
+        if (\Yii::$app->request->getQueryParam('onlycontent',false)){
+            return $this->renderAjax('index',[
+                        'categories' => $childCategories
+                    ]);
+        };
+
         return $this->render('index',[
             'categories' => $childCategories
         ]);
@@ -73,8 +85,26 @@ class CategoriesController extends Controller
     public function actionEditCategory($id) {
         $category = Category::findOne($id);
 
-        return $this->render('edit',[
+        return $this->renderAjax('edit',[
             'category' => $category
         ]);
+    }
+
+    public function actionAppendCategory() {
+        $category = new Category();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+
+        return $this->renderAjax('append',[
+            'category' => $category
+        ]);
+    }
+
+    public function actionSaveCategory($id = null) {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        return [
+        ['type' => 'refreshpage', 'data' => '']
+            ];
     }
 }

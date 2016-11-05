@@ -2,7 +2,11 @@
 Use yii\helpers\Url;
 ?>
 
-<button type="button" class="btn btn-primary btn-lg">Добавить категорию</button>
+<div id="loadcontent-container" style="display: none"></div>
+
+<div id="categories-table">
+
+    <button type="button" class="btn btn-primary btn-lg loadcontent" data-link="<?= Url::toRoute(['append-category','id'=>1])?>">Добавить категорию</button>
 
 <div class="box">
     <div class="box-header">
@@ -53,4 +57,6 @@ Use yii\helpers\Url;
         <!-- /.box-footer -->
     </div>
     <!-- /.box -->
+</div>
+
 </div>

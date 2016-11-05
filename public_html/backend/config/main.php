@@ -57,21 +57,14 @@ return [
         ],
     ],
     'params' => $params,
-//    'as access' => [
-//        'class' => 'yii\filters\AccessControl',
-//        'except' => ['site/login','site/error'],
-//        'rules' => [
-//            [
-//                'allow' => true,
-//                'actions' => ['site/login', 'site/error'],
-//                'roles' => ['?'],
-//            ],
-//            [
-//                'allow' => true,
-//                'roles' => ['@'],
-//            ],
-//        ],
-//        'denyCallback' => function ($rule, $action) {
-//        },
-//    ],
+    'as access' => [
+        'class' => 'yii\filters\AccessControl',
+        'except' => ['site/login','site/error'],
+        'rules' => [
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+        ],
+    ],
 ];

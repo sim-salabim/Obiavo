@@ -118,3 +118,20 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+#loadcontent-container {
+    display: block;
+    padding: 15px;
+    background-color: #d7d7d7;
+    margin-bottom: 50px;
+}
+
+.form-update-category .form-inline .form-group { margin-right:10px; }
+
+.form-update-category .well-primary {
+    color: rgb(255, 255, 255);
+    background-color: rgb(66, 139, 202);
+    border-color: rgb(53, 126, 189);
+}
+
+.form-update-category .glyphicon { margin-right:5px; }

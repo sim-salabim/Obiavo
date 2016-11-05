@@ -2,6 +2,8 @@
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
 
+$this->title = 'Категории';
+
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -31,7 +33,7 @@ use dmstr\widgets\Alert;
 
     <section class="content">
         <?= Alert::widget() ?>
-        <?= $content ?>
+        <div id="content"><?= $content ?></div>
     </section>
 </div>
 
