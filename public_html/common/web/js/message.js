@@ -177,7 +177,7 @@ Core.onFullLoad(function () {
     Message.text = jQuery(Message.text);
 
     /* Создаем методы-хуки для отслеживания нажимаемых кнопок в интерфейсе */
-    $('body').on('click', '.showmessage, .senddata, .senddata-token', function () {
+    $('body').on('click', '.showmessage, .senddata', function () {
         var $this = $(this);
         var link = $this.attr('href');
         if (link === undefined || link == '#') link = $this.attr('data-link');
@@ -185,7 +185,7 @@ Core.onFullLoad(function () {
 
         var inputs_container = $this.attr('data-input');
         if (!$this.hasClass('disabled')) {
-            if ($this.hasClass('senddata') || $this.hasClass('senddata-token')) {
+            if ($this.hasClass('senddata')) {
 
                 if ($this.hasClass('really')) {
                     var text = 'Действительно выполнить действие?';
@@ -209,8 +209,6 @@ Core.onFullLoad(function () {
 
                 if (inputs_container) {
                     Core.getInputData(inputs_container, function (data) {
-                        if ($this.hasClass('senddata-token'))
-                            data.system_case = CORE.token;
                         var clearinputs = false;
                         if ($this.attr('data-params') === 'clearinputs') {
                             clearinputs = inputs_container;
@@ -226,8 +224,6 @@ Core.onFullLoad(function () {
                     });
                 } else {
                     var mess = {};
-                    if ($this.hasClass('senddata-token'))
-                        mess.system_case = CORE.token;
                     Message.sendData(link, mess, false, $this);
                 }
             } else {

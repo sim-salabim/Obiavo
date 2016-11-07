@@ -28,4 +28,8 @@ class WebUser extends \yii\web\User {
     public function getPatronymic(){
         return $this->identity->patronymic;
     }
+
+    public function getDefaultCountry(){
+        return Country::find()->one();
+    }
 }

@@ -16,7 +16,7 @@ use Yii;
  * @property Category $parent
  * @property Category[] $categories
  * @property CategoriesAttributes[] $categoriesAttributes
- * @property CategoriesGenerated[] $categoriesGenerateds
+ * @property CategoryGenerated[] $categoryGenerated
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -49,8 +49,8 @@ class Category extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'parent_id' => 'Parent ID',
-            'techname' => 'Techname',
-            'active' => 'Active',
+            'techname' => 'Техническое название',
+            'active' => 'Активность',
         ];
     }
 
@@ -80,9 +80,9 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasMany(CategoriesAttributes::className(), ['categories_id' => 'id']);
     }
 
-    public function getCategoriesGenerateds()
+    public function getCategoryGenerated()
     {
-        return $this->hasMany(CategoriesGenerated::className(), ['categories_id' => 'id']);
+        return $this->hasMany(CategoryGenerate::className(), ['categories_id' => 'id']);
     }
 
     /**
@@ -92,5 +92,15 @@ class Category extends \yii\db\ActiveRecord
         return Category::find()
                     ->where(['parent_id' => null])
                     ->all();
+    }
+
+    /**
+     * Добавляем запись в связанную таблицу
+     */
+    public function setCategoryGeneratedRecord($categoryGenerateModel){
+
+        $categoryGenerateModel->countries_id = Yii::$app->user->getDefaultCountry()->id;
+
+        $this->link('categoryGenerated',$categoryGenerateModel);
     }
 }

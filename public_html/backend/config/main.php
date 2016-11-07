@@ -51,7 +51,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'login' => 'site/login',
-                'categories/children-element-<id:\d+>' => 'categories/get-children-categories',
+                'categories/children-element-<id:\d+>' => 'categories/index',
                 'categories/edit-<id:\d+>' => 'categories/edit-category',
             ],
         ],

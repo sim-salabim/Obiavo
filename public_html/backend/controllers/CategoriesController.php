@@ -6,11 +6,12 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Category;
+use common\helpers\JsonData;
 
 /**
  * Site controller
  */
-class CategoriesController extends Controller
+class CategoriesController extends BaseController
 {
     /**
      * @inheritdoc
@@ -52,18 +53,19 @@ class CategoriesController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($id = null)
     {
-        $mainCategories = Category::getMainCategories();
+        $categories = null;
 
-        if (\Yii::$app->request->getQueryParam('onlycontent',false)){
-            return $this->renderAjax('index',[
-                        'categories' => $mainCategories
-                    ]);
-        };
+        if (! $id) {
+            $categories = Category::getMainCategories();
+        } else {
+            $categories = Category::find()
+                                ->where(['parent_id' => $id])->all();
+        }
 
         return $this->render('index',[
-            'categories' => $mainCategories
+            'categories' => $categories
         ]);
     }
 
@@ -92,19 +94,33 @@ class CategoriesController extends Controller
 
     public function actionAppendCategory() {
         $category = new Category();
+        $categoryGenerate = new \common\models\CategoryGenerate;
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
 
-        return $this->renderAjax('append',[
-            'category' => $category
-        ]);
+        return $this->renderAjax('append',  compact('category','categoryGenerate'));
     }
 
     public function actionSaveCategory($id = null) {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $postData = Yii::$app->request->post();
 
-        return [
-        ['type' => 'refreshpage', 'data' => '']
-            ];
+        $category = new Category();
+        $categoryGenerate = new \common\models\CategoryGenerate;
+
+        $category->load($postData);
+        $categoryGenerate->load($postData);
+
+        if ($category->save()){
+            $category->setCategoryGeneratedRecord($categoryGenerate);
+        }
+
+
+        $category->save();
+
+        $this->sendJsonData([
+            JsonData::REFRESHPAGE => ''
+        ]);
+
+        return $this->getJsonData();
     }
 }

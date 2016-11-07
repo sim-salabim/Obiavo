@@ -6,7 +6,7 @@ Use yii\helpers\Url;
 
 <div id="categories-table">
 
-    <button type="button" class="btn btn-primary btn-lg loadcontent" data-link="<?= Url::toRoute(['append-category','id'=>1])?>">Добавить категорию</button>
+    <button type="button" class="btn btn-primary btn-lg loadcontent" data-link="<?= Url::toRoute(['append-category'])?>">Добавить категорию</button>
 
 <div class="box">
     <div class="box-header">
@@ -35,7 +35,7 @@ Use yii\helpers\Url;
             <?php foreach ($categories as $category) : ?>
               <tr>
                 <td><?php echo $category->id?></td>
-                <td><a href="<?php echo Url::toRoute(['get-children-categories','id' => $category->id])?>"><?php echo $category->techname?></td>
+                <td><a href="<?php echo Url::toRoute(['index','id' => $category->id])?>"><?php echo $category->techname?></td>
                 <td><?php echo ($category->active) ? 'Активно' : 'Не активно'?></td>
               </tr>
             <?php endforeach; ?>

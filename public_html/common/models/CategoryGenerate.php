@@ -18,7 +18,7 @@ use Yii;
  * @property string $seo_keywords
  * @property integer $order
  *
- * @property Countries $countries
+ * @property Country $countries
  * @property Categories $categories
  */
 class CategoryGenerate extends \yii\db\ActiveRecord
@@ -40,8 +40,9 @@ class CategoryGenerate extends \yii\db\ActiveRecord
             [['categories_id', 'countries_id', 'url', 'techname', 'seo_name', 'seo_keywords', 'order'], 'required'],
             [['categories_id', 'countries_id', 'order'], 'integer'],
             [['url', 'techname', 'seo_name', 'seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
-            [['countries_id'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['countries_id' => 'id']],
-            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['categories_id' => 'id']],
+            [['countries_id'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['countries_id' => 'id']],
+            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
+            ['countries_id','default','value' => 1]
         ];
     }
 
@@ -69,7 +70,7 @@ class CategoryGenerate extends \yii\db\ActiveRecord
      */
     public function getCountries()
     {
-        return $this->hasOne(Countries::className(), ['id' => 'countries_id']);
+        return $this->hasOne(Country::className(), ['id' => 'countries_id']);
     }
 
     /**

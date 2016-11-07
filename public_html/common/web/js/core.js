@@ -21,10 +21,6 @@ Core = new function () {
 
                 // Имя есть - обрабатываем.
                 if ($this.attr('name') != undefined && $this.attr('data-dontsend') !== 'true') {
-                    var isValid = Validation.getInstance().validate($this);
-                    if (isValid != 'ok') {
-                        valid = false;
-                    }
 
                     // Если имя имеет [] то шлём серверу массив.
                     if ($this.attr('name').indexOf('[]') !== -1) {
