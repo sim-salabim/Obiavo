@@ -20,9 +20,7 @@ use Yii;
  */
 class Category extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'categories';
@@ -53,6 +51,49 @@ class Category extends \yii\db\ActiveRecord
             'active' => 'Активность',
         ];
     }
+
+    public function transactions() {
+        return [
+            // scenario name => operation (insert, update or delete)
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
+            ];
+    }
+
+    /**
+     * Сохраняем связанные модели через populateRecord
+     * @param type $insert
+     */
+//    public function beforeSave($insert) {
+//
+//        if (!parent::beforeSave($insert)) {
+//            return false;
+//        }
+//
+//        $relateModels = $this->getRelatedRecords();
+//        foreach ($relateModels as $relateName => $model) {
+//
+//            if ($model->scenario === self::SCENARIO_BEFORESAVE)
+//                $this->link($relateName, $model);
+//        }
+//
+//        return true;
+//    }
+
+//    public function afterSave($insert, $changedAttributes) {
+//
+//        parent::afterSave($insert, $changedAttributes);
+//
+//        $relateModels = $this->getRelatedRecords();
+//        foreach ($relateModels as $relateName => $model) {
+////            var_dump(new CategoryGenerate);
+////                var_dump($this->getRelation('categoryGenerated'));die;
+//
+//                $this->link('categoryGenerated', $model);
+////            }
+//        }
+//
+//        return true;
+//    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -95,12 +136,18 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * Добавляем запись в связанную таблицу
+     * Добавляем запись в связанную таблицу генераций
+     *
+     *
+     * $model->populateRelation('relationName', $relateModel);
+     *  - добавит связанную модель к модели ($model) в массив связей данной модели, которые можно получить $model->getRelationRecords()
      */
-    public function setCategoryGeneratedRecord($categoryGenerateModel){
+    public function setRelateForCategoryGenerated($categoryGenerateModel){
 
         $categoryGenerateModel->countries_id = Yii::$app->user->getDefaultCountry()->id;
 
-        $this->link('categoryGenerated',$categoryGenerateModel);
+        $this->save();
+
+        $this->link('categoryGenerated', $categoryGenerateModel);
     }
 }

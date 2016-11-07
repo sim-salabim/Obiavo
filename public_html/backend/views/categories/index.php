@@ -1,12 +1,52 @@
 <?php
 Use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
+$parentID = $parentCategoryId;
+/**
+ * Наработки хлебных крошек.
+ * Надо переделать в виджет
+ */
+$categoryBreadcrumbsArray = [];
+
+while(!is_null($parentID)){
+    $categoryBreadcrumbs = common\models\Category::find()
+                                ->where(['id' => $parentID])
+                                ->one();
+
+    $parentID = $categoryBreadcrumbs->parent_id;
+
+    array_unshift($categoryBreadcrumbsArray, $categoryBreadcrumbs);
+}
+
+if (!empty($categoryBreadcrumbsArray)){
+
+    $currentCategoryBreadcrumb = array_pop($categoryBreadcrumbsArray);
+
+    foreach ($categoryBreadcrumbsArray as $categoryBreadcrumb){
+        $this->params['breadcrumbs'][] = [
+            'label' => $categoryBreadcrumb->techname,
+            'url' => Url::toRoute(['index','id' => $categoryBreadcrumb->id])
+        ];
+    }
+
+    $this->params['breadcrumbs'][] = $currentCategoryBreadcrumb->techname;
+    $homeLink = ['label' => 'Категории', 'url' => '/categories'];
+} else {
+    $homeLink = 'Категории';
+}
+//.......
+// Выводим цепочку навигации
+echo Breadcrumbs::widget([
+        'homeLink' => $homeLink,
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []
+    ]);
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
 
 <div id="categories-table">
 
-    <button type="button" class="btn btn-primary btn-lg loadcontent" data-link="<?= Url::toRoute(['append-category'])?>">Добавить категорию</button>
+    <button type="button" class="btn btn-primary btn-lg loadcontent" data-link="<?= Url::toRoute(['append-category','id' => $parentCategoryId])?>">Добавить категорию</button>
 
 <div class="box">
     <div class="box-header">

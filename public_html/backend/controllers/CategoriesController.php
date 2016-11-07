@@ -57,6 +57,8 @@ class CategoriesController extends BaseController
     {
         $categories = null;
 
+        $parentCategoryId = $id;
+
         if (! $id) {
             $categories = Category::getMainCategories();
         } else {
@@ -64,24 +66,7 @@ class CategoriesController extends BaseController
                                 ->where(['parent_id' => $id])->all();
         }
 
-        return $this->render('index',[
-            'categories' => $categories
-        ]);
-    }
-
-    public function actionGetChildrenCategories($id) {
-        $childCategories = Category::find()
-                            ->where(['parent_id' => $id])->all();
-
-        if (\Yii::$app->request->getQueryParam('onlycontent',false)){
-            return $this->renderAjax('index',[
-                        'categories' => $childCategories
-                    ]);
-        };
-
-        return $this->render('index',[
-            'categories' => $childCategories
-        ]);
+        return $this->render('index',compact('parentCategoryId','categories'));
     }
 
     public function actionEditCategory($id) {
@@ -92,8 +77,9 @@ class CategoriesController extends BaseController
         ]);
     }
 
-    public function actionAppendCategory() {
+    public function actionAppendCategory($id = null) {
         $category = new Category();
+        $category->parent_id = $id;
         $categoryGenerate = new \common\models\CategoryGenerate;
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
@@ -105,14 +91,14 @@ class CategoriesController extends BaseController
         $postData = Yii::$app->request->post();
 
         $category = new Category();
+        $category->parent_id = $id;
+
         $categoryGenerate = new \common\models\CategoryGenerate;
 
         $category->load($postData);
         $categoryGenerate->load($postData);
 
-        if ($category->save()){
-            $category->setCategoryGeneratedRecord($categoryGenerate);
-        }
+        $category->setRelateForCategoryGenerated($categoryGenerate);
 
 
         $category->save();
