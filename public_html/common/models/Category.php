@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "categories".
@@ -111,7 +112,7 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'parent_id']);
     }
 
-    public function getCategories()
+    public function getChildrens()
     {
         return $this->hasMany(Category::className(), ['parent_id' => 'id']);
     }
@@ -136,18 +137,63 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * Добавляем запись в связанную таблицу генераций
+     *
+     * Сохраняем новый пункт и Добавляем запись в связанную таблицу генераций
      *
      *
      * $model->populateRelation('relationName', $relateModel);
      *  - добавит связанную модель к модели ($model) в массив связей данной модели, которые можно получить $model->getRelationRecords()
      */
-    public function setRelateForCategoryGenerated($categoryGenerateModel){
-
+    public function saveAndsetRelateForCategoryGenerated($categoryGenerateModel){
         $categoryGenerateModel->countries_id = Yii::$app->user->getDefaultCountry()->id;
 
         $this->save();
 
         $this->link('categoryGenerated', $categoryGenerateModel);
+    }
+
+     /**
+     * Найти всех родителей пункта меню
+     */
+    public function getAllParentsForBreadcrumbs()
+    {
+        $parent = $this;
+        $breadcrumbs = [];
+
+        while ($parent) {
+            $breadcrumbs[] = $parent;
+
+            $parent = $parent->getParent()->one();
+        }
+
+        $breadcrumbs = array_reverse($breadcrumbs);
+
+        return ArrayHelper::index($breadcrumbs, 'techname');
+    }
+
+    /**
+     * Сохраняем новый пункт категорий
+     * @param array $data
+     */
+    public function saveNewData($data){
+        $categoryGenerate = new \common\models\CategoryGenerate;
+
+        $this->load($data);
+        $categoryGenerate->load($data);
+
+        $this->saveAndsetRelateForCategoryGenerated($categoryGenerate);
+    }
+
+    /**
+     * Обновляем пункт категорий
+     * @param array $data
+     */
+    public function saveUpdateData($data){
+        $categoryGenerate = $this->getCategoryGenerated()->one();
+
+        $categoryGenerate->load($data);
+        $this->load($data);
+
+        $this->saveAndsetRelateForCategoryGenerated($categoryGenerate);
     }
 }

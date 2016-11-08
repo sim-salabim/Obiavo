@@ -56,25 +56,26 @@ class CategoriesController extends BaseController
     public function actionIndex($id = null)
     {
         $categories = null;
-
-        $parentCategoryId = $id;
+        $categoryParent = new Category;
 
         if (! $id) {
             $categories = Category::getMainCategories();
+
         } else {
-            $categories = Category::find()
-                                ->where(['parent_id' => $id])->all();
+            $categoryParent = Category::findOne($id);
+
+            $categories = $categoryParent->getChildrens()->all();
         }
 
-        return $this->render('index',compact('parentCategoryId','categories'));
+        return $this->render('index',compact('categoryParent','categories'));
     }
 
     public function actionEditCategory($id) {
         $category = Category::findOne($id);
 
-        return $this->renderAjax('edit',[
-            'category' => $category
-        ]);
+        $categoryGenerate = $category->getCategoryGenerated()->one();
+
+        return $this->renderAjax('edit',compact('category','categoryGenerate'));
     }
 
     public function actionAppendCategory($id = null) {
@@ -82,26 +83,23 @@ class CategoriesController extends BaseController
         $category->parent_id = $id;
         $categoryGenerate = new \common\models\CategoryGenerate;
 
-        Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
-
         return $this->renderAjax('append',  compact('category','categoryGenerate'));
     }
 
-    public function actionSaveCategory($id = null) {
+    public function actionSaveCategory($id = null, $parentID = null) {
         $postData = Yii::$app->request->post();
 
-        $category = new Category();
-        $category->parent_id = $id;
+        if ($id){
+            $category = Category::findOne($id);
 
-        $categoryGenerate = new \common\models\CategoryGenerate;
+            $category->saveUpdateData($postData);
 
-        $category->load($postData);
-        $categoryGenerate->load($postData);
+        } else {
+            $category = new Category();
+            $category->parent_id = $parentID;
 
-        $category->setRelateForCategoryGenerated($categoryGenerate);
-
-
-        $category->save();
+            $category->saveNewData($postData);
+        }
 
         $this->sendJsonData([
             JsonData::REFRESHPAGE => ''

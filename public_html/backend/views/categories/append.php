@@ -148,7 +148,7 @@ use yii\bootstrap\Html;
         <div class="col-md-12">
             <div class="form-group">
                 <div class="btn btn-success btn-sm senddata"
-                     data-link="<?= Url::toRoute(['save-category','id' => $category->parent_id])?>"
+                     data-link="<?= Url::toRoute(['save-category','parentID' => $category->parent_id])?>"
                      data-input="#form-update-category"
                      >
                 <span class="glyphicon glyphicon-floppy-disk"></span>

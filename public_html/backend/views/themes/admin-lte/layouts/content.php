@@ -2,11 +2,10 @@
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
 
-$this->title = 'Категории';
-
 ?>
 <div class="content-wrapper">
     <section class="content-header">
+        <?php /* ?>
         <?php if (isset($this->blocks['content-header'])) { ?>
             <h1><?= $this->blocks['content-header'] ?></h1>
         <?php } else { ?>
@@ -22,13 +21,8 @@ $this->title = 'Категории';
                 } ?>
             </h1>
         <?php } ?>
-
-        <?=
-        Breadcrumbs::widget(
-            [
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]
-        ) ?>
+         *
+         */?>
     </section>
 
     <section class="content">
