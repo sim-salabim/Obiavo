@@ -4,18 +4,6 @@ use yii\helpers\Url;
 
 $breadcrumbs = $category->getAllParentsForBreadcrumbs();
 
-//$categoryBreadcrumbsArray = [];
-//
-//while(!is_null($parentCategoryId)){
-//    $categoryBreadcrumbs = common\models\Category::find()
-//                                ->where(['id' => $parentCategoryId])
-//                                ->one();
-//
-//    $parentCategoryId = $categoryBreadcrumbs->parent_id;
-//
-//    array_unshift($categoryBreadcrumbsArray, $categoryBreadcrumbs);
-//}
-
 if (!empty($breadcrumbs)){
 
     $currentBreadcrumb = array_pop($breadcrumbs);

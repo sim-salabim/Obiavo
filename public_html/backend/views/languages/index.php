@@ -1,25 +1,25 @@
 <?php
-Use yii\helpers\Url;
+use yii\helpers\Url;
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
 
-<div id="categories-table">
+<div id="lang-table">
 
 
     <div class="well">
         <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['append-category','id' => $categoryParent->id])?>">
+                data-link="">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
             Создать новый пункт
         </button>
     </div>
 
-    <?= $this->render('breadcrumbs', ['category' => $categoryParent]);?>
+
 
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">Категории</h3>
+        <h3 class="box-title">Языки</h3>
 
         <div class="box-tools">
           <div class="input-group">
@@ -36,31 +36,31 @@ Use yii\helpers\Url;
           <thead>
           <tr>
             <th>ID</th>
-            <th>Название</th>
+            <th>Код</th>
             <th>Действие</th>
           </tr>
           </thead>
           <tbody>
-            <?php foreach ($categories as $category) : ?>
+            <?php foreach ($languages as $lang) : ?>
               <tr>
-                <td><?php echo $category->id?>
+                <td><?php echo $lang->id?>
                 </td>
-                <td><a href="<?php echo Url::toRoute(['index','id' => $category->id])?>"><?php echo $category->techname?></a>
-                    <?= backend\helpers\ActiveLabel::status($category->active, [
-                        'active' => 'активно',
-                        'inactive' => 'не активно'
+                <td><?php echo $lang->code?>
+                    <?= backend\helpers\ActiveLabel::status($lang->active, [
+                        'active' => 'используется',
+                        'inactive' => 'не используется'
                     ])?>
                 </td>
                 <td>
                     <span data-placement="top" data-toggle="tooltip" title="Редактировать">
                         <button class="btn btn-primary btn-xs loadcontent"
-                                data-link="<?= Url::toRoute(['edit-category','id' => $category->id])?>">
+                                data-link="<?= Url::toRoute(['edit-category','id' => $lang->id])?>">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                     </span>
                     <span data-placement="top" data-toggle="tooltip" title="Удалить">
                         <button class="btn btn-danger btn-xs senddata"
-                                data-link="<?= Url::toRoute(['delete','id' => $category->id])?>">
+                                data-link="<?= Url::toRoute(['delete','id' => $lang->id])?>">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </span>

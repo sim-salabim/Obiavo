@@ -1,8 +1,6 @@
 Message = new function () {
 
-    this.container = '#message-container';
-    this.container2 = '#message-container-2';
-    this.text = '#message-text';
+    this.alert_container = '#alert-container';
     this.validation_errors_container = null;
     this.history = {};
     this.content = '#content';
@@ -34,6 +32,22 @@ Message = new function () {
 
     this.close = function () {
         $('#modal-window [data-dismiss="modal"]').click();
+    };
+    
+    this.successMessage = function (data){
+        var mess = "<div class='alert alert-info alert-autocloseable-info'> \n\
+                           "+data+"\n\
+                    </div>";
+        
+        $(this.alert_container).html(mess);
+        
+        // скролим страницу для просмотра сообщения
+        this.scrollToContainer($(this.alert_container));
+        
+        //скрываем сообщение через 6 сек
+        $('.alert-autocloseable-info').delay(6000).fadeOut( "slow", function() {				
+                $('.alert-autocloseable-info').prop("disabled", false);
+        });
     };
 
     this.handlers = {}; // Массив зарегистрированных обработчиков команд
@@ -103,7 +117,7 @@ Message = new function () {
     };
     
     this.loadContent = function (url) {
-        var container = $('#loadcontent-container');
+        var container = $('#loadcontent-container');        
         $.ajax({
             type: "GET",
             url: url,
@@ -112,6 +126,7 @@ Message = new function () {
             success: function (data) {
                 container.html(data);
                 container.css('display', 'block');
+                Message.scrollToContainer(container);
             },
             error: function (data, status, e) {
                 if (e != 'abort') {
@@ -122,7 +137,7 @@ Message = new function () {
         });
     };
     
-    this.refreshPage = function () {
+    this.refreshPage = function () {        
         this.loadPage(document.location.href,true);
     };
     
@@ -155,8 +170,7 @@ Message = new function () {
      }
      
      // Установить новый контент на странице
-    this.setContent = function (content) {
-        console.log(this.content.html())
+    this.setContent = function (content) {        
         this.content.html(content);
     };
 
@@ -168,6 +182,16 @@ Message = new function () {
      */
     this.registerHandler = function (name, action) {
         this.handlers[name] = action;
+    };
+    
+    /**
+     * Проскролить к нужному контейнеру
+     * Иногда нужно для загружаемого контента          
+     */
+    this.scrollToContainer = function(container){
+        $('html,body').animate({
+          scrollTop: (container.offset().top)-20
+        }, 1000);
     };
 };
 
@@ -277,6 +301,10 @@ Core.onFullLoad(function () {
 
 Message.registerHandler('nothing', function () {
     Message.close();
+});
+
+Message.registerHandler('success', function (data) {
+    Message.successMessage(data);
 });
 
 Message.registerHandler('refreshpage', function () {

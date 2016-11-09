@@ -1,9 +1,15 @@
 <?php
+/**
+ * Форма для добавления и редактирования пунктов категорий
+ * @var object $category - Объект редактируемой категории (пустой объект, если добавляем)
+ * @var object $categoryGenerate - Объект из связанной модели сгерерированных категорий
+ * @var string toUrl ссылку куда отправлять данные на обработку
+ */
+
 use yii\helpers\Url;
 use yii\bootstrap\Html;
+
 ?>
-
-
 <div id="form-update-category">
     <div class="row">
         <div class="col-md-12">
@@ -36,62 +42,8 @@ use yii\bootstrap\Html;
                                             </div>
                                         </div>
                                     </div>
-                                    <!--<div class="form-group">
-                                        <textarea class="form-control" placeholder="Content" rows="5" required></textarea>
-                                    </div>-->
                                 </div>
                             </div>
-<!--                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="category">
-                                            Category</label>
-                                        <select class="form-control" id="category">
-                                            <option>Articles</option>
-                                            <option>Tutorials</option>
-                                            <option>Freebies</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="tags">
-                                            Tags</label>
-                                        <input type="text" class="form-control" id="tags" placeholder="Tags" />
-                                    </div>
-                                </div>
-                            </div>-->
-<!--                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="well well-sm">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><?//= \Yii::$app->request->serverName?>/</span>
-                                            <input type="text" class="form-control" placeholder="Custom url" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="well well-sm well-primary">
-                                        <form class="form form-inline " role="form">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" value="" placeholder="Date" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control">
-                                                <option>Draft</option>
-                                                <option>Published</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <span class="glyphicon glyphicon-floppy-disk"></span>Save</button>
-                                            <button type="button" class="btn btn-default btn-sm">
-                                                <span class="glyphicon glyphicon-eye-open"></span>Preview</button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -148,7 +100,7 @@ use yii\bootstrap\Html;
         <div class="col-md-12">
             <div class="form-group">
                 <div class="btn btn-success btn-sm senddata"
-                     data-link="<?= Url::toRoute(['save-category','parentID' => $category->parent_id])?>"
+                     data-link="<?= $toUrl;//Url::toRoute(['save-category','id' => $category->id])?>"
                      data-input="#form-update-category"
                      >
                 <span class="glyphicon glyphicon-floppy-disk"></span>

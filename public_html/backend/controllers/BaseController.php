@@ -35,11 +35,6 @@ class BaseController extends \yii\web\Controller {
     public function sendJsonData($jsonDataArray){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        \common\helpers\JsonData::set($jsonDataArray);
-        return;
-    }
-
-    public function getJsonData(){
-        return \common\helpers\JsonData::get();
+        return \common\helpers\JsonData::current($jsonDataArray);
     }
 }

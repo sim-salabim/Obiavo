@@ -14,6 +14,7 @@ class JsonData
 
     const NOTHING                         = 'nothing';
     const REFRESHPAGE                     = 'refreshpage';
+    const SUCCESSMESSAGE                  = 'success';
     const RELOADPAGE                      = 'reloadpage';
     const REDIRECT                        = 'redirect';
     const ERROR                           = 'error';
@@ -24,18 +25,15 @@ class JsonData
 
     private static $jsonData = [];
 
-    public function set($jsonDataArray){
+    public function current($jsonDataArray){
         $json = [];
 
         foreach ($jsonDataArray as $constOperationName => $jsonData) {
             $json['type'] = $constOperationName;
             $json['data'] = $jsonData;
+            self::$jsonData[] = $json;
         }
 
-        self::$jsonData[] = $json;
-    }
-
-    public function get(){
         return self::$jsonData;
     }
 }

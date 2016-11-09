@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Category;
 use common\helpers\JsonData;
+use yii\helpers\Url;
 
 /**
  * Site controller
@@ -71,11 +72,14 @@ class CategoriesController extends BaseController
     }
 
     public function actionEditCategory($id) {
+
         $category = Category::findOne($id);
 
         $categoryGenerate = $category->getCategoryGenerated()->one();
 
-        return $this->renderAjax('edit',compact('category','categoryGenerate'));
+        $toUrl = Url::toRoute(['save-category','id' => $category->id]);
+
+        return $this->renderAjax('form',compact('category','categoryGenerate', 'toUrl'));
     }
 
     public function actionAppendCategory($id = null) {
@@ -83,7 +87,9 @@ class CategoriesController extends BaseController
         $category->parent_id = $id;
         $categoryGenerate = new \common\models\CategoryGenerate;
 
-        return $this->renderAjax('append',  compact('category','categoryGenerate'));
+        $toUrl = Url::toRoute(['save-category','parentID' => $id]);
+
+        return $this->renderAjax('form',  compact('category','categoryGenerate','toUrl'));
     }
 
     public function actionSaveCategory($id = null, $parentID = null) {
@@ -101,10 +107,19 @@ class CategoriesController extends BaseController
             $category->saveNewData($postData);
         }
 
-        $this->sendJsonData([
-            JsonData::REFRESHPAGE => ''
+        return $this->sendJsonData([
+                JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
+                JsonData::REFRESHPAGE => '',
         ]);
+    }
 
-        return $this->getJsonData();
+    public function actionDelete($id){
+
+        $category = Category::findOne($id)->delete();
+
+        return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"gdf\" успешно удалено",
+                    JsonData::REFRESHPAGE => '',
+        ]);
     }
 }
