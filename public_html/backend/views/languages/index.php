@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
     <div class="well">
         <button class="btn btn-primary loadcontent"
-                data-link="">
+                data-link="<?= Url::toRoute(['append'])?>">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
             Создать новый пункт
         </button>

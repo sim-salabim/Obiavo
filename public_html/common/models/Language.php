@@ -54,6 +54,16 @@ class Language extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+            return [
+                [
+                    'class' => \backend\behaviors\SaveRelation::className(),
+                    'relationalFields' => ['text']
+                ]
+            ];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -65,9 +75,9 @@ class Language extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCitiesTexts()
+    public function getCityTexts()
     {
-        return $this->hasMany(CitiesText::className(), ['languages_id' => 'id']);
+        return $this->hasMany(CityText::className(), ['languages_id' => 'id']);
     }
 
     /**
@@ -75,15 +85,15 @@ class Language extends \yii\db\ActiveRecord
      */
     public function getCountries()
     {
-        return $this->hasMany(Countries::className(), ['languages_id' => 'id']);
+        return $this->hasMany(Country::className(), ['languages_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLanguagesTexts()
+    public function getText()
     {
-        return $this->hasMany(LanguagesText::className(), ['languages_id' => 'id']);
+        return $this->hasMany(LanguageText::className(), ['languages_id' => 'id']);
     }
 
     /**
@@ -92,5 +102,13 @@ class Language extends \yii\db\ActiveRecord
     public function getRegionsTexts()
     {
         return $this->hasMany(RegionsText::className(), ['languages_id' => 'id']);
+    }
+
+    public function saveUpdateData(){
+
+    }
+
+    public function saveNewData(){
+
     }
 }

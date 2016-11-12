@@ -32,7 +32,7 @@ class LanguageText extends \yii\db\ActiveRecord
             [['languages_id', 'name'], 'required'],
             [['languages_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Languages::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
         ];
     }
 
@@ -53,6 +53,6 @@ class LanguageText extends \yii\db\ActiveRecord
      */
     public function getLanguages()
     {
-        return $this->hasOne(Languages::className(), ['id' => 'languages_id']);
+        return $this->hasOne(Language::className(), ['id' => 'languages_id']);
     }
 }

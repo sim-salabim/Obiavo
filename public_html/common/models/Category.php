@@ -144,7 +144,7 @@ class Category extends \yii\db\ActiveRecord
      * $model->populateRelation('relationName', $relateModel);
      *  - добавит связанную модель к модели ($model) в массив связей данной модели, которые можно получить $model->getRelationRecords()
      */
-    public function saveAndsetRelateForCategoryGenerated($categoryGenerateModel){
+    public function saveAndSetRelateForCategoryGenerated($categoryGenerateModel){
         $categoryGenerateModel->countries_id = Yii::$app->user->getDefaultCountry()->id;
 
         $this->save();
@@ -181,7 +181,7 @@ class Category extends \yii\db\ActiveRecord
         $this->load($data);
         $categoryGenerate->load($data);
 
-        $this->saveAndsetRelateForCategoryGenerated($categoryGenerate);
+        $this->saveAndSetRelateForCategoryGenerated($categoryGenerate);
     }
 
     /**
@@ -194,6 +194,6 @@ class Category extends \yii\db\ActiveRecord
         $categoryGenerate->load($data);
         $this->load($data);
 
-        $this->saveAndsetRelateForCategoryGenerated($categoryGenerate);
+        $this->saveAndSetRelateForCategoryGenerated($categoryGenerate);
     }
 }
