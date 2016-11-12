@@ -115,10 +115,11 @@ class CategoriesController extends BaseController
 
     public function actionDelete($id){
 
-        $category = Category::findOne($id)->delete();
+        $category = Category::findOne($id);
+        $category->delete();
 
         return $this->sendJsonData([
-                    JsonData::SUCCESSMESSAGE => "\"gdf\" успешно удалено",
+                    JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно удалено",
                     JsonData::REFRESHPAGE => '',
         ]);
     }

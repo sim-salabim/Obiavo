@@ -59,7 +59,7 @@ class Language extends \yii\db\ActiveRecord
             return [
                 [
                     'class' => \backend\behaviors\SaveRelation::className(),
-                    'relationalFields' => ['text']
+                    'relations' => ['text']
                 ]
             ];
     }

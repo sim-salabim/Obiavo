@@ -51,25 +51,41 @@ class LanguagesController extends BaseController
         return $this->render('form',  compact('language','toUrl'));
     }
 
+    public function actionEdit($id){
+        $language = Language::findOne($id);
+        $toUrl = Url::toRoute(['save','id' => $language->id]);
+
+        return $this->render('form',  compact('language','toUrl'));
+    }
+
     public function actionSave($id = null){
         $post = Yii::$app->request->post();
 
         if ($id){
-            $lang = Language::findOne($id)
-                        ->saveUpdateData($post);
-
+            $lang = Language::findOne($id);
         } else {
             $lang = new Language();
-            $langText = new LanguageText;
-
-            \backend\behaviors\SaveRelation::loadMultiple([$lang,$langText], $post);
-            
-            $lang->save();
         }
+
+        $lang->loadWithRelation(['text'],$post);
+        $lang->save();
 
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$lang->text->name}\" успешно сохранено",
                 JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionDelete($id){
+
+        $lang = Language::findOne($id);
+        $text = $lang->getText()->one();
+
+        $lang->delete();
+
+        return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "Языковой пункт \"{$text->name}\" успешно удален",
+                    JsonData::REFRESHPAGE => '',
         ]);
     }
 }

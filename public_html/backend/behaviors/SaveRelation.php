@@ -21,231 +21,87 @@ use Yii;
  */
 class SaveRelation extends Behavior
 {
+
+    /**
+     * Имена связей
+     */
     public $relations = [];
 
     /**
-     * @var array
-     */
-    public $relationalFields = [];
-
-    /**
-     * @var bool
-     */
-    protected $relationalFinished = false;
-
-    /**
-     * @var array
+     * Массив данных связанных моделей
      */
     protected $relationalData = [];
 
-    public function getRelationData($attribute)
+    public function events()
     {
-        return isset($this->relationalData[$attribute]) ? $this->relationalData[$attribute]['data'] : null;
+        return [
+            ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
+        ];
     }
 
     /**
-     * Permission for this behavior to set relational attributes.
-     *
-     * {@inheritdoc}
+     * Загрузить связи данными
+     * @param type $relations
      */
-    public function canSetProperty($name, $checkVars = true)
-    {
-        return in_array($name, $this->relationalFields) || parent::canSetProperty($name, $checkVars);
+
+    public function loadRelation($relationName, $data) {
+        $modelParent = $this->owner;
+
+        $getter = 'get' . $relationName;
+        $modelClassRelation = $modelParent->$getter()->modelClass;
+
+        $modelRelation = $modelParent->$getter()->one();
+
+        if (! $modelRelation){
+            $modelRelation = Yii::createObject($modelClassRelation);
+        }
+
+        $modelRelation->load($data);
+
+        $this->relationalData[$relationName] = $modelRelation;
+
+        $this->owner->populateRelation($relationName, $modelRelation);
     }
 
     /**
-     *
-     * {@inheritdoc}
+     * Загрузить данные в объект и связи
+     * @param array $relations
+     * @param array $data
      */
-    public function __set($name, $value)
-    {
-        if (in_array($name, $this->relationalFields)) {
-            if (!is_array($value) && !empty($value)) {
-                $this->owner->addError($name,
-                    Yii::$app->getI18n()->format(
-                        Yii::t('yii', '{attribute} is invalid.'),
-                        ['attribute' => $this->owner->getAttributeLabel($name)],
-                        Yii::$app->language
-                    )
-                );
-            } else {
-                $this->relationalData[$name] = ['data' => $value];
-            }
-        } else {
-            parent::__set($name, $value);
-        }
-    }
-
-    /**
-     * Загружаем связанные данные
-     * $this->relationalData[$attribute] = [
-     *      'newModels' => ActiveRecord[],
-     *      'oldModels' => ActiveRecord[],
-     *      'activeQuery' => ActiveQuery,
-     * ];
-     * ```
-     *
-     * @throws RelationException
-     */
-    protected function loadData()
-    {
-        /** @var ActiveQuery $activeQuery */
-        var_dump($this->relations);die;
-        foreach ($this->relations as $attribute => &$data) {
-
-            $getter = 'get' . ucfirst($attribute);
-            $data['activeQuery'] = $activeQuery = $this->owner->$getter();
-            $data['newModels'] = [];
-            $class = $activeQuery->modelClass;
-
-            $notAssociativeArrayOn = !ArrayHelper::isAssociative($activeQuery->on) &&
-                !empty($activeQuery->on);
-
-            $notAssociativeArrayViaOn = $activeQuery->multiple &&
-                !empty($activeQuery->via) &&
-                is_object($activeQuery->via[1]) &&
-                !ArrayHelper::isAssociative($activeQuery->via[1]->on) &&
-                !empty($activeQuery->via[1]->on);
-
-            if ($notAssociativeArrayOn || $notAssociativeArrayViaOn) {
-                Yii::$app->getDb()->getTransaction()->rollBack();
-                throw new RelationException('ON condition for attribute ' . $attribute . ' must be associative array');
-            }
-
-            $params = !ArrayHelper::isAssociative($activeQuery->on) ? [] : $activeQuery->on;
-
-            if ($activeQuery->multiple) {
-                if (empty($activeQuery->via)) {
-                    // one-to-many
-                    foreach ($activeQuery->link as $childAttribute => $parentAttribute) {
-                        $params[$childAttribute] = $this->owner->$parentAttribute;
-                    }
-
-                    if (!empty($data['data'])) {
-                        foreach ($data['data'] as $attributes) {
-                            $data['newModels'][] = new $class(array_merge($params,
-                                ArrayHelper::isAssociative($attributes) ? $attributes : []));
-                        }
-                    }
-                } else {
-                    // many-to-many
-                    if (!is_object($activeQuery->via[1])) {
-                        throw new RelationException('via condition for attribute ' . $attribute . ' cannot must be object');
-                    }
-
-                    $via = $activeQuery->via[1];
-                    $junctionGetter = 'get' . ucfirst($activeQuery->via[0]);
-                    $data['junctionModelClass'] = $junctionModelClass = $via->modelClass;
-                    $data['junctionTable'] = $junctionModelClass::tableName();
-
-                    list($data['junctionColumn']) = array_keys($via->link);
-                    list($data['relatedColumn']) = array_values($activeQuery->link);
-                    $junctionColumn = $data['junctionColumn'];
-                    $relatedColumn = $data['relatedColumn'];
-
-                    if (!empty($data['data'])) {
-                        // make sure what all model's ids from POST exists in database
-                        $countManyToManyModels = $class::find()->where([$class::primaryKey()[0] => $data['data']])->count();
-                        if ($countManyToManyModels != count($data['data'])) {
-                            throw new RelationException('Related records for attribute ' . $attribute . ' not found');
-                        }
-                        // create new junction models
-                        foreach ($data['data'] as $relatedModelId) {
-                            $junctionModel = new $junctionModelClass(array_merge(!ArrayHelper::isAssociative($via->on) ? [] : $via->on,
-                                [$junctionColumn => $this->owner->getPrimaryKey()]));
-                            $junctionModel->$relatedColumn = $relatedModelId;
-                            $data['newModels'][] = $junctionModel;
-                        }
-                    }
-
-                    $data['oldModels'] = $this->owner->$junctionGetter()->all();
-                }
-
-            } elseif (!empty($data['data'])) {
-                // one-to-one
-                $data['newModels'][] = new $class($data['data']);
-            }
-
-            if (empty($activeQuery->via)) {
-                $data['oldModels'] = $activeQuery->all();
-            }
-            unset($data['data']);
-
-            foreach ($data['newModels'] as $i => $model) {
-                $data['newModels'][$i] = $this->replaceExistingModel($model, $attribute);
-            }
-        }
-    }
-
-    public function saveData()
-    {
-        $needSaveOwner = false;
-        var_dump($this->relationalData);die;
-        foreach ($this->relationalData as $attribute => $data) {
-            /** @var ActiveRecord $model */
-            foreach ($data['newModels'] as $model) {
-                if ($model->isNewRecord) {
-                    if (!empty($data['activeQuery']->via)) {
-                        // only for many-to-many
-                        $junctionColumn = $data['junctionColumn'];
-                        $model->$junctionColumn = $this->owner->getPrimaryKey();
-                    } elseif ($data['activeQuery']->multiple) {
-                        // only one-to-many
-                        foreach ($data['activeQuery']->link as $childAttribute => $parentAttribute) {
-                            $model->$childAttribute = $this->owner->$parentAttribute;
-                        }
-                    }
-                    if (!$model->save()) {
-                        Yii::$app->getDb()->getTransaction()->rollBack();
-                        throw new RelationException('Model ' . $model::className() . ' not saved due to unknown error');
-                    }
-                }
-            }
-
-            foreach ($data['oldModels'] as $model) {
-                if ($this->isDeletedModel($model, $attribute)) {
-                    if (!$model->delete()) {
-                        Yii::$app->getDb()->getTransaction()->rollBack();
-                        throw new RelationException('Model ' . $model::className() . ' not deleted due to unknown error');
-                    }
-                }
-            }
-
-            if (!$data['activeQuery']->multiple && (count($data['newModels']) == 0 || !$data['newModels'][0]->isNewRecord)) {
-                $needSaveOwner = true;
-                foreach ($data['activeQuery']->link as $childAttribute => $parentAttribute) {
-                    $this->owner->$parentAttribute = count($data['newModels']) ? $data['newModels'][0]->$childAttribute : null;
-                }
-            }
-        }
-
-        $this->relationalFinished = true;
-
-        if ($needSaveOwner) {
-            $model = $this->owner;
-            $this->detach();
-            if (!$model->save()) {
-                Yii::$app->getDb()->getTransaction()->rollBack();
-                throw new RelationException('Owner-model ' . $model::className() . ' not saved due to unknown error');
-            }
-        }
-    }
-
-    /**
-     * Заполняет модель данными + заполняет данными связанных моделей
-     * @example $data = [
-     *                      'Model1[field1] => value','Model1[field2] => value',
-     *                      'Model2[field1] => value','Model2[field2] => value',
-     *                  ];
-     * @param type $data
-     */
-    public function loadWithRelated($data){
-
+    public function loadWithRelation($relations = [], $data){
         $this->owner->load($data);
-        foreach ($this->relationalFields as $x){
-            var_dump($this->owner);
-            die;
-             $this->populateRelation('relationName', $relateModel);
+
+        foreach  ($relations as $relation){
+            $this->loadRelation($relation, $data);
+        }
+    }
+
+    public function getRelationData($relationName)
+    {
+        return isset($this->relationalData[$relationName]) ? $this->relationalData[$relationName] : null;
+    }
+
+    public function afterSave(){
+        $model = $this->owner;
+
+        foreach ($this->relations as $relation){
+
+            $getter = 'get' . $relation;
+
+            $relationModel = $this->getRelationData($relation);
+
+            if (!$relationModel) throw new Exception ("Unknown relation name {$relation} for {$model::className()}");
+
+            foreach ($model->$getter()->link as $childFK => $parentPK){
+                $relationModel->$childFK = $model->$parentPK;
+            }
+
+            if (!$relationModel->save()) {
+                throw new RelationException('Model ' . $relationModel::className() . ' not saved due to unknown error');
+            }
+
+//            var_dump($relationModel->getErrors());die;
         }
     }
 
@@ -273,16 +129,5 @@ class SaveRelation extends Behavior
             }
         }
         return $success;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function events()
-    {
-        return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'loadData',
-            ActiveRecord::EVENT_AFTER_UPDATE => 'loadData',
-        ];
     }
 }

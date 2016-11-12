@@ -8,7 +8,10 @@
 use yii\helpers\Url;
 use yii\bootstrap\Html;
 
-$text = $language->text ? $language->text : new \common\models\LanguageText;
+$textLang = $language->getText()->one();
+
+$text = $textLang ? $textLang : new \common\models\LanguageText;
+
 ?>
 <div id="form-update-lang">
     <div class="row">

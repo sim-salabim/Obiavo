@@ -54,7 +54,7 @@ use yii\helpers\Url;
                 <td>
                     <span data-placement="top" data-toggle="tooltip" title="Редактировать">
                         <button class="btn btn-primary btn-xs loadcontent"
-                                data-link="<?= Url::toRoute(['edit-category','id' => $lang->id])?>">
+                                data-link="<?= Url::toRoute(['edit','id' => $lang->id])?>">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                     </span>
