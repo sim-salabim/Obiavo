@@ -32,6 +32,7 @@
                 'items' => [
                     ['label' => 'Категории', 'icon' => 'fa fa-bars', 'url' => ['/categories']],
                     ['label' => 'Языки', 'icon' => 'fa fa-language', 'url' => ['/languages']],
+                    ['label' => 'Страны', 'icon' => 'fa fa-flag-o', 'url' => ['/countries']],
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],

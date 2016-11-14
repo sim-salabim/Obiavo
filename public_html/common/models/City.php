@@ -5,10 +5,10 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "countries".
+ * This is the model class for table "cities".
  *
  * @property integer $id
- * @property integer $languages_id
+ * @property integer $regions_id
  * @property string $domain
  * @property integer $active
  * @property string $meta_google
@@ -16,19 +16,19 @@ use Yii;
  * @property string $longitude
  * @property string $latitude
  *
- * @property CategoryGenerated[] $categoryGenerated
- * @property Languages $languages
- * @property CountriesText[] $countriesTexts
- * @property Regions[] $regions
+ * @property Ads[] $ads
+ * @property Region $regions
+ * @property CityText[] $cityTexts
+ * @property Users[] $users
  */
-class Country extends \yii\db\ActiveRecord
+class City extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'countries';
+        return 'cities';
     }
 
     /**
@@ -37,11 +37,11 @@ class Country extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['languages_id', 'domain'], 'required'],
-            [['languages_id', 'active'], 'integer'],
+            [['regions_id', 'domain'], 'required'],
+            [['regions_id', 'active'], 'integer'],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
-            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Languages::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['regions_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::className(), 'targetAttribute' => ['regions_id' => 'id']],
         ];
     }
 
@@ -52,7 +52,7 @@ class Country extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'languages_id' => 'Languages ID',
+            'regions_id' => 'Regions ID',
             'domain' => 'Domain',
             'active' => 'Active',
             'meta_google' => 'Meta Google',
@@ -65,33 +65,32 @@ class Country extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategoryGenerateds()
+    public function getAds()
     {
-        return $this->hasMany(CategoryGenerated::className(), ['countries_id' => 'id']);
+        return $this->hasMany(Ads::className(), ['cities_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLanguages()
+    public function getRegion()
     {
-        return $this->hasOne(Language::className(), ['id' => 'languages_id']);
+        return $this->hasOne(Region::className(), ['id' => 'regions_id']);
     }
 
     /**
      * hasMany
-     * @return type
      */
-    public function getCountryText()
+    public function getCityText()
     {
-        return $this->hasOne(CountryText::className(), ['countries_id' => 'id']);
+        return $this->hasOne(CityText::className(), ['cities_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRegions()
+    public function getUsers()
     {
-        return $this->hasMany(Region::className(), ['countries_id' => 'id']);
+        return $this->hasMany(User::className(), ['cities_id' => 'id']);
     }
 }

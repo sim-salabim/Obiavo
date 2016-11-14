@@ -1,16 +1,14 @@
 <?php
 /**
- * For the full copyright and license information, please view the LICENSE.md
- * file that was distributed with this source code.
+ * Класс реализует сохранение связанных данных, при сохранении объекта
+ *
+ *
  */
 
 namespace backend\behaviors;
 
 use yii\base\Behavior;
-use yii\base\ModelEvent;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -100,8 +98,6 @@ class SaveRelation extends Behavior
             if (!$relationModel->save()) {
                 throw new RelationException('Model ' . $relationModel::className() . ' not saved due to unknown error');
             }
-
-//            var_dump($relationModel->getErrors());die;
         }
     }
 
@@ -110,7 +106,7 @@ class SaveRelation extends Behavior
      *
      * Смотри сюда \yii\base\Model::loadMultiple()
      *
-     * FIX: Обрабатывает стандартный массив index[formName]
+     * FIXED: Обрабатывает стандартный массив index[formName]
      *      + поддерживает несколько
      */
     public static function loadMultiple($models, $data)

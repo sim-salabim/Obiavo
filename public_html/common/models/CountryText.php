@@ -34,7 +34,7 @@ class CountryText extends \yii\db\ActiveRecord
             [['countries_id', 'name'], 'required'],
             [['countries_id'], 'integer'],
             [['name', 'name_rp', 'name_pp'], 'string', 'max' => 255],
-            [['countries_id'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['countries_id' => 'id']],
+            [['countries_id'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['countries_id' => 'id']],
         ];
     }
 

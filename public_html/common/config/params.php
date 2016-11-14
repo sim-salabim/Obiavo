@@ -3,4 +3,6 @@ return [
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
+    'staticDomain' => 'http://obiavo.ru',
+    'domain' => 'obiavo.ru',
 ];
