@@ -33,11 +33,12 @@ class CityText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cities_id', 'languages_id', 'name'], 'required'],
+            [['cities_id', 'name'], 'required'],
             [['cities_id', 'languages_id'], 'integer'],
             [['name', 'name_rp', 'name_pp'], 'string', 'max' => 255],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['languages_id'],'default', 'value' => Yii::$app->user->getDefaultLanguage()->id],
         ];
     }
 

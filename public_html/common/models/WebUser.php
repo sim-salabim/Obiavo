@@ -30,6 +30,14 @@ class WebUser extends \yii\web\User {
     }
 
     public function getDefaultCountry(){
-        return Country::find()->one();
+        return Country::findOne([
+            'domain' => Yii::$app->params['domain']
+        ]);
+    }
+
+    public function getDefaultLanguage(){
+        return Language::findOne([
+            'is_default' => true
+        ]);
     }
 }

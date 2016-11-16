@@ -61,6 +61,16 @@ class Region extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+            return [
+                [
+                    'class' => \backend\behaviors\SaveRelation::className(),
+                    'relations' => ['regionText']
+                ]
+            ];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

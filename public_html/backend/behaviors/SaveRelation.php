@@ -10,6 +10,7 @@ namespace backend\behaviors;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use Yii;
+use yii\base\Exception;
 
 /**
  * Поведение для сохранения связанных моделей
@@ -96,7 +97,7 @@ class SaveRelation extends Behavior
             }
 
             if (!$relationModel->save()) {
-                throw new RelationException('Model ' . $relationModel::className() . ' not saved due to unknown error');
+                throw new Exception('Model ' . $relationModel::className() . ' not saved due to unknown error');
             }
         }
     }

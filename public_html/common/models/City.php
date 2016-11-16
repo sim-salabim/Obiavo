@@ -62,6 +62,16 @@ class City extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+            return [
+                [
+                    'class' => \backend\behaviors\SaveRelation::className(),
+                    'relations' => ['cityText']
+                ]
+            ];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

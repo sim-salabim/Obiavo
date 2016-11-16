@@ -13,7 +13,7 @@ $homeLink = ['label' => 'Страны', 'url' => '/countries'];
 
     <div class="well">
         <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['append'])?>">
+                data-link="<?= Url::toRoute(['append','country_id' => $country->id])?>">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
             Создать новый пункт
         </button>

@@ -49,4 +49,56 @@ class RegionsController extends BaseController
 
         return $this->render('index',  compact('regions','country'));
     }
+
+    public function actionAppend($country_id){
+        $region = new Region;
+        $regionText = new RegionText;
+
+        $toUrl = Url::toRoute(['save','country_id' => $country_id]);
+
+        return $this->render('form',  compact('region','regionText','toUrl'));
+    }
+
+    public function actionEdit($id){
+        $region = Region::find()
+                    ->where(['id' => $id])
+                    ->with('regionText')->one();
+        $regionText = $region->regionText;
+
+        $toUrl = Url::toRoute(['save','id' => $region->id]);
+
+        return $this->render('form',  compact('region','regionText','toUrl'));
+    }
+
+    public function actionSave($id = null, $country_id = null){
+        $post = Yii::$app->request->post();
+
+        if ($id){
+            $region = Region::findOne($id);
+        } else {
+            $region = new Region();
+            $region->countries_id = $country_id;
+        }
+
+        $region->loadWithRelation(['regionText'],$post);
+        $region->save();
+
+        return $this->sendJsonData([
+                JsonData::SUCCESSMESSAGE => "\"{$region->regionText->name}\" успешно сохранено",
+                JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionDelete($id){
+
+        $country = Region::findOne($id);
+        $text = $country->regionText;
+
+        $country->delete();
+
+        return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "Регион \"{$text->name}\" успешно удален",
+                    JsonData::REFRESHPAGE => '',
+        ]);
+    }
 }

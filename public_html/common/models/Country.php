@@ -37,11 +37,12 @@ class Country extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['languages_id', 'domain'], 'required'],
+            [['domain'], 'required'],
             [['languages_id', 'active'], 'integer'],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
-            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Languages::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['languages_id'],'default', 'value' => Yii::$app->user->getDefaultLanguage()->id, 'on'=>'insert'],
         ];
     }
 
@@ -60,6 +61,16 @@ class Country extends \yii\db\ActiveRecord
             'longitude' => 'Долгота',
             'latitude' => 'Широта',
         ];
+    }
+
+    public function behaviors()
+    {
+            return [
+                [
+                    'class' => \backend\behaviors\SaveRelation::className(),
+                    'relations' => ['countryText']
+                ]
+            ];
     }
 
     /**
