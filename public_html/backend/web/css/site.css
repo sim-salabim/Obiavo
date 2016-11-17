@@ -126,12 +126,12 @@ a.desc:after {
     margin-bottom: 50px;
 }
 
-#form-update-category .form-inline .form-group { margin-right:10px; }
+#form-update .form-inline .form-group { margin-right:10px; }
 
-#form-update-category .well-primary {
+#form-update .well-primary {
     color: rgb(255, 255, 255);
     background-color: rgb(66, 139, 202);
     border-color: rgb(53, 126, 189);
 }
 
-#form-update-category .glyphicon { margin-right:5px; }
+#form-update .glyphicon { margin-right:5px; }
