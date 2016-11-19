@@ -87,11 +87,13 @@ class Region extends \yii\db\ActiveRecord
         return $this->hasOne(Country::className(), ['id' => 'countries_id']);
     }
 
-    /**
-     * hasMany
-     */
     public function getRegionText()
     {
         return $this->hasOne(RegionText::className(), ['regions_id' => 'id']);
+    }
+
+    public function getRegionTexts()
+    {
+        return $this->hasMany(RegionText::className(), ['regions_id' => 'id']);
     }
 }

@@ -89,13 +89,14 @@ class Country extends \yii\db\ActiveRecord
         return $this->hasOne(Language::className(), ['id' => 'languages_id']);
     }
 
-    /**
-     * hasMany
-     * @return type
-     */
     public function getCountryText()
     {
         return $this->hasOne(CountryText::className(), ['countries_id' => 'id']);
+    }
+
+    public function getCountryTexts()
+    {
+        return $this->hasMany(CountryText::className(), ['countries_id' => 'id']);
     }
 
     /**

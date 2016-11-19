@@ -198,7 +198,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getCities()
     {
-        return $this->hasOne(Cities::className(), ['id' => 'cities_id']);
+        return $this->hasOne(City::className(), ['id' => 'cities_id']);
     }
 
     public function getUsersMessagesToUser()
@@ -209,5 +209,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function getUsersMessagesFromUser()
     {
         return $this->hasMany(UsersMessages::className(), ['from_users_id' => 'id']);
+    }
+
+    public function getFullName(){
+        return "{$this->last_name} {$this->first_name} {$this->patronymic}";
     }
 }

@@ -9,6 +9,7 @@ use common\models\Region;
 use common\models\RegionText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
+use common\models\Country;
 
 /**
  * Site controller
@@ -40,14 +41,24 @@ class RegionsController extends BaseController
 
     public function actionIndex($country_id = null){
 
+        $country = new Country;
+        $breadcrumbs = '';
+
         if ($country_id){
-            $country = \common\models\Country::findOne($country_id);
+            $country = Country::findOne($country_id);
             $regions = $country->getRegions()->with('regionText')->all();
+
+            $breadcrumbs = $this->getBreadcrumbs([
+                                'breadcrumbs' => [
+                                    "Регионы {$country->countryText->name_rp}"
+                                ],
+                                'homeLink' => ['label' => 'Страны', 'url' => '/countries']
+                            ]);
         } else {
             $regions = Region::find()->with('regionText')->all();
         }
 
-        return $this->render('index',  compact('regions','country'));
+        return $this->render('index',  compact('regions','country','breadcrumbs'));
     }
 
     public function actionAppend($country_id){
@@ -99,6 +110,16 @@ class RegionsController extends BaseController
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "Регион \"{$text->name}\" успешно удален",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function getBreadcrumbs($options){
+        $homeLink = $options['homeLink'];
+        $breadcrumbs = $options['breadcrumbs'];
+
+        return \yii\widgets\Breadcrumbs::widget([
+            'homeLink' => $homeLink,
+            'links' => isset($breadcrumbs) ? $breadcrumbs : []
         ]);
     }
 }

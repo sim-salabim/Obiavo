@@ -13,21 +13,10 @@ use Yii;
  */
 class WebUser extends \yii\web\User {
 
-    public function getFullName(){
-        return "{$this->getLasttName()} {$this->getFirstName()} {$this->getPatronymic()}";
-    }
-
-    public function getFirstName(){
-        return $this->identity->first_name;
-    }
-
-    public function getLasttName(){
-        return $this->identity->last_name;
-    }
-
-    public function getPatronymic(){
-        return $this->identity->patronymic;
-    }
+    /**
+     * @var object \common\models\Language
+     */
+    public $language = null;
 
     public function getDefaultCountry(){
         return Country::findOne([
@@ -39,5 +28,17 @@ class WebUser extends \yii\web\User {
         return Language::findOne([
             'is_default' => true
         ]);
+    }
+
+    /**
+     * Получить текущий язык
+     * @return type
+     */
+    public function getLanguage(){
+        if (!$this->language){
+            $this->language = Language::getLanguageDeafault();
+        }
+
+        return $this->language;
     }
 }

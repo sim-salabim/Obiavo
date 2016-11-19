@@ -1,9 +1,6 @@
 <?php
 Use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
-
-$this->params['breadcrumbs'][] = "Регионы {$country->countryText->name_rp}";
-$homeLink = ['label' => 'Страны', 'url' => '/countries'];
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
@@ -19,10 +16,7 @@ $homeLink = ['label' => 'Страны', 'url' => '/countries'];
         </button>
     </div>
 
-    <?php echo Breadcrumbs::widget([
-        'homeLink' => $homeLink,
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []
-    ]);?>
+    <?php echo $breadcrumbs?>
 
 <div class="box">
     <div class="box-header">

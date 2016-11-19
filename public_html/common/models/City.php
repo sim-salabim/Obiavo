@@ -68,8 +68,13 @@ class City extends \yii\db\ActiveRecord
                 [
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['cityText']
-                ]
+                ],
             ];
+    }
+
+    public static function find(){
+
+        return Yii::createObject(\backend\components\activequery\LanguageText::className(), [get_called_class()]);;
     }
 
     /**
@@ -88,12 +93,14 @@ class City extends \yii\db\ActiveRecord
         return $this->hasOne(Region::className(), ['id' => 'regions_id']);
     }
 
-    /**
-     * hasMany
-     */
     public function getCityText()
     {
         return $this->hasOne(CityText::className(), ['cities_id' => 'id']);
+    }
+
+    public function getCityTexts()
+    {
+        return $this->hasMany(CityText::className(), ['cities_id' => 'id']);
     }
 
     /**

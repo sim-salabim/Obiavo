@@ -93,6 +93,11 @@ class Language extends \yii\db\ActiveRecord
      */
     public function getText()
     {
+        return $this->HasOne(LanguageText::className(), ['languages_id' => 'id']);
+    }
+
+    public function getTexts()
+    {
         return $this->hasMany(LanguageText::className(), ['languages_id' => 'id']);
     }
 
@@ -104,11 +109,9 @@ class Language extends \yii\db\ActiveRecord
         return $this->hasMany(RegionsText::className(), ['languages_id' => 'id']);
     }
 
-    public function saveUpdateData(){
-
-    }
-
-    public function saveNewData(){
-
+    public static function getLanguageDeafault(){
+        return self::findOne([
+            'is_default' => true
+        ]);
     }
 }

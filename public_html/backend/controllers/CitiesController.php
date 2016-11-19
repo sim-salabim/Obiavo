@@ -39,12 +39,14 @@ class CitiesController extends BaseController
     }
 
     public function actionIndex($region_id = null){
-
         if ($region_id){
             $region = \common\models\Region::findOne($region_id);
-            $cities = $region->getCities()->with('cityText')->all();
+            $cities = City::find()
+                        ->withText('cityText')
+                        ->where(['regions_id' => $region->id])
+                        ->all();
         } else {
-            $cities = City::find()->with('cityText')->all();
+            $cities = City::find()->withText('cityText')->all();
         }
 
         return $this->render('index',  compact('region','cities'));

@@ -8,7 +8,7 @@
                 <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p><?=Yii::$app->user->getFullName()?></p>
+                <p><?=Yii::$app->user->identity->getFullName()?></p>
 
                 <!--<a href="#"><i class="fa fa-circle text-success"></i> Online</a>-->
             </div>
@@ -33,6 +33,7 @@
                     ['label' => 'Категории', 'icon' => 'fa fa-bars', 'url' => ['/categories']],
                     ['label' => 'Языки', 'icon' => 'fa fa-language', 'url' => ['/languages']],
                     ['label' => 'Страны', 'icon' => 'fa fa-flag-o', 'url' => ['/countries']],
+                    ['label' => 'Пoльзователи', 'icon' => 'fa fa-users', 'url' => ['/users']],
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],
