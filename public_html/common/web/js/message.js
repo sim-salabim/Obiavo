@@ -193,6 +193,10 @@ Message = new function () {
           scrollTop: (container.offset().top)-20
         }, 1000);
     };
+    
+    this.generatePassword = function(data){        
+        $('#password-input').val(data);
+    }
 };
 
 Core.onFullLoad(function () {
@@ -327,6 +331,10 @@ Message.registerHandler('redirect', function (data) {
 
 Message.registerHandler('showmessage', function (data) {
     Message.show(data);
+});
+
+Message.registerHandler('generatepassword', function (data) {
+    Message.generatePassword(data);    
 });
 
 Message.registerHandler('show_validation_errors', function (data) {

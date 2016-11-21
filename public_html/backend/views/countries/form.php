@@ -4,22 +4,20 @@ use yii\bootstrap\Html;
 
 $form = [
     [
-        'model' => $country,
         'panel-title' => 'Основныe данные',
         'columns' => [
             // attribute:typeField:label
-            'domain:text:Домен',
-            'active:checkbox:Активность',
+            ['attributes' => 'domain:text:Домен', 'model' => $country],
+            ['attributes' => 'active:checkbox:Активность', 'model' => $country],
         ]
     ],
     [
-        'model' => $countryText,
         'panel-title' => 'Тексты',
         'columns' => [
             // attribute:typeField:label
-            'name:text:Название',
-            'name_rp:text:Название в родительном падеже',
-            'name_pp:text:Название в предложном падеже'
+            ['attributes' => 'name:text:Название', 'model' => $countryText],
+            ['attributes' => 'name_rp:text:Название в родительном падеже', 'model' => $countryText],
+            ['attributes' => 'name_pp:text:Название в предложном падеже', 'model' => $countryText],
         ]
     ],
 ];

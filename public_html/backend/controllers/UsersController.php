@@ -2,10 +2,14 @@
 
 namespace backend\controllers;
 
+use Yii;
 use backend\controllers\BaseController;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use common\helpers\JsonData;
 use common\models\User;
+use yii\helpers\Url;
+use yii\base\Request;
 
 class UsersController extends BaseController
 {
@@ -35,14 +39,18 @@ class UsersController extends BaseController
                     ->with(['cities','cities.cityText'])->all();
 //                    ->createCommand()->getRawSql();
 
-        return $this->render('index',  compact('users'));
+        $toUrl = Url::toRoute('create');
+
+        return $this->render('index',  compact('users','toUrl'));
     }
 
     public function actionCreate()
     {
         $user = new User;
 
-        return $this->render('create',  compact('user'));
+        $toUrl = Url::toRoute('save');
+
+        return $this->render('create',  compact('user','toUrl'));
     }
 
     public function actionUpdate($id)
@@ -53,18 +61,27 @@ class UsersController extends BaseController
     }
 
     public function actionSave($id = null)
-    {
+    {        
         $user = ($id) ? User::findOne($id) : new User;
 
-        $user->load(Yii::$app->request->post);
+        $user->load(Yii::$app->request->post());
+
         $user->save();
 
         return $this->sendJsonData([
-                JsonData::SUCCESSMESSAGE => "ПОльзотваель \"$user->fullName}\" успешно сохранен",
+                JsonData::SUCCESSMESSAGE => "Пользователь \"$user->fullName}\" успешно сохранен",
                 JsonData::REFRESHPAGE => '',
         ]);
     }
 
+    public function actionGeneratePassword(){
+        $bytes = openssl_random_pseudo_bytes(4);
 
+        $password = bin2hex($bytes);
+
+        return $this->sendJsonData([
+                JsonData::GENERATEPASSWORD => $password,
+        ]);
+    }
 
 }

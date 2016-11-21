@@ -14,20 +14,18 @@ $text = $textLang ? $textLang : new \common\models\LanguageText;
 
 $form = [
     [
-        'model' => $language,
         'panel-title' => 'Основныe данные',
         'columns' => [
             // attribute:typeField:label
-            'code:text:Код языка',
-            'active:checkbox:Активность',
+            ['attributes' => 'code:text:Код языка', 'model' => $language],
+            ['attributes' => 'active:checkbox:Активность', 'model' => $language],
         ]
     ],
     [
-        'model' => $text,
         'panel-title' => 'Тексты',
         'columns' => [
             // attribute:typeField:label
-            'name:text:Название языка',
+            ['attributes' => 'name:text:Название языка', 'model' => $text],
         ]
     ],
 ];

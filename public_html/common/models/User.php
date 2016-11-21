@@ -50,7 +50,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['sex'], 'string'],
             [['email'], 'string', 'max' => 100],
             [['password', 'first_name', 'last_name', 'patronymic'], 'string', 'max' => 255],
-            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['cities_id' => 'id']],
+            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
         ];
     }
 

@@ -22,6 +22,7 @@ class JsonData
     const NOTICE                          = 'notice';
     const WARNING                         = 'warning';
     const LOADCONTENT                     = 'loadcontent';
+    const GENERATEPASSWORD                = 'generatepassword';
 
     private static $jsonData = [];
 

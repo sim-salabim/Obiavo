@@ -33,8 +33,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <?php foreach($panel['columns'] as $column) {
-
-                                            echo \backend\helpers\FormHtmlTag::row($column, $panel['model']);
+                                            echo \backend\helpers\FormHtmlTag::row($column);
 
 
                                      } ?>

@@ -11,24 +11,24 @@ use yii\bootstrap\Html;
 
 $form = [
     [
-        'model' => $category,
         'panel-title' => 'Основныe данные',
         'columns' => [
             // attribute:typeField:label
             'techname:text:Тех. название',
             'active:checkbox:Активность',
+            ['attributes' => 'code:text:Код языка', 'model' => $category],
+            ['attributes' => 'code:text:Код языка', 'model' => $category],
         ]
     ],
     [
-        'model' => $categoryGenerate,
         'panel-title' => 'Сео данные',
         'columns' => [
             // attribute:typeField:label
-            'seo_name:text:Название',
-            'url:text:URL',
-            'seo_title:text:SEO заголовок',
-            'seo_desc:text:SEO описание',
-            'seo_keywords:text:SEO ключевые слова',
+            ['attributes' => 'seo_name:text:Название', 'model' => $categoryGenerate],
+            ['attributes' => 'url:text:URL', 'model' => $categoryGenerate],
+            ['attributes' => 'seo_title:text:SEO заголовок', 'model' => $categoryGenerate],
+            ['attributes' => 'seo_desc:text:SEO описание', 'model' => $categoryGenerate],
+            ['attributes' => 'seo_keywords:text:SEO ключевые слова', 'model' => $categoryGenerate],
         ]
     ],
 ];
