@@ -1,3 +1,8 @@
+<?php
+
+use yii\helpers\Url;
+
+?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -34,10 +39,13 @@
                     ['label' => 'Языки', 'icon' => 'fa fa-language', 'url' => ['/languages']],
                     ['label' => 'Страны', 'icon' => 'fa fa-flag-o', 'url' => ['/countries']],
                     ['label' => 'Пoльзователи', 'icon' => 'fa fa-users', 'url' => ['/users']],
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+
+                    ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                    ['label' => 'На главную', 'icon' => 'fa fa-dashboard go-frontend-domain', 'url' => \Yii::$app->urlManagerFrontend->baseUrl],
+                    /*
                     [
                         'label' => 'Same tools',
                         'icon' => 'fa fa-share',
@@ -64,6 +72,7 @@
                             ],
                         ],
                     ],
+                     */
                 ],
             ]
         ) ?>

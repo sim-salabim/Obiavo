@@ -55,6 +55,15 @@ return [
                 'categories/edit-<id:\d+>' => 'categories/edit-category',
             ],
         ],
+
+        'urlManagerFrontend' => [
+            // here is your frontend URL manager config
+            'class' => 'yii\web\UrlManager',
+            'baseUrl' => 'http://obiavo-master',
+            'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
+            'showScriptName' => false,
+        ],
     ],
     'params' => $params,
     'as access' => [
