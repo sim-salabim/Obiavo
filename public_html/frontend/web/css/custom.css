@@ -1,0 +1,89 @@
+
+body > h1:first-child {
+    position: absolute;
+    font-size: 28px;
+    font-weight: 400;
+    text-decoration: none;
+    color: #131212;
+    padding-left: 22px;
+} 
+
+.main-flex-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+        flex-flow: row wrap;
+}
+
+.main-flex-container > * {
+    padding: 10px;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 100%;
+        -ms-flex: 1 100%;
+            flex: 1 100%;
+}
+
+.aside-right{    
+    background-color: rgba(220,220,220,0.5);
+}
+
+@media all and (min-width: 600px) {
+  .aside-right {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 auto;
+        -ms-flex: 1 auto;
+            flex: 1 auto;
+  }
+}
+
+@media all and (min-width: 800px) {
+    .content-wrapper {
+      -webkit-box-flex: 3;
+      -webkit-flex: 6 0px;
+          -ms-flex: 6 0px;
+              flex: 6 0px;
+    }
+}
+
+.content-wrapper {          
+    margin-top: 60px;
+}
+
+.sidebar-menu {
+    margin: 20px;
+}
+
+.btn-change{
+    height: 50px;
+    width: 90%;
+    background: lightseagreen;
+    margin: 20px;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+    border: 0px;
+    color: #fff;
+}
+.btn-change:hover{
+    -webkit-transform: scale(1.1);
+    background: #31708f;
+}
+
+.hr-black{
+    width: 100%;
+    margin-bottom: 20px;
+    border-bottom-width: 2px; /* Толщина линии внизу */
+    border-bottom-style: solid; /* Стиль линии внизу */
+    border-bottom-color: rgba(110,100,100,0.9); /* Цвет линии внизу */
+}
+
+.content-wrapper >.content {
+    min-height: 250px;
+    padding: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}

@@ -1,18 +1,19 @@
 
-<div class="content-wrapper col-xs-12 col-md-9">
+<div class="content-wrapper">
+
     <section class="content">
+
+        <div class="content-header">
+            <div class="selecter">выборка</div>
+            <div class="description-text">
+                <?= \Yii::$app->params['domain']?> - сайт бесплатных объявлений России. Ежедневно на сайте раpмещаются тысячи частных объявлений. 34454 - Объявления.
+            </div>
+        </div>
+
         <div id="content"><?= $content ?></div>
     </section>
 </div>
 
 <style>
 
-.content {
-    min-height: 250px;
-    padding: 15px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-}
 </style>

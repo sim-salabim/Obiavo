@@ -3,6 +3,16 @@ body {
     height: 100%;
 }
 
+body {
+    padding-top: 2em;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+h1 {
+    font: 2em Verdana,Arial,Tahoma;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;

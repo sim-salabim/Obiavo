@@ -25,19 +25,18 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<h1><?= $this->title?></h1>
+<div class="wrap main-flex-container">
 
-    <div class="container-fluid">
-        <div class="row">
         <?= $this->render(
             'content',
             ['content' => $content]
         ) ?>
+
         <?= $this->render(
             'right'
         ) ?>
-        </div>
-    </div>
+
 </div>
 
 <footer class="footer">

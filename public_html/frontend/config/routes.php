@@ -1,6 +1,7 @@
 <?php
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
+    '<action:login|registration>' => 'auth/<action>',
     [
         'class' => 'frontend\rules\url\CategoryUrlRule',
         'pattern' => '<categoryType>/<categoryAlias>',
