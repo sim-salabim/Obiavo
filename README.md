@@ -1,5 +1,7 @@
 # Obiavo
 
 Данные для авторизации на лицевой части сайта
-Login: obiabo
+
+Login: obiabvo
+
 Pass: obiavo
