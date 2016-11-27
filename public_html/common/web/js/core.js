@@ -254,7 +254,6 @@ Core.onFullLoad(function() {
         }
     });
 
-
     // Про посылке ajax-запроса и получении включать и выключать соответствующее окошко анимации
     $("body").ajaxSend(function (event, xhr, options) {
         $('#loading').stop().css({display: 'block'}).animate({'opacity': 1}, 300, 'linear');

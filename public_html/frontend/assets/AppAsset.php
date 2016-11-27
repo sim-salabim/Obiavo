@@ -16,9 +16,21 @@ class AppAsset extends AssetBundle
         'css/custom.css',
     ];
     public $js = [
+        'js/selectpicker.js'
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
+        'common\assets\CommonAsset',
+        'frontend\assets\SelectpickerAsset',
+
     ];
+
+    public $jsOptions = [
+        'position' => \yii\web\View::POS_HEAD
+    ];
+
+    public $publishOptions = [
+        'forceCopy'=>true,
+      ];
+
 }
