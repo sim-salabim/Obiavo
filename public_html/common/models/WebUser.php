@@ -24,12 +24,6 @@ class WebUser extends \yii\web\User {
         ]);
     }
 
-    public function getDefaultLanguage(){
-        return Language::findOne([
-            'is_default' => true
-        ]);
-    }
-
     /**
      * Получить текущий язык
      * @return type

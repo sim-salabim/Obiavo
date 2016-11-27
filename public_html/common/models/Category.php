@@ -60,6 +60,16 @@ class Category extends \yii\db\ActiveRecord
             ];
     }
 
+    public function behaviors()
+    {
+            return [
+                [
+                    'class' => \backend\behaviors\SaveRelation::className(),
+                    'relations' => ['categoriesText']
+                ],
+            ];
+    }
+
     /**
      * Сохраняем связанные модели через populateRecord
      * @param type $insert
@@ -127,12 +137,37 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasMany(CategoryGenerate::className(), ['categories_id' => 'id']);
     }
 
+    public function getCategoriesTexts()
+    {
+        return $this->hasMany(CategoriesText::className(), ['categories_id' => 'id']);
+    }
+
+    public function getCategoriesText()
+    {
+        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])
+                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
+    }
+
     /**
      * Вернуть главные категории категории (без родительских категорий)
      */
     public static function getMainCategories(){
         return Category::find()
+                    ->with('categoriesText')
                     ->where(['parent_id' => null])
+                    ->all();
+    }
+
+    /**
+     * Получить дочерние категории
+     * @param array $categories Массив объектов категорий чьих потомков надо получить
+     */
+    public static function getNextChilds($categories = []){
+        $parentIds = ArrayHelper::getColumn($categories, 'id');
+
+        return Category::find()
+                    ->where(['IN','parent_id',$parentIds])
+                    ->with('categoriesText')
                     ->all();
     }
 
@@ -176,12 +211,12 @@ class Category extends \yii\db\ActiveRecord
      * @param array $data
      */
     public function saveNewData($data){
-        $categoryGenerate = new \common\models\CategoryGenerate;
+        $categoryGenerate = new \common\models\CategoriesText;
 
         $this->load($data);
         $categoryGenerate->load($data);
 
-        $this->saveAndSetRelateForCategoryGenerated($categoryGenerate);
+        $this->saveAndSetRelateForCategoryrated($categoryGenerate);
     }
 
     /**

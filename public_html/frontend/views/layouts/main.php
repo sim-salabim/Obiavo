@@ -21,6 +21,13 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <!-- Latest compiled and minified CSS -->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">-->
+
+<!-- Latest compiled and minified JavaScript -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>-->
+
+
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -36,7 +43,6 @@ AppAsset::register($this);
         <?= $this->render(
             'right'
         ) ?>
-
 </div>
 
 <footer class="footer">

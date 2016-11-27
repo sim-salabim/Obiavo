@@ -74,22 +74,23 @@ class CategoriesController extends BaseController
     public function actionEditCategory($id) {
 
         $category = Category::findOne($id);
+        $text = $category->categoriesText;
 
-        $categoryGenerate = $category->getCategoryGenerated()->one();
+        $categoriesText = $text ? $text : new \common\models\CategoriesText;
 
         $toUrl = Url::toRoute(['save-category','id' => $category->id]);
 
-        return $this->renderAjax('form',compact('category','categoryGenerate', 'toUrl'));
+        return $this->renderAjax('form',compact('category','categoriesText', 'toUrl'));
     }
 
     public function actionAppendCategory($id = null) {
         $category = new Category();
         $category->parent_id = $id;
-        $categoryGenerate = new \common\models\CategoryGenerate;
+        $categoriesText = new \common\models\CategoriesText();
 
         $toUrl = Url::toRoute(['save-category','parentID' => $id]);
 
-        return $this->renderAjax('form',  compact('category','categoryGenerate','toUrl'));
+        return $this->renderAjax('form',  compact('category','categoriesText','toUrl'));
     }
 
     public function actionSaveCategory($id = null, $parentID = null) {
@@ -97,15 +98,13 @@ class CategoriesController extends BaseController
 
         if ($id){
             $category = Category::findOne($id);
-
-            $category->saveUpdateData($postData);
-
         } else {
-            $category = new Category();
+            $category = new Category;
             $category->parent_id = $parentID;
-
-            $category->saveNewData($postData);
         }
+
+        $category->loadWithRelation(['categoriesText'],$postData);
+        $category->save();
 
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
