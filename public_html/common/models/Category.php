@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use common\models\scopes\CategoryQuery;
 
 /**
  * This is the model class for table "categories".
@@ -70,6 +71,10 @@ class Category extends \yii\db\ActiveRecord
             ];
     }
 
+    public static function find(){
+        return new CategoryQuery(get_called_class());
+    }
+
     /**
      * Сохраняем связанные модели через populateRecord
      * @param type $insert
@@ -124,7 +129,8 @@ class Category extends \yii\db\ActiveRecord
 
     public function getChildrens()
     {
-        return $this->hasMany(Category::className(), ['parent_id' => 'id']);
+        return $this->hasMany(Category::className(), ['parent_id' => 'id'])
+                    ->withText();;
     }
 
     public function getCategoriesAttributes()
@@ -146,6 +152,20 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])
                     ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
+    }
+
+    /**
+     * Форматированный перевод
+     */
+    public function get_text(){
+        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'name','Нет перевода');
+    }
+
+    /**
+     * URL на основе связанной таблицы
+     */
+    public function getUrl(){
+        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'url','');
     }
 
     /**

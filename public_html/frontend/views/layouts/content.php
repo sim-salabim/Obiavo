@@ -22,7 +22,10 @@ $categories = \common\models\Category::getMainCategories();
                 ])?>
 
                 <?= \frontend\widgets\Selectpicker::widget([
-                    'values' => ArrayHelper::make1Array(\common\models\Category::getNextChilds($categories), 'categoriesText->name'),
+                    'values' => ArrayHelper::make1Array(
+                            \common\models\Category::getNextChilds($categories),
+                            'categoriesText->name'
+                    ),
                     'name' => 'type_ads'
                 ])?>
             </div>
