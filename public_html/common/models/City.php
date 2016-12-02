@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\scopes\CityQuery;
 
 /**
  * This is the model class for table "cities".
@@ -69,12 +70,15 @@ class City extends \yii\db\ActiveRecord
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['cityText']
                 ],
+                [
+                    'class' => \frontend\behaviors\Multilanguage::className(),
+                    'multirelation' => 'cityText',
+                ],
             ];
     }
 
     public static function find(){
-
-        return Yii::createObject(\backend\components\activequery\LanguageText::className(), [get_called_class()]);;
+        return new CityQuery(get_called_class());
     }
 
     /**
@@ -90,12 +94,14 @@ class City extends \yii\db\ActiveRecord
      */
     public function getRegion()
     {
-        return $this->hasOne(Region::className(), ['id' => 'regions_id']);
+        return $this->hasOne(Region::className(), ['id' => 'regions_id'])
+                    ->with('regionText');
     }
 
     public function getCityText()
     {
-        return $this->hasOne(CityText::className(), ['cities_id' => 'id']);
+        return $this->hasOne(CityText::className(), ['cities_id' => 'id'])
+                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
     }
 
     public function getCityTexts()

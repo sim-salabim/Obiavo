@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\scopes\CountryQuery;
 
 /**
  * This is the model class for table "countries".
@@ -71,6 +72,10 @@ class Country extends \yii\db\ActiveRecord
                     'relations' => ['countryText']
                 ]
             ];
+    }
+
+    public static function find(){
+        return new CountryQuery(get_called_class());
     }
 
     /**

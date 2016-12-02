@@ -42,7 +42,7 @@ class CitiesController extends BaseController
         if ($region_id){
             $region = \common\models\Region::findOne($region_id);
             $cities = City::find()
-                        ->withText('cityText')
+                        ->withText()
                         ->where(['regions_id' => $region->id])
                         ->all();
         } else {

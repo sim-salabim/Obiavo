@@ -6,7 +6,11 @@ body > h1:first-child {
     text-decoration: none;
     color: #131212;
     padding-left: 22px;
-} 
+}
+
+body > h1:first-child > a{
+    color: #131212;
+}
 
 .main-flex-container {
     display: -webkit-box;

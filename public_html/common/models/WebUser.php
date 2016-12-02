@@ -16,7 +16,9 @@ class WebUser extends \yii\web\User {
     /**
      * @var object \common\models\Language
      */
-    public $language = null;
+    private $language = null;
+
+    private $country = null;
 
     public function getDefaultCountry(){
         return Country::findOne([
@@ -34,5 +36,13 @@ class WebUser extends \yii\web\User {
         }
 
         return $this->language;
+    }
+
+    public function getCountry(){
+        if (!$this->country){
+            $this->country = Country::find()->byLanguage()->one();
+        }
+
+        return $this->country;
     }
 }

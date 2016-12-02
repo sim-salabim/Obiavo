@@ -1,10 +1,14 @@
 <?php
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 
 $this->title = 'Бесплатные объявления в России';
 
 $cities = common\models\City::find()->with('cityText')->all();
 ?>
+
+<div id="loadcontent-container" style="display: none"></div>
+
 <div class="site-index">
 
      <div class="cities-list">
@@ -27,6 +31,7 @@ $cities = common\models\City::find()->with('cityText')->all();
             </ul>
          <?php } ?>
     </div>
+
 </div>
 
 <style>

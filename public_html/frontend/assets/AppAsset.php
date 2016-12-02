@@ -16,10 +16,13 @@ class AppAsset extends AssetBundle
         'css/custom.css',
     ];
     public $js = [
+        'js/main.js',
+        'js/init.js',
         'js/selectpicker.js'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',
+        'frontend\assets\Fontawesome',
         'common\assets\CommonAsset',
         'frontend\assets\SelectpickerAsset',
 
