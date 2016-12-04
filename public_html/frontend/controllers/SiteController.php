@@ -214,12 +214,4 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-
-    public function actionCitiesModal(){
-        $cities = \common\models\City::find()
-                        ->withText()
-                        ->byLocation()->all();
-
-        return $this->renderAjax('/templates/citiesModal',compact('cities'));
-    }
 }

@@ -4,7 +4,7 @@ use yii\bootstrap\Modal;
 
 $this->title = 'Бесплатные объявления в России';
 
-$cities = common\models\City::find()->with('cityText')->all();
+$cities = common\models\City::find()->withText()->all();
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
@@ -21,11 +21,11 @@ $cities = common\models\City::find()->with('cityText')->all();
          <?php foreach ($categories as $category) { ?>
             <ul class="lvl-block">
                 <li class="lvl-1">
-                    <a href="<?= Url::toRoute("/{$category->url}")?>"><?= $category->_text?></a>
+                    <a href="<?= Url::toRoute("/{$category->url}")?>"><?= $category->_text->name?></a>
                 </li>
 
                 <?php foreach ($category->childrens as $children) { ?>
-                <li class="lvl-2"><a href="<?= Url::toRoute("/{$children->url}")?>"><?= $children->_text?></a></li>
+                <li class="lvl-2"><a href="<?= Url::toRoute("/{$children->url}")?>"><?= $children->_text->name?></a></li>
                 <?php } ?>
 
             </ul>

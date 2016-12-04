@@ -12,7 +12,7 @@ Init = new function(){
         last_word = word_array.pop();             // pop the last word
         first_part = word_array.join(' ');        // rejoin the first words together
 
-        h1Title.html([first_part, ' <a class="a-like loadcontent" data-link="/site/cities-modal">', last_word, '<i class="fa fa-caret-down"></i></a>'].join(''));
+        h1Title.html([first_part, ' <a class="a-like loadcontent" data-link="/modal/cities">', last_word, '<i class="fa fa-caret-down"></i></a>'].join(''));
     }
     
     this.modal = function(){

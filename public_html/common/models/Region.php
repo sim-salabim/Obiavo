@@ -69,7 +69,8 @@ class Region extends \yii\db\ActiveRecord
                     'relations' => ['regionText']
                 ],[
                     'class' => \frontend\behaviors\Multilanguage::className(),
-                    'multirelation' => 'regionText',
+                    'relationName' => 'regionText',
+                    'relationClassName' => CategoriesText::className(),
                 ],
             ];
     }

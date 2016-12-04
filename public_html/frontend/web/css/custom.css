@@ -1,4 +1,3 @@
-
 body > h1:first-child {
     position: absolute;
     font-size: 28px;
@@ -90,4 +89,22 @@ body > h1:first-child > a{
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.selectboxmenu-items {
+    max-height: 600px;
+    padding: 1px 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.selectboxmenu-items > .a-like {
+    float: left;
+    font: 15px/20px 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    width: 95%;
+    margin: 2px 7px;
+    padding: 0;
+    text-align: left;
+    color: #555;
+    border-right: none;
 }

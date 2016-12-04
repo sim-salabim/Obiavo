@@ -72,7 +72,8 @@ class City extends \yii\db\ActiveRecord
                 ],
                 [
                     'class' => \frontend\behaviors\Multilanguage::className(),
-                    'multirelation' => 'cityText',
+                    'relationName' => 'cityText',
+                    'relationClassName' => CityText::className(),
                 ],
             ];
     }

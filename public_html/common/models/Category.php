@@ -68,6 +68,11 @@ class Category extends \yii\db\ActiveRecord
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['categoriesText']
                 ],
+                [
+                    'class' => \frontend\behaviors\Multilanguage::className(),
+                    'relationName' => 'categoriesText',
+                    'relationClassName' => CategoriesText::className(),
+                ],
             ];
     }
 
@@ -157,9 +162,9 @@ class Category extends \yii\db\ActiveRecord
     /**
      * Форматированный перевод
      */
-    public function get_text(){
-        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'name','Нет перевода');
-    }
+//    public function get_text(){
+//        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'name','Нет перевода');
+//    }
 
     /**
      * URL на основе связанной таблицы
