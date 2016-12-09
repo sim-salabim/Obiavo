@@ -1,7 +1,4 @@
 <?php
-/**
- * https://silviomoreto.github.io
- */
 namespace frontend\widgets;
 
 use yii\base\Widget;
