@@ -1,5 +1,5 @@
 <div class="search">
-    <input type="text" class="form-control" placeholder="Введите город/регион..">
+    <!--<input type="text" class="form-control" placeholder="Введите город/регион..">-->
 </div>
 
 <div class="selectboxmenu-items js-scroll ">
@@ -13,3 +13,11 @@
 <?php } ?>
 
 </div>
+<script type="text/javascript">
+
+Core.onFullLoad(function(){
+    
+    rct.mount('search-input',$('.search')[0]);
+
+})
+</script>

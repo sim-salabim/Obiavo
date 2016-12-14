@@ -16,4 +16,14 @@ Pass: obiavo
 Папка для классов ActiveQuery **app\models\scopes**
 Тема
 
+---
 
+### Frontend сборка
+
+Сборка фронтенда (в данный момент только react.jsx компоненты) производится с помощью gulp.
+Для компиляци jsx файлов в js, используется babel(babelify).
+
+> https://babeljs.io/
+
+Установка всех необходимых модулей
+> node i

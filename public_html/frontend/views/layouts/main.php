@@ -20,6 +20,9 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
     <?php $this->head() ?>
     <?= frontend\widgets\Frontend::widget()?>
     <!-- Latest compiled and minified CSS -->
@@ -30,10 +33,10 @@ AppAsset::register($this);
 
 
 </head>
-<body>
+<body>    
 <?php $this->beginBody() ?>
-
 <h1><?= $this->title?></h1>
+
 <div class="wrap main-flex-container">
 
         <?= $this->render(
