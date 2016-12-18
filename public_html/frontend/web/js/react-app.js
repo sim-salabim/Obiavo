@@ -14,6 +14,7 @@ var rct = new function(){
         this.params = params;
         
         var react_component = require(component_name).default;
+        console.log(require(component_name));
         
         ReactDOM.render(
           React.createElement(react_component, this.params, null),

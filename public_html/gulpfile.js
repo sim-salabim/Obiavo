@@ -43,17 +43,6 @@ var fname = function(path_to_file){
     return path_to_file.replace(/^.*[\\\/]/, '');
 };
 
-/*
-gulp.task("babel", function(){
-    return gulp.src(paths.jsx.from).
-        pipe(babel({
-            plugins: ['transform-react-jsx'],
-            presets: ['es2015', 'react']
-        }))
-        .pipe(source('.compress_build.js'))
-        pipe(gulp.dest(paths.jsx.to));
-});
-*/
 
 /**
  * Компилируем все .jsx(es6 & es5) 
@@ -72,6 +61,7 @@ gulp.task('jsx:build', function (done) {
             console.log(entry)
 //                return gulp.src(entry).
 //                        pipe(babel({
+//                            plugins: ['transform-react-jsx'],
 //                            presets: ['es2015', 'react']
 //                        }))
 //                        .pipe(rename({
@@ -94,7 +84,6 @@ gulp.task('jsx:build', function (done) {
         es.merge(tasks).on('end', done);
     })
 });
-
 
 /**
  * Компилируем .js файлы

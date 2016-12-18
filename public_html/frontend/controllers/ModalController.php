@@ -66,9 +66,10 @@ class ModalController extends Controller
         $cities = \common\models\City::find()
                         ->withText()
                         ->byLocation()
+                        ->asArray()
                         ->all();
 
        $this->title = 'Город';
        $this->content = $this->renderPartial('cities',  compact('cities'));
-    }
+    }        
 }

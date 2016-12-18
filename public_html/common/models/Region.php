@@ -94,7 +94,7 @@ class Region extends \yii\db\ActiveRecord
     public function getRegionText()
     {
         return $this->hasOne(RegionText::className(), ['regions_id' => 'id'])
-                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);;
+                    ->where(['regions_text.languages_id' => Yii::$app->user->getLanguage()->id]);;
     }
 
     public function getRegionTexts()
