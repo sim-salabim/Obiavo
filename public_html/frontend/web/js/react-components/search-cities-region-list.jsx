@@ -10,30 +10,21 @@ export default class SearchRegionList extends React.Component {
         
     }
     
-    addTodoItem(item) {
-        console.log(this)
-        console.log(item)
-        this.setState({cities: item});
-    }
-    
-    loadCitiesFromServer() {
-//        $.ajax({
-//            url: this.props.url,
-//            dataType: 'json',
-//            cache: false,
-//            success: function(data) {
-//              this.setState({data: data});
-//            }.bind(this),
-//            error: function(xhr, status, err) {
-//              console.error(this.props.url, status, err.toString());
-//            }.bind(this)
-//        })
+    /**
+     * Обновить список городов
+     */
+    updateCitiesList(list) {
+        
+        console.log(list)
+        this.setState({cities: list});
     }
   
     render() {
         return ( 
             <div>
-                <SearchInput addTodoItem={this.addTodoItem.bind(this)} url={this.props.url} />
+                <SearchInput addTodoItem={this.updateCitiesList.bind(this)} 
+                            url={this.props.url}
+                            list="{this.state.cities}"/>
                 <div className="selectboxmenu-items js-scroll">
                     {this.state.cities.map(function(city){
                         return (

@@ -1,7 +1,15 @@
 <?php
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
-    '<action:login|registration>' => 'auth/<action>',
+    '<action:(login|registration)>' => 'auth/<action>',
+    [
+        'class' => 'frontend\rules\url\LocationUrlRule',
+        'pattern' => '/<locationName:\w+>',
+        'route' => 'site/redirect',
+        'redirect' => '/<locationName>',
+        'defaults' => ['locationName' => null],
+    ],
+   
 //    [
 //        'class' => 'frontend\rules\url\CategoryUrlRule',
 //        'pattern' => '<categoryType>/<categoryAlias>',

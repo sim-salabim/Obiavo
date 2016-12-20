@@ -30,7 +30,7 @@ class CitiesController extends Controller
         $searchText = $post['search_text'];
         
         $cities = \common\models\City::find()
-                        ->search($searchText)
+                        ->searchWithRegion($searchText)
                         ->byLocation();        
         
         if (isset($post['format']) && $post['format'] === 'json'){

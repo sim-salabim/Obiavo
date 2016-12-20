@@ -2,15 +2,27 @@ export default class SearchInput extends React.Component {
     constructor(props) {
         super(props);
         
+        this.timer = null;
+        
         this.handleChange = this.handleChange.bind(this);
     }
     
     handleChange(event) { 
-        var value = event.target.value;
+        let value = event.target.value;
         
-        if (value.length > 3) {
-            this.upload(value);
-        }
+        let $delay = 500;
+
+        clearTimeout(this.timer);
+
+        this.timer = setTimeout(function(){
+            
+            let l = value.length;
+            
+            if (l >= 3 || l == 0) {
+                this.upload(value);
+            }
+            
+        }.bind(this), $delay);                
     }
     
     upload(value){

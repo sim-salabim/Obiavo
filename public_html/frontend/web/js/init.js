@@ -6,7 +6,7 @@ Init = new function(){
     }
     
     this.h1Title = function(){
-        var h1Title = $('body h1:first-child');
+        var h1Title = $('body > h1:first-child');
 
         word_array = h1Title.html().split(/[\s\!,\.\?]+/g); // split on spaces
         last_word = word_array.pop();             // pop the last word

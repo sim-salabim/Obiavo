@@ -70,6 +70,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         $categories = \common\models\Category::find()
                             ->withText()
                             ->withChildrens()
@@ -213,5 +214,10 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+    
+    public function actionRedirect($url)
+    {
+        return Yii::$app->response->redirect($url, 301);
     }
 }

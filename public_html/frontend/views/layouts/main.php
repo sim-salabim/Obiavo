@@ -35,6 +35,7 @@ AppAsset::register($this);
 </head>
 <body>    
 <?php $this->beginBody() ?>
+
 <h1><?= $this->title?></h1>
 
 <div class="wrap main-flex-container">

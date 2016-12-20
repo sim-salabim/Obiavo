@@ -21,17 +21,36 @@ class CityQuery extends ActiveQuery {
         return $this;
     }
     
+
+    public function whereDomain($domainName){
+
+        $this->andWhere(['cities.domain' => $domainName]);
+        
+        return $this;
+    }
+    
     /**
      * Параметр поиска
      * @param string $text  Строка поиска
      */
-    public function search($text){
+    public function search($text, $operator = 'LIKE'){
+        $this->joinWith([
+                'cityText', 
+        ]);
+        
+        $this->andWhere([$operator,'cities_text.name',$text]);
+        
+        
+        return $this;
+    }
+    
+    public function searchWithRegion($text, $operator = 'LIKE'){
         $this->joinWith([
                 'cityText', 
                 'region.regionText'
         ]);
         
-        $this->andWhere(['LIKE','cities_text.name',$text])->orWhere(['LIKE','regions_text.name',$text]);
+        $this->andWhere([$operator,'cities_text.name',$text])->orWhere([$operator,'regions_text.name',$text]);
         
         
         return $this;
