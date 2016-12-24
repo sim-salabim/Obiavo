@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 
-$this->title = 'Бесплатные объявления в России';
+$this->title = "Бесплатные объявления в " . Yii::$app->location->name_pp;
 
 $cities = common\models\City::find()->withText()->all();
 ?>

@@ -1,6 +1,7 @@
 <?php
 namespace frontend\rules\url;
 
+use yii;
 use yii\web\UrlRuleInterface;
 use yii\base\Object;
 use yii\web\UrlRule;
@@ -9,23 +10,6 @@ use yii\helpers\ArrayHelper;
 
 class LocationUrlRule extends UrlRule implements UrlRuleInterface
 {
-
-    /**
-     * @var string the redirect to url.
-     */
-    public $redirect;
-    
-    public function createUrl($manager, $route, $params)
-    {
-        if ($route === 'car/index') {
-            if (isset($params['manufacturer'], $params['model'])) {
-                return $params['manufacturer'] . '/' . $params['model'];
-            } elseif (isset($params['manufacturer'])) {
-                return $params['manufacturer'];
-            }
-        }
-        return false;  // this rule does not apply
-    }
 
     public function parseRequest($manager, $request)
     {
@@ -37,23 +21,20 @@ class LocationUrlRule extends UrlRule implements UrlRuleInterface
             return false;
         }
 
-        list($route, $params) = $result;
+        list($route, $params) = $result;                
         
-        $locationName = ArrayHelper::getValue($params, 'locationName', false);
+        $cityName = ArrayHelper::getValue($params, 'city', false);
         
         $city = \common\models\City::find()                        
                         ->byLocation()
-                        ->whereDomain($locationName)
+                        ->whereDomain($cityName)
                         ->one();        
         
-        $params['url'] = str_replace(
-                ['<locationName>'],
-                [$locationName],
-                $this->redirect
-            );
+        if (!$city) return false;
         
-        return [$route,$params];
+        Yii::$app->location->city = $city;
         
-        return false;  // this rule does not apply
+        return [$route,$params];                
     }
+    
 }

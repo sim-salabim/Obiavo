@@ -218,6 +218,7 @@ class SiteController extends Controller
     
     public function actionRedirect($url)
     {
+        var_dump($url);die;
         return Yii::$app->response->redirect($url, 301);
     }
 }

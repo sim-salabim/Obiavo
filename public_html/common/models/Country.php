@@ -70,7 +70,12 @@ class Country extends \yii\db\ActiveRecord
                 [
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['countryText']
-                ]
+                ],
+                [
+                    'class' => \frontend\behaviors\Multilanguage::className(),
+                    'relationName' => 'countryText',
+                    'relationClassName' => CityText::className(),
+                ],
             ];
     }
 
