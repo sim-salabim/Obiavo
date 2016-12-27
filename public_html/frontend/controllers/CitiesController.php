@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+use common\models\City;
 
 
 class CitiesController extends Controller
@@ -29,16 +30,18 @@ class CitiesController extends Controller
         $post = Yii::$app->request->post();
         $searchText = $post['search_text'];
         
-        $cities = \common\models\City::find()
+        City::$url = City::removeCityInUrl(Yii::$app->request->referrer);
+
+        $cities = City::find()                            
                         ->searchWithRegion($searchText)
-                        ->byLocation();        
+                        ->byLocation();
         
         if (isset($post['format']) && $post['format'] === 'json'){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             
             $cities->asArray();
-        } 
-        
+        }
+
         return $cities->all();
     }
 }

@@ -16,7 +16,7 @@ return [
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
         'pattern' => '<category:\w+>/<city:\w+>',
-        'route' => 'site/index',
+        'route' => 'categories/index',
         'defaults' => ['city' => null]
     ],
 ];

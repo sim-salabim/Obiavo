@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\City;
 
 /**
  * Контроллер для модальных форм
@@ -63,6 +64,8 @@ class ModalController extends Controller
    }
 
     public function actionCities(){
+        City::$url = City::removeCityInUrl(Yii::$app->request->referrer);
+        
         $cities = \common\models\City::find()
                         ->withText()
                         ->byLocation()

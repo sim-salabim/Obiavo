@@ -216,9 +216,8 @@ class SiteController extends Controller
         ]);
     }
     
-    public function actionRedirect($url)
+    public function actionRedirect($href)
     {
-        var_dump($url);die;
-        return Yii::$app->response->redirect($url, 301);
+        return Yii::$app->response->redirect($url);
     }
 }

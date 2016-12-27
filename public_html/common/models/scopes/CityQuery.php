@@ -4,10 +4,36 @@ namespace common\models\scopes;
 use yii\db\ActiveQuery;
 
 class CityQuery extends ActiveQuery {
+    
+    /**
+     * Адаптация вируальных полей
+     */
+    public function populate($rows){
+        $models=parent::populate($rows);
+
+        if(!$this->asArray){
+            return $models;
+        }else{
+            $class = $this->modelClass;
+            $dopfields=method_exists($class, 'virtFields')?$class::virtFields():[];
+            foreach ($models as &$model) {
+              if(!empty($dopfields)){
+                  foreach($dopfields as $attr=>$val){
+                      if(is_string($val)){
+                          $model=array_merge($model,[$attr=>$val]);
+                      }elseif(is_callable($val)){
+                          $model=array_merge($model,[$attr=>call_user_func($val, $model)]);
+                      }
+                  }
+              }
+            }
+            return $models;
+        }
+    }
 
     public function withText(){
         return $this->with('cityText');
-    }        
+    }    
 
     /**
      * Города в текущей локации

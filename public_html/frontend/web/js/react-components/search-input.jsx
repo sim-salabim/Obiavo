@@ -44,7 +44,7 @@ export default class SearchInput extends React.Component {
             error: function(xhr, status, err) {                
               console.error(this.props.url, status, err.toString());
             }.bind(this)
-        })                
+        })
     }
         
     render() {

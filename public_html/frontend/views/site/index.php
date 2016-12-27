@@ -7,8 +7,6 @@ $this->title = "Бесплатные объявления в " . Yii::$app->loca
 $cities = common\models\City::find()->withText()->all();
 ?>
 
-<div id="loadcontent-container" style="display: none"></div>
-
 <div class="site-index">
     <div id="rooter"></div>
      <div class="cities-list">
