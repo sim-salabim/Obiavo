@@ -215,7 +215,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-    
+
     public function actionRedirect($href)
     {
         return Yii::$app->response->redirect($url);

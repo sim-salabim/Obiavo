@@ -9,8 +9,26 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 
 class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
-{
+{   
 
+    public function createUrl($manager, $route, $params) {
+        $url = '';
+//        var_dump($params);die;
+        if ($route === 'categories/index') {
+            
+            if (Yii::$app->location->city){
+                $url = $params['category'] . '/' . Yii::$app->location->city->domain;
+            } else {
+                $url = $params['category'];
+            }
+
+            return $url;
+        }
+        
+        return false;;
+        
+    }
+    
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();

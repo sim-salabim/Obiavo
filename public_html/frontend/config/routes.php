@@ -8,7 +8,7 @@ return [
     [
         'class' => 'frontend\rules\url\LocationUrlRule',
         'pattern' => '/<city:\w+>',
-        'route' => 'site/index',
+        'route' => 'site/index',        
     ],
     /**
      * Класс правила КАТЕГОРИЯ/ГОРОД
@@ -17,6 +17,6 @@ return [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
         'pattern' => '<category:\w+>/<city:\w+>',
         'route' => 'categories/index',
-        'defaults' => ['city' => null]
+        'defaults' => ['city' => null],        
     ],
 ];

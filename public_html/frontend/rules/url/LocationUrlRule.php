@@ -10,7 +10,6 @@ use yii\helpers\ArrayHelper;
 
 class LocationUrlRule extends UrlRule implements UrlRuleInterface
 {
-
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();

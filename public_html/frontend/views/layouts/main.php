@@ -37,7 +37,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <h1><?= $this->title?></h1>
-
+<div id="loadcontent-container" style="display: none"></div>
 <div class="wrap main-flex-container">
 
         <?= $this->render(

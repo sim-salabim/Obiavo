@@ -14,6 +14,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/custom.css',
+        'css/categories.css',
     ];
     public $js = [
 //        'https://unpkg.com/react@15/dist/react.min.js',

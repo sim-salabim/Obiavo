@@ -1,0 +1,24 @@
+.categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.categories-list > .lvl-block {
+    width: 30%;
+    list-style: none;
+    margin-bottom: 50px;
+}
+
+.lvl-block > .lvl-1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: blue;
+}
+
+.lvl-2 a {
+    font-size: 14px;
+    line-height: 17px;
+    display: block;
+    color: #333;
+}

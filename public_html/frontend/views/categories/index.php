@@ -24,6 +24,8 @@
             'name' => 'type_ads'
         ])?>
     </div>
+    
+    <?= $this->render('list', compact('categories'));?>
 
     <div class="description-text">
         <?= \Yii::$app->params['domain']?> - сайт бесплатных объявлений России. Ежедневно на сайте раpмещаются тысячи частных объявлений. 34454 - Объявления.

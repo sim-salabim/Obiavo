@@ -1,7 +1,6 @@
 <?php
 use frontend\helpers\ArrayHelper;
 ?>
-<div id="loadcontent-container" style="display: none"></div>
 
 <div class="content-wrapper">
 
