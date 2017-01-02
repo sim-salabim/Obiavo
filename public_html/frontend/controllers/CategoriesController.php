@@ -6,11 +6,16 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+use common\models\Category;
 
 
 class CategoriesController extends Controller
 {
-
+    /**
+     * Текущая категория     
+     */
+    protected $category = null;
+    
     /**
      * @inheritdoc
      */
@@ -24,10 +29,26 @@ class CategoriesController extends Controller
     }
     
 
-    public function actionIndex(){
+    public function actionIndex(){        
+        $categoryUrl = Yii::$app->request->get('category');
         
-        $categories = \common\models\Category::getMainCategories();             
-
-        return $this->render('index',  compact('categories'));
+        /**
+         * В данном месте проверку можно убрать, т.к. она осуществляется в правиле для роута
+         */
+        $category = Category::getByOldUrlCache(($categoryUrl) ?: null);
+        
+        if (!$category) {
+            throw new HttpException(404, 'Not Found');
+        }
+        
+        $this->category = $category;
+        
+        $subCategories = $this->category->childrens;
+        $placements = $this->category->placements;
+        
+        return $this->render('index',  [
+            'categories' => $subCategories,
+            'placements' => $placements
+        ]);
     }
 }

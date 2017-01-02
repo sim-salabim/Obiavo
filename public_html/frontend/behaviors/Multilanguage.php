@@ -43,6 +43,8 @@ class Multilanguage extends Behavior
     {
         return [
             ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
+            ActiveRecord::EVENT_INIT => 'Init',
+            ActiveRecord::EVENT_AFTER_INSERT => 'updateRelationEvent'
         ];
     }
 
@@ -59,6 +61,15 @@ class Multilanguage extends Behavior
             $this->setMultiRelated();
         }
 
+        $this->_text = $this->owner->{$this->relationName};
+    }
+    
+    public function init(){
+        $this->_text = new $this->relationClassName;
+    }
+    
+    public function updateRelationEvent(){
+        
         $this->_text = $this->owner->{$this->relationName};
     }
 

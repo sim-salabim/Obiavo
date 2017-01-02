@@ -15,9 +15,9 @@ $form = [
         'panel-title' => 'Тексты',
         'columns' => [
             // attribute:typeField:label
-            ['attributes' => 'name:text:Название', 'model' => $cityText],
-            ['attributes' => 'name_rp:text:Название в родительном падеже', 'model' => $cityText],
-            ['attributes' => 'name_pp:text:Название в предложном падеже', 'model' => $cityText],
+            ['attributes' => 'name:text:Название', 'model' => $city->_text],
+            ['attributes' => 'name_rp:text:Название в родительном падеже', 'model' => $city->_text],
+            ['attributes' => 'name_pp:text:Название в предложном падеже', 'model' => $city->_text],
         ]
     ],
 ];

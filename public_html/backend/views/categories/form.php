@@ -15,6 +15,7 @@ $form = [
         'columns' => [
             // attribute:typeField:label
             ['attributes' => 'techname:text:Тех. название', 'model' => $category],
+            ['attributes' => 'placements:select-multiple:Типы размещения объявлений', 'model' => $category],
             ['attributes' => 'active:checkbox:Активность', 'model' => $category],
         ]
     ],
@@ -34,3 +35,8 @@ $form = [
 $saveUrl = $toUrl;
 
 echo $this->render('/templates/form',compact('form','saveUrl'));
+?>
+<script type="text/javascript">
+//    $('.selectpicker').selectpicker()
+    $('.selectpicker').selectpicker();
+</script>

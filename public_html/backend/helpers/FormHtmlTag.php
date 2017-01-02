@@ -86,6 +86,26 @@ class FormHtmlTag {
 
         return $htmlTag;
     }
+    
+    protected static function selectMultiple(){
+        $model = self::$model;
+        
+        $htmlTag = Html::beginTag('div', ['class' => 'form-group row']);
+        
+            $htmlTag .= Html::tag('label',self::$label,['class' => 'col-xs-2 col-form-label']);
+            $htmlTag .= \frontend\widgets\Selectpicker::widget([
+                                    'values' => ['1','2'],
+                                    'name' => '123',
+                                    'options' => [
+                                        'multiple' => true
+                                    ]
+        ]);
+            
+        $htmlTag .= Html::endTag('div');
+        
+        return $htmlTag;
+//        var_dump($model->{self::$attribute});die;
+    }
 
     protected function normalize($column){
         $attributes = $column['attributes'];
@@ -97,15 +117,15 @@ class FormHtmlTag {
         if (!preg_match('/^([\w\.]+)(:([a-zA-z-]*))?(:(.*))?$/', $attributes, $matches)) {
             throw new InvalidConfigException('The attribute must be specified in the type of "attribute", "attribute:format:label"');
         }
-
-        self::$attribute = $matches[1];
+        
+        self::$attribute =  $matches[1];
         self::$format = AH::getValue($matches, 3, 'text');
         self::$label = AH::getValue($matches, 5, null);
         self::$options = AH::getValue($column, 'options', []);
         self::$tagParams = AH::getValue($column, 'params', []);
 
         self::$model = $column['model'];
-
+        
         self::$format = str_replace('-', '', ucwords(self::$format, '-'));
     }
 }

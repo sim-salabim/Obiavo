@@ -1,13 +1,7 @@
 <?php
 Use yii\helpers\Url;
 
-echo \frontend\widgets\Selectpicker::widget([
-            'values' => ['1','2'],
-            'name' => '123',
-            'options' => [
-                'multiple' => true
-            ]
-        ]);
+$this->title = 'Типы объявлений';
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
@@ -17,17 +11,15 @@ echo \frontend\widgets\Selectpicker::widget([
 
     <div class="well">
         <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['append-category','id' => $categoryParent->id])?>">
+                data-link="<?= Url::toRoute('create')?>">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
-            Создать новый пункт
+            Добавить
         </button>
     </div>
 
-    <?= $this->render('breadcrumbs', ['category' => $categoryParent]);?>
-
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">Категории</h3>
+        <h3 class="box-title"><?= $this->title?></h3>
 
         <div class="box-tools">
           <div class="input-group">
@@ -49,26 +41,22 @@ echo \frontend\widgets\Selectpicker::widget([
           </tr>
           </thead>
           <tbody>
-            <?php foreach ($categories as $category) : ?>
+            <?php foreach ($placements as $place) : ?>
               <tr>
-                <td><?php echo $category->id?>
+                <td><?php echo $place->id?>
                 </td>
-                <td><a href="<?php echo Url::toRoute(['index','id' => $category->id])?>"><?php echo $category->techname?></a>
-                    <?= backend\helpers\ActiveLabel::status($category->active, [
-                        'active' => 'активно',
-                        'inactive' => 'не активно'
-                    ])?>
+                <td><?php echo $place->_text->name?>
                 </td>
                 <td>
                     <span data-placement="top" data-toggle="tooltip" title="Редактировать">
                         <button class="btn btn-primary btn-xs loadcontent"
-                                data-link="<?= Url::toRoute(['edit-category','id' => $category->id])?>">
+                                data-link="<?= Url::toRoute(['update','id' => $place->id])?>">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                     </span>
                     <span data-placement="top" data-toggle="tooltip" title="Удалить">
                         <button class="btn btn-danger btn-xs senddata"
-                                data-link="<?= Url::toRoute(['delete','id' => $category->id])?>">
+                                data-link="<?= Url::toRoute(['delete','id' => $place->id])?>">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </span>
@@ -80,18 +68,6 @@ echo \frontend\widgets\Selectpicker::widget([
       <!-- /.table-responsive -->
     </div>
     <!-- /.box-body -->
-    <div class="box-footer clearfix">
-        <div class="box-footer clearfix">
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
-        <!-- /.box-footer -->
-    </div>
     <!-- /.box -->
 </div>
 

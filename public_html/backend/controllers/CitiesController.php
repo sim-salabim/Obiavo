@@ -54,22 +54,20 @@ class CitiesController extends BaseController
 
     public function actionAppend($region_id){
         $city = new City;
-        $cityText = new CityText;
 
         $toUrl = Url::toRoute(['save','region_id' => $region_id]);
 
-        return $this->render('form',  compact('city','cityText','toUrl'));
+        return $this->render('form',  compact('city','toUrl'));
     }
 
     public function actionEdit($id){
         $city = City::find()
                     ->where(['id' => $id])
-                    ->with('cityText')->one();
-        $cityText = $city->cityText;
-
+                    ->withText()->one();
+        
         $toUrl = Url::toRoute(['save','id' => $id]);
 
-        return $this->render('form',  compact('city','cityText','toUrl'));
+        return $this->render('form',  compact('city','toUrl'));
     }
 
     public function actionSave($id = null, $region_id = null){
@@ -86,7 +84,7 @@ class CitiesController extends BaseController
         $city->save();
 
         return $this->sendJsonData([
-                JsonData::SUCCESSMESSAGE => "Город \"{$city->cityText->name}\" успешно сохранено",
+                JsonData::SUCCESSMESSAGE => "Город \"{$city->_text->name}\" успешно сохранено",
                 JsonData::REFRESHPAGE => '',
         ]);
     }

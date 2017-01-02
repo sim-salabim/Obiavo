@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 ?>
 <div class="categories-list">
-    <?php foreach ($categories as $category) { ?>
+    <?php foreach ($categories as $category) { ?>    
         <ul class="lvl-block">
             <li class="lvl-1">
                 <a href="<?= Url::toRoute(['categories/index','category' => $category->url])?>"><?= $category->_text->name?></a>

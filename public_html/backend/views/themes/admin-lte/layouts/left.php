@@ -39,6 +39,7 @@ use yii\helpers\Url;
                     ['label' => 'Языки', 'icon' => 'fa fa-language', 'url' => ['/languages']],
                     ['label' => 'Страны', 'icon' => 'fa fa-flag-o', 'url' => ['/countries']],
                     ['label' => 'Пoльзователи', 'icon' => 'fa fa-users', 'url' => ['/users']],
+                    ['label' => 'Типы объявлений', 'icon' => '', 'url' => ['/placements']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],

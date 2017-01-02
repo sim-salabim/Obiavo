@@ -158,6 +158,33 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])
                     ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
     }
+    
+    /**
+     * Типы объявлений у категорий (купить, продать, аренда)     
+     */
+    public function getPlacements()
+    {
+        $tbCategoryPlacement = CategoryPlacement::tableName();
+       
+        return Placement::find()
+                    ->joinWith('categoryPlacement')
+                    ->joinWith('placementsText')
+                    ->onCondition(["`$tbCategoryPlacement`.`categories_id`" => $this->id])
+                    ->all();
+//        return $this->x;
+//        return $this->hasMany(CategoryPlacement::className(), ['categories_id' => 'id'])
+//                    ->hasOne(Place);
+//                    ->leftJoin(CategoryPlacement::tableName(),'category_has_placement.placements_id = placements.id')
+//                    ->leftJoin(Placement::tableName(), 'placements.id = categories_has_placement.placements_id')
+//                    ->leftJoin(PlacementsText::tableName(), 'placements_text.placements_id = placements.id');
+//                    ->where(['category_has_placement.categories_id' => $this->id]);
+//                    ->with('placementsText');
+//                ->viaTable(CategoryPlacement::tableName(), ['categories_has_placements.categories_id' => 'id']);
+        
+//                return $x->joinWith(['placementsText' => function(\yii\db\ActiveQuery $query){
+//                    $query->andWhere(['placements_text.languages_id' => \Yii::$app->user->language->id]);
+//                }]);
+    }
 
     /**
      * Форматированный перевод
@@ -255,5 +282,19 @@ class Category extends \yii\db\ActiveRecord
         $this->load($data);
 
         $this->saveAndSetRelateForCategoryGenerated($categoryGenerate);
+    }
+    
+    public static function getByOldUrlCache($old_url)
+    {
+        $key  = "Category-getByOldUrlCache-" . md5($old_url);
+        $data = Yii::$app->cache->get( $key );
+        
+        if ($data === false) {
+            $data = self::find()->searchUrlByLanguage($old_url)->one();
+            Yii::$app->cache->set( $key, $data, 300 );
+
+            return $data;
+        }
+        return $data;
     }
 }

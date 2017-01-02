@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m161229_233637_create_table_ads_types_text extends Migration
+class m161229_233637_create_table_placements_text extends Migration
 {
     public function up()
     {
@@ -12,23 +12,23 @@ class m161229_233637_create_table_ads_types_text extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
         
-        $this->createTable('ads_types_text', [
+        $this->createTable('placements_text', [
             'id'            => $this->primaryKey()->unsigned(),
             'languages_id'  => $this->integer()->unsigned()->notNull(),
-            'ads_types_id'  => $this->integer()->unsigned()->notNull(),
+            'placements_id'  => $this->integer()->unsigned()->notNull(),
             'name'          => $this->string()->notNull(),
         ], $tableOptions);
         
-        $this->addForeignKey('fk_ads_types_text', 'ads_types_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_ads_types_id', 'ads_types_text', 'ads_types_id', 'ads_types', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_placements_id_text', 'placements_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_placements_id_id', 'placements_text', 'placements_id', 'placements', 'id', 'CASCADE', 'CASCADE');
         
     }
 
     public function down()
     {
-        $this->dropForeignKey('fk_ads_types_text', 'ads_types_text');
-        $this->dropForeignKey('fk_ads_types_id', 'ads_types_text');
-        $this->dropTable('ads_types_text');
+        $this->dropForeignKey('fk_placements_text', 'placements_text');
+        $this->dropForeignKey('fk_placements_id', 'placements_text');
+        $this->dropTable('placements_text');
     }
 
     /*
