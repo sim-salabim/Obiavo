@@ -35,4 +35,30 @@ class ArrayHelper extends AH {
 
         return $result;
     }
+    
+    public static function make2Array($objects, $from, $to){
+
+        $result = [];
+
+        foreach($objects as $object){
+
+            $relationName = explode('->', $to)[0];
+            $relationField = explode('->', $to)[1];
+            $relatedRecord = $object->getRelatedRecords()[$relationName];
+
+            if ($relatedRecord){
+                $relationFieldValue = self::getValue($relatedRecord,$relationField);
+
+            } elseif (empty($relatedRecord)){
+                $relationFieldValue = $object->$relationName
+                                    ? $object->$relationName->$relationField
+                                    : 'Перевод отсутствует';
+
+            }
+
+            $result[$object->$from] = $relationFieldValue;
+        }
+
+        return $result;
+    }
 }

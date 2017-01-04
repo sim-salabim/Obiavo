@@ -9,13 +9,13 @@ use yii\helpers\ArrayHelper as AH;
  * Возвращает html поле для стндартной формы
  */
 class FormHtmlTag {
-
+       
     private static $attribute = '';
     private static $format = 'text';
     private static $label = '';
     private static $options = [];
-    private static $tagParams = [];
-
+    private static $tagParams = [];   
+    
     private static $model = null;
 
     /**
@@ -89,13 +89,16 @@ class FormHtmlTag {
     
     protected static function selectMultiple(){
         $model = self::$model;
-        
+        $elements = AH::getValue(self::$options,'multiple.elements',[]);
+        $selected = AH::getValue(self::$options,'multiple.selected',[]);
+
         $htmlTag = Html::beginTag('div', ['class' => 'form-group row']);
         
             $htmlTag .= Html::tag('label',self::$label,['class' => 'col-xs-2 col-form-label']);
             $htmlTag .= \frontend\widgets\Selectpicker::widget([
-                                    'values' => ['1','2'],
-                                    'name' => '123',
+                                    'values' => $elements,
+                                    'selected' => $selected,
+                                    'name' => self::$attribute,
                                     'options' => [
                                         'multiple' => true
                                     ]
@@ -104,7 +107,6 @@ class FormHtmlTag {
         $htmlTag .= Html::endTag('div');
         
         return $htmlTag;
-//        var_dump($model->{self::$attribute});die;
     }
 
     protected function normalize($column){
@@ -122,7 +124,7 @@ class FormHtmlTag {
         self::$format = AH::getValue($matches, 3, 'text');
         self::$label = AH::getValue($matches, 5, null);
         self::$options = AH::getValue($column, 'options', []);
-        self::$tagParams = AH::getValue($column, 'params', []);
+        self::$tagParams = AH::getValue($column, 'params', []);        
 
         self::$model = $column['model'];
         

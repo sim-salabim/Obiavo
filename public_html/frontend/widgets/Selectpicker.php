@@ -13,6 +13,10 @@ class Selectpicker extends Widget {
 
     public $values = [];
     public $name = '';
+    /**
+     * номера выбранных элементов
+     */
+    public $selected = [];
     
     /**
      *    [
@@ -39,7 +43,10 @@ class Selectpicker extends Widget {
         
         $html = "<select name=\"{$this->name}\" $options class=\"selectpicker\">";
         foreach ($this->values as $key => $value){
-            $html .= "<option>$value</option>";
+
+            $selected = $this->isSelected($key) ? 'selected' : '';
+            
+            $html .= "<option value='$key' $selected>$value</option>";
         }
         $html .= "</select>";
 
@@ -63,5 +70,14 @@ class Selectpicker extends Widget {
         }
         
         return trim($html);
+    }
+    
+    protected function isSelected($key){        
+        
+        if (in_array($key,$this->selected)){
+            return true;
+        }
+        
+        return false;
     }
 }

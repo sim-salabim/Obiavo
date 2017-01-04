@@ -8,6 +8,9 @@
 
 use yii\helpers\Url;
 use yii\bootstrap\Html;
+use frontend\helpers\ArrayHelper;
+
+$placements = common\models\Placement::find()->withText()->all();
 
 $form = [
     [
@@ -15,7 +18,14 @@ $form = [
         'columns' => [
             // attribute:typeField:label
             ['attributes' => 'techname:text:Тех. название', 'model' => $category],
-            ['attributes' => 'placements:select-multiple:Типы размещения объявлений', 'model' => $category],
+            ['attributes' => 'placements:select-multiple:Типы размещения объявлений', 'model' => $category,
+                'options' => [
+                    'multiple' => [
+                        'elements' => ArrayHelper::map($placements, 'id','_text.name'),
+                        'selected' => ArrayHelper::getColumn($category->placements,'id')
+                    ]
+                ]
+            ],
             ['attributes' => 'active:checkbox:Активность', 'model' => $category],
         ]
     ],

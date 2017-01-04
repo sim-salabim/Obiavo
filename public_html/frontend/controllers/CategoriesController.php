@@ -44,11 +44,11 @@ class CategoriesController extends Controller
         $this->category = $category;
         
         $subCategories = $this->category->childrens;
-        $placements = $this->category->placements;
+        $categoryPacements = $this->category->placements;
         
         return $this->render('index',  [
             'categories' => $subCategories,
-            'placements' => $placements
+            'placements' => $categoryPacements
         ]);
     }
 }

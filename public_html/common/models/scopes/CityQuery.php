@@ -33,7 +33,7 @@ class CityQuery extends ActiveQuery {
 
     public function withText(){
         return $this->with('cityText');
-    }    
+    }
 
     /**
      * Города в текущей локации

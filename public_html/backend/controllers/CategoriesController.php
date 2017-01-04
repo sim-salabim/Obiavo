@@ -104,7 +104,10 @@ class CategoriesController extends BaseController
         }
 
         $category->loadWithRelation(['categoriesText'],$postData);
-        $category->save();
+        
+        if ($category->save() && !empty($postData['placements'])){
+            $category->setPlacements($postData['placements']);
+        }
 
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",

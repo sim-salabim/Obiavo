@@ -165,25 +165,37 @@ class Category extends \yii\db\ActiveRecord
     public function getPlacements()
     {
         $tbCategoryPlacement = CategoryPlacement::tableName();
-       
+
         return Placement::find()
                     ->joinWith('categoryPlacement')
                     ->joinWith('placementsText')
-                    ->onCondition(["`$tbCategoryPlacement`.`categories_id`" => $this->id])
+                    ->onCondition(['=',"`$tbCategoryPlacement`.`categories_id`", $this->id])
                     ->all();
-//        return $this->x;
-//        return $this->hasMany(CategoryPlacement::className(), ['categories_id' => 'id'])
-//                    ->hasOne(Place);
-//                    ->leftJoin(CategoryPlacement::tableName(),'category_has_placement.placements_id = placements.id')
-//                    ->leftJoin(Placement::tableName(), 'placements.id = categories_has_placement.placements_id')
-//                    ->leftJoin(PlacementsText::tableName(), 'placements_text.placements_id = placements.id');
-//                    ->where(['category_has_placement.categories_id' => $this->id]);
-//                    ->with('placementsText');
-//                ->viaTable(CategoryPlacement::tableName(), ['categories_has_placements.categories_id' => 'id']);
+    }
+    
+    public function setPlacements($placementsIds) {
+        $categoryPlacements = new CategoryPlacement;
+
+        $rows = [];
+        foreach ($placementsIds as $placeId){
+            $rows[] = [$this->id, $placeId];
+        }
         
-//                return $x->joinWith(['placementsText' => function(\yii\db\ActiveQuery $query){
-//                    $query->andWhere(['placements_text.languages_id' => \Yii::$app->user->language->id]);
-//                }]);
+        $this->deletePlacements();
+
+        Yii::$app->db->createCommand()->batchInsert(
+                    CategoryPlacement::tableName(), 
+                    ['categories_id','placements_id'], 
+                    $rows
+                )
+                ->execute();
+    }
+    
+    public function deletePlacements(){
+        Yii::$app->db
+                ->createCommand()
+                ->delete(CategoryPlacement::tableName(), ['=','categories_id', $this->id])
+                ->execute();
     }
 
     /**

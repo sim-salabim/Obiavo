@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\scopes\PlacementQuery;
 
 /**
  * This is the model class for table "placements".
@@ -55,6 +56,10 @@ class Placement extends \yii\db\ActiveRecord
                     'relationClassName' => PlacementsText::className(),
                 ],
             ];
+    }
+    
+    public static function find(){
+        return new PlacementQuery(get_called_class());
     }
 
     /**
