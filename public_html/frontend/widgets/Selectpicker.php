@@ -41,7 +41,7 @@ class Selectpicker extends Widget {
     private function html(){
         $options = $this->getOptions();
         
-        $html = "<select name=\"{$this->name}\" $options class=\"selectpicker\">";
+        $html = "<select name=\"{$this->name}\" $options>";
         foreach ($this->values as $key => $value){
 
             $selected = $this->isSelected($key) ? 'selected' : '';
@@ -55,8 +55,15 @@ class Selectpicker extends Widget {
     
     protected function getOptions(){
         $html = '';
+        $opt = $this->options;
+                
+        if (empty($opt['class'])) {
+                $opt['class'] = 'selectpicker';
+        } else {
+            $opt['class'] = $opt['class'].' selectpicker';
+        }
         
-        foreach($this->options as $name => $opt){            
+        foreach($opt as $name => $opt){                        
             if (!$opt) continue;
             
             if ($opt === true) {

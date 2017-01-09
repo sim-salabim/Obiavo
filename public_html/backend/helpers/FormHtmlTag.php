@@ -91,18 +91,21 @@ class FormHtmlTag {
         $model = self::$model;
         $elements = AH::getValue(self::$options,'multiple.elements',[]);
         $selected = AH::getValue(self::$options,'multiple.selected',[]);
-
-        $htmlTag = Html::beginTag('div', ['class' => 'form-group row']);
         
-            $htmlTag .= Html::tag('label',self::$label,['class' => 'col-xs-2 col-form-label']);
-            $htmlTag .= \frontend\widgets\Selectpicker::widget([
+        $selectpicker = \frontend\widgets\Selectpicker::widget([
                                     'values' => $elements,
                                     'selected' => $selected,
                                     'name' => self::$attribute,
                                     'options' => [
                                         'multiple' => true
                                     ]
-        ]);
+                        ]);
+
+        $htmlTag = Html::beginTag('div', ['class' => 'form-group row']);
+        
+            $htmlTag .= Html::tag('label',self::$label,['class' => 'col-xs-2 col-form-label']);
+            
+            $htmlTag .= Html::tag('div',$selectpicker,['class' => 'col-xs-10']);
             
         $htmlTag .= Html::endTag('div');
         

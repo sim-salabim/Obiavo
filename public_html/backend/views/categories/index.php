@@ -1,13 +1,5 @@
 <?php
 Use yii\helpers\Url;
-
-echo \frontend\widgets\Selectpicker::widget([
-            'values' => ['1','2'],
-            'name' => '123',
-            'options' => [
-                'multiple' => true
-            ]
-        ]);
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>

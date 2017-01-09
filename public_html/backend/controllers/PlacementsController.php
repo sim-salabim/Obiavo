@@ -52,6 +52,15 @@ class PlacementsController extends BaseController
         return $this->render('create',  compact('placement','toUrl'));
     }
     
+    public function actionUpdate($id)
+    {
+       $placement = Placement::findOne($id);
+       
+       $toUrl = Url::toRoute(['save','id' => $id]);
+
+        return $this->render('create',  compact('placement','toUrl'));
+    }
+    
     public function actionSave($id = null)
     {        
         $placement = ($id) ? Placement::findOne($id) : new Placement;
@@ -62,6 +71,19 @@ class PlacementsController extends BaseController
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "Тип \"{$placement->_text->name}\" успешно сохранен",
                 JsonData::REFRESHPAGE => '',
+        ]);
+    }
+    
+    public function actionDelete($id){
+
+        $placement = Placement::findOne($id);
+        $text = $placement->_text;
+
+        $placement->delete();
+
+        return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "Тип \"{$text->name}\" успешно удален",
+                    JsonData::REFRESHPAGE => '',
         ]);
     }
 }

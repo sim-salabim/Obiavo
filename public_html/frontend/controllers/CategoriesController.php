@@ -12,10 +12,10 @@ use common\models\Category;
 class CategoriesController extends Controller
 {
     /**
-     * Текущая категория     
+     * Текущая категория
      */
     protected $category = null;
-    
+
     /**
      * @inheritdoc
      */
@@ -27,25 +27,25 @@ class CategoriesController extends Controller
             ],
         ];
     }
-    
 
-    public function actionIndex(){        
+
+    public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
         
         /**
          * В данном месте проверку можно убрать, т.к. она осуществляется в правиле для роута
          */
         $category = Category::getByOldUrlCache(($categoryUrl) ?: null);
-        
+
         if (!$category) {
             throw new HttpException(404, 'Not Found');
         }
-        
+
         $this->category = $category;
-        
+
         $subCategories = $this->category->childrens;
         $categoryPacements = $this->category->placements;
-        
+
         return $this->render('index',  [
             'categories' => $subCategories,
             'placements' => $categoryPacements

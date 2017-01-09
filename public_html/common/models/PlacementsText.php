@@ -31,9 +31,9 @@ class PlacementsText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['placements_id', 'name'], 'required'],
+            [['placements_id', 'name', 'url'], 'required'],
             [['placements_id'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'url'], 'string', 'max' => 255],
             [['placements_id'], 'exist', 'skipOnError' => true, 'targetClass' => Placement::className(), 'targetAttribute' => ['placements_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['languages_id'],'default', 'value' => Language::getLanguageDeafault()->id],
@@ -50,6 +50,7 @@ class PlacementsText extends \yii\db\ActiveRecord
             'languages_id' => 'Languages ID',
             'placements_id' => 'Placements ID',
             'name' => 'Name',
+            'url' => 'SEO Url',
         ];
     }
 

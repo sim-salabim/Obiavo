@@ -17,6 +17,7 @@ class m161229_233637_create_table_placements_text extends Migration
             'languages_id'  => $this->integer()->unsigned()->notNull(),
             'placements_id'  => $this->integer()->unsigned()->notNull(),
             'name'          => $this->string()->notNull(),
+            'url'           => $this->string()->notNull(),
         ], $tableOptions);
         
         $this->addForeignKey('fk_placements_id_text', 'placements_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');

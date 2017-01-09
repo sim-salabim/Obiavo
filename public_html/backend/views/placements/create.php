@@ -7,6 +7,7 @@ $form = [
         'columns' => [
             // attribute:typeField:label
             ['attributes' => 'name:text:Название', 'model' => $placement->_text],
+            ['attributes' => 'url:text:Seo Url', 'model' => $placement->_text],
         ]
     ],
 ];

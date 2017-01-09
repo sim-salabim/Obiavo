@@ -15,7 +15,16 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '<category:\w+>/<city:\w+>',
+        'pattern' => '/<category:\w+>/<city:\w+>',
+        'route' => 'categories/index',
+        'defaults' => ['city' => null],        
+    ],
+    /**
+     * Класс правила ПРОДАТЬ/КАТЕГОРИЯ/ГОРОД
+     */
+    [
+        'class' => 'frontend\rules\url\LocationCategoryUrlRule',
+        'pattern' => '/<placement:\w+>/<category:\w+>/<city:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],        
     ],
