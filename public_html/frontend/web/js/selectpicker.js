@@ -2,10 +2,9 @@ Core.onFullLoad(function() {
     
     $('.selectpicker').selectpicker();
     
-    $('.selectpicker').on('changed.bs.select', function (e) {
+    $('select.selectpicker.redirect').on('changed.bs.select', function (e) {
+        var url = $(this).val();
         
-        
-        console.log(e)
-        console.log($(this).html())
+        Navigation.changeLocation(url);
     });
 })

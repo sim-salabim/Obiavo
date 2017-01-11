@@ -2,24 +2,34 @@
  use frontend\helpers\ArrayHelper;
  use yii\helpers\Url;
  use common\models\Category;
+ use frontend\widgets\Selectpicker;
 
  $this->title = "Бесплатные объявления в " . Yii::$app->location->name_pp;
 ?>
 <div class="content-header">
     <div class="navbar">
-        <?= \frontend\widgets\Selectpicker::widget([
+        <?= Selectpicker::widget([
             'values' => ArrayHelper::map(
                                 $placements,
                                 function($el){
                                     return Url::toRoute(['categories/index','placement' => $el->_text->url]);
                                 },
                                 '_text.name'),
+            'selected' => [Yii::$app->request->url],
             'name' => 'placements',
+            'options' => ['class' => 'redirect']
         ])?>
 
-        <?= \frontend\widgets\Selectpicker::widget([
-            'values' => ArrayHelper::map($categories, 'id', '_text.name'),
-            'name' => 'category'
+        <?= Selectpicker::widget([
+            'values' => ArrayHelper::map(
+                                $categories,
+                                function($el){
+                                    return Url::toRoute(['categories/index','category' => $el->_text->url]);
+                                },
+                                '_text.name'),
+            'name' => 'category',
+            'selected' => [Yii::$app->request->url],
+            'options' => ['class' => 'redirect']
         ])?>
 
         <?php
@@ -27,7 +37,7 @@
 
             if ($nextChilds) {
         ?>
-        <?= \frontend\widgets\Selectpicker::widget([
+        <?= Selectpicker::widget([
             'values' => ArrayHelper::map(
                     $nextChilds,
                     'id',

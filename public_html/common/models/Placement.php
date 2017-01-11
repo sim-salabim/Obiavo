@@ -15,6 +15,12 @@ use common\models\scopes\PlacementQuery;
  */
 class Placement extends \yii\db\ActiveRecord
 {
+    /*
+     * На каком значении PLFCEMENT мы находимся в данный момент
+     * в основном устанавливается при разборе url (parserequest)
+     */
+    private static $_current = null;
+
     /**
      * @inheritdoc
      */
@@ -29,7 +35,7 @@ class Placement extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            
+
         ];
     }
 
@@ -42,7 +48,7 @@ class Placement extends \yii\db\ActiveRecord
             'id' => 'ID',
         ];
     }
-    
+
     public function behaviors()
     {
             return [
@@ -57,7 +63,7 @@ class Placement extends \yii\db\ActiveRecord
                 ],
             ];
     }
-    
+
     public static function find(){
         return new PlacementQuery(get_called_class());
     }
@@ -77,11 +83,33 @@ class Placement extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PlacementsText::className(), ['placements_id' => 'id']);
     }
-    
+
     public function getPlacementsText()
     {
         $table = PlacementsText::tableName();
         return $this->hasOne(PlacementsText::className(), ['placements_id' => 'id'])
                     ->andWhere(["`$table`.`languages_id`" => Yii::$app->user->language->id]);
+    }
+
+    public static function getCurrent(){
+        if (self::$_current) {
+            return self::$_current;
+        }
+
+        $placementName = Yii::$app->request->get('placement');
+
+        if (empty($placementName)) return null;
+
+        $placement = self::find()
+                        ->seoUrl($placementName)
+                        ->one();
+
+        self::$_current = $placement;
+
+        return self::$_current;
+    }
+
+    public static function setCurrent(Placement $placement){
+        self::$_current = $placement;
     }
 }

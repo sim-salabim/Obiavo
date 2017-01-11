@@ -31,7 +31,7 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
                 $url = "{$placementSection}{$categorySection}";
             }
 
-            return $url;
+            return trim($url, '/');
         }
 
         return false;;
@@ -70,9 +70,15 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
     public function isValidPlacement($params){
         $placementName = ArrayHelper::getValue($params, 'placement', false);
 
-        return \common\models\Placement::find()
+        $placement = \common\models\Placement::find()
                         ->seoUrl($placementName)
                         ->one();
+
+        if ($placement) {
+            \common\models\Placement::setCurrent($placement);
+        }
+
+        return $placement;
     }
 
     private function isValidCategory($params){
