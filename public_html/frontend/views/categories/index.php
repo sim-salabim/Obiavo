@@ -4,7 +4,7 @@
  use common\models\Category;
  use frontend\widgets\Selectpicker;
 
- $this->title = "Бесплатные объявления в " . Yii::$app->location->name_pp;
+$this->title = "Бесплатные объявления в ".Yii::$app->location->name_pp;
 ?>
 <div class="content-header">
     <div class="navbar">
@@ -16,10 +16,16 @@
                                 },
                                 '_text.name'),
             'selected' => [Yii::$app->request->url],
-            'name' => 'placements',
-            'options' => ['class' => 'redirect']
+            'options' => [
+                'class' => 'redirect',
+                'title' => 'Выберите тип',
+            ]
         ])?>
 
+        <?php
+            //----- подкатегории-----
+            if (!empty($categories)){
+        ?>
         <?= Selectpicker::widget([
             'values' => ArrayHelper::map(
                                 $categories,
@@ -27,12 +33,18 @@
                                     return Url::toRoute(['categories/index','category' => $el->_text->url]);
                                 },
                                 '_text.name'),
-            'name' => 'category',
             'selected' => [Yii::$app->request->url],
-            'options' => ['class' => 'redirect']
+            'options' => [
+                'class' => 'redirect',
+                'title' => 'Выберите категорию',
+            ]
         ])?>
 
+        <?php } //------?>
+
         <?php
+            //---- next подкатегории ----
+
             $nextChilds = Category::getNextChilds($categories);
 
             if ($nextChilds) {
@@ -43,10 +55,12 @@
                     'id',
                     '_text.name'
             ),
-            'name' => 'category-childs'
+            'options' => [
+                'title' => 'Выберите категорию',
+            ]
         ])?>
 
-        <?php } ?>
+        <?php } //---------------?>
     </div>
 
     <div class="description-text">

@@ -11,10 +11,14 @@ use yii\helpers\ArrayHelper;
 class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
 {
 
+    public $categoryRoute = 'categories/index';
+
+    public $categoryOnlyRoute = 'categories/only';
+
     public function createUrl($manager, $route, $params) {
         $url = '';
 
-        if ($route === 'categories/index') {
+        if ($route === $this->categoryRoute) {
 
             $params = array_replace(Yii::$app->request->get(), $params);
 
@@ -25,17 +29,33 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
 
             if ($categorySection) { $categorySection = "$categorySection/"; }
 
-            if (Yii::$app->location->city){
-                $url = "{$placementSection}{$categorySection}" . Yii::$app->location->city->domain;
-            } else {
-                $url = "{$placementSection}{$categorySection}";
-            }
+            $url = "{$placementSection}{$categorySection}";
 
-            return trim($url, '/');
+            return $this->normalizeUrlForLocation($url);
+        }
+
+        if ($route === $this->categoryOnlyRoute){
+            $categorySection = ArrayHelper::getValue($params, 'category', false);
+
+            return $this->normalizeUrlForLocation($categorySection);
         }
 
         return false;;
 
+    }
+
+    protected function normalizeUrlForLocation($url){
+        if (substr($url, -1) !== '/') {
+            $url = "$url/";
+        }
+
+        if (Yii::$app->location->city){
+            $url = $url . Yii::$app->location->city->domain;
+        } else {
+            $url = $url;
+        }
+
+        return trim($url, '/');
     }
 
     protected function setParams($params){

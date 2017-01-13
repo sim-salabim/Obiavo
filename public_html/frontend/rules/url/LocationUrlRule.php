@@ -10,30 +10,31 @@ use yii\helpers\ArrayHelper;
 
 class LocationUrlRule extends UrlRule implements UrlRuleInterface
 {
+
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        
+
         $result = parent::parseRequest($manager, $request);
-        
+
         if ($result === false) {
             return false;
         }
 
-        list($route, $params) = $result;                
-        
+        list($route, $params) = $result;
+
         $cityName = ArrayHelper::getValue($params, 'city', false);
-        
-        $city = \common\models\City::find()                        
+
+        $city = \common\models\City::find()
                         ->byLocation()
                         ->whereDomain($cityName)
-                        ->one();        
-        
+                        ->one();
+
         if (!$city) return false;
-        
+
         Yii::$app->location->city = $city;
-        
-        return [$route,$params];                
+
+        return [$route,$params];
     }
-    
+
 }

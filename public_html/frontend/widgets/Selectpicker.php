@@ -11,6 +11,18 @@ use yii\base\Widget;
  */
 class Selectpicker extends Widget {
 
+    /**
+     *  --php
+     *
+     *  [ 'first' => ['value] ]
+     *
+     *  OR
+     *
+     *  [ 'first' => ['key' => 'value'] ]
+     */
+    public $first = [];
+
+
     public $values = [];
     public $name = '';
     /**
@@ -42,6 +54,9 @@ class Selectpicker extends Widget {
         $options = $this->getOptions();
 
         $html = "<select name=\"{$this->name}\" $options>";
+
+        $html .= $this->first();
+
         foreach ($this->values as $key => $value){
 
             $selected = $this->isSelected($key) ? 'selected' : '';
@@ -86,5 +101,17 @@ class Selectpicker extends Widget {
         }
 
         return false;
+    }
+
+    protected function first(){
+        $html = '';
+
+        if (!empty($this->first)){
+            $key = key($this->first);
+            $html .= "<option value=\"$key\">{$this->first[$key]}</option>";
+
+        }
+
+        return $html;
     }
 }

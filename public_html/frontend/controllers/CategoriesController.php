@@ -31,7 +31,7 @@ class CategoriesController extends Controller
 
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
-        
+
         /**
          * В данном месте проверку можно убрать, т.к. она осуществляется в правиле для роута
          */
@@ -47,8 +47,9 @@ class CategoriesController extends Controller
         $categoryPacements = $this->category->placements;
 
         return $this->render('index',  [
-            'categories' => $subCategories,
-            'placements' => $categoryPacements
+            'category'      => $this->category,
+            'categories'    => $subCategories,
+            'placements'    => $categoryPacements
         ]);
     }
 }
