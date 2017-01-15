@@ -2,6 +2,7 @@ Message = new function () {
 
     this.alert_container = '#alert-container';
     this.validation_errors_container = null;
+    this.validation_errors_class = '';
     this.history = {};
     this.content = '#content';
 
@@ -231,9 +232,10 @@ Core.onFullLoad(function () {
                 setTimeout(function(){
                     $this.removeClass('disabled').attr('disabled',null);
                 },5000);
-
-                Message.validation_errors_container = $(inputs_container + ' .validation-errors');
-                Message.validation_errors_container.html('').removeClass('active');
+                
+                Message.validation_errors_class = 'validation-errors';
+                Message.validation_errors_container = $(inputs_container + ' .'+Message.validation_errors_class);
+                Message.validation_errors_container.removeClass('has-error');
 
                 if (inputs_container) {
                     Core.getInputData(inputs_container, function (data) {
@@ -337,19 +339,35 @@ Message.registerHandler('generatepassword', function (data) {
     Message.generatePassword(data);    
 });
 
-Message.registerHandler('show_validation_errors', function (data) {
-    var html = '<p>' + __('Please fix the following errors') + ':</p><ul>';
-    data.map(function (el) {
-        html = html + '<li>' + el + '</li>';
-    });
-    html = html + '</ul>';
-    Message.validation_errors_container.addClass('active');
-    $(Message.validation_errors_container).html(html);
+Message.registerHandler('show_validation_errors_input', function (data) {
+    
+    if (!isObject(data)){
+        return;
+    }        
+    
+    Message.validation_errors_container.find('span.help-block').remove();
+    
+    $.each(data, function(input_name, messages) {
+
+        var input = Message.validation_errors_container.find('input[name='+input_name+']');
+        
+        input.closest('.'+Message.validation_errors_class).addClass('has-error');
+        
+        messages.map(function(mess){            
+            
+            input.after('<span class="help-block">'+mess+'</span>');
+        });
+    });        
+    
 });
 
 function supports_history_api() {
     return !!(window.history && history.pushState);
 };
+
+function isObject(val) {
+    return val instanceof Object; 
+}
 
 Core.onFullLoad(function(){
 

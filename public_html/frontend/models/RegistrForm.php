@@ -1,5 +1,5 @@
 <?php
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
@@ -7,10 +7,12 @@ use yii\base\Model;
 /**
  * Login form
  */
-class LoginForm extends Model
+class RegistrForm extends Model
 {
     public $email;
     public $password;
+    public $first_name;
+    public $last_name;
     public $rememberMe = true;
 
     private $_user;
@@ -22,12 +24,11 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            // username and password are both required
             [['email', 'password'], 'required'],
             ['email','email'],
-            // rememberMe must be a boolean value
+            ['email','unique', 'targetClass' => \common\models\User::className(),
+                                'message' => 'Данный пользователь уже зарегистрирован'],
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
     }

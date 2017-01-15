@@ -5,11 +5,13 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use frontend\models\LoginForm;
+use frontend\models\RegistrForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\helpers\JsonData;
 
 class AuthController extends Controller
 {
@@ -73,10 +75,20 @@ class AuthController extends Controller
 
         $model = new LoginForm();
 
-        if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
-            return $this->goBack();
+        if (Yii::$app->request->isAjax){
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
+
+                return $this->goBack();
+
+            } elseif(!$model->validate()) {
+                return \common\helpers\JsonData::current([
+                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
+                ]);
+            }
         } else {
-            var_dump($model->getErrors());die;
+
             return $this->render('login', [
                 'model' => $model,
             ]);
@@ -89,10 +101,22 @@ class AuthController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $model = new RegistrForm();
+
+        if (Yii::$app->request->isAjax){
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
+
+                return $this->goBack();
+
+            } elseif(!$model->validate()) {
+                return \common\helpers\JsonData::current([
+                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
+                ]);
+            }
         } else {
+
             return $this->render('registration', [
                 'model' => $model,
             ]);
