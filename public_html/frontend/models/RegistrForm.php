@@ -3,6 +3,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
+use common\models\User;
 
 /**
  * Login form
@@ -29,7 +30,8 @@ class RegistrForm extends Model
             ['email','unique', 'targetClass' => \common\models\User::className(),
                                 'message' => 'Данный пользователь уже зарегистрирован'],
             ['rememberMe', 'boolean'],
-            ['password', 'validatePassword'],
+//            ['password', 'validatePassword'],
+            ['password', 'string', 'min' => 6],
         ];
     }
 
@@ -58,6 +60,7 @@ class RegistrForm extends Model
     public function login()
     {
         if ($this->validate()) {
+
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         } else {
             return false;
@@ -72,7 +75,14 @@ class RegistrForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->email);
+            $user = new User;
+            $user->email = $this->email;
+            $user->password = $this->password;
+            
+            if ($user->validate()){
+                $user->save();
+                $this->_user = $user;
+            }
         }
 
         return $this->_user;

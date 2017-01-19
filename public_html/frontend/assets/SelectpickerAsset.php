@@ -5,8 +5,7 @@ use yii\web\AssetBundle;
 
 class SelectpickerAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/bootstrap-select/dist';
-
+    public $sourcePath = '@vendor/bower/bootstrap-select/dist';
     public $css = [
         'css/bootstrap-select.min.css',
     ];
