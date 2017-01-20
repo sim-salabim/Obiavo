@@ -14,6 +14,7 @@ class RegistrForm extends Model
     public $password;
     public $first_name;
     public $last_name;
+    public $city;
     public $rememberMe = true;
 
     private $_user;
@@ -25,7 +26,7 @@ class RegistrForm extends Model
     public function rules()
     {
         return [
-            [['email', 'password'], 'required'],
+            [['email', 'password','city'], 'required'],
             ['email','email'],
             ['email','unique', 'targetClass' => \common\models\User::className(),
                                 'message' => 'Данный пользователь уже зарегистрирован'],
@@ -33,23 +34,6 @@ class RegistrForm extends Model
 //            ['password', 'validatePassword'],
             ['password', 'string', 'min' => 6],
         ];
-    }
-
-    /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
-     */
-    public function validatePassword($attribute, $params)
-    {
-        if (!$this->hasErrors()) {
-            $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect email or password.');
-            }
-        }
     }
 
     /**
@@ -76,9 +60,12 @@ class RegistrForm extends Model
     {
         if ($this->_user === null) {
             $user = new User;
+            $user->first_name = $this->first_name;
+            $user->last_name = $this->last_name;
+            $user->cities_id = $this->city;
             $user->email = $this->email;
             $user->password = $this->password;
-            
+
             if ($user->validate()){
                 $user->save();
                 $this->_user = $user;

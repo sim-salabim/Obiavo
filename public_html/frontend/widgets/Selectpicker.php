@@ -114,4 +114,22 @@ class Selectpicker extends Widget {
 
         return $html;
     }
+
+    /**
+     * [ 'key' => 'value' ]
+     * @param type $data
+     */
+    public static function jsonNormalize($data = []){
+
+        $options = [];
+
+        foreach($data as $value => $text){
+            $options[] = [
+                'value' => $value,
+                'text'  => $text
+            ];
+        }
+
+        return json_encode($options);
+    }
 }

@@ -4,75 +4,75 @@ export default class SearchSelectpicker extends React.Component {
         super(props);
         this.state = {
             options : props.options,
-        };            
+        };
+        
+        this.props.class = this.props.attributes.className;
     }
     
-    componentDidMount(){        
-        $('.yes')
-            .selectpicker({
-                liveSearch: true
-        })
-        .ajaxSelectPicker({
+    componentDidMount(){                 
+        
+        var $el = $(`.${this.props.class}`),
+            props = {};
+    
+    
+        $el.selectpicker({
+            liveSearch: true,            
+        });
+
+        if (typeof this.props.url == undefined) return;
+
+        $el.ajaxSelectPicker({
             ajax: {
-                url: '/server/path/to/ajax/results',
+                url: this.props.url,
+                type: 'POST',
+                dataType: 'json',
                 data: function () {
                     var params = {
-                        q: '{{{q}}}'
+                        q: '{{{q}}}',
+                        format: 'json',
                     };
-                   console.log(params)
+                    
                     return params;
                 }
             },
             locale: {
-                emptyTitle: 'Search for contact...'
+                emptyTitle: 'Search...',
+                statusInitialized: false,
             },
             preprocessData: function(data){
-                console.log(data)
-            },
-            preserveSelected: false
+
+                return this[this.props.preprocessFunc](data);          
+            }.bind(this),
+            preserveSelected: false,
+            requestDelay: 700
         });
     }
     
-    /**
-     * Аттрибуты
-     * 
-     * [
-     *   'class' => '',
-     *   'attributes'
-     *   'data-live-search' => "true"
-     * ]
-     */
-    setOptions() {
-        console.log('set topions')
-    }
+    preprocessDataCity(data) {
+                
+        var cities = [];
     
-    getOptions() {
-        
-    }
-    
-    getAttributes(){
-        
-        var attrHtml = '';
-        
-        for (var attrName in this.props.attributes){            
-            var attrValue = this.props.attributes[attrName];
-
-            attrHtml += `${attrName}="${attrValue}"`;
+        data.map(function(city){
+            cities.push({
+                'value': city.id,
+                'text': city.cityText.name,
+                'data': {
+//                    'icon': 'icon-person',
+//                    'subtext': 'Internal'
+                },
+                'disabled': false
+            });
+        })        
             
-            attrHtml = `${attrHtml} `;
-        }
-        
-        console.log(attrHtml);
-        
-        return attrHtml.trim();
+        return cities;
     }
   
     render() {           
         return (               
-            <select {...this.props.attributes}>
+            <select {...this.props.attributes} data-width="100%">
                 {this.state.options.map(function(option){
                     return (
-                        <option>{option}</option>
+                        <option value={option.value}>{option.text}</option>
                     )
                 })}                                
             </select>           

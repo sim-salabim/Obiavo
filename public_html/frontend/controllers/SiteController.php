@@ -220,4 +220,10 @@ class SiteController extends Controller
     {
         return Yii::$app->response->redirect($url);
     }
+
+    public function actionJson(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        return ['x'=> 'sdfsd'];
+    }
 }

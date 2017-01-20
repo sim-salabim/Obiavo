@@ -32,7 +32,7 @@ export default class SearchInput extends React.Component {
             dataType: 'json',
             type: 'POST',
             data: {
-                search_text: value,
+                q: value,
                 format: 'json'
             },
             cache: false,

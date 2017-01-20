@@ -23,22 +23,22 @@ class CitiesController extends Controller
             ],
         ];
     }
-    
+
 
     public function actionSearchCities(){
-        
+
         $post = Yii::$app->request->post();
-        $searchText = $post['search_text'];
-        
+        $searchText = $post['q'];
+
         City::$url = City::removeCityInUrl(Yii::$app->request->referrer);
 
-        $cities = City::find()                            
+        $cities = City::find()
                         ->searchWithRegion($searchText)
                         ->byLocation();
-        
+
         if (isset($post['format']) && $post['format'] === 'json'){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            
+
             $cities->asArray();
         }
 
