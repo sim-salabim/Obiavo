@@ -77,7 +77,9 @@ class SiteController extends Controller
                             ->orphan()
                             ->all();
 
-        return $this->render('index',  compact('categories'));
+        $cities = \common\models\City::find()->withText()->byLocation()->all();
+
+        return $this->render('index',  compact('categories','cities'));
     }
 
     /**

@@ -3,8 +3,9 @@
  use yii\helpers\Url;
  use common\models\Category;
  use frontend\widgets\Selectpicker;
+ use frontend\helpers\TextHelper;
 
-$this->title = "Бесплатные объявления в ".Yii::$app->location->name_pp;
+$this->title = TextHelper::pageTitle("Бесплатные объявления в {city}",['city' => Yii::$app->location->name_pp]);
 ?>
 <div class="content-header">
     <div class="navbar">
@@ -61,10 +62,6 @@ $this->title = "Бесплатные объявления в ".Yii::$app->locati
         ])?>
 
         <?php } //---------------?>
-    </div>
-
-    <div class="description-text">
-        <?= \Yii::$app->params['domain']?> - сайт бесплатных объявлений России. Ежедневно на сайте раpмещаются тысячи частных объявлений. 34454 - Объявления.
     </div>
 </div>
 

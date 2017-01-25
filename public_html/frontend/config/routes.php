@@ -1,7 +1,8 @@
 <?php
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
-    '<action:(login|registration)>' => 'auth/<action>',
+    '<action:(login|registration|logout)>' => 'auth/<action>',
+    '/im' => 'users/im',
     /**
      * Класс правила ГОРОД
      */
