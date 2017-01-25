@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\scopes\CityQuery;
 
 /**
  * This is the model class for table "cities".
@@ -23,6 +24,11 @@ use Yii;
  */
 class City extends \yii\db\ActiveRecord
 {
+    /**
+     * Готовый url для смены локации
+     */
+    public static $url = '';
+    
     /**
      * @inheritdoc
      */
@@ -64,17 +70,33 @@ class City extends \yii\db\ActiveRecord
 
     public function behaviors()
     {
-            return [
-                [
-                    'class' => \backend\behaviors\SaveRelation::className(),
-                    'relations' => ['cityText']
-                ],
-            ];
+        return [
+            [
+                'class' => \backend\behaviors\SaveRelation::className(),
+                'relations' => ['cityText']
+            ],
+            [
+                'class' => \frontend\behaviors\Multilanguage::className(),
+                'relationName' => 'cityText',
+                'relationClassName' => CityText::className(),
+            ],
+        ];
+    }
+    
+    /**
+     * Виртуальный поля для набора объектов, полученный через asArray()     
+     */
+    public static function virtFields(){        
+        return [
+            // Текущий url учитывая город
+            'url'=> function($model) {            
+                return self::getUrl($model['domain']);
+            }
+        ];
     }
 
     public static function find(){
-
-        return Yii::createObject(\backend\components\activequery\LanguageText::className(), [get_called_class()]);;
+        return new CityQuery(get_called_class());
     }
 
     /**
@@ -90,12 +112,14 @@ class City extends \yii\db\ActiveRecord
      */
     public function getRegion()
     {
-        return $this->hasOne(Region::className(), ['id' => 'regions_id']);
+        return $this->hasOne(Region::className(), ['id' => 'regions_id'])
+                    ->with('regionText');
     }
 
     public function getCityText()
     {
-        return $this->hasOne(CityText::className(), ['cities_id' => 'id']);
+        return $this->hasOne(CityText::className(), ['cities_id' => 'id'])
+                    ->where(['cities_text.languages_id' => Yii::$app->user->getLanguage()->id]);
     }
 
     public function getCityTexts()
@@ -109,5 +133,50 @@ class City extends \yii\db\ActiveRecord
     public function getUsers()
     {
         return $this->hasMany(User::className(), ['cities_id' => 'id']);
+    }
+    
+    public static function getUrl($cityDomain){
+        
+        if (strripos(self::$url, '{city}')){
+            return str_replace('{city}', $cityDomain, self::$url);
+        }
+        
+        return self::$url . $cityDomain;
+    }
+    
+    /**
+     * Удалить город из ссылки, используется для смены городов
+     * @param {string} $href
+     * 
+     * @return {string}     Возвращает ссылку без города
+     */
+    public static function removeCityInUrl($url = ''){
+        $isCity = function($cityDomain){        
+            if (empty($cityDomain)) return false;
+            
+            return self::findOne(['domain' => $cityDomain]);            
+        };
+        
+        if (empty($url)) {
+            $url = Yii::$app->request->url;
+        }
+        
+        $href = parse_url($url, PHP_URL_PATH);
+        
+        $paths = explode("/", $href);
+
+        $endPath = $paths[count($paths)-1];
+
+        if ($isCity($endPath)) {
+
+            $newHref = str_replace($endPath, '{city}', $href);
+            
+        } elseif(count($paths) > 1 && substr($href, -1) !== '/'){
+            $newHref = "$href/{city}";
+        }
+                
+        $url = empty($newHref) ? $url : str_replace($href, $newHref, $url);
+        
+        return $url;
     }
 }

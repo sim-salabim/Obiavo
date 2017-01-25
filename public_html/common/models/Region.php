@@ -67,7 +67,11 @@ class Region extends \yii\db\ActiveRecord
                 [
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['regionText']
-                ]
+                ],[
+                    'class' => \frontend\behaviors\Multilanguage::className(),
+                    'relationName' => 'regionText',
+                    'relationClassName' => CategoriesText::className(),
+                ],
             ];
     }
 
@@ -89,7 +93,8 @@ class Region extends \yii\db\ActiveRecord
 
     public function getRegionText()
     {
-        return $this->hasOne(RegionText::className(), ['regions_id' => 'id']);
+        return $this->hasOne(RegionText::className(), ['regions_id' => 'id'])
+                    ->where(['regions_text.languages_id' => Yii::$app->user->getLanguage()->id]);;
     }
 
     public function getRegionTexts()

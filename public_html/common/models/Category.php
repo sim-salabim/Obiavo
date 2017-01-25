@@ -68,6 +68,11 @@ class Category extends \yii\db\ActiveRecord
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['categoriesText']
                 ],
+                [
+                    'class' => \frontend\behaviors\Multilanguage::className(),
+                    'relationName' => 'categoriesText',
+                    'relationClassName' => CategoriesText::className(),
+                ],
             ];
     }
 
@@ -153,13 +158,52 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])
                     ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
     }
+    
+    /**
+     * Типы объявлений у категорий (купить, продать, аренда)     
+     */
+    public function getPlacements()
+    {
+        $tbCategoryPlacement = CategoryPlacement::tableName();
+
+        return Placement::find()
+                    ->joinWith('categoryPlacement')
+                    ->joinWith('placementsText')
+                    ->onCondition(['=',"`$tbCategoryPlacement`.`categories_id`", $this->id])
+                    ->all();
+    }
+    
+    public function setPlacements($placementsIds) {
+        $categoryPlacements = new CategoryPlacement;
+
+        $rows = [];
+        foreach ($placementsIds as $placeId){
+            $rows[] = [$this->id, $placeId];
+        }
+        
+        $this->deletePlacements();
+
+        Yii::$app->db->createCommand()->batchInsert(
+                    CategoryPlacement::tableName(), 
+                    ['categories_id','placements_id'], 
+                    $rows
+                )
+                ->execute();
+    }
+    
+    public function deletePlacements(){
+        Yii::$app->db
+                ->createCommand()
+                ->delete(CategoryPlacement::tableName(), ['=','categories_id', $this->id])
+                ->execute();
+    }
 
     /**
      * Форматированный перевод
      */
-    public function get_text(){
-        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'name','Нет перевода');
-    }
+//    public function get_text(){
+//        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'name','Нет перевода');
+//    }
 
     /**
      * URL на основе связанной таблицы
@@ -250,5 +294,19 @@ class Category extends \yii\db\ActiveRecord
         $this->load($data);
 
         $this->saveAndSetRelateForCategoryGenerated($categoryGenerate);
+    }
+    
+    public static function getByOldUrlCache($old_url)
+    {
+        $key  = "Category-getByOldUrlCache-" . md5($old_url);
+        $data = Yii::$app->cache->get( $key );
+        
+        if ($data === false) {
+            $data = self::find()->searchUrlByLanguage($old_url)->one();
+            Yii::$app->cache->set( $key, $data, 300 );
+
+            return $data;
+        }
+        return $data;
     }
 }

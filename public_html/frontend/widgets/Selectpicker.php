@@ -1,7 +1,4 @@
 <?php
-/**
- * https://silviomoreto.github.io
- */
 namespace frontend\widgets;
 
 use yii\base\Widget;
@@ -14,8 +11,32 @@ use yii\base\Widget;
  */
 class Selectpicker extends Widget {
 
+    /**
+     *  --php
+     *
+     *  [ 'first' => ['value] ]
+     *
+     *  OR
+     *
+     *  [ 'first' => ['key' => 'value'] ]
+     */
+    public $first = [];
+
+
     public $values = [];
     public $name = '';
+    /**
+     * номера выбранных элементов
+     */
+    public $selected = [];
+
+    /**
+     *    [
+     *      'multiple' => false,
+     *      'data-live-search' => "true"
+     *    ]
+     */
+    public $options = [];
 
     public function init(){
         parent::init();
@@ -30,12 +51,85 @@ class Selectpicker extends Widget {
      * @return text <select><option></option></select>
      */
     private function html(){
-        $html = "<select name=\"{$this->name}\" class=\"selectpicker\">";
+        $options = $this->getOptions();
+
+        $html = "<select name=\"{$this->name}\" $options>";
+
+        $html .= $this->first();
+
         foreach ($this->values as $key => $value){
-            $html .= "<option>$value</option>";
+
+            $selected = $this->isSelected($key) ? 'selected' : '';
+
+            $html .= "<option value='$key' $selected>$value</option>";
         }
         $html .= "</select>";
 
         return $html;
+    }
+
+    protected function getOptions(){
+        $html = '';
+        $opt = $this->options;
+
+        if (empty($opt['class'])) {
+                $opt['class'] = 'selectpicker';
+        } else {
+            $opt['class'] = $opt['class'].' selectpicker';
+        }
+
+        foreach($opt as $name => $opt){
+            if (!$opt) continue;
+
+            if ($opt === true) {
+                $html .= "$name";
+
+            } elseif ($opt) {
+                $html .= "$name=\"$opt\"";
+            }
+
+            $html = "$html ";
+        }
+
+        return trim($html);
+    }
+
+    protected function isSelected($key){
+
+        if (in_array($key,$this->selected)){
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function first(){
+        $html = '';
+
+        if (!empty($this->first)){
+            $key = key($this->first);
+            $html .= "<option value=\"$key\">{$this->first[$key]}</option>";
+
+        }
+
+        return $html;
+    }
+
+    /**
+     * [ 'key' => 'value' ]
+     * @param type $data
+     */
+    public static function jsonNormalize($data = []){
+
+        $options = [];
+
+        foreach($data as $value => $text){
+            $options[] = [
+                'value' => $value,
+                'text'  => $text
+            ];
+        }
+
+        return json_encode($options);
     }
 }

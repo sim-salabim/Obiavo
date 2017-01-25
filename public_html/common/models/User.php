@@ -45,11 +45,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['cities_id', 'email', 'password', 'first_name', 'last_name', 'patronymic', 'created_at', 'updated_at'], 'required'],
+            [['cities_id', 'email', 'password_hash',], 'required'],
             [['cities_id', 'created_at', 'updated_at'], 'integer'],
             [['sex'], 'string'],
             [['email'], 'string', 'max' => 100],
-            [['password', 'first_name', 'last_name', 'patronymic'], 'string', 'max' => 255],
+            [['password_hash', 'first_name', 'last_name', 'patronymic'], 'string', 'max' => 255],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
         ];
     }

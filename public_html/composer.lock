@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "298f1ecc6faced3f92b101e4f7cd0892",
-    "content-hash": "3286131a062dd1a7a629b97a779f69b7",
+    "hash": "9dc99bfd94360a310615ac9755c657c6",
+    "content-hash": "f24da0dee737e03b357b42919f26fcdd",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -46,6 +46,43 @@
                 "web"
             ],
             "time": "2016-11-04 14:42:55"
+        },
+        {
+            "name": "bower-asset/ajax-bootstrap-select",
+            "version": "v1.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/truckingsim/Ajax-Bootstrap-Select.git",
+                "reference": "56a5b59019cb079c90710665807339ef0dca62cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/truckingsim/Ajax-Bootstrap-Select/zipball/56a5b59019cb079c90710665807339ef0dca62cd",
+                "reference": "56a5b59019cb079c90710665807339ef0dca62cd",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap-select": ">=1.6.3"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/css/ajax-bootstrap-select.css",
+                    "dist/js/ajax-bootstrap-select.js"
+                ],
+                "bower-asset-ignore": [
+                    ".jshintrc",
+                    ".travis.yml",
+                    ".verbc.md",
+                    "jsduck.categories.json"
+                ]
+            },
+            "description": "Extends existing [Bootstrap Select] implementations by adding the ability to search via AJAX requests as you type. Originally for CROSCON.",
+            "keywords": [
+                "ajax",
+                "bootstrap",
+                "bootstrap-select"
+            ]
         },
         {
             "name": "bower-asset/bootstrap",
@@ -940,6 +977,43 @@
                 "parser"
             ],
             "time": "2016-10-30 11:50:56"
+        },
+        {
+            "name": "bower-asset/fontawesome",
+            "version": "v4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "41b9ed01103e6820c3cb043ba7ddab30ecd3f4c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/41b9ed01103e6820c3cb043ba7ddab30ecd3f4c0",
+                "reference": "41b9ed01103e6820c3cb043ba7ddab30ecd3f4c0",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./css/font-awesome.css",
+                    "./fonts/*"
+                ],
+                "bower-asset-ignore": [
+                    "*/.*",
+                    "*.json",
+                    "src",
+                    "*.yml",
+                    "Gemfile",
+                    "Gemfile.lock",
+                    "*.md"
+                ]
+            },
+            "license": [
+                "OFL-1.1",
+                "MIT",
+                "CC-BY-3.0"
+            ],
+            "description": "Font Awesome"
         },
         {
             "name": "bower-asset/typeahead.js",

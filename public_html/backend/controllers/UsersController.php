@@ -57,7 +57,7 @@ class UsersController extends BaseController
     {
        $user = User::findOne($id);
 
-        return $this->render('update',  compact('user'));
+        return $this->render('create',  compact('user'));
     }
 
     public function actionSave($id = null)

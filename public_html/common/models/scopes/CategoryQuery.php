@@ -26,5 +26,13 @@ class CategoryQuery extends ActiveQuery {
 
         return $this->andWhere(['parent_id' => NULL]);
     }
+    
+    public function searchUrlByLanguage($categoryUrl){
+        return 
+            $this->joinWith(['categoriesText' => function(\yii\db\ActiveQuery $query){
+                $query->andWhere(['categories_text.languages_id' => \Yii::$app->user->language->id]);
+            }])
+            ->andWhere(['categories_text.url' => $categoryUrl]);
+    }        
 
 }

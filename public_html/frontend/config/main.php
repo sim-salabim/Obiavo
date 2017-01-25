@@ -42,6 +42,13 @@ return [
             'showScriptName' => false,
             'rules' => require(__DIR__ . '/routes.php'),
         ],
+
+        /**
+         * Компонент для работы с локациями
+         */
+        'location' => [
+            'class' => 'frontend\components\Location'
+        ],
     ],
     'params' => $params,
 ];

@@ -46,11 +46,10 @@ class CountriesController extends BaseController
 
     public function actionAppend(){
         $country = new Country;
-        $countryText = new CountryText;
 
         $toUrl = Url::toRoute('save');
 
-        return $this->render('form',  compact('country','countryText','toUrl'));
+        return $this->render('form',  compact('country','toUrl'));
     }
 
     public function actionEdit($id){
@@ -58,11 +57,9 @@ class CountriesController extends BaseController
                         ->where(['id' => $id])
                         ->with('countryText')->one();
 
-        $countryText = $country->countryText;
-
         $toUrl = Url::toRoute(['save','id' => $country->id]);
 
-        return $this->render('form',  compact('country','countryText','toUrl'));
+        return $this->render('form',  compact('country','toUrl'));
     }
 
     public function actionSave($id = null){

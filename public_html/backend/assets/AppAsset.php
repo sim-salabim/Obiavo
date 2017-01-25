@@ -17,7 +17,9 @@ class AppAsset extends AssetBundle
     public $js = [
     ];
     public $depends = [
-        'common\assets\CommonAsset'
+        'yii\bootstrap\BootstrapPluginAsset',
+        'common\assets\CommonAsset',
+        'frontend\assets\SelectpickerAsset',
     ];
 
     /**

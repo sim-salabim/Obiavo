@@ -70,13 +70,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         $categories = \common\models\Category::find()
                             ->withText()
                             ->withChildrens()
                             ->orphan()
                             ->all();
 
-        return $this->render('index',  compact('categories'));
+        $cities = \common\models\City::find()->withText()->byLocation()->all();
+
+        return $this->render('index',  compact('categories','cities'));
     }
 
     /**
@@ -213,5 +216,16 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRedirect($href)
+    {
+        return Yii::$app->response->redirect($url);
+    }
+
+    public function actionJson(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        return ['x'=> 'sdfsd'];
     }
 }
