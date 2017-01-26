@@ -28,7 +28,7 @@ class City extends \yii\db\ActiveRecord
      * Готовый url для смены локации
      */
     public static $url = '';
-    
+
     /**
      * @inheritdoc
      */
@@ -82,14 +82,14 @@ class City extends \yii\db\ActiveRecord
             ],
         ];
     }
-    
+
     /**
-     * Виртуальный поля для набора объектов, полученный через asArray()     
+     * Виртуальный поля для набора объектов, полученный через asArray()
      */
-    public static function virtFields(){        
+    public static function virtFields(){
         return [
             // Текущий url учитывая город
-            'url'=> function($model) {            
+            'url'=> function($model) {
                 return self::getUrl($model['domain']);
             }
         ];
@@ -134,35 +134,39 @@ class City extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['cities_id' => 'id']);
     }
-    
+
     public static function getUrl($cityDomain){
-        
+
         if (strripos(self::$url, '{city}')){
             return str_replace('{city}', $cityDomain, self::$url);
         }
-        
+
         return self::$url . $cityDomain;
     }
-    
+
+    public function getHref(){
+        return \yii\helpers\Url::toRoute($route);
+    }
+
     /**
      * Удалить город из ссылки, используется для смены городов
      * @param {string} $href
-     * 
+     *
      * @return {string}     Возвращает ссылку без города
      */
     public static function removeCityInUrl($url = ''){
-        $isCity = function($cityDomain){        
+        $isCity = function($cityDomain){
             if (empty($cityDomain)) return false;
-            
-            return self::findOne(['domain' => $cityDomain]);            
+
+            return self::findOne(['domain' => $cityDomain]);
         };
-        
+
         if (empty($url)) {
             $url = Yii::$app->request->url;
         }
-        
+
         $href = parse_url($url, PHP_URL_PATH);
-        
+
         $paths = explode("/", $href);
 
         $endPath = $paths[count($paths)-1];
@@ -170,13 +174,13 @@ class City extends \yii\db\ActiveRecord
         if ($isCity($endPath)) {
 
             $newHref = str_replace($endPath, '{city}', $href);
-            
+
         } elseif(count($paths) > 1 && substr($href, -1) !== '/'){
             $newHref = "$href/{city}";
         }
-                
+
         $url = empty($newHref) ? $url : str_replace($href, $newHref, $url);
-        
+
         return $url;
     }
 }

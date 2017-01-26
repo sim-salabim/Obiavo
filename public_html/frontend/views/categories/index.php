@@ -9,6 +9,7 @@ $this->title = TextHelper::pageTitle("Бесплатные объявления 
 ?>
 <div class="content-header">
     <div class="navbar">
+        <?php if (!empty($placements)) { ?>
         <?= Selectpicker::widget([
             'values' => ArrayHelper::map(
                                 $placements,
@@ -22,6 +23,7 @@ $this->title = TextHelper::pageTitle("Бесплатные объявления 
                 'title' => 'Выберите тип',
             ]
         ])?>
+        <?php } ?>
 
         <?php
             //----- подкатегории-----

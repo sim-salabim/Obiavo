@@ -35,7 +35,6 @@
                                     <?php foreach($panel['columns'] as $column) {
                                             echo \backend\helpers\FormHtmlTag::row($column);
 
-
                                      } ?>
                                 </div>
                             </div>
@@ -45,7 +44,6 @@
 
                 <?php endforeach; ?>
 
-                </div>
             </div>
         </div>
     </div>

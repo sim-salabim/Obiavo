@@ -81,3 +81,9 @@ use yii\helpers\Url;
     </section>
 
 </aside>
+
+<style>
+.user-panel > .info > p {
+    white-space: normal;
+}
+</style>
