@@ -10,6 +10,7 @@ use common\models\RegionText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 use common\models\Country;
+use common\models\Language;
 
 /**
  * Site controller
@@ -70,7 +71,7 @@ class RegionsController extends BaseController
         return $this->render('form',  compact('region','regionText','toUrl'));
     }
 
-    public function actionEdit($id){
+    public function actionUpdate($id){
         $region = Region::find()
                     ->where(['id' => $id])
                     ->with('regionText')->one();
@@ -110,6 +111,32 @@ class RegionsController extends BaseController
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "Регион \"{$text->name}\" успешно удален",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionSaveLang($id,$languages_id){
+
+        $region = Region::find()
+                        ->where(['id' => $id])
+                        ->withText($languages_id)
+                        ->one();
+
+        $text = $region->regionText ? $region->regionText : new RegionText;
+
+        if ($this->isJson()){
+            $text->regions_id = $region->id;
+            $text->languages_id = $languages_id;
+            $text->load(Yii::$app->request->post());
+            $text->save();
+
+            return $this->sendJsonData([
+                JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
+                JsonData::REFRESHPAGE => '',
+            ]);
+        }
+
+        return $this->render('savelang',[
+            'regionText' => $text
         ]);
     }
 

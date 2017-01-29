@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\models\scopes\CountryQuery;
+use common\models\CountryText;
 
 /**
  * This is the model class for table "countries".
@@ -39,11 +40,11 @@ class Country extends \yii\db\ActiveRecord
     {
         return [
             [['domain'], 'required'],
-            [['languages_id', 'active'], 'integer'],
+            [['active'], 'integer'],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-            [['languages_id'],'default', 'value' => Yii::$app->user->getDefaultLanguage()->id],
+            [['languages_id'],'default', 'value' => Language::getLanguageDeafault()->id],
         ];
     }
 
@@ -74,7 +75,7 @@ class Country extends \yii\db\ActiveRecord
                 [
                     'class' => \frontend\behaviors\Multilanguage::className(),
                     'relationName' => 'countryText',
-                    'relationClassName' => CityText::className(),
+                    'relationClassName' => CountryText::className(),
                 ],
             ];
     }

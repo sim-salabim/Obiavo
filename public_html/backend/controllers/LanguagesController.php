@@ -51,7 +51,7 @@ class LanguagesController extends BaseController
         return $this->render('form',  compact('language','toUrl'));
     }
 
-    public function actionEdit($id){
+    public function actionUpdate($id){
         $language = Language::findOne($id);
         $toUrl = Url::toRoute(['save','id' => $language->id]);
 

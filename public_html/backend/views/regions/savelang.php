@@ -4,17 +4,10 @@ use yii\bootstrap\Html;
 use backend\widgets\Form;
 
 $items = [
-    'saveUrl' => $toUrl,
+    'saveUrl' => Url::to(''),
     'rows' => [
         [
-            'panel-title' => 'Основныe данные',
-            'attributes' => [
-                  ['name' => 'domain','type' => Form::INPUT_TEXT,'label' => 'Домен','model'=>$region],
-                  ['name' => 'active','type' => Form::INPUT_CHECKBOX_INACTIVE,'label'=>'активность','model' => $region],
-            ]
-        ],
-        [
-            'panel-title' => 'Тексты',
+            'panel-title' => 'Текстовые данные',
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$regionText],
                 ['name' => 'name_rp','type' => Form::INPUT_TEXT,'label' => 'Название в родительном падеже','model'=>$regionText],

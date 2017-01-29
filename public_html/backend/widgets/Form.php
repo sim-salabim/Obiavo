@@ -10,11 +10,18 @@ class Form extends Widget {
 
     public $rows = [];
 
+    public $saveUrl = '';
+
     const INPUT_TEXT = 'textInput';
 
     CONST INPUT_TEXT_ACTIVE = 'textActiveInput';
 
     const INPUT_CHECKBOX_INACTIVE = 'inputCheckboxInactive';
+
+    public function getViewPath()
+    {
+        return \Yii::getAlias('@app/widgets/views/form');
+    }
 
     public function init()
     {
@@ -23,27 +30,33 @@ class Form extends Widget {
 
     public function run(){
         $rows = $this->rows;
+        $saveUrl = $this->saveUrl;
 
-        foreach ($rows as $key => $item){
-            $rows[$key]['panel-form-content'] = [];
-            $panelForm = '';
+        foreach ($rows as &$item){
 
-            foreach ($item['attributes'] as $attribute) {
-
-                $inputType = $attribute['type'];
-
-                $panelForm .= $this->$inputType($attribute);
-            }
-
-            $rows[$key]['panel-form-content'] = $panelForm;
+            $this->setPanelContent($item);
         }
 
-        return $this->render('base',compact('rows'));
+        return $this->render('base',compact('rows','saveUrl'));
+    }
+
+    protected function setPanelContent(&$row){
+        $panelForm = '';
+        $row['panel-content'] = [];
+
+        foreach ($row['attributes'] as $attribute) {
+
+            $inputType = $attribute['type'];
+
+            $panelForm .= $this->$inputType($attribute);
+        }
+
+        $row['panel-content'] = $panelForm;
     }
 
     protected function textInput($attribute){
 
-        return $this->render('textinput', compact('attribute'));
+        return $this->render('text-input', compact('attribute'));
     }
 
     protected function inputCheckboxInactive($attribute){

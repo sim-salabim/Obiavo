@@ -1,27 +1,13 @@
 <?php
 Use yii\helpers\Url;
-
-$this->title = 'Категории';
+use yii\widgets\Breadcrumbs;
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
 
-<div id="categories-table">
-
-
-    <div class="well">
-        <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['append-category','id' => $categoryParent->id])?>">
-            <i class="fa fa-fw -square -circle fa-plus-square"></i>
-            Создать новый пункт
-        </button>
-    </div>
-
-    <?= $this->render('breadcrumbs', ['category' => $categoryParent]);?>
-
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">Категории</h3>
+        <h3 class="box-title"><?= $title?></h3>
 
         <div class="box-tools">
           <div class="input-group">
@@ -37,36 +23,54 @@ $this->title = 'Категории';
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>ID</th>
-            <th>Название</th>
-            <th>Действие</th>
+            <?php foreach($items['label'] as $label) { ?>
+              <th><?= $label?></th>
+            <?php }?>
           </tr>
           </thead>
           <tbody>
-            <?php foreach ($categories as $category) : ?>
+            <?php foreach ($items['content'] as $cells) : ?>
               <tr>
-                <td><?php echo $category->id?>
-                </td>
-                <td><a href="<?php echo Url::toRoute(['index','id' => $category->id])?>"><?php echo $category->techname?></a>
-                    <?= backend\helpers\ActiveLabel::status($category->active, [
+                <?php foreach ($cells as $content) { ?>
+                    <td><?php echo $content;?></td>
+                <?php }?>
+
+                <?php /**
+                <td><a href="<?php echo Url::toRoute(['cities/','region_id' => $region->id])?>">
+                        <?php echo $region->regionText->name?>
+                    </a>
+                    <?= backend\helpers\ActiveLabel::status($region->active, [
                         'active' => 'активно',
                         'inactive' => 'не активно'
                     ])?>
                 </td>
+                <td><?php echo $region->domain?></td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="true">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>RU
+                        </button>
+                        <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="true">
+                        <span class="glyphicon glyphicon-minus" style="color:red" aria-hidden="true"></span>EN
+                        </button>
+                    </div>
+                </td>
                 <td>
                     <span data-placement="top" data-toggle="tooltip" title="Редактировать">
                         <button class="btn btn-primary btn-xs loadcontent"
-                                data-link="<?= Url::toRoute(['edit-category','id' => $category->id])?>">
+                                data-link="<?= Url::toRoute(['edit','id' => $region->id])?>">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                     </span>
                     <span data-placement="top" data-toggle="tooltip" title="Удалить">
                         <button class="btn btn-danger btn-xs senddata"
-                                data-link="<?= Url::toRoute(['delete','id' => $category->id])?>">
+                                data-link="<?= Url::toRoute(['delete','id' => $region->id])?>">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </span>
                 </td>
+                 *
+                 */?>
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -87,6 +91,4 @@ $this->title = 'Категории';
         <!-- /.box-footer -->
     </div>
     <!-- /.box -->
-</div>
-
 </div>
