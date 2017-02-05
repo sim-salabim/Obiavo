@@ -9,9 +9,9 @@ $items = [
         [
             'panel-title' => 'Текстовые данные',
             'attributes' => [
-                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$regionText],
-                ['name' => 'name_rp','type' => Form::INPUT_TEXT,'label' => 'Название в родительном падеже','model'=>$regionText],
-                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название в предложном падеже','model'=>$regionText],
+                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$region->_mttext],
+                ['name' => 'name_rp','type' => Form::INPUT_TEXT,'label' => 'Название в родительном падеже','model'=>$region->_mttext],
+                ['name' => 'name_pp','type' => Form::INPUT_TEXT,'label' => 'Название в предложном падеже','model'=>$region->_mttext],
             ]
         ],
     ]

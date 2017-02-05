@@ -11,7 +11,7 @@ use yii\helpers\Html;
 
     <div class="well">
         <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['append'])?>">
+                data-link="<?= Url::toRoute(['create'])?>">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
             Создать новый пункт
         </button>

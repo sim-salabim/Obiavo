@@ -3,14 +3,14 @@ Use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use backend\widgets\TableList;
 use yii\helpers\Html;
-
+var_dump($cities);die;
 $country = $region->country;
 
 $this->params['breadcrumbs'][] = [
-                                'label' => "Регионы {$country->countryText->name_rp}",
+                                'label' => "Регионы {$country->_text->name_rp}",
                                 'url' => Url::toRoute(['regions/','country_id' => $country->id])
                         ];
-$this->params['breadcrumbs'][] = "Города {$region->regionText->name_rp}";
+$this->params['breadcrumbs'][] = "Города {$region->_text->name_rp}";
 $homeLink = ['label' => 'Страны', 'url' => '/countries'];
 ?>
 
@@ -21,7 +21,7 @@ $homeLink = ['label' => 'Страны', 'url' => '/countries'];
 
     <div class="well">
         <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['append','region_id' => $region->id])?>">
+                data-link="<?= Url::toRoute(['create','id' => $region->id])?>">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
             Создать новый пункт
         </button>

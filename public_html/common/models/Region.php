@@ -37,7 +37,7 @@ class Region extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['countries_id'], 'required'],
+            [['countries_id', 'domain'], 'required'],
             [['countries_id', 'active'], 'integer'],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
@@ -72,7 +72,7 @@ class Region extends \yii\db\ActiveRecord
                 [
                     'class' => \frontend\behaviors\Multilanguage::className(),
                     'relationName' => 'regionText',
-                    'relationClassName' => CategoriesText::className(),
+                    'relationClassName' => RegionText::className(),
                 ],
             ];
     }

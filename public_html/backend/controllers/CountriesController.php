@@ -39,12 +39,12 @@ class CountriesController extends BaseController
     }
 
     public function actionIndex(){
-        $countries = Country::find()->with('countryText')->all();
+        $countries = Country::find()->withText()->all();
 
         return $this->render('index',  compact('countries'));
     }
 
-    public function actionAppend(){
+    public function actionCreate(){
         $country = new Country;
 
         $toUrl = Url::toRoute('save');
@@ -52,10 +52,11 @@ class CountriesController extends BaseController
         return $this->render('form',  compact('country','toUrl'));
     }
 
-    public function actionEdit($id){
+    public function actionUpdate($id){
         $country = Country::find()
                         ->where(['id' => $id])
-                        ->with('countryText')->one();
+                        ->withText()
+                        ->one();
 
         $toUrl = Url::toRoute(['save','id' => $country->id]);
 
@@ -71,11 +72,15 @@ class CountriesController extends BaseController
             $country = new Country();
         }
 
-        $country->loadWithRelation(['countryText'],$post);
-        $country->save();
+        if (!$country->saveWithRelation($post)){
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $country->getErrors(),
+            ]);
+        }
 
         return $this->sendJsonData([
-                JsonData::SUCCESSMESSAGE => "\"{$country->countryText->name}\" успешно сохранено",
+                JsonData::SUCCESSMESSAGE => "\"{$country->_text->name}\" успешно сохранено",
                 JsonData::REFRESHPAGE => '',
         ]);
     }
@@ -83,13 +88,37 @@ class CountriesController extends BaseController
     public function actionDelete($id){
 
         $country = Country::findOne($id);
-        $text = $country->countryText;
+        $text = $country->_text;
 
         $country->delete();
 
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "Страна \"{$text->name}\" успешно удалена",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionSaveLang($id,$languages_id){
+        $country = Country::find()
+                        ->where(['id' => $id])
+                        ->withText($languages_id)
+                        ->one();
+
+        if ($this->isJson()){
+            $text = $country->_mttext;
+            $text->countries_id = $country->id;
+            $text->languages_id = $languages_id;
+            $text->load(Yii::$app->request->post());
+            $text->save();
+
+            return $this->sendJsonData([
+                JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
+                JsonData::REFRESHPAGE => '',
+            ]);
+        }
+
+        return $this->render('savelang',[
+            'country' => $country
         ]);
     }
 }
