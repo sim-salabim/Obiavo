@@ -7,29 +7,20 @@
 
 use yii\helpers\Url;
 use yii\bootstrap\Html;
+use backend\widgets\Form;
 
-$textLang = $language->getText()->one();
-
-$text = $textLang ? $textLang : new \common\models\LanguageText;
-
-$form = [
-    [
-        'panel-title' => 'Основныe данные',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'code:text:Код языка', 'model' => $language],
-            ['attributes' => 'active:checkbox:Активность', 'model' => $language],
-        ]
-    ],
-    [
-        'panel-title' => 'Тексты',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'name:text:Название языка', 'model' => $text],
-        ]
-    ],
+$items = [
+    'saveUrl' => $toUrl,
+    'rows' => [
+        [
+            'panel-title' => 'Основныe данные',
+            'attributes' => [
+                  ['name' => 'code','type' => Form::INPUT_TEXT,'label' => 'Домен','model'=>$language],
+                  ['name' => 'active','type' => Form::INPUT_CHECKBOX_INACTIVE,'label'=>'активность','model' => $language],
+                  ['name' => 'techname','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$language],
+            ]
+        ],
+    ]
 ];
 
-$saveUrl = $toUrl;
-
-echo $this->render('/templates/form',compact('form','saveUrl'));
+echo Form::widget($items);

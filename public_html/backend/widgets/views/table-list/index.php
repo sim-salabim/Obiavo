@@ -78,7 +78,7 @@ use yii\widgets\Breadcrumbs;
       <!-- /.table-responsive -->
     </div>
     <!-- /.box-body -->
-    <div class="box-footer clearfix">
+<!--    <div class="box-footer clearfix">
         <div class="box-footer clearfix">
             <ul class="pagination pagination-sm no-margin pull-right">
                 <li><a href="#">&laquo;</a></li>
@@ -88,7 +88,7 @@ use yii\widgets\Breadcrumbs;
                 <li><a href="#">&raquo;</a></li>
             </ul>
         </div>
-        <!-- /.box-footer -->
-    </div>
+         /.box-footer
+    </div>-->
     <!-- /.box -->
 </div>

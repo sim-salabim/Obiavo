@@ -6,7 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\City;
-use common\models\CityText;
+use comon\models\CityText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
@@ -38,7 +38,9 @@ class CitiesController extends BaseController
         ];
     }
 
-    public function actionIndex($region_id = null){
+    public function actionIndex($region_id){
+        $region = null;
+
         if ($region_id){
             $region = \common\models\Region::findOne($region_id);
             $cities = City::find()

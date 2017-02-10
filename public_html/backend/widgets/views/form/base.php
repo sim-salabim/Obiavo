@@ -13,6 +13,24 @@
 //    ],
 //    'saveUrl' => ''
 //];
+$panelTitle = function($title){
+    $currentAction = Yii::$app->controller->action->id;
+    $savelangAction = 'save-lang';
+    $p = [];
+
+    if(stristr($title, '{language}')){
+        if($currentAction === $savelangAction){
+            $lang = common\models\Language::findOne(Yii::$app->request->get('languages_id'));
+
+            $p["{language}"] = $lang->code;
+
+            return strtr($title, $p);
+        }
+    }
+
+    return $title;
+};
+
 ?>
 <div id="form-update">
     <div class="row">
@@ -25,7 +43,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-file">
-                            </span><?= $row['panel-title']?></a>
+                            </span><?= $panelTitle($row['panel-title'])?></a>
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">

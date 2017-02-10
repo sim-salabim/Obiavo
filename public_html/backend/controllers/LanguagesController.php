@@ -67,11 +67,16 @@ class LanguagesController extends BaseController
             $lang = new Language();
         }
 
-        $lang->loadWithRelation(['text'],$post);
-        $lang->save();
+        $lang->load($post);
+
+        if (!$lang->save()){
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($lang),
+            ]);
+        }
 
         return $this->sendJsonData([
-                JsonData::SUCCESSMESSAGE => "\"{$lang->text->name}\" успешно сохранено",
+                JsonData::SUCCESSMESSAGE => "\"{$lang->techname}\" успешно сохранено",
                 JsonData::REFRESHPAGE => '',
         ]);
     }
@@ -79,12 +84,11 @@ class LanguagesController extends BaseController
     public function actionDelete($id){
 
         $lang = Language::findOne($id);
-        $text = $lang->getText()->one();
 
         $lang->delete();
 
         return $this->sendJsonData([
-                    JsonData::SUCCESSMESSAGE => "Языковой пункт \"{$text->name}\" успешно удален",
+                    JsonData::SUCCESSMESSAGE => "Языковой пункт \"{$lang->techname}\" успешно удален",
                     JsonData::REFRESHPAGE => '',
         ]);
     }

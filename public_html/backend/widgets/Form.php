@@ -18,6 +18,8 @@ class Form extends Widget {
 
     const INPUT_CHECKBOX_INACTIVE = 'inputCheckboxInactive';
 
+    const MULTISELECT = 'multiselect';
+
     public function getViewPath()
     {
         return \Yii::getAlias('@app/widgets/views/form');
@@ -62,5 +64,24 @@ class Form extends Widget {
     protected function inputCheckboxInactive($attribute){
 
         return $this->render('input-checkbox-inactive', compact('attribute'));
+    }
+
+    protected function multiselect($attribute){
+        $selectpicker = $attribute['selectpicker'];
+        $values     = $selectpicker['values'];
+        $selected   = $selectpicker['selected'];
+        $options    = AH::getValue($selectpicker,'options',[]);
+        $model      = $attribute['model'];
+        $label      = $attribute['label'];
+        $name       = $attribute['name'];
+
+        return $this->render('multi-select',compact(
+                'model',
+                'values',
+                'selected',
+                'options',
+                'label',
+                'name'
+        ));
     }
 }

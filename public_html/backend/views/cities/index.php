@@ -3,7 +3,10 @@ Use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use backend\widgets\TableList;
 use yii\helpers\Html;
-var_dump($cities);die;
+
+$breadcrumbs = '';
+
+if ($region){
 $country = $region->country;
 
 $this->params['breadcrumbs'][] = [
@@ -12,6 +15,13 @@ $this->params['breadcrumbs'][] = [
                         ];
 $this->params['breadcrumbs'][] = "Города {$region->_text->name_rp}";
 $homeLink = ['label' => 'Страны', 'url' => '/countries'];
+
+$breadcrumbs = Breadcrumbs::widget([
+                'homeLink' => $homeLink,
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []
+            ]);
+
+}
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
@@ -27,10 +37,7 @@ $homeLink = ['label' => 'Страны', 'url' => '/countries'];
         </button>
     </div>
 
-    <?php echo Breadcrumbs::widget([
-        'homeLink' => $homeLink,
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []
-    ]);?>
+    <?= $breadcrumbs;?>
 
 <?= TableList::widget([
     'title' => 'Города',

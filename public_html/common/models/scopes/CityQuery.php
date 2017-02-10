@@ -5,6 +5,11 @@ use yii\db\ActiveQuery;
 
 class CityQuery extends ActiveQuery {
 
+    use \common\models\scopes\traits\Text;
+
+    const TEXT_RELATION = 'cityText';
+    const TEXT_RELATION_TABLE = 'cities_text';
+
     /**
      * Адаптация вируальных полей
      */
@@ -31,15 +36,15 @@ class CityQuery extends ActiveQuery {
         }
     }
 
-    public function withText($languages_id = null){
-        return $this->with(['cityText' => function($query) use ($languages_id){
-            $tableName = \common\models\CityText::tableName();
-
-            if ($languages_id){
-                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
-            }
-        }]);
-    }
+//    public function withText($languages_id = null){
+//        return $this->with(['cityText' => function($query) use ($languages_id){
+//            $tableName = \common\models\CityText::tableName();
+//
+//            if ($languages_id){
+//                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
+//            }
+//        }]);
+//    }
 
     /**
      * Города в текущей локации
@@ -47,7 +52,7 @@ class CityQuery extends ActiveQuery {
     public function byLocation(){
 
         $this->joinWith(['region' => function(\yii\db\ActiveQuery $query){
-            $query->andWhere(['regions.countries_id' => \Yii::$app->user->country->id]);
+            $query->andWhere(['regions.countries_id' => \Yii::$app->location->country->id]);
         }]);
 
         return $this;

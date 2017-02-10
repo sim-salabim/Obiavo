@@ -20,29 +20,15 @@ class WebUser extends \yii\web\User {
 
     private $country = null;
 
-    public function getDefaultCountry(){
-        return Country::findOne([
-            'domain' => Yii::$app->params['domain']
-        ]);
-    }
-
     /**
      * Получить текущий язык
      * @return type
      */
     public function getLanguage(){
         if (!$this->language){
-            $this->language = Language::getLanguageDeafault();
+            $this->language = Yii::$app->location->country->language;//Language::getLanguageDeafault();
         }
 
         return $this->language;
-    }
-
-    public function getCountry(){
-        if (!$this->country){
-            $this->country = Country::find()->byLanguage()->one();
-        }
-
-        return $this->country;
     }
 }

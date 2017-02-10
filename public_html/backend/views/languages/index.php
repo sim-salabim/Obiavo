@@ -29,10 +29,13 @@ use yii\helpers\Html;
         [
             'label'        => 'Название',
             'content'      => function($model){
-                $html = $model->_text->name;
+                $html = $model->techname;
                 $html .= backend\helpers\ActiveLabel::status($model->active, [
                         'active' => 'используется',
                         'inactive' => 'не используется'
+                        ]);
+                $html .= backend\helpers\ActiveLabel::status($model->is_default, [
+                        'active' => 'по умолчанию',
                         ]);
 
                 return $html;
@@ -41,10 +44,6 @@ use yii\helpers\Html;
         [
             'attribute'     => 'code',
             'label'        => 'Код языка',
-        ],
-        [
-            'label'        => 'Тексты',
-            'format'       => TableList::TYPE_MULTI_BUTTON,
         ],
         [
             'label'        => 'Управление',

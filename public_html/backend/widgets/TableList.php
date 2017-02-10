@@ -54,53 +54,63 @@ class TableList extends Widget{
 
         $items = [];
 
-        $this->setHeaderItems($items);
+        $items['label'] = $this->setHeaderItems($items);
 
-        foreach ($this->data as $object){
-            $this->setContentItems($items,$object);
-        }
+//        foreach ($this->data as $object){
+        $items['content'] = $this->setContentItems();
+//        }
 
         return $this->render('index', compact('items','title'));
     }
 
-    protected function setContentItems(&$items,$object){
+    protected function setContentItems(){
 
-        $array = [];
-        foreach($this->columns as $column){
-            $value = '';
-            $model = isset($column['model']) ? $column['model'] : $object;
-            $format = \frontend\helpers\ArrayHelper::getValue($column, 'format',null);
+        $itemsContent = [];
+        foreach ($this->data as $object){
+            $items = [];
 
-            if (isset($column['attribute'])){
+            foreach($this->columns as $column){
+                $value = '';
+                $model = isset($column['model']) ? $column['model'] : $object;
+                $format = \frontend\helpers\ArrayHelper::getValue($column, 'format',null);
 
-                $attribute = $column['attribute'];
+                if (isset($column['attribute'])){
 
-                $value = \frontend\helpers\ArrayHelper::getValue($model, $attribute);
+                    $attribute = $column['attribute'];
 
-            } elseif (isset($column['content'])){
-                $content = $column['content'];
-                if ($content instanceof \Closure){
-                    $value = call_user_func($content, $model);
-                } else {
-                    $value = $content;
+                    $value = \frontend\helpers\ArrayHelper::getValue($model, $attribute);
+
+                } elseif (isset($column['content'])){
+                    $content = $column['content'];
+                    if ($content instanceof \Closure){
+                        $value = call_user_func($content, $model);
+                    } else {
+                        $value = $content;
+                    }
                 }
+
+                $value = isset($format) ? $this->{$format}($column,$model,$value) : $value;
+
+    //            $this->contentFormatter($column);
+
+                $items[] = $value;
             }
 
-            $value = isset($format) ? $this->{$format}($column,$model,$value) : $value;
-
-//            $this->contentFormatter($column);
-
-            $array[] = $value;
+            $itemsContent[] = $items;
         }
 
-        $items['content'][] = $array;
+        return $itemsContent;
     }
 
     protected function setHeaderItems(&$items){
+        $itemsLabel = [];
+
         foreach ($this->columns as $column){
 
-            $items['label'][] = $column['label'];
+            $itemsLabel[] = $column['label'];
         }
+
+        return $itemsLabel;
     }
 
     /**

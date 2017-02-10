@@ -36,7 +36,7 @@ class Language extends \yii\db\ActiveRecord
         return [
             [['code'], 'required'],
             [['active', 'is_default'], 'integer'],
-            [['code'], 'string', 'max' => 255],
+            [['code','techname'], 'string', 'max' => 255],
             [['code'], 'unique'],
         ];
     }
@@ -48,6 +48,7 @@ class Language extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'techname' => 'Techname',
             'code' => 'Code',
             'active' => 'Active',
             'is_default' => 'Is Default',

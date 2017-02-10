@@ -13,7 +13,7 @@ class ActiveLabel {
         'inactive' => 'In Active'
     ];
 
-    private static $activeLabel = '<span class="label label-success pull-right">{text}</span>';
+    private static $activeLabel = '<span class="label label-success pull-right" style="margin-left:10px">{text}</span>';
 
     private static $inactiveLabel = '<span class="label label-default pull-right">{text}</span>';
 
@@ -43,11 +43,12 @@ class ActiveLabel {
     }
 
     private static function text(){
-        if (self::$status){
+        if (self::$status && isset(self::$text['active'])){
             return self::$text['active'];
         }
 
-        return self::$text['inactive'];
+        if (isset(self::$text['inactive']))
+            return self::$text['inactive'];
     }
 }
 

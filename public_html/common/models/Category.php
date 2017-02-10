@@ -135,7 +135,7 @@ class Category extends \yii\db\ActiveRecord
     public function getChildrens()
     {
         return $this->hasMany(Category::className(), ['parent_id' => 'id'])
-                    ->withText();;
+                    ->withText();
     }
 
     public function getCategoriesAttributes()
@@ -155,12 +155,12 @@ class Category extends \yii\db\ActiveRecord
 
     public function getCategoriesText()
     {
-        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])
-                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
+        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id']);
+//                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
     }
-    
+
     /**
-     * Типы объявлений у категорий (купить, продать, аренда)     
+     * Типы объявлений у категорий (купить, продать, аренда)
      */
     public function getPlacements()
     {
@@ -172,7 +172,7 @@ class Category extends \yii\db\ActiveRecord
                     ->onCondition(['=',"`$tbCategoryPlacement`.`categories_id`", $this->id])
                     ->all();
     }
-    
+
     public function setPlacements($placementsIds) {
         $categoryPlacements = new CategoryPlacement;
 
@@ -180,17 +180,17 @@ class Category extends \yii\db\ActiveRecord
         foreach ($placementsIds as $placeId){
             $rows[] = [$this->id, $placeId];
         }
-        
+
         $this->deletePlacements();
 
         Yii::$app->db->createCommand()->batchInsert(
-                    CategoryPlacement::tableName(), 
-                    ['categories_id','placements_id'], 
+                    CategoryPlacement::tableName(),
+                    ['categories_id','placements_id'],
                     $rows
                 )
                 ->execute();
     }
-    
+
     public function deletePlacements(){
         Yii::$app->db
                 ->createCommand()
@@ -243,14 +243,10 @@ class Category extends \yii\db\ActiveRecord
      * $model->populateRelation('relationName', $relateModel);
      *  - добавит связанную модель к модели ($model) в массив связей данной модели, которые можно получить $model->getRelationRecords()
      */
-    public function saveAndSetRelateForCategoryGenerated($categoryGenerateModel){
-        $categoryGenerateModel->countries_id = Yii::$app->user->getDefaultCountry()->id;
+//    public function saveAndSetRelateForCategoryGenerated($categoryGenerateModel){
+//    }
 
-        $this->save();
-
-        $this->link('categoryGenerated', $categoryGenerateModel);
-    }
-
+    
      /**
      * Найти всех родителей пункта меню
      */
@@ -295,12 +291,12 @@ class Category extends \yii\db\ActiveRecord
 
         $this->saveAndSetRelateForCategoryGenerated($categoryGenerate);
     }
-    
+
     public static function getByOldUrlCache($old_url)
     {
         $key  = "Category-getByOldUrlCache-" . md5($old_url);
         $data = Yii::$app->cache->get( $key );
-        
+
         if ($data === false) {
             $data = self::find()->searchUrlByLanguage($old_url)->one();
             Yii::$app->cache->set( $key, $data, 300 );

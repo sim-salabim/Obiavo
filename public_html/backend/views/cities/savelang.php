@@ -7,7 +7,7 @@ $items = [
     'saveUrl' => Url::to(''),
     'rows' => [
         [
-            'panel-title' => 'Текстовые данные',
+            'panel-title' => 'Текстовые данные - {language}',
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$city->_mttext],
                 ['name' => 'name_rp','type' => Form::INPUT_TEXT,'label' => 'Название в родительном падеже','model'=>$city->_mttext],
