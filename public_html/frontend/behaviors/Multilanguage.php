@@ -79,7 +79,9 @@ class Multilanguage extends Behavior
         if (! $multiText) {
             $getter = "get{$this->relationName}";
 
-            $multiText = $this->owner->$getter()->one();
+            $multiText = $this->owner
+                            ->$getter()
+                            ->one();
 
             if (! $multiText) {
                 $multiText = Yii::createObject($this->relationClassName);

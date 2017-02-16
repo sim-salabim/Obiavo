@@ -45,7 +45,7 @@ use yii\helpers\Url;
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'На главную', 'icon' => 'fa fa-dashboard go-frontend-domain', 'url' => \Yii::$app->urlManagerFrontend->baseUrl],
+                    ['label' => 'На главную', 'icon' => 'fa fa-dashboard go-frontend-domain', 'url' => \Yii::$app->params['staticDomain']],
                     /*
                     [
                         'label' => 'Same tools',

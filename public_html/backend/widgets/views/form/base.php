@@ -22,7 +22,7 @@ $panelTitle = function($title){
         if($currentAction === $savelangAction){
             $lang = common\models\Language::findOne(Yii::$app->request->get('languages_id'));
 
-            $p["{language}"] = $lang->code;
+            $p["{language}"] = "<span style='color:red'>{$lang->code}</span>";
 
             return strtr($title, $p);
         }

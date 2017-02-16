@@ -10,7 +10,7 @@ use frontend\helpers\TextHelper;
 
      <div class="cities-list">
          <?php foreach ($cities as $city) { ?>
-         <a href="#"><?= $city->cityText->name?></a>
+         <a href="#"><?= $city->_text->name?></a>
          <?= end($cities) !== $city ? ',' : ''; ?>
          <?php } ?>
     </div>

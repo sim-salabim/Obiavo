@@ -10,14 +10,6 @@ class CountryQuery extends ActiveQuery {
     const TEXT_RELATION = 'countryText';
     const TEXT_RELATION_TABLE = 'countries_text';
 
-    /**
-     * Выбираем страну(ы) по текущему(дефолтному) языку
-     */
-//    public function byLanguage(){
-//
-//        return $this->andWhere(['languages_id' => \Yii::$app->user->language->id]);
-//    }
-
     public function current(){
         return $this->andWhere(['domain' => \Yii::$app->request->serverName]);
     }

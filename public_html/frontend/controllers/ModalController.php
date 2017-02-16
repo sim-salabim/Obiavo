@@ -64,15 +64,15 @@ class ModalController extends Controller
    }
 
     public function actionCities(){
-        City::$url = City::removeCityInUrl(Yii::$app->request->referrer);
-        
+
         $cities = \common\models\City::find()
                         ->withText()
                         ->byLocation()
-                        ->asArray()
+//                        ->asArray()
                         ->all();
+       $cities = City::getComponentData($cities, \Yii::$app->request->referrer);
 
        $this->title = 'Город';
        $this->content = $this->renderPartial('cities',  compact('cities'));
-    }        
+    }
 }

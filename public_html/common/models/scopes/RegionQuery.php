@@ -23,6 +23,4 @@ class RegionQuery extends ActiveQuery {
 //            }
 //        }]);
 //    }
-
-
 }

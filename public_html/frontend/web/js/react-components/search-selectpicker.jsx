@@ -55,7 +55,7 @@ export default class SearchSelectpicker extends React.Component {
         data.map(function(city){
             cities.push({
                 'value': city.id,
-                'text': city.cityText.name,
+                'text': city.name,
                 'data': {
 //                    'icon': 'icon-person',
 //                    'subtext': 'Internal'

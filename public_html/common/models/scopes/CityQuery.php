@@ -13,37 +13,27 @@ class CityQuery extends ActiveQuery {
     /**
      * Адаптация вируальных полей
      */
-    public function populate($rows){
-        $models=parent::populate($rows);
-
-        if(!$this->asArray){
-            return $models;
-        }else{
-            $class = $this->modelClass;
-            $dopfields=method_exists($class, 'virtFields')?$class::virtFields():[];
-            foreach ($models as &$model) {
-              if(!empty($dopfields)){
-                  foreach($dopfields as $attr=>$val){
-                      if(is_string($val)){
-                          $model=array_merge($model,[$attr=>$val]);
-                      }elseif(is_callable($val)){
-                          $model=array_merge($model,[$attr=>call_user_func($val, $model)]);
-                      }
-                  }
-              }
-            }
-            return $models;
-        }
-    }
-
-//    public function withText($languages_id = null){
-//        return $this->with(['cityText' => function($query) use ($languages_id){
-//            $tableName = \common\models\CityText::tableName();
+//    public function populate($rows){
+//        $models=parent::populate($rows);
 //
-//            if ($languages_id){
-//                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
+//        if(!$this->asArray){
+//            return $models;
+//        }else{
+//            $class = $this->modelClass;
+//            $dopfields=method_exists($class, 'virtFields')?$class::virtFields():[];
+//            foreach ($models as &$model) {
+//              if(!empty($dopfields)){
+//                  foreach($dopfields as $attr=>$val){
+//                      if(is_string($val)){
+//                          $model=array_merge($model,[$attr=>$val]);
+//                      }elseif(is_callable($val)){
+//                          $model=array_merge($model,[$attr=>call_user_func($val, $model)]);
+//                      }
+//                  }
+//              }
 //            }
-//        }]);
+//            return $models;
+//        }
 //    }
 
     /**
@@ -52,7 +42,8 @@ class CityQuery extends ActiveQuery {
     public function byLocation(){
 
         $this->joinWith(['region' => function(\yii\db\ActiveQuery $query){
-            $query->andWhere(['regions.countries_id' => \Yii::$app->location->country->id]);
+            $query->andWhere(['regions.countries_id' => \Yii::$app->location->country->id])
+                  ->withText();
         }]);
 
         return $this;
@@ -72,10 +63,11 @@ class CityQuery extends ActiveQuery {
      */
     public function search($text, $operator = 'LIKE'){
         $this->joinWith([
-                'cityText',
+                self::TEXT_RELATION,
         ]);
 
-        $this->andWhere([$operator,'cities_text.name',$text]);
+        $this->andWhere([$operator,self::TEXT_RELATION_TABLE.'.name',$text])
+             ->onCondition([self::TEXT_RELATION_TABLE.'.languages_id' => \Yii::$app->location->language->id]);
 
 
         return $this;

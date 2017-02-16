@@ -86,9 +86,7 @@ class Placement extends \yii\db\ActiveRecord
 
     public function getPlacementsText()
     {
-        $table = PlacementsText::tableName();
-        return $this->hasOne(PlacementsText::className(), ['placements_id' => 'id'])
-                    ->andWhere(["`$table`.`languages_id`" => Yii::$app->user->language->id]);
+        return $this->hasOne(PlacementsText::className(), ['placements_id' => 'id']);
     }
 
     public static function getCurrent(){

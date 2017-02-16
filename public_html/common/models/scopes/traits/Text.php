@@ -13,9 +13,9 @@ trait Text {
         return $this->with([$textRelationName => function($query) use ($languages_id, $textTable){
             $tableName = $textTable;
 
-            if ($languages_id){
-                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
-            }
+            $languages_id = $languages_id ? $languages_id : \Yii::$app->location->language->id;
+
+            return $query->andWhere(["$tableName.languages_id" => $languages_id]);
         }]);
     }
 }
