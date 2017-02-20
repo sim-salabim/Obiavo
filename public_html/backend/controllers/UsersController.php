@@ -36,7 +36,7 @@ class UsersController extends BaseController
     public function actionIndex()
     {
         $users = User::find()
-                    ->with(['cities','cities.cityText'])->all();
+                    ->with(['city','city.cityText'])->all();
 //                    ->createCommand()->getRawSql();
 
         $toUrl = Url::toRoute('create');
@@ -61,7 +61,7 @@ class UsersController extends BaseController
     }
 
     public function actionSave($id = null)
-    {        
+    {
         $user = ($id) ? User::findOne($id) : new User;
 
         $user->load(Yii::$app->request->post());

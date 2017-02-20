@@ -1,27 +1,27 @@
 <?php
 use yii\helpers\Url;
 use yii\bootstrap\Html;
+use backend\widgets\Form;
 
-$form = [
-    [
-        'panel-title' => 'Основныe данные',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'domain:text:Домен', 'model' => $city],
-            ['attributes' => 'active:checkbox:Активность', 'model' => $city],
-        ]
-    ],
-    [
-        'panel-title' => 'Тексты',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'name:text:Название', 'model' => $city->_text],
-            ['attributes' => 'name_rp:text:Название в родительном падеже', 'model' => $city->_text],
-            ['attributes' => 'name_pp:text:Название в предложном падеже', 'model' => $city->_text],
-        ]
-    ],
+$items = [
+    'saveUrl' => $toUrl,
+    'rows' => [
+        [
+            'panel-title' => 'Основныe данные',
+            'attributes' => [
+                  ['name' => 'domain','type' => Form::INPUT_TEXT,'label' => 'Домен','model'=>$city],
+                  ['name' => 'active','type' => Form::INPUT_CHECKBOX_INACTIVE,'label'=>'активность','model' => $city],
+            ]
+        ],
+        [
+            'panel-title' => 'Тексты',
+            'attributes' => [
+                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$city->_text],
+                ['name' => 'name_rp','type' => Form::INPUT_TEXT,'label' => 'Название в родительном падеже','model'=>$city->_text],
+                ['name' => 'name_pp','type' => Form::INPUT_TEXT,'label' => 'Название в предложном падеже','model'=>$city->_text],
+            ]
+        ],
+    ]
 ];
 
-$saveUrl = $toUrl;
-
-echo $this->render('/templates/form',compact('form','saveUrl'));
+echo Form::widget($items);

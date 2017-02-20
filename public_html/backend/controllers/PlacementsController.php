@@ -38,42 +38,42 @@ class PlacementsController extends BaseController
     }
 
     public function actionIndex(){
-        $placements = Placement::find()->all();
-        
+        $placements = Placement::find()->withText()->all();
+
         return $this->render('index',  compact('placements'));
     }
-    
+
     public function actionCreate()
     {
-        $placement = new Placement;     
+        $placement = new Placement;
 
         $toUrl = Url::toRoute('save');
 
         return $this->render('create',  compact('placement','toUrl'));
     }
-    
+
     public function actionUpdate($id)
     {
        $placement = Placement::findOne($id);
-       
+
        $toUrl = Url::toRoute(['save','id' => $id]);
 
         return $this->render('create',  compact('placement','toUrl'));
     }
-    
+
     public function actionSave($id = null)
-    {        
+    {
         $placement = ($id) ? Placement::findOne($id) : new Placement;
-        
+
         $placement->loadWithRelation(['placementsText'],Yii::$app->request->post());
         $placement->save();
-        
+
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "Тип \"{$placement->_text->name}\" успешно сохранен",
                 JsonData::REFRESHPAGE => '',
         ]);
     }
-    
+
     public function actionDelete($id){
 
         $placement = Placement::findOne($id);
@@ -84,6 +84,36 @@ class PlacementsController extends BaseController
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "Тип \"{$text->name}\" успешно удален",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionSaveLang($id,$languages_id){
+
+        $placement = Placement::find()
+                        ->where(['id' => $id])
+                        ->withText($languages_id)
+                        ->one();
+
+        if ($this->isJson()){
+            $text = $placement->_mttext;
+            $text->placements_id = $placement->id;
+            $text->languages_id = $languages_id;
+            $text->load(Yii::$app->request->post());
+
+            if ($text->save()){
+                return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
+                    JsonData::REFRESHPAGE => '',
+                ]);
+            }
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
+            ]);
+        }
+
+        return $this->render('savelang',[
+            'placement' => $placement
         ]);
     }
 }

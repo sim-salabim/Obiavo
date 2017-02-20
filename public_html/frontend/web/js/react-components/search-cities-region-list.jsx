@@ -30,10 +30,12 @@ export default class SearchRegionList extends React.Component {
                             url={this.props.url}
                             list="{this.state.cities}"/>
                 <div className="selectboxmenu-items js-scroll">
+                {console.log(this.state.cities)}
                     {this.state.cities.map(function(city){
                         return (
                             <span className="a-like" onClick={(e) => this.changeLocation(city.url)}>
-                                <span><b>{city.cityText.name}</b> - {city.region.regionText.name}</span>
+                    {console.log(city)}
+                                <span><b>{city.name}</b> - {city.region.name}</span>
                             </span>
                         )
                     }.bind(this))}

@@ -34,8 +34,8 @@ class SaveRelation extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
-            ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
+//            ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
+//            ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
         ];
     }
 
@@ -59,8 +59,6 @@ class SaveRelation extends Behavior
         $modelRelation->load($data);
 
         $this->relationalData[$relationName] = $modelRelation;
-
-        $this->owner->populateRelation($relationName, $modelRelation);
     }
 
     /**
@@ -82,24 +80,24 @@ class SaveRelation extends Behavior
     }
 
     public function afterSave(){
-        $model = $this->owner;
-
-        foreach ($this->relations as $relation){
-
-            $getter = 'get' . $relation;
-
-            $relationModel = $this->getRelationData($relation);
-
-            if (!$relationModel) throw new Exception ("Unknown relation name {$relation} for {$model::className()}");
-
-            foreach ($model->$getter()->link as $childFK => $parentPK){
-                $relationModel->$childFK = $model->$parentPK;
-            }
-
-            if (!$relationModel->save()) {
-                throw new Exception('Model ' . $relationModel::className() . ' not saved due to unknown error');
-            }
-        }
+//        $model = $this->owner;
+//
+//        foreach ($this->relations as $relation){
+//
+//            $getter = 'get' . $relation;
+//
+//            $relationModel = $this->getRelationData($relation);
+//
+//            if (!$relationModel) throw new Exception ("Unknown relation name {$relation} for {$model::className()}");
+//
+//            foreach ($model->$getter()->link as $childFK => $parentPK){
+//                $relationModel->$childFK = $model->$parentPK;
+//            }
+//
+//            if (!$relationModel->save()) {
+//                throw new Exception('Model ' . $relationModel::className() . ' not saved due to unknown error');
+//            }
+//        }
     }
 
     /**
@@ -126,5 +124,59 @@ class SaveRelation extends Behavior
             }
         }
         return $success;
+    }
+
+    public function saveWithRelation($data = [],$relations = []){
+
+        $relations = empty($relations) ? $this->relations : $relations;
+        $owner = $this->owner;
+
+        $transaction = Yii::$app->db->beginTransaction();
+
+        $owner->load($data);
+
+        if (!$owner->validate()){
+            $this->setActiveFormErrors();
+            return false;
+        }
+
+        $owner->save();
+
+        foreach($relations as $relation){
+
+            $this->loadRelation($relation, $data);
+
+            $getter = 'get' . $relation;
+
+            $relationModel = $this->getRelationData($relation);
+
+            if (!$relationModel) throw new Exception ("Unknown relation name {$relation} for {$owner::className()}");
+
+            foreach ($owner->$getter()->link as $childFK => $parentPK){
+                $relationModel->$childFK = $owner->$parentPK;
+            }
+
+            if (!$relationModel->save()) {
+                $this->setActiveFormErrors($relationModel);
+
+                $transaction->rollBack();
+                return false;
+            }
+        }
+        // обновляем _text
+        $owner->mtlangUpdate();
+
+        $transaction->commit();
+        return true;
+    }
+
+    public function setActiveFormErrors($model = null){
+        $owner = $this->owner;
+
+        $model = empty($model) ? $owner : $model;
+
+        $err = \yii\widgets\ActiveForm::validate($model);
+        $owner->clearErrors();
+        $owner->addErrors($err);
     }
 }

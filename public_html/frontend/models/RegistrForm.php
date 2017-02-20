@@ -12,8 +12,8 @@ class RegistrForm extends Model
 {
     public $email;
     public $password;
-    public $first_name;
-    public $last_name;
+    public $first_name = '';
+    public $last_name = '';
     public $city;
     public $rememberMe = true;
 

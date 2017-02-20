@@ -15,6 +15,8 @@ use Yii;
  *
  * @property Countries $countries
  */
+use common\models\Language;
+
 class CountryText extends \yii\db\ActiveRecord
 {
     /**
@@ -34,7 +36,8 @@ class CountryText extends \yii\db\ActiveRecord
             [['countries_id', 'name'], 'required'],
             [['countries_id'], 'integer'],
             [['name', 'name_rp', 'name_pp'], 'string', 'max' => 255],
-            [['countries_id'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['countries_id' => 'id']],
+            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['languages_id'],'default', 'value' => Language::getLanguageDeafault()->id],
         ];
     }
 
@@ -58,5 +61,10 @@ class CountryText extends \yii\db\ActiveRecord
     public function getCountries()
     {
         return $this->hasOne(Country::className(), ['id' => 'countries_id']);
+    }
+
+    public function getLanguages()
+    {
+        return $this->hasOne(Language::className(), ['id' => 'languages_id']);
     }
 }

@@ -42,9 +42,8 @@ return [
             'showScriptName' => false,
             'rules' => require(__DIR__ . '/routes.php'),
         ],
-
         /**
-         * Компонент для работы с локациями
+         * Компонент для работы с текущей локацией
          */
         'location' => [
             'class' => 'frontend\components\Location'

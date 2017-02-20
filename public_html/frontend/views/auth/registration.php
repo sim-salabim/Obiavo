@@ -74,7 +74,8 @@ Core.onFullLoad(function(){
         preprocessFunc: 'preprocessDataCity',
         attributes: {
             className: 'cities-select',
-            name: 'city'
+            name: 'city',
+            id: 'city'
         }
     });
 });

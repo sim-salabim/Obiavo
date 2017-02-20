@@ -7,9 +7,10 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use common\models\Category;
+use yii\web\HttpException;
 
 
-class CategoriesController extends Controller
+class CategoriesController extends BaseController
 {
     /**
      * Текущая категория
@@ -45,6 +46,8 @@ class CategoriesController extends Controller
 
         $subCategories = $this->category->childrens;
         $categoryPacements = $this->category->placements;
+
+        $this->setPageTitle($this->category);
 
         return $this->render('index',  [
             'category'      => $this->category,

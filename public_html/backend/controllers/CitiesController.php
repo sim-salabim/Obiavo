@@ -6,7 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\City;
-use common\models\CityText;
+use comon\models\CityText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
@@ -38,7 +38,9 @@ class CitiesController extends BaseController
         ];
     }
 
-    public function actionIndex($region_id = null){
+    public function actionIndex($region_id){
+        $region = null;
+
         if ($region_id){
             $region = \common\models\Region::findOne($region_id);
             $cities = City::find()
@@ -46,25 +48,25 @@ class CitiesController extends BaseController
                         ->where(['regions_id' => $region->id])
                         ->all();
         } else {
-            $cities = City::find()->withText('cityText')->all();
+            $cities = City::find()->withText()->all();
         }
 
         return $this->render('index',  compact('region','cities'));
     }
 
-    public function actionAppend($region_id){
+    public function actionCreate($id){
         $city = new City;
 
-        $toUrl = Url::toRoute(['save','region_id' => $region_id]);
+        $toUrl = Url::toRoute(['save','region_id' => $id]);
 
         return $this->render('form',  compact('city','toUrl'));
     }
 
-    public function actionEdit($id){
+    public function actionUpdate($id){
         $city = City::find()
                     ->where(['id' => $id])
                     ->withText()->one();
-        
+
         $toUrl = Url::toRoute(['save','id' => $id]);
 
         return $this->render('form',  compact('city','toUrl'));
@@ -80,8 +82,12 @@ class CitiesController extends BaseController
             $city->regions_id = $region_id;
         }
 
-        $city->loadWithRelation(['cityText'],$post);
-        $city->save();
+        if (!$city->saveWithRelation($post)){
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $city->getErrors(),
+            ]);
+        }
 
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "Город \"{$city->_text->name}\" успешно сохранено",
@@ -92,13 +98,42 @@ class CitiesController extends BaseController
     public function actionDelete($id){
 
         $city = City::findOne($id);
-        $text = $city->cityText;
+        $text = $city->_text;
 
         $city->delete();
 
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "Город \"{$text->name}\" успешно удален",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionSaveLang($id,$languages_id){
+        $city = City::find()
+                        ->where(['id' => $id])
+                        ->withText($languages_id)
+                        ->one();
+
+        if ($this->isJson()){
+            $text = $city->_mttext;
+            $text->cities_id = $city->id;
+            $text->languages_id = $languages_id;
+            $text->load(Yii::$app->request->post());
+
+            if ($text->save()){
+                return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
+                    JsonData::REFRESHPAGE => '',
+                ]);
+            }
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
+            ]);
+        }
+
+        return $this->render('savelang',[
+            'city' => $city
         ]);
     }
 }

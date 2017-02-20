@@ -10,6 +10,7 @@ use common\models\RegionText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 use common\models\Country;
+use common\models\Language;
 
 /**
  * Site controller
@@ -46,7 +47,7 @@ class RegionsController extends BaseController
 
         if ($country_id){
             $country = Country::findOne($country_id);
-            $regions = $country->getRegions()->with('regionText')->all();
+            $regions = $country->getRegions()->withText()->all();
 
             $breadcrumbs = $this->getBreadcrumbs([
                                 'breadcrumbs' => [
@@ -63,22 +64,21 @@ class RegionsController extends BaseController
 
     public function actionAppend($country_id){
         $region = new Region;
-        $regionText = new RegionText;
 
         $toUrl = Url::toRoute(['save','country_id' => $country_id]);
 
-        return $this->render('form',  compact('region','regionText','toUrl'));
+        return $this->render('form',  compact('region','toUrl'));
     }
 
-    public function actionEdit($id){
+    public function actionUpdate($id){
         $region = Region::find()
                     ->where(['id' => $id])
-                    ->with('regionText')->one();
-        $regionText = $region->regionText;
+                    ->withText()
+                    ->one();
 
         $toUrl = Url::toRoute(['save','id' => $region->id]);
 
-        return $this->render('form',  compact('region','regionText','toUrl'));
+        return $this->render('form',  compact('region','toUrl'));
     }
 
     public function actionSave($id = null, $country_id = null){
@@ -91,8 +91,12 @@ class RegionsController extends BaseController
             $region->countries_id = $country_id;
         }
 
-        $region->loadWithRelation(['regionText'],$post);
-        $region->save();
+        if (!$region->saveWithRelation($post)){
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $region->getErrors(),
+            ]);
+        }
 
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$region->regionText->name}\" успешно сохранено",
@@ -102,14 +106,45 @@ class RegionsController extends BaseController
 
     public function actionDelete($id){
 
-        $country = Region::findOne($id);
-        $text = $country->regionText;
+        $region = Region::findOne($id);
+        $text = $region->_mttext;
 
-        $country->delete();
+        $region->delete();
 
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "Регион \"{$text->name}\" успешно удален",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionSaveLang($id,$languages_id){
+
+        $region = Region::find()
+                        ->where(['id' => $id])
+                        ->withText($languages_id)
+                        ->one();
+
+        if ($this->isJson()){
+            $text = $region->_mttext;
+            $text->regions_id = $region->id;
+            $text->languages_id = $languages_id;
+            $text->load(Yii::$app->request->post());
+            $text->save();
+
+            if ($text->save()){
+                return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
+                    JsonData::REFRESHPAGE => '',
+                ]);
+            }
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
+            ]);
+        }
+
+        return $this->render('savelang',[
+            'region' => $region
         ]);
     }
 

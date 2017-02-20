@@ -71,30 +71,30 @@ class CategoriesController extends BaseController
         return $this->render('index',compact('categoryParent','categories'));
     }
 
-    public function actionEditCategory($id) {
+    public function actionUpdate($id) {
 
         $category = Category::findOne($id);
         $text = $category->categoriesText;
 
         $categoriesText = $text ? $text : new \common\models\CategoriesText;
 
-        $toUrl = Url::toRoute(['save-category','id' => $category->id]);
+        $toUrl = Url::toRoute(['save','id' => $category->id]);
 
         return $this->renderAjax('form',compact('category','categoriesText', 'toUrl'));
     }
 
-    public function actionAppendCategory($id = null) {
+    public function actionCreate($parent_id = null) {
         $category = new Category();
-        $category->parent_id = $id;
+        $category->parent_id = $parent_id;
         $categoriesText = new \common\models\CategoriesText();
 
-        $toUrl = Url::toRoute(['save-category','parentID' => $id]);
+        $toUrl = Url::toRoute(['save','parentID' => $parent_id]);
 
         return $this->renderAjax('form',  compact('category','categoriesText','toUrl'));
     }
 
-    public function actionSaveCategory($id = null, $parentID = null) {
-        $postData = Yii::$app->request->post();
+    public function actionSave($id = null, $parentID = null) {
+        $post = Yii::$app->request->post();
 
         if ($id){
             $category = Category::findOne($id);
@@ -103,10 +103,14 @@ class CategoriesController extends BaseController
             $category->parent_id = $parentID;
         }
 
-        $category->loadWithRelation(['categoriesText'],$postData);
-        
-        if ($category->save() && !empty($postData['placements'])){
-            $category->setPlacements($postData['placements']);
+        if (!$category->saveWithRelation($post)){
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $category->getErrors(),
+            ]);
+        }
+
+        if (!empty($post['placements'])){
+            $category->setPlacements($post['placements']);
         }
 
         return $this->sendJsonData([
@@ -123,6 +127,35 @@ class CategoriesController extends BaseController
         return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно удалено",
                     JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    public function actionSaveLang($id,$languages_id){
+        $category = Category::find()
+                        ->where(['id' => $id])
+                        ->withText($languages_id)
+                        ->one();
+
+        if ($this->isJson()){
+            $text = $category->_mttext;
+            $text->categories_id = $category->id;
+            $text->languages_id = $languages_id;
+            $text->load(Yii::$app->request->post());
+
+            if ($text->save()){
+                return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
+                    JsonData::REFRESHPAGE => '',
+                ]);
+            }
+
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
+            ]);
+        }
+
+        return $this->render('savelang',[
+            'category' => $category,
         ]);
     }
 }

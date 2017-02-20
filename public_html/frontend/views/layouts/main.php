@@ -19,7 +19,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= Html::decode(strip_tags($this->title)) ?></title>
     <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
     <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
 
@@ -51,9 +51,7 @@ AppAsset::register($this);
 </div>
 
 <footer class="footer">
-    <div class="container">
-        <p class="pull-right">О проекте Контакты Оферта</p>
-    </div>
+    <?= $this->render('footer');?>
 </footer>
 
 <?php $this->endBody() ?>

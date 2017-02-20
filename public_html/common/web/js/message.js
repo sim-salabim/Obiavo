@@ -349,7 +349,8 @@ Message.registerHandler('show_validation_errors_input', function (data) {
     
     $.each(data, function(input_name, messages) {
 
-        var input = Message.validation_errors_container.find('input[name='+input_name+'],select[name='+input_name+']');
+        var input = Message.validation_errors_container.find('input[id="'+input_name+'"],select[id="'+input_name+'"]');
+//        var input = Message.validation_errors_container.find('#'+input_name);
         
         input.closest('.'+Message.validation_errors_class).addClass('has-error');
         

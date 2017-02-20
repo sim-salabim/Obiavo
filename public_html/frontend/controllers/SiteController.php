@@ -14,7 +14,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
 
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /**
      * @inheritdoc
@@ -220,12 +220,6 @@ class SiteController extends Controller
 
     public function actionRedirect($href)
     {
-        return Yii::$app->response->redirect($url);
-    }
-
-    public function actionJson(){
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-        return ['x'=> 'sdfsd'];
+        return Yii::$app->response->redirect($href);
     }
 }

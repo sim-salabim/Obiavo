@@ -196,7 +196,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Ads::className(), ['users_id' => 'id']);
     }
 
-    public function getCities()
+    public function getCity()
     {
         return $this->hasOne(City::className(), ['id' => 'cities_id']);
     }

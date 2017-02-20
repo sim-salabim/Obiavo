@@ -95,8 +95,13 @@ class Selectpicker extends Widget {
     }
 
     protected function isSelected($key){
+        $selected = $this->selected;
 
-        if (in_array($key,$this->selected)){
+        if (is_array($selected)){
+            if (in_array($key,$selected)){
+                return true;
+            }
+        } elseif ($key === $selected){
             return true;
         }
 

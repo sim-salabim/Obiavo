@@ -65,9 +65,9 @@ class CategoriesText extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLanguages()
+    public function getLanguage()
     {
-        return $this->hasOne(Languages::className(), ['id' => 'languages_id']);
+        return $this->hasOne(Language::className(), ['id' => 'languages_id']);
     }
 
     /**

@@ -42,52 +42,59 @@ class Multilanguage extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
-            ActiveRecord::EVENT_INIT => 'Init',
-            ActiveRecord::EVENT_AFTER_INSERT => 'updateRelationEvent'
+            ActiveRecord::EVENT_INIT => 'init',
+            ActiveRecord::EVENT_AFTER_FIND => 'mtlangUpdate',
+//            ActiveRecord::EVENT_AFTER_INSERT => 'updateRelationEvent',
         ];
     }
 
     public $_text = '';
 
+    public function init(){
+        $this->_text = Yii::createObject($this->relationClassName);
+    }
+
+    public function get_texts(){
+       return $this->owner->{$this->relationName."s"};
+    }
+
+    public function get_Mttext(){
+        return $this->owner->{$this->relationName}
+                ? $this->owner->{$this->relationName}
+                : Yii::createObject($this->relationClassName);
+    }
+
     /**
      * Проверяем есть ли текстовые данные связанной модели у объекста по текущему языку
      * Если нет, то добавляем
+     *
+     * ПОЯСНЕНИЕ:
+     * в _text всегда находится перевод текущей системы, незивисимо от запрашивемого текста
+     * а в реляции находится необходимый в данный момент перевод, либо если он отстствует = NULL
+     * поэтому при отсутствии запрашиваемого перевода, пытаемся заполнить только _text
      */
-    public function afterFind(){
+    public function mtlangUpdate(){
         $multiText = $this->owner->{$this->relationName};
 
         if (! $multiText) {
-            $this->setMultiRelated();
+            $getter = "get{$this->relationName}";
+
+            $multiText = $this->owner
+                            ->$getter()
+                            ->one();
+
+            if (! $multiText) {
+                $multiText = Yii::createObject($this->relationClassName);
+            }
         }
 
-        $this->_text = $this->owner->{$this->relationName};
+        $this->_text = $multiText;
+//        $this->_text = $this->owner->{$this->relationName};
     }
-    
-    public function init(){
-        $this->_text = new $this->relationClassName;
-    }
-    
+
     public function updateRelationEvent(){
-        
+
         $this->_text = $this->owner->{$this->relationName};
     }
-
-    /**
-     * Добавить текст с
-     */
-    private function setMultiRelated(){
-
-        $getter = "get{$this->relationName}";
-
-        $multiText = $this->owner->$getter()->one();
-
-        if (! $multiText) {
-            $multiText = Yii::createObject($this->relationClassName);
-        }
-
-        $this->owner->populateRelation($this->relationName, $multiText);
-    }
-
 
 }

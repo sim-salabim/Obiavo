@@ -8,45 +8,44 @@
 
 use yii\helpers\Url;
 use yii\bootstrap\Html;
-use frontend\helpers\ArrayHelper;
+use backend\widgets\Form;
+use yii\helpers\ArrayHelper;
 
 $placements = common\models\Placement::find()->withText()->all();
 
-$form = [
-    [
-        'panel-title' => 'Основныe данные',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'techname:text:Тех. название', 'model' => $category],
-            ['attributes' => 'placements:select-multiple:Типы размещения объявлений', 'model' => $category,
-                'options' => [
-                    'multiple' => [
-                        'elements' => ArrayHelper::map($placements, 'id','_text.name'),
-                        'selected' => ArrayHelper::getColumn($category->placements,'id')
+$items = [
+    'saveUrl' => $toUrl,
+    'rows' => [
+        [
+            'panel-title' => 'Основныe данные',
+            'attributes' => [
+                ['name' => 'techname','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$category],
+                [
+                    'name' => 'placements',
+                    'type' => Form::MULTISELECT,
+                    'label'=>'Типы размещения объявлений',
+                    'model' => $category,
+
+                    'selectpicker' => [
+                      'values' => ArrayHelper::map($placements, 'id','_text.name'),
+                      'selected' => ArrayHelper::getColumn($category->placements,'id'),
+                      'options' => ['multiple' => true]
                     ]
-                ]
-            ],
-            ['attributes' => 'active:checkbox:Активность', 'model' => $category],
-        ]
-    ],
-    [
-        'panel-title' => 'Сео данные',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'name:text:Название', 'model' => $categoriesText],
-            ['attributes' => 'url:text:URL', 'model' => $categoriesText],
-            ['attributes' => 'seo_title:text:SEO заголовок', 'model' => $categoriesText],
-            ['attributes' => 'seo_desc:text:SEO описание', 'model' => $categoriesText],
-            ['attributes' => 'seo_keywords:text:SEO ключевые слова', 'model' => $categoriesText],
-        ]
-    ],
+                ],
+            ]
+        ],
+        [
+            'panel-title' => 'Сео данные',
+            'attributes' => [
+                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$category->_text],
+                ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL','model'=>$category->_text],
+                ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'SEO заголовок','model'=>$category->_text],
+                ['name' => 'seo_desc','type' => Form::INPUT_TEXT,'label' => 'SEO описание','model'=>$category->_text],
+                ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'SEO ключевые слова','model'=>$category->_text],
+            ]
+        ],
+    ]
 ];
 
-$saveUrl = $toUrl;
-
-echo $this->render('/templates/form',compact('form','saveUrl'));
+echo Form::widget($items);
 ?>
-<script type="text/javascript">
-//    $('.selectpicker').selectpicker()
-    $('.selectpicker').selectpicker();
-</script>

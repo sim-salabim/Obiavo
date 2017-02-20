@@ -30,18 +30,16 @@ class CitiesController extends Controller
         $post = Yii::$app->request->post();
         $searchText = $post['q'];
 
-        City::$url = City::removeCityInUrl(Yii::$app->request->referrer);
-
         $cities = City::find()
-                        ->searchWithRegion($searchText)
+                        ->search($searchText)
                         ->byLocation();
 
         if (isset($post['format']) && $post['format'] === 'json'){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-            $cities->asArray();
+//            $cities->asArray();
         }
-
-        return $cities->all();
+        
+        return City::getComponentData($cities->all(), \Yii::$app->request->referrer);
     }
 }

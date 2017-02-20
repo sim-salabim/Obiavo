@@ -37,4 +37,12 @@ class BaseController extends \yii\web\Controller {
 
         return \common\helpers\JsonData::current($jsonDataArray);
     }
+
+    public function isJson(){
+        if (isset($_REQUEST['json']) && $_REQUEST['json'] === 'true'){
+            return true;
+        }
+
+        return false;
+    }
 }

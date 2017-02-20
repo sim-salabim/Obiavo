@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\LanguageText;
 
 /**
  * This is the model class for table "languages".
@@ -20,9 +21,8 @@ use Yii;
  */
 class Language extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+    public static $_allLanguages;
+
     public static function tableName()
     {
         return 'languages';
@@ -36,7 +36,7 @@ class Language extends \yii\db\ActiveRecord
         return [
             [['code'], 'required'],
             [['active', 'is_default'], 'integer'],
-            [['code'], 'string', 'max' => 255],
+            [['code','techname'], 'string', 'max' => 255],
             [['code'], 'unique'],
         ];
     }
@@ -48,6 +48,7 @@ class Language extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'techname' => 'Techname',
             'code' => 'Code',
             'active' => 'Active',
             'is_default' => 'Is Default',
@@ -60,8 +61,17 @@ class Language extends \yii\db\ActiveRecord
                 [
                     'class' => \backend\behaviors\SaveRelation::className(),
                     'relations' => ['text']
-                ]
+                ],
+                [
+                    'class' => \frontend\behaviors\Multilanguage::className(),
+                    'relationName'  => 'text',
+                    'relationClassName' => LanguageText::className(),
+                ],
             ];
+    }
+
+    public static function find(){
+        return new scopes\LanguageQuery(get_called_class());
     }
 
     /**
@@ -113,5 +123,19 @@ class Language extends \yii\db\ActiveRecord
         return self::findOne([
             'is_default' => true
         ]);
+    }
+
+    public static function getAllLanguages($onlyactive = false){
+        if (!self::$_allLanguages){
+            self::$_allLanguages = self::find();
+
+            if ($onlyactive) {
+                self::$_allLanguages->andWhere(['active' => true]);
+            }
+
+            self::$_allLanguages = self::$_allLanguages->all();
+        }
+
+        return self::$_allLanguages;
     }
 }
