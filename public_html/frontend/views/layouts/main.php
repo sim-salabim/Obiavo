@@ -51,9 +51,7 @@ AppAsset::register($this);
 </div>
 
 <footer class="footer">
-    <div class="container">
-        <p class="pull-right">О проекте Контакты Оферта</p>
-    </div>
+    <?= $this->render('footer');?>
 </footer>
 
 <?php $this->endBody() ?>

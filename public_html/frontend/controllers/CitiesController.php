@@ -39,7 +39,7 @@ class CitiesController extends Controller
 
 //            $cities->asArray();
         }
-
+        
         return City::getComponentData($cities->all(), \Yii::$app->request->referrer);
     }
 }

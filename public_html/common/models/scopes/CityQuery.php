@@ -63,11 +63,10 @@ class CityQuery extends ActiveQuery {
      */
     public function search($text, $operator = 'LIKE'){
         $this->joinWith([
-                self::TEXT_RELATION,
-        ]);
-
-        $this->andWhere([$operator,self::TEXT_RELATION_TABLE.'.name',$text])
-             ->onCondition([self::TEXT_RELATION_TABLE.'.languages_id' => \Yii::$app->location->language->id]);
+          'cityText ct' => function (\yii\db\ActiveQuery $query) use ($text,$operator) {
+              $query->andWhere([$operator,'ct.name',$text])
+                    ->onCondition(['ct.languages_id' => \Yii::$app->location->language->id]);
+          }]);
 
 
         return $this;

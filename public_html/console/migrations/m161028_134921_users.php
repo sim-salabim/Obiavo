@@ -26,7 +26,7 @@ class m161028_134921_users extends Migration
         ], $tableOptions);
 
 //        $this->createIndex('cities_id', 'users', 'cities_id');
-        $this->addForeignKey('fk_users_city', 'users', 'cities_id', 'cities', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_users_city', 'users', 'cities_id', 'cities', 'id', 'NO ACTION', 'CASCADE');
     }
 
     public function down()

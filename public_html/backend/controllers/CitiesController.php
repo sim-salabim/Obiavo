@@ -119,11 +119,16 @@ class CitiesController extends BaseController
             $text->cities_id = $city->id;
             $text->languages_id = $languages_id;
             $text->load(Yii::$app->request->post());
-            $text->save();
+
+            if ($text->save()){
+                return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
+                    JsonData::REFRESHPAGE => '',
+                ]);
+            }
 
             return $this->sendJsonData([
-                JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
-                JsonData::REFRESHPAGE => '',
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
             ]);
         }
 

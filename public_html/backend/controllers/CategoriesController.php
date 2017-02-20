@@ -141,11 +141,16 @@ class CategoriesController extends BaseController
             $text->categories_id = $category->id;
             $text->languages_id = $languages_id;
             $text->load(Yii::$app->request->post());
-            $text->save();
+
+            if ($text->save()){
+                return $this->sendJsonData([
+                    JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
+                    JsonData::REFRESHPAGE => '',
+                ]);
+            }
 
             return $this->sendJsonData([
-                JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
-                JsonData::REFRESHPAGE => '',
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
             ]);
         }
 

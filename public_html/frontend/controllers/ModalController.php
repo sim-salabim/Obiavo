@@ -72,7 +72,7 @@ class ModalController extends Controller
                         ->all();
        $cities = City::getComponentData($cities, \Yii::$app->request->referrer);
 
-       $this->title = 'Город';
+       $this->title = 'Выберите город';
        $this->content = $this->renderPartial('cities',  compact('cities'));
     }
 }
