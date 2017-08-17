@@ -29,7 +29,7 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
 
             if ($categorySection) { $categorySection = "$categorySection/"; }
 
-            $url = "{$placementSection}{$categorySection}";
+            $url = "{$categorySection}{$placementSection}";
 
             return $this->normalizeUrlForLocation($url);
         }
@@ -40,7 +40,7 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
             return $this->normalizeUrlForLocation($categorySection);
         }
 
-        return false;;
+        return false;
 
     }
 

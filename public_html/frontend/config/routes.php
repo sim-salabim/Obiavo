@@ -25,7 +25,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<placement:\w+>/<category:\w+>/<city:\w+>',
+        'pattern' => '/<category:\w+>/<placement:\w+>/<city:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
