@@ -19,26 +19,20 @@ class m161028_131351_categories_attributes_text extends Migration
             'text' => $this->string()->notNull(),
         ], $tableOptions);
 
-//        $this->createIndex('categories_attributes_id', 'categories_attributes_text', 'categories_attributes_id');
-        $this->addForeignKey('fk_categories_attributes_text_cattegory', 'categories_attributes_text', 'categories_attributes_id', 'categories_attributes', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx_cat_categories_attributes_id', 'categories_attributes_text', 'categories_attributes_id');
+        $this->addForeignKey('fk_categories_attributes_text_category', 'categories_attributes_text', 'categories_attributes_id', 'categories_attributes', 'id', 'CASCADE', 'CASCADE');
 
-//        $this->createIndex('languages_id', 'categories_attributes_text', 'languages_id');
+        $this->createIndex('idx_cat_languages_id', 'categories_attributes_text', 'languages_id');
         $this->addForeignKey('fk_categories_attributes_text_language', 'categories_attributes_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
+        $this->dropForeignKey('fk_categories_attributes_text_category','categories_attributes_text');
+        $this->dropIndex('idx_cat_categories_attributes_id','categories_attributes_text');
+        $this->dropForeignKey('fk_categories_attributes_text_language','categories_attributes_text');
+        $this->dropIndex('idx_cat_languages_id','categories_attributes_text');
         $this->dropTable('categories_attributes_text');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }
