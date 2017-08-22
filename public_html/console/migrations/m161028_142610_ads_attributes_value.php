@@ -16,7 +16,7 @@ class m161028_142610_ads_attributes_value extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'ads_id' => $this->integer()->unsigned()->notNull(),
             'categories_attributes_id' => $this->integer()->unsigned()->notNull(),
-            'value' => $this->text(),
+            'value' => $this->string(),
         ], $tableOptions);
 
         $this->createIndex('idx_ads_id', 'ads_attributes_value', 'ads_id');

@@ -8,10 +8,8 @@ use Yii;
  * This is the model class for table "categories_attributes".
  *
  * @property integer $id
- * @property integer $categories_id
  * @property integer $attributes_types_id
  * @property string $techname
- * @property integer $active
  *
  * @property AdsAttributesValue[] $adsAttributesValues
  * @property AttributesTypes $attributesTypes
@@ -35,10 +33,8 @@ class CategoryAttribute extends \yii\db\ActiveRecord
     {
         return [
             [['categories_id', 'attributes_types_id', 'techname'], 'required'],
-            [['categories_id', 'attributes_types_id', 'active'], 'integer'],
             [['techname'], 'string', 'max' => 255],
             [['attributes_types_id'], 'exist', 'skipOnError' => true, 'targetClass' => AttributesTypes::className(), 'targetAttribute' => ['attributes_types_id' => 'id']],
-            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['categories_id' => 'id']],
         ];
     }
 
@@ -49,10 +45,8 @@ class CategoryAttribute extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'categories_id' => 'Categories ID',
             'attributes_types_id' => 'Attributes Types ID',
             'techname' => 'Techname',
-            'active' => 'Active',
         ];
     }
 

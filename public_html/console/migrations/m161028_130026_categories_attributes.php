@@ -16,7 +16,6 @@ class m161028_130026_categories_attributes extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'techname' => $this->string()->notNull(),
             'attributes_types_id' => $this->integer()->unsigned()->notNull(),
-            'predefined_value_id' => $this->integer()->unsigned(),
         ], $tableOptions);
 
         $this->createIndex('idx-ca-attributes_types','categories_attributes','attributes_types_id');

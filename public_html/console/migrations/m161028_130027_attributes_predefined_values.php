@@ -22,17 +22,12 @@ class m161028_130027_attributes_predefined_values extends Migration
 
         $this->createIndex('idx-apv-attributes_id','attributes_predefined_values','attributes_id');
         $this->addForeignKey('fk-apv-attributes_id','attributes_predefined_values','attributes_id','categories_attributes','id','CASCADE');
-        $this->createIndex('idx-ca-attributes_predefined_value','categories_attributes','predefined_value_id');
-        $this->addForeignKey('fk_categories_attributes_predefined_value', 'categories_attributes', 'predefined_value_id', 'attributes_predefined_values', 'id', 'CASCADE', 'CASCADE');
-
     }
 
     public function safeDown()
     {
         $this->dropForeignKey('fk_categories_attributes_predefined_value', 'categories_attributes');
         $this->dropIndex('idx-ca-attributes_predefined_value','categories_attributes');
-        $this->dropForeignKey('fk-apv-attributes_id','attributes_predefined_values');
-        $this->dropIndex('idx-apv-attributes_id','attributes_predefined_values');
         $this->dropTable('attributes_predefined_values');
     }
 }
