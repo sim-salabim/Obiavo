@@ -69,16 +69,17 @@ class CategoryAttribute extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategories()
-    {
-        return $this->hasOne(Categories::className(), ['id' => 'categories_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCategoriesAttributesTexts()
     {
         return $this->hasMany(CategoriesAttributesText::className(), ['categories_attributes_id' => 'id']);
+    }
+
+    public function getCategories() {
+        return $this->hasMany(Category::className(), ['id' => 'categories_id'])
+            ->viaTable('categories_has_attributes', ['attributes_id' => 'id']);
+    }
+
+    public function getValue(){
+        return $this->hasOne(AdsAttributesValues::className(), ['id' => 'ads_id']);
     }
 }

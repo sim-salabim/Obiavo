@@ -173,6 +173,11 @@ class Category extends \yii\db\ActiveRecord
                     ->all();
     }
 
+    public function getAttributes(){
+        return $this->hasMany(CategoryAttribute::className(), ['id' => 'attributes_id'])
+            ->viaTable('categories_has_attributes', ['categories_id' => 'id']);
+    }
+
     public function setPlacements($placementsIds) {
         $categoryPlacements = new CategoryPlacement;
 
