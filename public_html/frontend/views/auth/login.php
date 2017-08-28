@@ -24,8 +24,13 @@ $this->title = 'Авторизация';
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        <button class="btn btn-default senddata" data-input="#login-form">Войти</button>
+        <a href="/recovery">Забыли пароль?</a>
+    </div>
+</div>
 
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-default senddata" data-input="#login-form">Войти</button>
     </div>
 </div>
 
