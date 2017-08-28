@@ -4,11 +4,11 @@ $this->title = 'Восстановление пароля';
 <form class="form-horizontal" id="password-recovery-form">
 
     <!-- Email-->
-    <? if(Yii::$app->session->getFlash('message')){ ?>
+    <?php if(Yii::$app->session->getFlash('message')){ ?>
         <div class="alert alert-success" role="alert">
             <?= Yii::$app->session->getFlash('message'); ?>
         </div>
-    <? } ?>
+    <?php } ?>
     <div class="form-group validation-errors">
         <label class="col-sm-2 control-label" for="email">Email</label>
         <div class="col-md-4">
