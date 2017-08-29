@@ -13,6 +13,7 @@ use frontend\models\PasswordResetForm as PasswordResetForm;
 use frontend\models\SignupForm;
 use common\helpers\JsonData;
 use common\models\User as User;
+use common\models\Mailer as Mailer;
 
 class AuthController extends Controller
 {
@@ -164,9 +165,11 @@ class AuthController extends Controller
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(),'');
             if ( !$model->validate()) {
-                return \common\helpers\JsonData::current([
-                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
-                ]);
+                $errors = $model->getErrors();
+                if(isset($errors['email']) && !empty($errors['email'])){
+                    \Yii::$app->getSession()->setFlash('recovery_error', $errors['email']);
+                }
+                return $this->redirect('recovery');
             }else{
                 $user = User::findOne(['email' => Yii::$app->request->post('email')]);
                 $pass_recovery = PasswordRecovery::findOne(['users_id' => $user->id, 'recovered' => PasswordRecovery::NOT_RECOVERED]);
@@ -178,16 +181,7 @@ class AuthController extends Controller
                 $pass_recovery->hash = base64_encode("email=".Yii::$app->request->post('email')."&time=".time());
                 $pass_recovery->updated_at = time();
                 $pass_recovery->save();
-                Yii::$app
-                    ->mailer
-                    ->compose(
-                        ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-                        ['user' => $user]
-                    )
-                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-                    ->setTo($user->email)
-                    ->setSubject('Восстановление пароля')
-                    ->send();
+                Mailer::send($user->email, 'Восстановление пароля', 'pass-recovery', ['user' => $user, 'token' => $pass_recovery->hash]);
                 \Yii::$app->getSession()->setFlash('message', 'На указанный адрес выслано письмо с дальнейшими инструкциями');
                 return $this->redirect('recovery');
             }
