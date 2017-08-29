@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "Yii 2 Advanced Project Template ===============================",
   "main": "index.js",
+  "privat": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sim-salabim/Obiavo.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "gulp-install": "^1.1.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   },
