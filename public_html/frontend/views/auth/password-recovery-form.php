@@ -11,11 +11,11 @@ $this->title = 'Восстановление пароля';
         <label class="col-sm-2 control-label" for="email">Email</label>
         <div class="col-md-4">
             <input id="email" name="email" type="email" placeholder="" class="form-control input-md" >
-            <? if(Yii::$app->session->getFlash('recovery_error')){?>
-                <? foreach(Yii::$app->session->getFlash('recovery_error') as $er){?>
+            <?php if(Yii::$app->session->getFlash('recovery_error')){?>
+                <?php foreach(Yii::$app->session->getFlash('recovery_error') as $er){?>
                     <span class="help-block"><?= $er ?></span>
-                <? } ?>
-            <? } ?>
+                <?php } ?>
+            <?php } ?>
         </div>
     </div>
     <div class="form-group">
