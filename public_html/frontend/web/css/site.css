@@ -7,7 +7,10 @@ body {
 }
 
 h1 {
-    font: 2em Verdana,Arial,Tahoma;    
+    font-family: Verdana,Arial,Tahoma;
+}
+.header {
+    border-bottom: 1px solid #c0c0c0;
 }
 
 /*input[type="text"]{*/
@@ -35,7 +38,9 @@ h1 {
     color: #0a82a8;
     cursor: pointer;
 }
-
+.navbar {
+    border-bottom: 1px solid #c0c0c0;
+}
 .wrap {
     min-height: 100%;
     height: auto;
@@ -56,7 +61,7 @@ h1 {
 
 .jumbotron {
     text-align: center;
-    background-color: transparent;
+    background-color: #ffffff!important;
 }
 
 .jumbotron .btn {

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-light">
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" style="border-bottom: 1px solid #c0c0c0;">
     <button class="navbar-toggler"
             type="button"
             data-toggle="collapse"
@@ -11,38 +11,39 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"
+                <a class="nav-link"
                    href="http://example.com"
                    id="navbarDropdownMenuLink"
                    data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="false">
-                    Dropdown link
+                    <span class="navbar-toggler-icon"></span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <?php if (Yii::$app->user->isGuest) { ?>
-            <a href="<?= yii\helpers\Url::toRoute('/login')?>">Вход</a>
-            <a href="<?= yii\helpers\Url::toRoute('/registration')?>">Регистрация</a>
-            <?php } ?>
+                    <ul>
+                        <?php if (Yii::$app->user->isGuest) { ?>
+                            <li><a href="<?= yii\helpers\Url::toRoute('/login')?>">Вход</a></li>
+                            <li><a href="<?= yii\helpers\Url::toRoute('/registration')?>">Регистрация</a></li>
+                        <?php } ?>
 
-            <?php if (!Yii::$app->user->isGuest) { ?>
-                <a href="<?= yii\helpers\Url::toRoute('/im')?>">Личный кабинет</a>
-                <a href="<?= yii\helpers\Url::toRoute('/logout')?>">Выйти</a>
-            <?php } ?>
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                        <?php if (!Yii::$app->user->isGuest) { ?>
+                            <li><a href="<?= yii\helpers\Url::toRoute('/im')?>">Личный кабинет</a></li>
+                            <li><a href="<?= yii\helpers\Url::toRoute('/logout')?>">Выйти</a></li>
+                        <?php } ?>
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
                 </div>
             </li>
-
+            <a class="navbar-brand mx-2" href="#">Obiavo.ru</a>
         </ul>
-        <a class="navbar-brand" href="#">Obiavo.ru</a>
 
-
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 mr-4 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-        <button type="button" class="btn btn-success">Подать объявление</button>
+        <span class="navbar-text mx-2">Россия</span>
+        <button type="button" class="btn btn-success my-2">+ Подать объявление</button>
     </div>
-</nav>//*
+</nav>
