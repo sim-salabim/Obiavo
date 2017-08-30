@@ -20,18 +20,9 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::decode(strip_tags($this->title)) ?></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-<!--    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>-->
-<!--    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>-->
 
-    <?php //$this->head() ?>
+    <?php $this->head() ?>
     <?// frontend\widgets\Frontend::widget()?>
-    <!-- Latest compiled and minified CSS -->
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">-->
-
-<!-- Latest compiled and minified JavaScript -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>-->
-
 
 </head>
 <body>

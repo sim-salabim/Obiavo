@@ -13,23 +13,17 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
-        'css/custom.css',
-        'css/categories.css',
     ];
     public $js = [
-//        'https://unpkg.com/react@15/dist/react.min.js',
-//        'https://unpkg.com/react-dom@15/dist/react-dom.min.js',
-//        '//fb.me/JSXTransformer-0.13.1.js',
         'js/main.js',
         'js/init.js',
         'js/selectpicker.js',
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapPluginAsset',
+        'frontend\assets\BootstrapAsset',
         'frontend\assets\Fontawesome',
         'common\assets\CommonAsset',
         'frontend\assets\SelectpickerAsset',
-        'frontend\assets\AjaxSelectpicker',
     ];
 
     public $jsOptions = [
