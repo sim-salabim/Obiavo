@@ -21,7 +21,8 @@
         "dmstr/yii2-adminlte-asset": "2.*",
         "bower-asset/bootstrap-select": "^1.12",
         "bower-asset/ajax-bootstrap-select": "^1.3",
-        "twbs/bootstrap": "4.0.0-alpha.6"       
+        "twbs/bootstrap": "4.0.0-beta",
+        "components/jquery": "^3.2"       
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

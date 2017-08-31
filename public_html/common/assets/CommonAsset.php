@@ -22,10 +22,6 @@ class CommonAsset extends AssetBundle
         'yii\bootstrap\BootstrapAsset',
     ];
 
-    public $jsOptions = [
-        'position' => \yii\web\View::POS_HEAD
-    ];
-
     public $publishOptions = [
         'forceCopy'=>true,
       ];
