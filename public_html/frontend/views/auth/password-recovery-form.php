@@ -7,13 +7,15 @@ $this->title = 'Восстановление пароля';
             <?= Yii::$app->session->getFlash('message'); ?>
         </div>
     <?php  } ?>
-    <div class="form-group validation-errors <?php if(Yii::$app->session->getFlash('recovery_error')){?> has-error<?php }?>">
+    <div class="form-group validation-errors ">
         <label class="col-sm-2 control-label" for="email">Email</label>
         <div class="col-md-4">
-            <input id="email" name="email" type="email" placeholder="" class="form-control input-md" >
+            <input id="email" name="email" type="email" placeholder="" class="form-control input-md <?php if(Yii::$app->session->getFlash('recovery_error')){?> is-invalid<?php }?>" >
             <?php if(Yii::$app->session->getFlash('recovery_error')){?>
                 <?php foreach(Yii::$app->session->getFlash('recovery_error') as $er){?>
-                    <span class="help-block"><?= $er ?></span>
+                    <div class="invalid-feedback">
+                        <?= $er ?>
+                    </div>
                 <?php } ?>
             <?php } ?>
         </div>

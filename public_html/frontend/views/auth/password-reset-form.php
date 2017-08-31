@@ -15,24 +15,28 @@ $this->title = 'Восстановление пароля';
         </div>
     <?php } ?>
     <?php if($key_valid){?>
-        <div class="form-group validation-errors <?php if(Yii::$app->session->getFlash('pass_error')){?> has-error<?php }?>">
+        <div class="form-group validation-errors ">
             <label class="col-sm-2 control-label" for="pass">Пароль</label>
             <div class="col-md-4">
-                <input id="pass" name="pass"  type="password" class="form-control input-md" >
+                <input id="pass" name="pass"  type="password" class="form-control input-md <?php if(Yii::$app->session->getFlash('pass_error')){?> is-invalid<?php }?>" >
                 <?php if(Yii::$app->session->getFlash('pass_error')){?>
                     <?php foreach(Yii::$app->session->getFlash('pass_error') as $er){?>
-                    <span class="help-block"><?= $er ?></span>
+                        <div class="invalid-feedback">
+                            <?= $er ?>
+                        </div>
                     <?php } ?>
                 <?php } ?>
             </div>
         </div>
-        <div class="form-group validation-errors <?php if(Yii::$app->session->getFlash('pass_confirm_error')){?> has-error<?php }?>">
+        <div class="form-group validation-errors ">
             <label class="col-sm-2 control-label" for="pass">Подтвердить пароль</label>
             <div class="col-md-4">
-                <input id="pass_confirm" name="pass_confirm" type="password" class="form-control input-md" >
+                <input id="pass_confirm" name="pass_confirm" type="password" class="form-control input-md <?php if(Yii::$app->session->getFlash('pass_confirm_error')){?> is_invalid<?php }?>" >
                 <?php if(Yii::$app->session->getFlash('pass_confirm_error')){?>
                     <?php foreach(Yii::$app->session->getFlash('pass_confirm_error') as $er){?>
-                        <span class="help-block"><?= $er ?></span>
+                        <div class="invalid-feedback">
+                            <?= $er ?>
+                        </div>
                     <?php } ?>
                 <?php } ?>
             </div>

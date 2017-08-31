@@ -78,23 +78,22 @@ class AuthController extends Controller
 
         $model = new LoginForm();
 
-        if (Yii::$app->request->isAjax){
+        if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-            if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
+            $model->load(Yii::$app->request->post(),'');
+            if ($model->login()) {
 
                 return $this->goBack();
 
             } elseif(!$model->validate()) {
-                return \common\helpers\JsonData::current([
-                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
-                ]);
+                $errors = $model->getErrors();
+                foreach($errors as $key => $item){
+                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
+                }
+                return $this->redirect('login');
             }
         } else {
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            return $this->render('login');
         }
     }
 
