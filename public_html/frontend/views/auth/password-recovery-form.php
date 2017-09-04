@@ -1,5 +1,5 @@
 <?php 
-$this->title = 'Восстановление пароля';
+$this->title = __('Password recovery');
 ?>
 <form class="form-horizontal" method="post" id="password-recovery-form">
     <?php  if(Yii::$app->session->getFlash('message')){ ?>
@@ -22,7 +22,7 @@ $this->title = 'Восстановление пароля';
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-default senddata" data-input="#password-recovery-form">Подтвердить</button>
+            <button class="btn btn-default senddata" data-input="#password-recovery-form"><?= __('Confirm') ?></button>
         </div>
     </div>
 

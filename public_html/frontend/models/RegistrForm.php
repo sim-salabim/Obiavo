@@ -29,7 +29,7 @@ class RegistrForm extends Model
             [['email', 'password','city'], 'required'],
             ['email','email'],
             ['email','unique', 'targetClass' => \common\models\User::className(),
-                                'message' => 'Данный пользователь уже зарегистрирован'],
+                                'message' => __('User already exists')],
             ['rememberMe', 'boolean'],
 //            ['password', 'validatePassword'],
             ['password', 'string', 'min' => 6],

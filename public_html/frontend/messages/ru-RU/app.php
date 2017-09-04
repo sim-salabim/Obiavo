@@ -1,4 +1,21 @@
 <?php
 return [
-
+    'Authorization' => 'Авторизация',
+    'Password' => 'Пароль',
+    'Forgot your password?' => 'Забыли пароль?',
+    'Sign in' => 'Войти',
+    'Password recovery' => 'Восстановление пароля',
+    'Confirm' => 'Подтвердить',
+    'Save' => 'Сохранить',
+    'Please make a request for password recovery once again or ask for a help our administrators.' => 'Пожалуйста запросите восстановление пароля еще раз или обратитесь к администраторам.',
+    'Registration' => 'Регистрация',
+    'Surname' => 'Фамилия',
+    'City' => 'Город',
+    'Select a city' => 'Выберите город',
+    'Nothing found' => 'Ничего не найдено',
+    'Sign up' => 'Зарегистрироваться',
+    'Required field' => 'Поле обязательно для заполнения',
+    'Incorrect email' => 'Некорректный email',
+    'Passwords don\'t match' => 'Пароли не совпадают',
+    'User already exists' => 'Данный пользователь уже зарегистрирован',
 ];

@@ -18,7 +18,7 @@ class PasswordResetForm extends Model
     public function rules()
     {
         return [
-            [['pass', 'pass_confirm'], 'required', 'message' => 'Поле обязательно для заполнения'],
+            [['pass', 'pass_confirm'], 'required', 'message' => __('Required field')],
             [['pass'], 'string', 'min' => 6],
             [['pass', 'pass_confirm'], 'validatePass']
         ];
@@ -35,7 +35,7 @@ class PasswordResetForm extends Model
 
         if (!$this->hasErrors()) {
             if ($this->pass != $this->pass_confirm) {
-                $this->addError($attribute, 'Пароли не совпадают.');
+                $this->addError($attribute, __('Passwords don\'t match'));
             }
         }
     }

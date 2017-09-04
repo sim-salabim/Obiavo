@@ -1,4 +1,22 @@
 <?php
 return [
-
+    'Authorization' => 'Authorization',
+    'Password' => 'Password',
+    'Forgot your password?' => 'Forgot your password?',
+    'Sign in' => 'Sign in',
+    'Password recovery' => 'Password recovery',
+    'Confirm' => 'Confirm',
+    'Confirm password' => 'Confirm password',
+    'Save' => 'Save',
+    'Please make a request for password recovery once again or ask for a help our administrators.' => 'Please make a request for password recovery once again or ask for a help our administrators.',
+    'Registration' => 'Registration',
+    'Surname' => 'Surname',
+    'City' => 'City',
+    'Select a city' => 'Select a city',
+    'Nothing found' => 'Nothing found',
+    'Sign up' => 'Sign up',
+    'Required field' => 'Required field',
+    'Incorrect email' => 'Incorrect email',
+    'Passwords don\'t match' => 'Passwords don\'t match',
+    'User already exists' => 'User already existsh',
 ];

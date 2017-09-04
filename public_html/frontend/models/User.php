@@ -39,7 +39,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cities_id', 'email', 'password', 'first_name', 'last_name', 'patronymic', 'created_at', 'updated_at'], 'required'],
+            [['cities_id', 'email', 'password', 'first_name', 'last_name', 'patronymic', 'created_at', 'updated_at'], 'required',
+                'message' => __('Field required')],
             [['cities_id', 'created_at', 'updated_at'], 'integer'],
             [['sex'], 'string'],
             [['email'], 'string', 'max' => 100],

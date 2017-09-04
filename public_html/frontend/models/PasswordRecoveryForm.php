@@ -18,8 +18,8 @@ class PasswordRecoveryForm extends Model
     public function rules()
     {
         return [
-            ['email', 'required', 'message' => 'Email обязательно для заполнения'],
-            ['email','email', 'message' => 'Некорректный email-адрес'],
+            ['email', 'required', 'message' => __('Required field')],
+            ['email','email', 'message' => __('Incorrect email')],
             ['email', 'validateEmail']
         ];
     }
