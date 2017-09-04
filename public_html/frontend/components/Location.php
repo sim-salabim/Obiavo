@@ -36,7 +36,6 @@ class Location extends Component {
 
     public function init(){
         parent::init();
-
         if(!$this->_country) {
             $country = Country::find()->current()->one();
             $this->country = $country ? $country : Country::find()->one();
@@ -44,7 +43,7 @@ class Location extends Component {
 
 //        $lang = $this->country->language;
 
-//        $this->language = $lang ? $lang : \common\models\Language::find()->isDefault()->one();
+//        $this->language = $lang ? $lang : Language::find()->isDefault()->one();
     }
 
     public function getCountry(){

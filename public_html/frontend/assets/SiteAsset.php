@@ -11,11 +11,11 @@ class SiteAsset extends AssetBundle
     public $css = [
         'css/site.css',
     ];
-    public $js = [
-        'js/main.js',
-        'js/init.js',
-        'js/selectpicker.js',
-    ];
+//    public $js = [
+//        'js/main.js',
+//        'js/init.js',
+//        'js/selectpicker.js',
+//    ];
 
     public $jsOptions = [
         'position' => \yii\web\View::POS_HEAD

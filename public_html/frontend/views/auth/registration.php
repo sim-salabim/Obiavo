@@ -1,16 +1,23 @@
 <?php
-use frontend\widgets\Selectpicker;
-use yii\helpers\Url;
+use kartik\select2\Select2;
+use yii\web\JsExpression;
+use common\models\City;
 
+$url = \yii\helpers\Url::toRoute('cities/search-cities-for-select');
 $this->title = 'Регистрация';
 ?>
-<form class="form-horizontal" id="registr-form">
+<form class="form-horizontal" method="post" id="registr-form">
 
 <!-- Имя-->
 <div class="form-group validation-errors">
   <label class="col-sm-2 control-label" for="first_name">Имя</label>
   <div class="col-md-5">
-  <input id="first_name" name="first_name" type="text" placeholder="Имя" class="form-control input-md">
+  <input
+      id="first_name"
+      name="first_name"
+      type="text"
+      placeholder="Имя"
+      class="form-control input-md <?php if(Yii::$app->session->getFlash('first_name_error')){?> is-invalid<?php }?>">
 
   </div>
 </div>
@@ -19,7 +26,12 @@ $this->title = 'Регистрация';
 <div class="form-group validation-errors">
   <label class="col-sm-2 control-label" for="last_name">Фамилия</label>
   <div class="col-md-5">
-  <input id="last_name" name="last_name" type="text" placeholder="Фамилия" class="form-control input-md">
+  <input
+      id="last_name"
+      name="last_name"
+      type="text"
+      placeholder="Фамилия"
+      class="form-control input-md <?php if(Yii::$app->session->getFlash('last_name_error')){?> is-invalid<?php }?>">
 
   </div>
 </div>
@@ -28,9 +40,28 @@ $this->title = 'Регистрация';
 <div class="form-group validation-errors">
     <label class="col-sm-2 control-label" for="city">Город</label>
     <div class="col-md-5">
-
-    <div class="input-md" id="cities"></div>
-
+      <?=
+         Select2::widget([
+             'name' => 'Город',
+             'options' => ['placeholder' => 'Выберите город..'],
+             'theme' => Select2::THEME_CLASSIC,
+             'pluginOptions' => [
+                 'allowClear' => true,
+                 'minimumInputLength' => 1,
+                 'language' => [
+                     'errorLoading' => new JsExpression("function () { return 'Ничего не найдено'; }"),
+                 ],
+                 'ajax' => [
+                     'url' => $url,
+                     'method' => 'post',
+                     'dataType' => 'json',
+                     'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                 ],
+                 'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                 'templateResult' => new JsExpression('function(city) { return city.text; }'),
+                 'templateSelection' => new JsExpression('function (city) { console.log(city); }'),
+             ],
+         ]);?>
   </div>
 </div>
 
@@ -42,7 +73,7 @@ $this->title = 'Регистрация';
            name="email"
            type="email"
            placeholder="email@mail.com"
-           class="form-control input-md"
+           class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>"
            required="">
   </div>
 </div>
@@ -51,7 +82,13 @@ $this->title = 'Регистрация';
 <div class="form-group validation-errors">
   <label class="col-sm-2 control-label" for="password">Пароль</label>
   <div class="col-md-5">
-    <input id="password" name="password" type="password" placeholder="Пароль" class="form-control input-md" required="">
+    <input
+        id="password"
+        name="password"
+        type="password"
+        placeholder="Пароль"
+        class="form-control input-md <?php if(Yii::$app->session->getFlash('password_error')){?> is-invalid<?php }?>"
+        required="">
   </div>
 </div>
 
@@ -65,18 +102,25 @@ $this->title = 'Регистрация';
 </form>
 
 <script type="text/javascript">
-
-Core.onFullLoad(function(){
-
-    rct.mount('search-selectpicker',$('#cities')[0],{
-        options: [],<?php /** Selectpicker::jsonNormalize($array)**/?>
-        url: "<?= \yii\helpers\Url::toRoute('cities/search-cities');?>",
-        preprocessFunc: 'preprocessDataCity',
-        attributes: {
-            className: 'cities-select',
-            name: 'city',
-            id: 'city'
+$(document).ready(function(){
+    $("#live-search-select").select2({
+        ajax: {
+            url: "<?= \yii\helpers\Url::toRoute('cities/search-cities');?>",
+            cache: true
         }
     });
-});
+})
+//Core.onFullLoad(function(){
+//
+//    rct.mount('search-selectpicker',$('#cities')[0],{
+//        options: [],<?php ///** Selectpicker::jsonNormalize($array)**/?>
+//        url: "<?//= \yii\helpers\Url::toRoute('cities/search-cities');?>//",
+//        preprocessFunc: 'preprocessDataCity',
+//        attributes: {
+//            className: 'cities-select',
+//            name: 'city',
+//            id: 'city'
+//        }
+//    });
+//});
 </script>

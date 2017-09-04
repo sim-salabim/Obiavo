@@ -15,8 +15,9 @@ class AppAsset extends AssetBundle
     public $depends = [
         'frontend\assets\SiteAsset',
         'frontend\assets\BootstrapAsset',
+        'frontend\assets\JqueryAsset',
 //        'frontend\assets\Fontawesome',
-//        'frontend\assets\SelectpickerAsset',
+        'frontend\assets\SelectAsset',
     ];
 
     public $publishOptions = [
