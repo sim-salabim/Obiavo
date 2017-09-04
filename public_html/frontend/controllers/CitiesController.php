@@ -1,13 +1,8 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\components\Location;
 use Yii;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\Json;
-use common\models\City;
 use yii\db\Query as Query;
 
 
@@ -31,7 +26,6 @@ class CitiesController extends Controller
     public function actionSearchCitiesForSelect(){
         $post = Yii::$app->request->post();
         $q = $post['q'];
-        $id = null;
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
 
@@ -40,16 +34,19 @@ class CitiesController extends Controller
             'cities.id as id',
             'cities_text.name as text'
         ])->from('cities')
-            ->where(['like', 'text', $q])
-            ->where(['=', 'cities_text.languages_id', 1])
+            ->where(
+                ['and',
+                ['like', 'cities_text.name', $q],
+                ['=',  'cities_text.languages_id', 1]])
             ->join(	'LEFT OUTER JOIN',
                 'cities_text',
                 'cities_text.cities_id = cities.id'
             );
         $command = $query->createCommand();
         $data = $command->queryAll();
-        $out['results'] = array_values($data);
-
+        if($data){
+            $out['results'] = array_values($data);
+        }
         return $out;
     }
 }
