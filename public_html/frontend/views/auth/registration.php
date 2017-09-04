@@ -44,12 +44,13 @@ $this->title = __('Registration');
          Select2::widget([
              'name' => __('City'),
              'options' => ['placeholder' => __('Select a city')],
-             'theme' => Select2::THEME_CLASSIC,
+             'theme' => Select2::THEME_DEFAULT,
+             'size' => Select2::MEDIUM,
              'pluginOptions' => [
                  'allowClear' => true,
                  'minimumInputLength' => 1,
                  'language' => [
-                     'errorLoading' => new JsExpression("function () { return ".__('Nothing found')."; }"),
+                     'errorLoading' => new JsExpression("function () { return 'Ничего не найдено'; }"),
                  ],
                  'ajax' => [
                      'url' => $url,
@@ -59,7 +60,7 @@ $this->title = __('Registration');
                  ],
                  'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
                  'templateResult' => new JsExpression('function(city) { return city.text; }'),
-                 'templateSelection' => new JsExpression('function (city) { console.log(city); }'),
+                 'templateSelection' => new JsExpression('function (city) { return city.text; }'),
              ],
          ]);?>
   </div>
