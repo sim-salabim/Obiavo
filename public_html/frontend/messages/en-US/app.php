@@ -10,6 +10,7 @@ return [
     'Save' => 'Save',
     'Please make a request for password recovery once again or ask for a help our administrators.' => 'Please make a request for password recovery once again or ask for a help our administrators.',
     'Registration' => 'Registration',
+    'Name' => 'Name',
     'Surname' => 'Surname',
     'City' => 'City',
     'Select a city' => 'Select a city',
@@ -19,4 +20,7 @@ return [
     'Incorrect email' => 'Incorrect email',
     'Passwords don\'t match' => 'Passwords don\'t match',
     'User already exists' => 'User already existsh',
+    'Search...' => 'Search...',
+    'Password must be minimum 6 characters long' => 'Password must be minimum 6 characters long',
+    'Successfully registered. Please sign in using your email and password' => 'Successfully registered. Please sign in using your email and password',
 ];

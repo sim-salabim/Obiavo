@@ -102,26 +102,30 @@ class AuthController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new RegistrForm();
-
-        if (Yii::$app->request->isAjax){
+        if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-            if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
-
-                return $this->goBack();
-
-            } elseif(!$model->validate()) {
-                return \common\helpers\JsonData::current([
-                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
-                ]);
+            $model->load(Yii::$app->request->post(),'');
+            if(!$model->validate()) {
+                $errors = $model->getErrors();
+                foreach($errors as $key => $item){
+                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
+                }
+                return $this->redirect('registration');
+            }else{
+                $user = new User();
+                $user->email = $model->email;
+                $user->last_name = $model->last_name;
+                $user->first_name = $model->first_name;
+                $user->cities_id = $model->cities_id;
+                $user->created_at = time();
+                $user->setPassword($model->password);
+                $user->save();
+                \Yii::$app->getSession()->setFlash('message', __('Successfully registered. Please sign in using your email and password'));
+                return $this->redirect('registration');
             }
         } else {
-
-            return $this->render('registration', [
-                'model' => $model,
-            ]);
+            return $this->render('registration');
         }
     }
 

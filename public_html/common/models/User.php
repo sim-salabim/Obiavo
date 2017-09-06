@@ -32,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function tableName()
     {
-        return '{{%users}}';
+        return '{{users}}';
     }
 
     public function behaviors()
@@ -223,6 +223,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function getFullName(){
-        return "{$this->last_name} {$this->first_name} {$this->patronymic}";
+        return "{$this->last_name} {$this->first_name}";
     }
 }

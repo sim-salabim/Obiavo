@@ -25,27 +25,27 @@ class CitiesController extends Controller
 
     public function actionSearchCitiesForSelect(){
         $post = Yii::$app->request->post();
-        $q = $post['q'];
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'text' => '']];
-
-        $query = new Query();
-        $query->select([
-            'cities.id as id',
-            'cities_text.name as text'
-        ])->from('cities')
-            ->where(
-                ['and',
-                ['like', 'cities_text.name', $q],
-                ['=',  'cities_text.languages_id', 1]])
-            ->join(	'LEFT OUTER JOIN',
-                'cities_text',
-                'cities_text.cities_id = cities.id'
-            );
-        $command = $query->createCommand();
-        $data = $command->queryAll();
-        if($data){
-            $out['results'] = array_values($data);
+        $out = [];
+        if(isset($post['q'])) {
+            $query = new Query();
+            $query->select([
+                'cities.id as id',
+                'cities_text.name as text'
+            ])->from('cities')
+                ->where(
+                        ['like', 'cities_text.name', $post['q']])
+                ->join('LEFT OUTER JOIN',
+                    'cities_text',
+                    'cities_text.cities_id = cities.id'
+                );
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+        }
+        if(isset($data) and $data){
+            foreach($data as $row){
+                $out[$row['text']] = array('id' => $row['id'], 'text' => $row['text']);
+            }
         }
         return $out;
     }
