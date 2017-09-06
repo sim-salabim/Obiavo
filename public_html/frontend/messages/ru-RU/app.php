@@ -20,6 +20,11 @@ return [
     'Passwords don\'t match' => 'Пароли не совпадают',
     'User already exists' => 'Данный пользователь уже зарегистрирован',
     'Search...' => 'Поиск...',
+    'Search' => 'Поиск',
     'Password must be minimum 6 characters long' => 'Пароль должен состоять минимум из 6-и символов',
     'Successfully registered. Please sign in using your email and password' => 'Вы успешно зарегистрировались. Пожалуйста выполните авторизацию, используя свой email и пароль.',
+    'Login' => 'Вход',
+    'Logout' => 'Выход',
+    'My office' => 'Личный кабинет',
+    'Post an add' => 'Подать объявление',
 ];

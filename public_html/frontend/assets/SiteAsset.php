@@ -10,6 +10,7 @@ class SiteAsset extends AssetBundle
 
     public $css = [
         'css/site.css',
+        'css/menu.css',
     ];
 //    public $js = [
 //        'js/main.js',
