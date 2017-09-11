@@ -27,4 +27,9 @@ return [
     'Logout' => 'Logout',
     'My office' => 'My office',
     'Post an add' => 'Post an add',
+    'Activity' => 'Activity',
+    'As default' => 'As default',
+    'Code' => 'Code',
+    'Currency' => 'Currency',
+    'Language' => 'Language',
 ];

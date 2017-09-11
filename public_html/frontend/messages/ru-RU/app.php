@@ -27,4 +27,9 @@ return [
     'Logout' => 'Выход',
     'My office' => 'Личный кабинет',
     'Post an add' => 'Подать объявление',
+    'Activity' => 'Активность',
+    'As default' => 'По умолчанию',
+    'Code' => 'Код',
+    'Currency' => 'Валюта',
+    'Language' => 'Язык',
 ];
