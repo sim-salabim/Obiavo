@@ -1,2 +1,2 @@
 <?php
-require(__DIR__ . '/../helpers/etc.php');
+require(__DIR__ . '/../../common/models/etc.php');
