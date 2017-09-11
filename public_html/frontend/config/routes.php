@@ -16,7 +16,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:\w+>/<city:\w+>',
+        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<city:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
@@ -25,7 +25,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:\w+>/<placement:\w+>/<city:\w+>',
+        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<placement:\w+>/<city:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
