@@ -32,4 +32,5 @@ return [
     'Code' => 'Code',
     'Currency' => 'Currency',
     'Language' => 'Language',
+    'Home page' => 'Home',
 ];

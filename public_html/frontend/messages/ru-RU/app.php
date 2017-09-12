@@ -32,4 +32,5 @@ return [
     'Code' => 'Код',
     'Currency' => 'Валюта',
     'Language' => 'Язык',
+    'Home page' => 'Главная',
 ];

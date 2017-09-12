@@ -30,7 +30,6 @@ AppAsset::register($this);
     <?php $this->beginBody() ?>
 
     <?= $this->render('header'); ?>
-
     <div id="wrapper">
         <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff; border-bottom: 1px solid #c0c0c0;">
             <div class="container">
@@ -40,6 +39,7 @@ AppAsset::register($this);
             </div>
         </div>
         <div class="container">
+            <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
             <?= $this->render(
                 'content',
                 ['content' => $content]
