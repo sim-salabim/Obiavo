@@ -33,4 +33,5 @@ return [
     'Currency' => 'Валюта',
     'Language' => 'Язык',
     'Home page' => 'Главная',
+    '_Location' => 'Выбор местоположения',
 ];

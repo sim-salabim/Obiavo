@@ -34,7 +34,7 @@
             <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
             <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?>"><?= __('Registration') ?></a></li>
         <?php } ?>
-
+        <li><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?= __('_Location') ?></a></li>
         <?php if (!Yii::$app->user->isGuest) { ?>
             <li>
                 <a href="<?= yii\helpers\Url::toRoute('/im') ?>">

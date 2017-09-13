@@ -271,3 +271,9 @@ ul.bs-autocomplete-menu a {
         transform: rotate(360deg);
     }
 }
+.city-list{
+    list-style-type: none !important;
+}
+.city-list a{
+    color: inherit !important;
+}

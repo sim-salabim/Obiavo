@@ -33,4 +33,5 @@ return [
     'Currency' => 'Currency',
     'Language' => 'Language',
     'Home page' => 'Home',
+    '_Location' => 'Location',
 ];

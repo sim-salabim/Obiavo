@@ -52,6 +52,7 @@ class CategoriesController extends BaseController
         $this->setPageTitle($this->category);
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
+        Yii::$app->view->params['h1'] = $this->category;
         return $this->render('index',  [
             'category'      => $this->category,
             'categories'    => $subCategories,
