@@ -40,7 +40,6 @@ AppAsset::register($this);
         </div>
         <div class="container">
             <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
-            <h1><?= $this->params['h1'] ?></h1>
             <?= $this->render(
                 'content',
                 ['content' => $content]

@@ -2,8 +2,16 @@
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
-    '<action:(vybor-goroda|select-location)>' => 'location/<action>/<domain:\w+>',
+    '<action:(vybor-goroda)>' => 'location/<action>',
     '/im' => 'users/im',
+    /**
+     * Класс правила ГОРОД
+     */
+    [
+        'class' => 'frontend\rules\url\LocationUrlRule',
+        'pattern' => '/<select-location>/<domain:\w+>',
+        'route' => 'location/select-location',
+    ],
     /**
      * Класс правила ГОРОД
      */

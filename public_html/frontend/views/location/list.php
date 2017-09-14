@@ -2,6 +2,9 @@
 use yii\helpers\Url;
 ?>
 <div class="row">
+    <div class="col-lg-12 col-xs-12">
+        <a href="<?= Url::toRoute(["select-location/reset/"])?>"><?= __('Reset location') ?></a>
+    </div>
     <?php foreach ($regions as $region) { ?>
         <div class="col-lg-4 col-xs-2">
             <ul class="lvl-block">

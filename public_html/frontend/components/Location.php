@@ -5,6 +5,8 @@ use yii;
 use yii\base\Object;
 use yii\base\Component;
 use common\models\Country;
+use common\models\Region;
+use common\models\City;
 use common\models\Language;
 
 /**
@@ -30,6 +32,7 @@ class Location extends Component {
      */
     private $_city = null;
     private $_country = null;
+    private $_region = null;
     // Текущий язык системы
     public $_language = null;
 
@@ -37,12 +40,24 @@ class Location extends Component {
     public function init(){
         parent::init();
         if(!$this->_country) {
-            $country = Country::find()->current()->one();
+            if(!isset($_COOKIE['country'])) {
+                $country = Country::find()->current()->one();
+                setcookie("country", $country->domain, null, '/');
+            }else{
+                $country = Country::find()->where(['domain' => $_COOKIE['country']])->one();
+            }
             $this->country = $country ? $country : Country::find()->one();
+        }
+        if(isset($_COOKIE['region'])){
+            $region = Region::find()->where(['domain' => $_COOKIE['region']])->one();
+            $this->_region = ($region) ? $region : null;
+        }
+        if(isset($_COOKIE['city'])){
+            $city = City::find()->where(['domain' => $_COOKIE['city']])->one();
+            $this->_city = ($city) ? $city : null;
         }
 
 //        $lang = $this->country->language;
-
 //        $this->language = $lang ? $lang : Language::find()->isDefault()->one();
     }
 
@@ -93,6 +108,19 @@ class Location extends Component {
     public function getCity(){
 
         return $this->_city;
+    }
+
+    public function setRegion($region){
+
+        if (!$region) return;
+
+        $this->_region = $region;
+        $this->_locationObject = $region;
+    }
+
+    public function getRegion(){
+
+        return $this->_region;
     }
 
     //--------- Свойства для вывода данных о локации ---

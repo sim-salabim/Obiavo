@@ -34,4 +34,5 @@ return [
     'Language' => 'Language',
     'Home page' => 'Home',
     '_Location' => 'Location',
+    'Reset location' => 'Reset location',
 ];

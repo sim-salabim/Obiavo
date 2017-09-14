@@ -11,7 +11,7 @@ class CountryQuery extends ActiveQuery {
     const TEXT_RELATION_TABLE = 'countries_text';
 
     public function current(){
-        return $this->andWhere(['domain' => \Yii::$app->request->serverName]);
+        return $this->andWhere(['domain' => \Yii::$app->params['mainDomain']]);
     }
 
 //    public function withText($languages_id = null){

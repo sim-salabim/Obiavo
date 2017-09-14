@@ -34,4 +34,5 @@ return [
     'Language' => 'Язык',
     'Home page' => 'Главная',
     '_Location' => 'Выбор местоположения',
+    'Reset location' => 'Сбросить местоположение',
 ];
