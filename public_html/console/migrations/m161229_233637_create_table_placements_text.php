@@ -19,8 +19,10 @@ class m161229_233637_create_table_placements_text extends Migration
             'name'          => $this->string()->notNull(),
             'url'           => $this->string()->notNull(),
         ], $tableOptions);
-        
+
+        $this->createIndex('idx_pt_parent_id', 'placements_text', 'languages_id');
         $this->addForeignKey('fk_placements_id_text', 'placements_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx_pt_placements_id', 'placements_text', 'placements_id');
         $this->addForeignKey('fk_placements_id_id', 'placements_text', 'placements_id', 'placements', 'id', 'CASCADE', 'CASCADE');
         
     }
@@ -28,7 +30,9 @@ class m161229_233637_create_table_placements_text extends Migration
     public function down()
     {
         $this->dropForeignKey('fk_placements_text', 'placements_text');
+        $this->dropIndex('idx_pt_parent_id','placements_text');
         $this->dropForeignKey('fk_placements_id', 'placements_text');
+        $this->dropIndex('idx_pt_placements_id','placements_text');
         $this->dropTable('placements_text');
     }
 

@@ -17,6 +17,8 @@ class CategoriesController extends BaseController
      */
     protected $category = null;
 
+    public $params;
+
     /**
      * @inheritdoc
      */
@@ -45,14 +47,16 @@ class CategoriesController extends BaseController
         $this->category = $category;
 
         $subCategories = $this->category->childrens;
-        $categoryPacements = $this->category->placements;
+        $categoryPlacements = $this->category->placements;
 
         $this->setPageTitle($this->category);
-
+        $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
+        Yii::$app->view->params['h1'] = $this->category;
         return $this->render('index',  [
             'category'      => $this->category,
             'categories'    => $subCategories,
-            'placements'    => $categoryPacements
+            'placements'    => $categoryPlacements
         ]);
     }
 }

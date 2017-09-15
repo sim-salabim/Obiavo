@@ -1,20 +1,23 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\PasswordRecovery as PasswordRecovery;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\LoginForm;
 use frontend\models\RegistrForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
+use frontend\models\PasswordRecoveryForm;
+use frontend\models\PasswordResetForm as PasswordResetForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use common\helpers\JsonData;
+use common\models\User as User;
+use common\models\Mailer as Mailer;
 
 class AuthController extends Controller
 {
+    public $enableCsrfValidation = false;
     /**
      * @inheritdoc
      */
@@ -75,23 +78,22 @@ class AuthController extends Controller
 
         $model = new LoginForm();
 
-        if (Yii::$app->request->isAjax){
+        if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-            if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
+            $model->load(Yii::$app->request->post(),'');
+            if ($model->login()) {
 
                 return $this->goBack();
 
             } elseif(!$model->validate()) {
-                return \common\helpers\JsonData::current([
-                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
-                ]);
+                $errors = $model->getErrors();
+                foreach($errors as $key => $item){
+                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
+                }
+                return $this->redirect('login');
             }
         } else {
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            return $this->render('login');
         }
     }
 
@@ -100,26 +102,30 @@ class AuthController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new RegistrForm();
-
-        if (Yii::$app->request->isAjax){
+        if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-            if ($model->load(Yii::$app->request->post(),'') && $model->login()) {
-
-                return $this->goBack();
-
-            } elseif(!$model->validate()) {
-                return \common\helpers\JsonData::current([
-                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $model->getErrors()
-                ]);
+            $model->load(Yii::$app->request->post(),'');
+            if(!$model->validate()) {
+                $errors = $model->getErrors();
+                foreach($errors as $key => $item){
+                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
+                }
+                return $this->redirect('registration');
+            }else{
+                $user = new User();
+                $user->email = $model->email;
+                $user->last_name = $model->last_name;
+                $user->first_name = $model->first_name;
+                $user->cities_id = $model->cities_id;
+                $user->created_at = time();
+                $user->setPassword($model->password);
+                $user->save();
+                \Yii::$app->getSession()->setFlash('message', __('Successfully registered. Please sign in using your email and password'));
+                return $this->redirect('registration');
             }
         } else {
-
-            return $this->render('registration', [
-                'model' => $model,
-            ]);
+            return $this->render('registration');
         }
     }
 
@@ -154,5 +160,85 @@ class AuthController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRecovery(){
+        $model = new PasswordRecoveryForm();
+        if (Yii::$app->request->isPost) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $model->load(Yii::$app->request->post(),'');
+            if ( !$model->validate()) {
+                $errors = $model->getErrors();
+                if(isset($errors['email']) && !empty($errors['email'])){
+                    \Yii::$app->getSession()->setFlash('recovery_error', $errors['email']);
+                }
+                return $this->redirect('recovery');
+            }else{
+                $user = User::findOne(['email' => Yii::$app->request->post('email')]);
+                $pass_recovery = PasswordRecovery::findOne(['users_id' => $user->id, 'recovered' => PasswordRecovery::NOT_RECOVERED]);
+                if(!$pass_recovery){
+                    $pass_recovery = new PasswordRecovery();
+                    $pass_recovery->created_at = time();
+                    $pass_recovery->users_id = $user->id;
+                }
+                $pass_recovery->hash = base64_encode("email=".Yii::$app->request->post('email')."&time=".time());
+                $pass_recovery->updated_at = time();
+                $pass_recovery->save();
+                Mailer::send($user->email, 'Восстановление пароля', 'pass-recovery', ['user' => $user, 'token' => $pass_recovery->hash]);
+                \Yii::$app->getSession()->setFlash('message', 'На указанный адрес выслано письмо с дальнейшими инструкциями');
+                return $this->redirect('recovery');
+            }
+        }
+
+        return $this->render('password-recovery-form');
+
+    }
+
+    public function actionReset(){
+        $model = new PasswordResetForm();
+            if (Yii::$app->request->isPost) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $model->load(Yii::$app->request->post(),'');
+            if ( !$model->validate()) {
+                $errors = $model->getErrors();
+                if(isset($errors['pass']) && !empty($errors['pass'])){
+                    \Yii::$app->getSession()->setFlash('pass_error', $errors['pass']);
+                }
+                if(isset($errors['pass_confirm']) && !empty($errors['pass_confirm'])){
+                    \Yii::$app->getSession()->setFlash('pass_confirm_error', $errors['pass_confirm']);
+                }
+
+                return $this->redirect('reset?key='.Yii::$app->request->post('key'));
+            }else{
+
+                $pass_recovery = PasswordRecovery::findOne(['hash' => Yii::$app->request->post('key'), 'recovered' => PasswordRecovery::NOT_RECOVERED]);
+                if(!$pass_recovery){
+                    \Yii::$app->getSession()->setFlash('error', 'Пожалуйста запросите восстановление пароля еще раз или обратитесь к администраторам');
+                    return $this->redirect('reset');
+                }
+                $pass_recovery->recovered = PasswordRecovery::RECOVERED;
+                $pass_recovery->updated_at = time();
+                $pass_recovery->save();
+                $key = Yii::$app->request->post('key');
+                $decoded = base64_decode($key);
+                $arr = explode('&', $decoded);
+                $email = str_replace('email=', '',$arr);
+                $user = User::findByEmail($email);
+                $user->setPassword(Yii::$app->request->post('pass'));
+                $user->save();
+                \Yii::$app->getSession()->setFlash('message', 'Пароль успешно обновлен, авторизуйтесь.');
+                return $this->redirect('reset');
+            }
+        }else{
+            $key = Yii::$app->request->get('key');
+
+            $key_valid = false;
+            if($key && PasswordRecovery::findOne(['hash' => $key, 'recovered' => PasswordRecovery::NOT_RECOVERED])){
+                $key_valid = true;
+            }
+            return $this->render('password-reset-form',
+                ['key_valid' => $key_valid,
+                'key' => $key]);
+        }
     }
 }

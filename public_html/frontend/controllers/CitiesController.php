@@ -3,15 +3,13 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\Json;
-use common\models\City;
+use yii\db\Query as Query;
 
 
 class CitiesController extends Controller
 {
 
+    public $enableCsrfValidation = false;
     /**
      * @inheritdoc
      */
@@ -25,21 +23,30 @@ class CitiesController extends Controller
     }
 
 
-    public function actionSearchCities(){
-
+    public function actionSearchCitiesForSelect(){
         $post = Yii::$app->request->post();
-        $searchText = $post['q'];
-
-        $cities = City::find()
-                        ->search($searchText)
-                        ->byLocation();
-
-        if (isset($post['format']) && $post['format'] === 'json'){
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-//            $cities->asArray();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if(isset($post['q'])) {
+            $query = new Query();
+            $query->select([
+                'cities.id as id',
+                'cities_text.name as text'
+            ])->from('cities')
+                ->where(
+                        ['like', 'cities_text.name', $post['q']])
+                ->join('LEFT OUTER JOIN',
+                    'cities_text',
+                    'cities_text.cities_id = cities.id'
+                );
+            $command = $query->createCommand();
+            $data = $command->queryAll();
         }
-        
-        return City::getComponentData($cities->all(), \Yii::$app->request->referrer);
+        if(isset($data) and $data){
+            foreach($data as $row){
+                $out[$row['text']] = array('id' => $row['id'], 'text' => $row['text']);
+            }
+        }
+        return $out;
     }
 }

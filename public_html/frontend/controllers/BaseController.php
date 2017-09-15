@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use Yii;
 use frontend\helpers\TextHelper;
+use yii\helpers\Url;
 
 class BaseController extends \yii\web\Controller {
 
@@ -19,6 +20,16 @@ class BaseController extends \yii\web\Controller {
         if(is_string($title)) {
             return $this->view->title = $title;
         }
+    }
+
+    public function setBreadcrumbs($array = []){
+        $breadcrumbs = [['label' => __('Home page'), 'link' => URL::to(Yii::$app->homeUrl)]];
+        if(!empty($array)){
+            foreach($array as $item){
+                $breadcrumbs[] = $item;
+            }
+        }
+        return $breadcrumbs;
     }
 
     public function beforeAction(){

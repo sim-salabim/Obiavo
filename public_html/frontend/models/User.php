@@ -39,7 +39,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cities_id', 'email', 'password', 'first_name', 'last_name', 'patronymic', 'created_at', 'updated_at'], 'required'],
+            [['cities_id', 'email', 'password', 'first_name', 'last_name'], 'required',
+                'message' => __('Field required')],
             [['cities_id', 'created_at', 'updated_at'], 'integer'],
             [['sex'], 'string'],
             [['email'], 'string', 'max' => 100],
@@ -60,7 +61,6 @@ class User extends \yii\db\ActiveRecord
             'password' => 'Password',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
-            'patronymic' => 'Patronymic',
             'sex' => 'Sex',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -97,5 +97,14 @@ class User extends \yii\db\ActiveRecord
     public function getUsersMessages0()
     {
         return $this->hasMany(UsersMessages::className(), ['from_users_id' => 'id']);
+    }
+
+    /**
+     * @param $password
+     * @return string
+     */
+    public function setPassword($password)
+    {
+        return Yii::$app->security->generatePasswordHash($password);
     }
 }

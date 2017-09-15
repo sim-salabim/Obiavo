@@ -23,16 +23,19 @@ class m161126_233728_categories_text_table_create extends Migration
             'seo_keywords' => $this->string(),
         ], $tableOptions);
 
+        $this->createIndex('idx_ct_categories_id', 'categories_text', 'categories_id');
         $this->addForeignKey('fk_categories_text_categories', 'categories_text', 'categories_id', 'categories', 'id', 'CASCADE', 'CASCADE');
-
+        $this->createIndex('idx_a_languages_id', 'categories_text', 'languages_id');
         $this->addForeignKey('fk_languages_for_language', 'categories_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
         $this->dropForeignKey('fk_categories_text_categories', 'categories_text');
+        $this->dropIndex('idx_ct_categories_id','categories_text');
         $this->dropForeignKey('fk_languages_for_language', 'categories_text');
-        $this->dropTable('regions_text');
+        $this->dropIndex('idx_a_languages_id','categories_text');
+        $this->dropTable('categories_text');
     }
 
     /*

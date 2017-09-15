@@ -1,7 +1,8 @@
 <?php
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
-    '<action:(login|registration|logout)>' => 'auth/<action>',
+    '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
+    '/vybor-goroda' => 'location/vybor-goroda',
     '/im' => 'users/im',
     /**
      * Класс правила ГОРОД
@@ -16,7 +17,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:\w+>/<city:\w+>',
+        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<city:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
@@ -25,8 +26,16 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<placement:\w+>/<category:\w+>/<city:\w+>',
+        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<placement:\w+>/<city:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
+    ],
+    /**
+     * Класс правила ГОРОД
+     */
+    [
+        'class' => 'frontend\rules\url\SelectLocationUrlRule',
+        'pattern' => '/<select-location>/<domain:\w+>',
+        'route' => 'location/select-location',
     ],
 ];

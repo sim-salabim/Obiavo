@@ -103,7 +103,7 @@ class Language extends \yii\db\ActiveRecord
      */
     public function getText()
     {
-        return $this->HasOne(LanguageText::className(), ['languages_id' => 'id']);
+        return $this->hasOne(LanguageText::className(), ['languages_id' => 'id']);
     }
 
     public function getTexts()

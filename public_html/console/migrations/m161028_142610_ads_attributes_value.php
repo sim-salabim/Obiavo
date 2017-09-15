@@ -16,29 +16,23 @@ class m161028_142610_ads_attributes_value extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'ads_id' => $this->integer()->unsigned()->notNull(),
             'categories_attributes_id' => $this->integer()->unsigned()->notNull(),
-            'value' => $this->text(),
+            'value' => $this->string(),
         ], $tableOptions);
 
-//        $this->createIndex('ads_id', 'ads_attributes_value', 'ads_id');
+        $this->createIndex('idx_ads_id', 'ads_attributes_value', 'ads_id');
         $this->addForeignKey('fk_ads_attributes_value_ads', 'ads_attributes_value', 'ads_id', 'ads', 'id', 'CASCADE', 'CASCADE');
 
-//        $this->createIndex('categories_attributes_id', 'ads_attributes_value', 'categories_attributes_id');
+        $this->createIndex('idx_categories_attributes_id', 'ads_attributes_value', 'categories_attributes_id');
         $this->addForeignKey('fk_ads_attributes_value_category', 'ads_attributes_value', 'categories_attributes_id', 'categories_attributes', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
+        $this->dropForeignKey('fk_ads_attributes_value_ads','ads_attributes_value');
+        $this->dropIndex('idx_ads_id','ads_attributes_value');
+        $this->dropForeignKey('fk_ads_attributes_value_category','ads_attributes_value');
+        $this->dropIndex('idx_categories_attributes_id','ads_attributes_value');
         $this->dropTable('ads_attributes_value');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

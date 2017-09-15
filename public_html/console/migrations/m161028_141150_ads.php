@@ -24,13 +24,13 @@ class m161028_141150_ads extends Migration
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
-//        $this->createIndex('cities_id', 'ads', 'cities_id');
+        $this->createIndex('idx_a_cities_id', 'ads', 'cities_id');
         $this->addForeignKey('fk_ads_city', 'ads', 'cities_id', 'cities', 'id', 'CASCADE', 'CASCADE');
 
-//        $this->createIndex('users_id', 'ads', 'users_id');
+        $this->createIndex('idx_a_users_id', 'ads', 'users_id');
         $this->addForeignKey('fk_ads_user', 'ads', 'users_id', 'users', 'id', 'CASCADE', 'CASCADE');
 
-//        $this->createIndex('categories_id', 'ads', 'categories_id');
+        $this->createIndex('idx_a_categories_id', 'ads', 'categories_id');
         $this->addForeignKey('fk_ads_category', 'ads', 'categories_id', 'categories', 'id', 'CASCADE', 'CASCADE');
 
         $this->addCommentOnTable('ads', 'Таблица объявлений');
@@ -38,17 +38,13 @@ class m161028_141150_ads extends Migration
 
     public function down()
     {
+        $this->dropForeignKey('fk_ads_city','ads');
+        $this->dropIndex('idx_a_cities_id','ads');
+        $this->dropForeignKey('fk_ads_user','ads');
+        $this->dropIndex('idx_a_users_id','ads');
+        $this->dropForeignKey('fk_ads_category','ads');
+        $this->dropIndex('idx_a_categories_id','ads');
         $this->dropTable('ads');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

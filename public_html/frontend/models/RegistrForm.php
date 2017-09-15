@@ -14,7 +14,7 @@ class RegistrForm extends Model
     public $password;
     public $first_name = '';
     public $last_name = '';
-    public $city;
+    public $cities_id;
     public $rememberMe = true;
 
     private $_user;
@@ -26,13 +26,13 @@ class RegistrForm extends Model
     public function rules()
     {
         return [
-            [['email', 'password','city'], 'required'],
-            ['email','email'],
+            [['email', 'password','cities_id', 'first_name', 'last_name'], 'required', 'message' => __('Required field')],
+            ['email','email', 'message' => __('Incorrect email')],
             ['email','unique', 'targetClass' => \common\models\User::className(),
-                                'message' => 'Данный пользователь уже зарегистрирован'],
+                                'message' => __('User already exists')],
             ['rememberMe', 'boolean'],
 //            ['password', 'validatePassword'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => 6, 'message' => __('Password must be minimum 6 characters long')],
         ];
     }
 

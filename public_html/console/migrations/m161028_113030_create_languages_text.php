@@ -20,12 +20,14 @@ class m161028_113030_create_languages_text extends Migration
             'name' => $this->string()->notNull(),
         ], $tableOptions);
 
-//        $this->createIndex('languages_id', 'languages_text', 'languages_id');
+        $this->createIndex('idx_lt_languages_id', 'languages_text', 'languages_id');
         $this->addForeignKey('fk_languages_text_language', 'languages_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function safeDown()
     {
+        $this->dropForeignKey('fk_languages_text_language','languages_text');
+        $this->dropIndex('idx_lt_languages_id','languages_text');
         $this->dropTable('languages_text');
     }
 }

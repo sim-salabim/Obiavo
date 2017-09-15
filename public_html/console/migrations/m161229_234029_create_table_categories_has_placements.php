@@ -17,8 +17,10 @@ class m161229_234029_create_table_categories_has_placements extends Migration
             'categories_id'  => $this->integer()->unsigned()->notNull(),
             'placements_id'  => $this->integer()->unsigned()->notNull(),            
         ], $tableOptions);
-        
+
+        $this->createIndex('idx_chp_categories_id', 'categories_has_placements', 'categories_id');
         $this->addForeignKey('fk_categories_has_placements_categories_id', 'categories_has_placements', 'categories_id', 'categories', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx_chp_placements_id', 'categories_has_placements', 'placements_id');
         $this->addForeignKey('fk_categories_has_placements_id', 'categories_has_placements', 'placements_id', 'placements', 'id', 'CASCADE', 'CASCADE');
         
         $this->addCommentOnTable('categories_has_placements','Оношение типов объявлений (купить, продать, аренда и тд) к категориям');
@@ -27,18 +29,10 @@ class m161229_234029_create_table_categories_has_placements extends Migration
     public function down()
     {
         $this->dropForeignKey('fk_categories_has_placements_categories_id', 'categories_has_placements');
+        $this->dropIndex('idx_chp_categories_id','categories_has_placements');
         $this->dropForeignKey('fk_categories_has_placements_id', 'categories_has_placements');
+        $this->dropIndex('idx_chp_placements_id','categories_has_placements');
         $this->dropTable('categories_has_placements');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

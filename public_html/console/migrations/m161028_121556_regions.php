@@ -25,7 +25,7 @@ class m161028_121556_regions extends Migration
             'latitude' => $this->string(100)->null()
         ], $tableOptions);
 
-//        $this->createIndex('countries_id', 'regions', 'countries_id');
+        $this->createIndex('idx_r_countries_id', 'regions', 'countries_id');
         $this->addForeignKey('fk_regions_country', 'regions', 'countries_id', 'countries', 'id', 'CASCADE', 'CASCADE');
 
         $this->addcommentOnColumn('regions','longitude','Долгота');
@@ -35,6 +35,8 @@ class m161028_121556_regions extends Migration
 
     public function safeDown()
     {
+        $this->dropForeignKey('fk_regions_country','regions');
+        $this->dropIndex('idx_r_countries_id','regions');
         $this->dropTable('regions');
     }
 }

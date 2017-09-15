@@ -16,11 +16,11 @@ class m161028_122652_attributes_types extends Migration
 
         $this->createTable('attributes_types', [
             'id' => $this->primaryKey()->unsigned(),
-            'alias' => $this->string(100)->notNull(),
-            'description' => $this->string()->notNull(),
+            'name' => $this->string(100)->notNull(),
+            'description' => $this->string(),
         ], $tableOptions);
 
-        $this->addcommentOnColumn('attributes_types','alias','Уникальное имя для типа ');
+        $this->addcommentOnColumn('attributes_types','name','Уникальное имя для типа ');
 
         $this->addCommentOnTable('attributes_types', 'Список типов(текст, список и тд) для аттрибутов, которые указываются при подаче объявления');
     }

@@ -173,6 +173,11 @@ class Category extends \yii\db\ActiveRecord
                     ->all();
     }
 
+    public function getAttributes(){
+        return $this->hasMany(CategoryAttribute::className(), ['id' => 'attributes_id'])
+            ->viaTable('categories_has_attributes', ['categories_id' => 'id']);
+    }
+
     public function setPlacements($placementsIds) {
         $categoryPlacements = new CategoryPlacement;
 
@@ -256,14 +261,10 @@ class Category extends \yii\db\ActiveRecord
         $breadcrumbs = [];
 
         while ($parent) {
-            $breadcrumbs[] = $parent;
-
+            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $parent->_text->url];
             $parent = $parent->getParent()->one();
         }
-
-        $breadcrumbs = array_reverse($breadcrumbs);
-
-        return ArrayHelper::index($breadcrumbs, 'techname');
+        return array_reverse($breadcrumbs);
     }
 
     /**

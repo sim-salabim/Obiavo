@@ -13,48 +13,59 @@ use common\widgets\Alert;
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::decode(strip_tags($this->title)) ?></title>
-    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
-    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <!DOCTYPE html>
+    <html lang="<?= Yii::$app->language ?>">
+    <head>
+        <meta charset="<?= Yii::$app->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <?= Html::csrfMetaTags() ?>
+        <title><?= Html::decode(strip_tags($this->title)) ?></title>
+        <!--        <link rel="stylesheet" href="/css/site.css">-->
+        <!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">-->
+        <!--        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+        <?php $this->head() ?>
+        <? // frontend\widgets\Frontend::widget()?>
+    </head>
+    <body>
+    <?php $this->beginBody() ?>
 
-    <?php $this->head() ?>
-    <?= frontend\widgets\Frontend::widget()?>
-    <!-- Latest compiled and minified CSS -->
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">-->
+    <?= $this->render('header'); ?>
+    <div id="wrapper">
+        <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff; border-bottom: 1px solid #c0c0c0;">
+            <div class="container">
+                <h1 class="display-3"><?= $this->title ?></h1>
+                <p class="lead">Obiavo.ru - сайт бесплатных объявлений России. Ежедневно на сайте размещаются тысячи
+                    частных объявлений. 34454 - Объявления.</p>
+            </div>
+        </div>
+        <div class="container">
+            <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
+            <?= $this->render(
+                'content',
+                ['content' => $content]
+            ) ?>
+        </div>
+    </div>
+    <footer class="footer">
+        <?= $this->render('footer'); ?>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
 
-<!-- Latest compiled and minified JavaScript -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>-->
-
-
-</head>
-<body>
-<?php $this->beginBody() ?>
-<h1><?= $this->title?></h1>
-
-<div id="loadcontent-container" style="display: none"></div>
-<div class="wrap main-flex-container">
-
-        <?= $this->render(
-            'content',
-            ['content' => $content]
-        ) ?>
-
-        <?= $this->render(
-                    'right'
-        );?>
-</div>
-
-<footer class="footer">
-    <?= $this->render('footer');?>
-</footer>
-
-<?php $this->endBody() ?>
-</body>
-</html>
+    <?php $this->endBody() ?>
+    <script>
+        function openNav() {
+            console.log(document.getElementById("mySidenav").style.width);
+            if (document.getElementById("mySidenav").style.width == "0px" || document.getElementById("mySidenav").style.width == "") {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("wrapper").style.marginLeft = "250px";
+            } else {
+                document.getElementById("mySidenav").style.width = "0px";
+                document.getElementById("wrapper").style.marginLeft = "0px";
+            }
+        }
+    </script>
+    </body>
+    </html>
 <?php $this->endPage() ?>

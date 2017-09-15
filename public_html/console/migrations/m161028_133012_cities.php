@@ -23,7 +23,7 @@ class m161028_133012_cities extends Migration
             'latitude' => $this->string(100)
         ], $tableOptions);
 
-//        $this->createIndex('regions_id', 'cities', 'regions_id');
+        $this->createIndex('idx_c_regions_id', 'cities', 'regions_id');
         $this->addForeignKey('fk_cities_region', 'cities', 'regions_id', 'regions', 'id', 'CASCADE', 'CASCADE');
 
         $this->addcommentOnColumn('cities','longitude','Долгота');
@@ -33,17 +33,8 @@ class m161028_133012_cities extends Migration
 
     public function down()
     {
+        $this->dropForeignKey('fk_cities_region','cities');
+        $this->dropIndex('idx_c_regions_id','cities');
         $this->dropTable('cities');
     }
-
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

@@ -22,12 +22,14 @@ class m161028_120536_countries_text extends Migration
             'name_pp' => $this->string(),
         ], $tableOptions);
 
-//        $this->createIndex('countries_id', 'countries_text', 'countries_id');
+        $this->createIndex('idx_ct_countries_id', 'countries_text', 'countries_id');
         $this->addForeignKey('fk_countries_text_country', 'countries_text', 'countries_id', 'countries', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function safeDown()
     {
+        $this->dropForeignKey('fk_countries_text_country','countries_text');
+        $this->dropIndex('idx_ct_countries_id','countries_text');
         $this->dropTable('countries_text');
     }
 }

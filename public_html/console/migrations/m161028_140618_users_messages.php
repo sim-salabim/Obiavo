@@ -21,10 +21,10 @@ class m161028_140618_users_messages extends Migration
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
-//        $this->createIndex('from_users_id', 'users_messages', 'from_users_id');
+        $this->createIndex('idx_um_from_users_id', 'users_messages', 'from_users_id');
         $this->addForeignKey('fk_users_from_user', 'users_messages', 'from_users_id', 'users', 'id', 'CASCADE', 'CASCADE');
 
-//        $this->createIndex('to_users_id', 'users_messages', 'to_users_id');
+        $this->createIndex('idx_um_to_users_id', 'users_messages', 'to_users_id');
         $this->addForeignKey('fk_users_to_user', 'users_messages', 'to_users_id', 'users', 'id', 'CASCADE', 'CASCADE');
 
         $this->addCommentOnTable('users_messages', 'Таблица личных сообщений среди пользователей');
@@ -35,17 +35,11 @@ class m161028_140618_users_messages extends Migration
 
     public function down()
     {
+        $this->dropForeignKey('fk_users_from_user','users_messages');
+        $this->dropIndex('idx_um_from_users_id','users_messages');
+        $this->dropForeignKey('fk_users_to_user','users_messages');
+        $this->dropIndex('idx_um_to_users_id','users_messages');
         $this->dropTable('users_messages');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

@@ -23,17 +23,19 @@ class m161028_122106_regions_text extends Migration
             'name_pp' => $this->string()->null(),
         ], $tableOptions);
 
-//        $this->createIndex('countries_id', 'regions_text', 'countries_id');
+        $this->createIndex('idx_rt_countries_id', 'regions_text', 'countries_id');
         $this->addForeignKey('fk_regions_text_region', 'regions_text', 'regions_id', 'regions', 'id', 'CASCADE', 'CASCADE');
 
-//        $this->createIndex('languages_id', 'regions_text', 'languages_id');
+        $this->createIndex('idx_rt_languages_id', 'regions_text', 'languages_id');
         $this->addForeignKey('fk_regions_t_lang', 'regions_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function safeDown()
     {
         $this->dropForeignKey('fk_regions_t_lang', 'regions_text');
+        $this->dropIndex('idx_rt_countries_id','regions_text');
         $this->dropForeignKey('fk_regions_t_country', 'regions_text');
+        $this->dropIndex('idx_rt_languages_id','regions_text');
         $this->dropTable('regions_text');
     }
 }

@@ -32,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function tableName()
     {
-        return '{{%users}}';
+        return '{{users}}';
     }
 
     public function behaviors()
@@ -92,6 +92,17 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::findOne(['email' => $username]);
+    }
+
+    /**
+     * Finds user by email
+     *
+     * @param string $email
+     * @return static|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
     }
 
     /**
@@ -212,6 +223,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function getFullName(){
-        return "{$this->last_name} {$this->first_name} {$this->patronymic}";
+        return "{$this->last_name} {$this->first_name}";
     }
 }

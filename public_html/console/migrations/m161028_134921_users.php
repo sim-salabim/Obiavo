@@ -25,23 +25,15 @@ class m161028_134921_users extends Migration
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
-//        $this->createIndex('cities_id', 'users', 'cities_id');
+        $this->createIndex('cities_id', 'users', 'cities_id');
         $this->addForeignKey('fk_users_city', 'users', 'cities_id', 'cities', 'id', 'NO ACTION', 'CASCADE');
     }
 
     public function down()
     {
+        $this->dropForeignKey('fk_users_city','users');
+        $this->dropIndex('cities_id','users');
         $this->dropTable('users');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }
