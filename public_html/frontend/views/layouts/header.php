@@ -16,7 +16,7 @@
                    id="navbarDropdownMenuLink"">
                 <span class="navbar-toggler-icon"></span>
                 </a>
-                <a class="navbar-brand mx-2" href="#">Obiavo.ru</a>
+                <a class="navbar-brand mx-2" href="<?= yii\helpers\Url::toRoute('/') ?>">Obiavo.ru</a>
             </ul>
 
             <form class="form-inline my-2 mr-4 my-lg-0">
