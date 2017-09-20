@@ -38,7 +38,7 @@ class AttributesUnitsText extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 255],
             [['attributes_units_id'], 'exist', 'skipOnError' => true, 'targetClass' => AttributesUnits::className(), 'targetAttribute' => ['attributes_units_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-            [['languages_id'],'default', 'value' => Language::getLanguageDeafault()->id],
+            [['languages_id'],'default', 'value' => Language::getDefault()->id],
         ];
     }
 

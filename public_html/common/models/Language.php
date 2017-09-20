@@ -119,7 +119,7 @@ class Language extends \yii\db\ActiveRecord
         return $this->hasMany(RegionsText::className(), ['languages_id' => 'id']);
     }
 
-    public static function getLanguageDeafault(){
+    public static function getDefault(){
         return self::findOne([
             'is_default' => true
         ]);

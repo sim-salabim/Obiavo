@@ -38,7 +38,7 @@ class CityText extends \yii\db\ActiveRecord
             [['name', 'name_rp', 'name_pp'], 'string', 'max' => 255],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-            [['languages_id'],'default', 'value' => Language::getLanguageDeafault()->id],
+            [['languages_id'],'default', 'value' => Language::getDefault()->id],
         ];
     }
 

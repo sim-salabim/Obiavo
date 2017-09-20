@@ -41,7 +41,7 @@ class CategoriesText extends \yii\db\ActiveRecord
             [['name', 'url', 'seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
-            ['languages_id','default','value' => Language::getLanguageDeafault()->id]
+            ['languages_id','default','value' => Language::getDefault()->id]
         ];
     }
 

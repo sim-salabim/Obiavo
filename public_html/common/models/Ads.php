@@ -16,6 +16,7 @@ use Yii;
  * @property int $price
  * @property int $created_at
  * @property int $updated_at
+ * @property int $expiry_date
  *
  */
 class Ads extends \yii\db\ActiveRecord

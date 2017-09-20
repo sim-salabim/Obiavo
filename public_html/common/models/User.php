@@ -17,6 +17,7 @@ use yii\web\IdentityInterface;
  * @property string $first_name
  * @property string $last_name
  * @property string $patronymic
+ * @property string $phone_number
  * @property string $sex
  * @property integer $created_at
  * @property integer $updated_at
@@ -59,12 +60,13 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'cities_id' => 'Cities ID',
-            'email' => 'Email',
-            'password' => 'Password',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'patronymic' => 'Patronymic',
-            'sex' => 'Sex',
+            'email' => __('Email'),
+            'password' => __('Password'),
+            'first_name' => __('First Name'),
+            'last_name' => __('Last Name'),
+            'patronymic' => __('Patronymic'),
+            'phone_number' => __('Phone Number'),
+            'sex' => __('Sex'),
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

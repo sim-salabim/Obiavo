@@ -9,9 +9,9 @@ use yii\helpers\Url;
                     <a href="<?= Url::toRoute(['categories/index','category' => $category->url])?>"><?= $category->_text->name?></a>
                 </h4>
 
-                <?php foreach ($category->childrens as $children) { ?>
+                <?php foreach ($category->children as $child) { ?>
 
-                    <li class="lvl-2 ml-4" style="color: #777;"><a href="<?= Url::toRoute(['categories/index','category' => $children->url])?>"><?= $children->_text->name?></a></li>
+                    <li class="lvl-2 ml-4" style="color: #777;"><a href="<?= Url::toRoute(['categories/index','category' => $child->url])?>"><?= $child->_text->name?></a></li>
                 <?php } ?>
             </ul>
         </div>

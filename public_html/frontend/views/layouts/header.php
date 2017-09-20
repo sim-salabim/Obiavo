@@ -41,6 +41,16 @@
                     <?= __('My office') ?>
                 </a>
             </li>
+            <li>
+                <a href="<?= yii\helpers\Url::toRoute('/im') ?>">
+                    <?= __('My ads') ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?= yii\helpers\Url::toRoute('/podat-obiavlenie') ?>">
+                    <?= __('Add ad') ?>
+                </a>
+            </li>
             <li><a href="<?= yii\helpers\Url::toRoute('/logout') ?>"><?= __('Logout') ?></a></li>
         <?php } ?>
 

@@ -13,8 +13,8 @@ class CategoryQuery extends ActiveQuery {
     /**
      * Получить потомков
      */
-    public function withChildrens(){
-        return $this->with('childrens');
+    public function withChildren(){
+        return $this->with('children');
     }
 
     /**

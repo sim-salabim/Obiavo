@@ -20,15 +20,4 @@ class WebUser extends \yii\web\User {
 
     private $country = null;
 
-    /**
-     * Получить текущий язык
-     * @return type
-     */
-//    public function getLanguage(){
-//        if (!$this->language){
-//            $this->language = Yii::$app->location->country->language;//Language::getLanguageDeafault();
-//        }
-//
-//        return $this->language;
-//    }
 }

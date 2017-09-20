@@ -2,7 +2,7 @@
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Url;
 
-$breadcrumbs = $category->getAllParentsForBreadcrumbs();
+$breadcrumbs = $category->getBreadcrumbs();
 
 if (!empty($breadcrumbs)){
 

@@ -16,6 +16,8 @@ use common\models\scopes\CategoryQuery;
  *
  * @property Ads[] $ads
  * @property Category $parent
+ * @property Category $children
+ * @property Placement $placements
  * @property Category[] $categories
  * @property CategoriesAttributes[] $categoriesAttributes
  * @property CategoryGenerated[] $categoryGenerated
@@ -132,7 +134,7 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'parent_id']);
     }
 
-    public function getChildrens()
+    public function getChildren()
     {
         return $this->hasMany(Category::className(), ['parent_id' => 'id'])
                     ->withText();
@@ -265,6 +267,25 @@ class Category extends \yii\db\ActiveRecord
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
+    }
+
+    /**
+     * Найти всех родителей пункта меню
+     */
+    public function getBreadcrumbs()
+    {
+        $parent = $this;
+        $breadcrumbs = [];
+
+        while ($parent) {
+            $breadcrumbs[] = $parent;
+
+            $parent = $parent->getParent()->one();
+        }
+
+        $breadcrumbs = array_reverse($breadcrumbs);
+
+        return ArrayHelper::index($breadcrumbs, 'techname');
     }
 
     /**

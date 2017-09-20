@@ -36,7 +36,7 @@ class PlacementsText extends \yii\db\ActiveRecord
             [['name', 'url'], 'string', 'max' => 255],
             [['placements_id'], 'exist', 'skipOnError' => true, 'targetClass' => Placement::className(), 'targetAttribute' => ['placements_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-            [['languages_id'],'default', 'value' => Language::getLanguageDeafault()->id],
+            [['languages_id'],'default', 'value' => Language::getDefault()->id],
         ];
     }
 

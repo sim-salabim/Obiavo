@@ -3,6 +3,9 @@ return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
     '/vybor-goroda' => 'location/vybor-goroda',
+    '/podat-obiavlenie' => 'ad/new-add',
+    '/get-sub-categories' => 'categories/get-sub-categories',
+    '/get-category-placement' => 'categories/get-category-placement',
     '/im' => 'users/im',
     /**
      * Класс правила ГОРОД

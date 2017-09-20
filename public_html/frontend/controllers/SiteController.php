@@ -74,7 +74,7 @@ class SiteController extends BaseController
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
                             ->withText()
-                            ->withChildrens()
+                            ->withChildren()
                             ->orphan()
                             ->all();
 

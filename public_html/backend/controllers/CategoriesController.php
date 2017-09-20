@@ -65,7 +65,7 @@ class CategoriesController extends BaseController
         } else {
             $categoryParent = Category::findOne($id);
 
-            $categories = $categoryParent->getChildrens()->all();
+            $categories = $categoryParent->getChildren()->all();
         }
 
         return $this->render('index',compact('categoryParent','categories'));
