@@ -61,4 +61,6 @@ return [
     'Title' => 'Title',
     'Publish' => 'Publish',
     'Price' => 'Price',
+    'Incorrect format' => 'Incorrect format',
+    'Add successfully added.' => 'Add successfully added.',
 ];

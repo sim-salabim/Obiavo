@@ -1,15 +1,26 @@
 <?php
 namespace frontend\models;
 
+use common\models\Ads;
+use common\models\Placement;
 use Yii;
 use yii\base\Model;
+use common\models\Mailer;
 
 /**
  * New Add form
  */
 class NewAdForm extends Model
 {
-    public $email;
+    public $categories_id;
+    public $subcategory;
+    public $subsubcategory;
+    public $placement_id;
+    public $expiry_date;
+    public $cities_id;
+    public $title;
+    public $text;
+    public $price;
 
     /**
      * @inheritdoc
@@ -17,8 +28,51 @@ class NewAdForm extends Model
     public function rules()
     {
         return [
-            [['category', 'subcategory', 'place', 'time', 'header', 'text', 'price'], 'required', 'message' => __('Required field')],
+            [[
+                'categories_id',
+                'subcategory',
+                'placement_id',
+                'expiry_date',
+                'title',
+                'text',
+                'price',
+                'cities_id'], 'required', 'message' => __('Required field')],
+            [[
+                'categories_id',
+                'subcategory',
+                'placement_id',
+                'expiry_date',
+                'cities_id'], 'integer', 'integerOnly' => true, 'min' => 1],
+            [['expiry_date','price'], 'integer', 'message' => __('Incorrect format')],
+            ['subsubcategory', 'validateSubSubCategory']
         ];
+    }
+
+    public function newAd(){
+        $adsModel = new Ads();
+        $adsModel->created_at = time();
+        $adsModel->categories_id = (!$this->subsubcategory) ? $this->subcategory : $this->subsubcategory;
+        $adsModel->cities_id = $this->cities_id;
+        $adsModel->users_id = \Yii::$app->user->identity->id;
+        $adsModel->title = $this->title;
+        $adsModel->text = $this->text;
+        $adsModel->price = $this->price;
+        $adsModel->expiry_date = time() + $this->expiry_date;
+        //TODO сохранить placement
+        $adsModel->url = time();//TODO сделать генерацию урлов
+        $adsModel->save();//TODO сделать генерацию урлов
+        //TODO отправка письма пользователю
+
+    }
+    /** Валидация субкатегории 3-го уровня
+     *
+     * @param $attribute
+     * @param $params
+     */
+    public function validateSubSubCategory($attribute, $params){
+        if ($this->subsubcategory !== null AND $this->subsubcategory < 1) {
+            $this->addError($attribute, __('Required field'));
+        }
     }
 
 }

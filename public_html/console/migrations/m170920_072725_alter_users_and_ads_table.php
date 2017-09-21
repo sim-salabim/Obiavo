@@ -8,11 +8,13 @@ class m170920_072725_alter_users_and_ads_table extends Migration
     {
         $this->addColumn('users', 'phone_number', $this->string()->null());
         $this->addColumn('ads', 'expiry_date', $this->integer()->notNull());
+        $this->addColumn('ads', 'url', $this->string()->notNull()->unique());
     }
 
     public function down()
     {
         $this->dropColumn('users', 'phone_number');
         $this->dropColumn('ads', 'expiry_date');
+        $this->dropColumn('ads', 'url');
     }
 }

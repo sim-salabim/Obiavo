@@ -52,11 +52,11 @@ return [
     'Subcategory' => 'Подкатегория',
     'Time' => 'Время',
     'One day' => 'Один день',
-    'Two days' => 'Один день',
+    'Two days' => 'Два дня',
     'Three days' => 'Три дня',
-    'Four days' => 'Четыре день',
-    'Five days' => 'Пять день',
-    'Six days' => 'Шесть день',
+    'Four days' => 'Четыре дня',
+    'Five days' => 'Пять дней',
+    'Six days' => 'Шесть дней',
     'One week' => 'Одна неделя',
     'Two weeks' => 'Две недели',
     'Three weeks' => 'Три недели',
@@ -64,4 +64,7 @@ return [
     'Title' => 'Заголовок',
     'Publish' => 'Опубликовать',
     'Price' => 'Цена',
+    'Incorrect format' => 'Некорректный формат',
+    'Add successfully added.' => 'Объявление опубликовано
+    .',
 ];

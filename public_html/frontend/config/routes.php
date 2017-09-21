@@ -7,6 +7,7 @@ return [
     '/get-sub-categories' => 'categories/get-sub-categories',
     '/get-category-placement' => 'categories/get-category-placement',
     '/im' => 'users/im',
+    '/publish-add' => 'ad/add',
     /**
      * Класс правила ГОРОД
      */
