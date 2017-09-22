@@ -58,11 +58,10 @@ class NewAdForm extends Model
         $adsModel->text = $this->text;
         $adsModel->price = $this->price;
         $adsModel->expiry_date = time() + $this->expiry_date;
-        //TODO сохранить placement
-        $adsModel->url = time();//TODO сделать генерацию урлов
-        $adsModel->save();//TODO сделать генерацию урлов
-        //TODO отправка письма пользователю
-
+        $adsModel->placements_id = $this->placement_id;
+        $adsModel->url = $adsModel->generateUniqueUrl($this->title);
+        $adsModel->save();
+        Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel]);
     }
     /** Валидация субкатегории 3-го уровня
      *

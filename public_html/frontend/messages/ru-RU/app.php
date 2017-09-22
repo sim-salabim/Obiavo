@@ -65,6 +65,5 @@ return [
     'Publish' => 'Опубликовать',
     'Price' => 'Цена',
     'Incorrect format' => 'Некорректный формат',
-    'Add successfully added.' => 'Объявление опубликовано
-    .',
+    'Add successfully added.' => 'Объявление опубликовано.',
 ];

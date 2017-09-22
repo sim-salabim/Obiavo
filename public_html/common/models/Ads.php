@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use frontend\helpers\TransliterationHelper;
 
 /**
  * This is the model class for table "ads".
@@ -14,6 +15,7 @@ use Yii;
  * @property string $title
  * @property string $text
  * @property int $price
+ * @property int $prlacement
  * @property int $created_at
  * @property int $updated_at
  * @property int $expiry_date
@@ -68,6 +70,14 @@ class Ads extends \yii\db\ActiveRecord
     {
         return $this->hasOne(City::className(), ['id' => 'cities_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlacement()
+    {
+        return $this->hasOne(Placement::className(), ['id' => 'placements_id']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -81,5 +91,22 @@ class Ads extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'categories_id']);
+    }
+
+    /** Генерирует уникальный для объявлений урл
+     *
+     * @param $str, строка на русском языке
+     * @param int $idx
+     * @return mixed|string
+     */
+    public function generateUniqueUrl($str, $idx = 0){
+        $str = ($idx == 0) ? $str : $str."-".$idx;
+        $url = TransliterationHelper::transliterate($str);
+        $found = Ads::findOne(['url' => $url]);
+        if($found){
+            return $this->generateUniqueUrl($str, ++$idx);
+        }else{
+            return $url;
+        }
     }
 }
