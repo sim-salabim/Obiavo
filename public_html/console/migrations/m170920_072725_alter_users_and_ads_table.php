@@ -9,7 +9,7 @@ class m170920_072725_alter_users_and_ads_table extends Migration
         $this->addColumn('users', 'phone_number', $this->string()->null());
         $this->addColumn('ads', 'expiry_date', $this->integer()->notNull());
         $this->addColumn('ads', 'url', $this->string()->notNull()->unique());
-        $this->addColumn('ads', 'placements_id', $this->string()->notNull()->unique());
+        $this->addColumn('ads', 'placements_id', $this->integer(10)->notNull()->unique());
 
         $this->createIndex('idx_a_placements_id', 'ads', 'placements_id');
         $this->addForeignKey('fk_ads_placement', 'ads', 'placements_id', 'placements', 'id', 'CASCADE', 'CASCADE');

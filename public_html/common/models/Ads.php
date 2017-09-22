@@ -15,10 +15,16 @@ use frontend\helpers\TransliterationHelper;
  * @property string $title
  * @property string $text
  * @property int $price
- * @property int $prlacement
+ * @property int $prlacements_id
  * @property int $created_at
  * @property int $updated_at
  * @property int $expiry_date
+ *
+* @property City $city
+* @property User $user
+* @property Category $category
+* @property Placement $placement
+ * @property Files[] $files
  *
  */
 class Ads extends \yii\db\ActiveRecord
@@ -70,7 +76,13 @@ class Ads extends \yii\db\ActiveRecord
     {
         return $this->hasOne(City::className(), ['id' => 'cities_id']);
     }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFiles(){
+        return $this->hasMany(Files::className(), ['id' => 'files_id'])
+            ->viaTable('ads_has_files', ['ads_id' => 'id']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
