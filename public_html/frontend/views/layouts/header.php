@@ -9,16 +9,28 @@
                 aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <!--<button class="navbar-toggler"
+                 type="button"
+                 data-toggle="collapse"
+                 data-target="#navbarSupportedContent"
+                 aria-controls="navbarSupportedContent"
+                 aria-expanded="false"
+                 aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>-->
+        <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <a class="nav-link"
-                   href="javascript:openNav()"
-                   id="navbarDropdownMenuLink"">
-                <span class="navbar-toggler-icon"></span>
-                </a>
-                <a class="navbar-brand mx-2" href="#">Obiavo.ru</a>
-            </ul>
+                <li><a class="nav-link"
+                       href="javascript:openNav()">
+                        <span class="navbar-toggler-icon"></span>
+                    </a>
+                </li>
 
+                <li><a class="navbar-brand mx-2" href="#">
+                        Obiavo.ru
+                    </a>
+                </li>
+            </ul>
             <form class="form-inline my-2 mr-4 my-lg-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><?= __('Search') ?></button>
@@ -29,7 +41,7 @@
     </nav>
 </header>
 <div  id="mySidenav">
-    <ul class="sidenav">
+    <ul class=" sidebar sidenav navbar-nav mr-auto">
         <?php if (Yii::$app->user->isGuest) { ?>
             <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
             <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?>"><?= __('Registration') ?></a></li>
