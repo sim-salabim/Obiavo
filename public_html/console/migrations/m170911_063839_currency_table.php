@@ -22,8 +22,8 @@ class m170911_063839_currency_table extends Migration
 
         $this->createTable('currencies_text', [
             'id' => $this->primaryKey()->unsigned(),
-            'currencies_id' => $this->integer()->unsigned()->notNull(),
-            'languages_id' => $this->integer()->unsigned()->notNull(),
+            'currencies_id' => $this->integer(10)->unsigned()->notNull(),
+            'languages_id' => $this->integer(10)->unsigned()->notNull(),
             'name' => $this->string(255)->notNull(),
         ], $tableOptions);
 
@@ -31,7 +31,7 @@ class m170911_063839_currency_table extends Migration
         $this->addForeignKey('fk_currencies_text_currency', 'currencies_text', 'currencies_id', 'currencies', 'id', 'CASCADE', 'CASCADE');
 
         $this->createIndex('idx_ct_languages_id', 'currencies_text', 'languages_id');
-        $this->addForeignKey('fk_currencies_text_language', 'currencies_text', 'languages_id', 'languages', 'id', 'SET NULL', 'SET NULL');
+        $this->addForeignKey('fk_currencies_text_language', 'currencies_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
 
         $this->addColumn('countries', 'currencies_id', $this->integer()->unsigned()->null());
         $this->createIndex('idx_ci_countries', 'countries', 'currencies_id');
