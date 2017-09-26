@@ -12,7 +12,12 @@ $container_id = (isset($container_id) AND $container_id) ? $container_id : 'file
         'method' => 'POST',
         'addRemoveLinks' => true,
         'paramName' => 'file',
-        'dictDefaultMessage' => __('Click or drop the file here.')
+        'dictDefaultMessage' => __('Click or drop the file here.'),
+        'dictRemoveFile' => __('Delete'),
+        'dictCancelUpload' => __('Cancel download'),
+        'dictCancelUploadConfirmation' => __('Are you sure?'),
+        'dictFileTooBig' => __('File is too big'),
+        'dictMaxFilesExceeded' => __('You cannot upload anymore files'),
     ],
     'clientEvents' => [
         'complete' => "function(file, response){ 

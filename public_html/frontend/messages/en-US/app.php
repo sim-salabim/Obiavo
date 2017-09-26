@@ -65,5 +65,10 @@ return [
     'Add successfully added.' => 'Add successfully added.',
     'Description' => 'Description',
     'Extension' => 'Extension',
-    'Click or drop the file here.' => 'Click or drop the file here.'
+    'Click or drop the file here.' => 'Click or drop the file here.',
+    'Delete' => 'Delete',
+    'Cancel download' => 'Cancel',
+    'Are you sure?' => 'Are you sure?',
+    'File is too big' => 'File is too big',
+    'You cannot upload anymore files' => 'You cannot upload anymore files',
 ];

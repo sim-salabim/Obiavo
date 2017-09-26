@@ -68,5 +68,10 @@ return [
     'Add successfully added.' => 'Объявление опубликовано.',
     'Description' => 'Описание',
     'Extension' => 'Раширение',
-    'Click or drop the file here.' => 'Кликните или перетащите файл для его загрузки.'
+    'Click or drop the file here.' => 'Кликните или перетащите файл для его загрузки.',
+    'Delete' => 'Удалить',
+    'Cancel download' => 'Отменить',
+    'Are you sure?' => 'Вы уверены',
+    'File is too bi' => 'Слишком большой файл',
+    'You cannot upload anymore files' => 'Вы не можете загрузить больше файлов',
 ];
