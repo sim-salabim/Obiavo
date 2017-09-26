@@ -8,6 +8,8 @@ return [
     '/get-category-placement' => 'categories/get-category-placement',
     '/im' => 'users/im',
     '/publish-add' => 'ad/add',
+    '/files-upload' => 'files/upload',
+    '/remove-file' => 'files/remove',
     /**
      * Класс правила ГОРОД
      */

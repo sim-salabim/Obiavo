@@ -68,4 +68,5 @@ return [
     'Add successfully added.' => 'Объявление опубликовано.',
     'Description' => 'Описание',
     'Extension' => 'Раширение',
+    'Click or drop the file here.' => 'Кликните или перетащите файл для его загрузки.'
 ];

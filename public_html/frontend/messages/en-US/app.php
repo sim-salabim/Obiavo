@@ -65,4 +65,5 @@ return [
     'Add successfully added.' => 'Add successfully added.',
     'Description' => 'Description',
     'Extension' => 'Extension',
+    'Click or drop the file here.' => 'Click or drop the file here.'
 ];

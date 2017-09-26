@@ -9,10 +9,10 @@ use common\models\LanguageText;
  * This is the model class for table "languages".
  *
  * @property integer $id
- * @property string $mime
+ * @property string $name
+ * @property string $hash
  * @property int $files_exts_id
  * @property int $users_id
- * @property int $files_exts_types_id
  *
  * @property User $user
  * @property FilesExts $ext
@@ -33,7 +33,7 @@ class Files extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'files_exts_id', 'users_id', 'files_exts_types_id'], 'required'],
+            [['name', 'files_exts_id', 'users_id', 'hash'], 'required'],
         ];
     }
 
@@ -45,7 +45,7 @@ class Files extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'ext' => __('Extension'),
-            'desc' => __('Description'),
+            'hash' => 'Hash',
         ];
     }
 
@@ -64,4 +64,40 @@ class Files extends \yii\db\ActiveRecord
         return $this->hasOne(FilesExts::className(), ['id' => 'files_exts_id']);
     }
 
+    /**
+     * @return string
+     */
+    public function getFilePath(){
+        $file = self::findOne(['id' => $this->id]);
+        if($file->id){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$file->hash)){
+                return Yii::$app->params['uploadPath']."/".$file->hash.".".$file->ext->ext;
+            }
+        }
+        return Yii::$app->params['uploadPath']."/placeholder.png";
+    }
+
+    /**
+     * @param $id, id файла
+     * @return string, абсолютный путь
+     */
+    public static function getFileById($id){
+        $file = self::findOne(['id' => $id]);
+        if($file->id){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$file->hash)){
+                return Yii::$app->params['uploadPath']."/".$file->hash.".".$file->ext->ext;
+            }
+        }
+        return Yii::$app->params['uploadPath']."/placeholder.png";
+    }
+
+    /**
+     *  Удаляет файл из директории и из базы
+     */
+    public function deleteFile(){
+        if(file_exists(Yii::$app->params['uploadPath']."/".$this->hash)){
+            unlink(Yii::$app->params['uploadPath']."/".$this->hash);
+        }
+        $this->delete();
+    }
 }

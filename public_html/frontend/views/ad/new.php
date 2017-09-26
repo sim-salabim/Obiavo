@@ -33,7 +33,7 @@
         <?= __('Select category')?>
     </div>
 </div>
-<form id="new-ad-form" method="post" action="/publish-add">
+<form id="new-ad-form" method="post" enctype="multipart/form-data" action="/publish-add">
     <div class="row">
         <?php  if(Yii::$app->session->getFlash('message')){ ?>
             <div class="alert alert-success col-12" role="alert">
@@ -170,6 +170,9 @@
                     <?= Yii::$app->session->getFlash('price_error') ?>
                 </div>
             <?php } ?>
+        </div>
+        <div class="form-group col-lg-12 col-sm-12 col-md-12" id="file-uploader">
+            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader']) ?>
         </div>
     </div>
     <hr>

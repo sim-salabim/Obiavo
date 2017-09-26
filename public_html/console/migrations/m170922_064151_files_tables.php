@@ -27,6 +27,7 @@ class m170922_064151_files_tables extends Migration
         $this->createTable('files', [
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string()->notNull(),
+            'hash' => $this->string()->notNull(),
             'files_exts_id' => $this->integer(10)->unsigned()->notNull(),
             'users_id' => $this->integer(10)->unsigned()->notNull(),
         ], $tableOptions);
