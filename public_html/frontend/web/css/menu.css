@@ -23,6 +23,14 @@
     list-style: none;
     border-right: 1px solid #c0c0c0;
 }
-#wrapper{
-
+@media only screen and (max-device-width: 480px) {
+    #btn-desktop-menu {
+        display: none!important;
+    }
+}
+.footer {
+    border-top: 1px solid #c0c0c0;
+}
+.footer a {
+    color: #0f0f0f;
 }
