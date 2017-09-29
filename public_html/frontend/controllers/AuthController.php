@@ -17,7 +17,7 @@ use common\models\Mailer as Mailer;
 
 class AuthController extends Controller
 {
-    public $enableCsrfValidation = false;
+
     /**
      * @inheritdoc
      */

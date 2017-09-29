@@ -11,7 +11,6 @@ use yii\helpers\Json;
 
 class UsersController extends Controller
 {
-    public $enableCsrfValidation = false;
 
     public function actions()
     {

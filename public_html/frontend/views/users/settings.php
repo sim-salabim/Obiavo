@@ -8,6 +8,8 @@ $this->title = __('My settings');
 </div>
 <hr>
 <form id="my-settings" method="POST" action="/nastroiki">
+    <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+           value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
         <?php  if(Yii::$app->session->getFlash('message')){ ?>
             <div class="alert alert-success col-12" role="alert">

@@ -2,7 +2,8 @@
 $this->title = __('Authorization');
 ?>
 <form class="form-horizontal" method="post" id="login-form">
-
+    <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+           value="<?=Yii::$app->request->csrfToken?>"/>
 <!-- Email-->
 <div class="form-group validation-errors ">
   <label class="col-sm-2 control-label" for="email">Email</label>

@@ -2,6 +2,8 @@
 $this->title = __('Password recovery');
 ?>
 <form class="form-horizontal" method="post" id="password-recovery-form">
+    <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+           value="<?=Yii::$app->request->csrfToken?>"/>
     <?php  if(Yii::$app->session->getFlash('message')){ ?>
         <div class="alert alert-success" role="alert">
             <?= Yii::$app->session->getFlash('message'); ?>

@@ -34,6 +34,8 @@
     </div>
 </div>
 <form id="new-ad-form" method="post" enctype="multipart/form-data" action="/publish-add">
+    <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+           value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
         <?php  if(Yii::$app->session->getFlash('message')){ ?>
             <div class="alert alert-success col-12" role="alert">
