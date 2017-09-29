@@ -71,4 +71,9 @@ return [
     'Are you sure?' => 'Are you sure?',
     'File is too big' => 'File is too big',
     'You cannot upload anymore files' => 'You cannot upload anymore files',
+    'My settings' => 'My settings',
+    'Personal data' => 'Personal data',
+    'Change' => 'Change',
+    '_Email' => 'Email',
+    'Successfully saved' => 'Successfully saved',
 ];

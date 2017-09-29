@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
-            "version": "v2.4.0",
+            "version": "v2.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/almasaeed2010/AdminLTE.git",
-                "reference": "6157c7bc77bfca7e9aa75f529f3f612122d9a2f1"
+                "reference": "2be703222af2edcb87e562d3da2299e4352bff8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/6157c7bc77bfca7e9aa75f529f3f612122d9a2f1",
-                "reference": "6157c7bc77bfca7e9aa75f529f3f612122d9a2f1",
+                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/2be703222af2edcb87e562d3da2299e4352bff8a",
+                "reference": "2be703222af2edcb87e562d3da2299e4352bff8a",
                 "shasum": ""
             },
             "type": "library",
@@ -33,7 +33,7 @@
                 }
             ],
             "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 3",
-            "homepage": "https://adminlte.io/",
+            "homepage": "http://almsaeedstudio.com/",
             "keywords": [
                 "JS",
                 "admin",
@@ -45,7 +45,7 @@
                 "theme",
                 "web"
             ],
-            "time": "2017-07-08 17:45:57"
+            "time": "2017-01-08 21:03:57"
         },
         {
             "name": "bower-asset/ajax-bootstrap-select",
@@ -548,20 +548,20 @@
         },
         {
             "name": "dmstr/yii2-adminlte-asset",
-            "version": "2.4.3",
+            "version": "2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmstr/yii2-adminlte-asset.git",
-                "reference": "2cff40e951c47d02667617833465e09abdac45da"
+                "reference": "7195b4c7833af6774ac0e5958de4a5d56f3251ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmstr/yii2-adminlte-asset/zipball/2cff40e951c47d02667617833465e09abdac45da",
-                "reference": "2cff40e951c47d02667617833465e09abdac45da",
+                "url": "https://api.github.com/repos/dmstr/yii2-adminlte-asset/zipball/7195b4c7833af6774ac0e5958de4a5d56f3251ba",
+                "reference": "7195b4c7833af6774ac0e5958de4a5d56f3251ba",
                 "shasum": ""
             },
             "require": {
-                "almasaeed2010/adminlte": "~2.0",
+                "almasaeed2010/adminlte": "~2.0 <2.4.0",
                 "cebe/yii2-gravatar": "1.*",
                 "rmrevin/yii2-fontawesome": "~2.9",
                 "yiisoft/yii2": "2.*",
@@ -604,7 +604,7 @@
                 "theme",
                 "yii2"
             ],
-            "time": "2017-08-31 16:21:44"
+            "time": "2017-09-25 11:47:24"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1344,16 +1344,16 @@
         },
         {
             "name": "codeception/base",
-            "version": "2.3.5",
+            "version": "2.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/base.git",
-                "reference": "eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9"
+                "reference": "5aeb2bc02819c89fa1538c2a413e245a421dbcf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/base/zipball/eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9",
-                "reference": "eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9",
+                "url": "https://api.github.com/repos/Codeception/base/zipball/5aeb2bc02819c89fa1538c2a413e245a421dbcf4",
+                "reference": "5aeb2bc02819c89fa1538c2a413e245a421dbcf4",
                 "shasum": ""
             },
             "require": {
@@ -1366,7 +1366,7 @@
                 "phpunit/phpunit": ">4.8.20 <7.0",
                 "phpunit/phpunit-mock-objects": ">2.3 <5.0",
                 "sebastian/comparator": ">1.1 <3.0",
-                "sebastian/diff": "^1.4",
+                "sebastian/diff": ">=1.4 <3.0",
                 "stecman/symfony-console-completion": "^0.7.0",
                 "symfony/browser-kit": ">=2.7 <4.0",
                 "symfony/console": ">=2.7 <4.0",
@@ -1382,7 +1382,6 @@
                 "flow/jsonpath": "~0.2",
                 "league/factory-muffin": "^3.0",
                 "league/factory-muffin-faker": "^1.0",
-                "mongodb/mongodb": "^1.0",
                 "monolog/monolog": "~1.8",
                 "pda/pheanstalk": "~3.0",
                 "php-amqplib/php-amqplib": "~2.4",
@@ -1433,7 +1432,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2017-08-10 20:41:08"
+            "time": "2017-09-29 00:03:44"
         },
         {
             "name": "codeception/verify",

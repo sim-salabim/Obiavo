@@ -74,4 +74,9 @@ return [
     'Are you sure?' => 'Вы уверены',
     'File is too bi' => 'Слишком большой файл',
     'You cannot upload anymore files' => 'Вы не можете загрузить больше файлов',
+    'My settings' => 'Мои настройки',
+    'Personal data' => 'Личные данные',
+    'Change' => 'Изменить',
+    '_Email' => 'Электронная почта',
+    'Successfully saved' => 'Успешно сохранено',
 ];

@@ -1,5 +1,5 @@
 <?php
-$this->title = 'Личный кабинет';
+use yii\helpers\Url;
+$this->title = __('My settings');
 ?>
-
-sdfsdf
+<a href="<?= Url::toRoute(["/nastroiki"]); ?>"><?= __('My settings'); ?></a>

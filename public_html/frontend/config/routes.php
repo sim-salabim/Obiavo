@@ -10,6 +10,7 @@ return [
     '/publish-add' => 'ad/add',
     '/files-upload' => 'files/upload',
     '/remove-file' => 'files/remove',
+    '/nastroiki' => 'users/settings',
     /**
      * Класс правила ГОРОД
      */
