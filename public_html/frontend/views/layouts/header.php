@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li>
-                <a href="<?= yii\helpers\Url::toRoute('/im') ?>">
+                <a href="<?= yii\helpers\Url::toRoute('/moi-obiavleniya') ?>">
                     <?= __('My ads') ?>
                 </a>
             </li>

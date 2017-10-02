@@ -21,6 +21,7 @@ use common\models\LanguageText;
 class Files extends \yii\db\ActiveRecord
 {
     public static $_allLanguages;
+    const THUMBNAIL = '_thumbnail';
 
     public static function tableName()
     {
@@ -74,7 +75,7 @@ class Files extends \yii\db\ActiveRecord
                 return Yii::$app->params['uploadPath']."/".$file->hash.".".$file->ext->ext;
             }
         }
-        return Yii::$app->params['uploadPath']."/placeholder.png";
+        return false;
     }
 
     /**
@@ -85,10 +86,26 @@ class Files extends \yii\db\ActiveRecord
         $file = self::findOne(['id' => $id]);
         if($file->id){
             if(file_exists(Yii::$app->params['uploadPath']."/".$file->hash)){
-                return Yii::$app->params['uploadPath']."/".$file->hash.".".$file->ext->ext;
+                return "/files/".$file->hash.".".$file->ext->ext;
             }
         }
-        return Yii::$app->params['uploadPath']."/placeholder.png";
+        return false;
+    }
+
+    /**
+     * @param $id
+     * @param bool $thumbnail
+     * @return string
+     */
+    public static function getImageById($id, $thumbnail = true){
+        $file = Files::findOne(['id' => $id]);
+        $thumbnail_str = ($thumbnail) ? Files::THUMBNAIL : '';
+        if($file->id){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$file->hash)){
+                return "/files/".$file->hash.$thumbnail_str.".".$file->ext->ext;
+            }
+        }
+        return "/files/placeholder".$thumbnail_str.".png";
     }
 
     /**
@@ -97,7 +114,23 @@ class Files extends \yii\db\ActiveRecord
     public function deleteFile(){
         if(file_exists(Yii::$app->params['uploadPath']."/".$this->hash)){
             unlink(Yii::$app->params['uploadPath']."/".$this->hash);
+            unlink(Yii::$app->params['uploadPath']."/".$this->hash.Files::THUMBNAIL);
         }
         $this->delete();
+    }
+
+    /**
+     * @param $files_arr, $_POST['files']
+     * @param $model, сохраненный обьект, имеючий связь через промежуточную таблицу
+     */
+    public static function linkFilesToModel($files_arr, $model){
+        if(isset($$files_arr) AND !empty(isset($$files_arr))){
+            $files = Files::find()->where(['in', 'id', $files_arr])->all();
+            if(count($files)){
+                foreach ($files as $file){
+                    $model->link('files', $file);
+                }
+            }
+        }
     }
 }

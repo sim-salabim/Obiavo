@@ -29,6 +29,7 @@ use frontend\helpers\TransliterationHelper;
  */
 class Ads extends \yii\db\ActiveRecord
 {
+    const PRICE_LABEL = 'руб';
     /**
      * @inheritdoc
      */
@@ -82,6 +83,20 @@ class Ads extends \yii\db\ActiveRecord
     public function getFiles(){
         return $this->hasMany(Files::className(), ['id' => 'files_id'])
             ->viaTable('ads_has_files', ['ads_id' => 'id']);
+    }
+
+    /**
+     * @return string
+     */
+    public function avatar($thumbnail = true){
+        $thumbnail_str = ($thumbnail) ? Files::THUMBNAIL : '';
+        if(isset($this->files[0])){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$this->files[0]->hash.".".$this->files[0]->ext->ext)){
+
+                return "/files/".$this->files[0]->hash.$thumbnail_str.".".$this->files[0]->ext->ext;
+            }
+        }
+        return "/files/placeholder".$thumbnail_str.".png";
     }
     /**
      * @return \yii\db\ActiveQuery

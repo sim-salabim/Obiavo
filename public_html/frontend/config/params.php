@@ -3,5 +3,5 @@ return [
     'adminEmail' => 'admin@example.com',
     'mainDomain' => 'obiavo.ru',
     'basePath' => dirname(__DIR__),
-    'uploadPath' => str_replace('frontend', 'files', dirname(__DIR__)),
+    'uploadPath' => dirname(__DIR__)."/web/files",
 ];

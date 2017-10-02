@@ -37,5 +37,6 @@ phpunit.phar
 /node_modules
 
 frontend/web/dist/
-
-files/*
+frontend/web/files/
+!frontend/web/files/placeholder.png
+!frontend/web/files/placeholder_thumbnail.png

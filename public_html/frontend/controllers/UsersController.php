@@ -3,13 +3,8 @@ namespace frontend\controllers;
 
 use frontend\models\SettingsForm;
 use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\Json;
 
-
-class UsersController extends Controller
+class UsersController extends BaseController
 {
 
     public function actions()
@@ -49,5 +44,13 @@ class UsersController extends Controller
         } else {
             return $this->render('settings');
         }
+    }
+
+    public function actionMyAds(){
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $this->setPageTitle(__('My ads'));
+        return $this->render('my-ads', ['ads' => Yii::$app->user->getIdentity()->ads]);
     }
 }

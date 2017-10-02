@@ -76,4 +76,5 @@ return [
     'Change' => 'Change',
     '_Email' => 'Email',
     'Successfully saved' => 'Successfully saved',
+    'You have no ads yet' => 'You have no ads yet',
 ];

@@ -25,7 +25,8 @@
         "components/jquery": "^3.2",
         "components/jqueryui": "^1.12",
         "kartik-v/yii2-widget-select2": "@dev",
-        "perminder-klair/yii2-dropzone": "dev-master"       
+        "perminder-klair/yii2-dropzone": "dev-master",
+        "yiisoft/yii2-imagine": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

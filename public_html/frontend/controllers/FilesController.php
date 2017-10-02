@@ -4,12 +4,9 @@ namespace frontend\controllers;
 use common\models\Files;
 use common\models\FilesExts;
 use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
-use common\models\Category;
-use common\models\Language;
-use common\models\City;
-use frontend\models\NewAdForm;
+use yii\imagine\Image;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
 
 class FilesController extends BaseController
 {
@@ -35,6 +32,9 @@ class FilesController extends BaseController
             $file = \yii\web\UploadedFile::getInstanceByName($fileName);
             $hashed_name = md5(time() + \Yii::$app->user->identity->id);
             if ($file->saveAs($uploadPath . '/' . $hashed_name)) {
+                Image::getImagine()->open($uploadPath . '/' . $hashed_name)
+                    ->thumbnail(new Box(150, 150))
+                    ->save($uploadPath . '/' . $hashed_name.Files::THUMBNAIL , ['quality' => 90]);
                 $path = $_FILES['file']['name'];
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
                 $extObj = FilesExts::findOne(['ext' => $ext]);
