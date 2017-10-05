@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\libraries\AdsSearch;
 use Yii;
 use frontend\helpers\TransliterationHelper;
 
@@ -135,5 +136,83 @@ class Ads extends \yii\db\ActiveRecord
         }else{
             return $url;
         }
+    }
+
+    public function getList(AdsSearch $model){
+        $where_conditions = [];
+        $like_conditions = [];
+        $category_conditions = [];
+        $location_conditions = [];
+        if($model->user) $where_conditions['users_id'] = $model->user;
+        if($model->category) {
+            $cat_ids_arr[] = "$model->category";
+            $cats = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('categories')
+                ->groupBy(['id'])
+                ->where(['parent_id' => $model->category])
+                ->all();
+            if(!empty($cats)){
+                foreach($cats as $cat){
+                    array_push($cat_ids_arr, $cat['id']);
+                }
+            }
+            $category_conditions = [
+                'in', 'categories_id', $cat_ids_arr
+            ];
+        }
+        if($model->action) $where_conditions['placements_id'] = $model->action;
+        if($model->query) $like_conditions = [
+            'like', 'title' , "$model->query"
+        ];
+        $cities_id_arr = [];
+        if($model->location['city']){
+            $cities_id_arr = [$model->location['city']];
+        }else{
+            if($model->location['region']){
+                $cities_ids = (new \yii\db\Query())
+                    ->select(['id'])
+                    ->from('cities')
+                    ->groupBy(['id'])
+                    ->where(['regions_id' => $model->location['region']])
+                    ->all();
+                if(!empty($cities_ids)){
+                    foreach($cities_ids as $id){
+                        array_push($cities_id_arr, $id['id']);
+                    }
+                }
+            }else{
+                $cities_ids = (new \yii\db\Query())
+                    ->select(['id'])
+                    ->from('cities')
+                    ->groupBy(['id'])
+                    ->where(['regions_id' => 'SELECT id FROM regions WHERE countries_id = '.$model->location['country']])
+                    ->all();
+                if(!empty($cities_ids)){
+                    foreach($cities_ids as $id){
+                        array_push($cities_id_arr, $id['id']);
+                    }
+                }
+            }
+        }
+        if(!empty($cities_id_arr)){
+            $location_conditions = ['in', 'cities_id', $cities_id_arr];
+        }else if(
+            empty($cities_id_arr)
+            AND
+            ($model->location['city'] OR $model->location['region'] OR $model->location['country'])){
+            $location_conditions = ['cities_id' => 0];
+        }
+
+        $ads = Ads::find()
+            ->where($where_conditions)
+            ->andFilterWhere($location_conditions)
+            ->andFilterWhere($category_conditions)
+            ->andFilterWhere($like_conditions)
+            ->orderBy($model->sorting)
+            ->limit($model->limit)
+            ->offset($model->offset)
+            ->all();
+        return $ads;
     }
 }

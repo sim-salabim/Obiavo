@@ -1,12 +1,9 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\NewAdForm;
+use common\models\Ads;
+use common\models\libraries\AdsSearch;
 use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\Json;
 use common\models\Category;
 use yii\web\HttpException;
 use common\models\Language;
@@ -18,6 +15,7 @@ class CategoriesController extends BaseController
      * Текущая категория
      */
     protected $category = null;
+    protected $placement = null;
 
     public $params;
 
@@ -55,10 +53,13 @@ class CategoriesController extends BaseController
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['h1'] = $this->category;
+        $librarySearch = new AdsSearch();
+        $librarySearch->setCategory($this->category->id);
         return $this->render('index',  [
             'category'      => $this->category,
             'categories'    => $subCategories,
-            'placements'    => $categoryPlacements
+            'placements'    => $categoryPlacements,
+            'ads'           => (new Ads())->getList($librarySearch)
         ]);
     }
 
