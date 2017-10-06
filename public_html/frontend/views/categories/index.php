@@ -66,3 +66,9 @@
 </div>
 
 <?= $this->render('list', compact('categories'));?>
+<?=  $this->render('/partials/_ads_list.php',
+    [
+        'ads' => $ads,
+        'title' => __('Ads'),
+        'no_ads_title' => __('No ads found')
+    ]) ?>

@@ -3,6 +3,8 @@ namespace frontend\controllers;
 
 use common\models\Ads;
 use common\models\libraries\AdsSearch;
+use common\models\Placement;
+use common\models\PlacementsText;
 use Yii;
 use common\models\Category;
 use yii\web\HttpException;
@@ -34,6 +36,11 @@ class CategoriesController extends BaseController
 
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
+        $action = Yii::$app->request->get('placement');
+        $action_id = null;
+        if($action){
+            $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
+        }
 
         /**
          * В данном месте проверку можно убрать, т.к. она осуществляется в правиле для роута
@@ -55,6 +62,7 @@ class CategoriesController extends BaseController
         Yii::$app->view->params['h1'] = $this->category;
         $librarySearch = new AdsSearch();
         $librarySearch->setCategory($this->category->id);
+        $librarySearch->setAction($action_id);
         return $this->render('index',  [
             'category'      => $this->category,
             'categories'    => $subCategories,

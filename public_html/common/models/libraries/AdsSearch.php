@@ -12,6 +12,8 @@ class AdsSearch {
     public $query;
     public $offset;
     public $sorting;
+    public $expired;
+    public $all;
 
     function __construct(){
         $this->user = null;
@@ -20,6 +22,8 @@ class AdsSearch {
         $this->limit = 10;
         $this->offset = 0;
         $this->query = null;
+        $this->all = false;
+        $this->expired = false;
         $this->location = [
             'country' => null,
             'region' => null,
@@ -127,5 +131,30 @@ class AdsSearch {
      */
     function getSorting(){
         return $this->sorting;
+    }
+
+    /**
+     * @param $expired, bool
+     */
+    function setExpired($expired){
+        $this->expired = $expired;
+    }
+
+    /**
+     * @return bool
+     */
+    function getExpired(){
+        return $this->expired;
+    }
+
+    /**
+     * @param $all
+     */
+    function setAll($all){
+        $this->all = $all;
+    }
+
+    function getAll(){
+        return $this->all;
     }
 }

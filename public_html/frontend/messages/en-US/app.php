@@ -77,4 +77,6 @@ return [
     '_Email' => 'Email',
     'Successfully saved' => 'Successfully saved',
     'You have no ads yet' => 'You have no ads yet',
+    'No ads found' => 'No ads found',
+    'Ads' => 'Ads',
 ];

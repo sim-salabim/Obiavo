@@ -143,6 +143,7 @@ class Ads extends \yii\db\ActiveRecord
         $like_conditions = [];
         $category_conditions = [];
         $location_conditions = [];
+        $expired_conditions = [];
         if($model->user) $where_conditions['users_id'] = $model->user;
         if($model->category) {
             $cat_ids_arr[] = "$model->category";
@@ -162,6 +163,15 @@ class Ads extends \yii\db\ActiveRecord
             ];
         }
         if($model->action) $where_conditions['placements_id'] = $model->action;
+        if($model->expired){
+            $expired_conditions = [
+                '>' , 'expity_date', time()
+            ];
+        }else{
+            $expired_conditions = [
+                '<' , 'expiry_date', time()
+            ];
+        }
         if($model->query) $like_conditions = [
             'like', 'title' , "$model->query"
         ];
@@ -206,6 +216,7 @@ class Ads extends \yii\db\ActiveRecord
 
         $ads = Ads::find()
             ->where($where_conditions)
+            ->andFilterWhere($expired_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
             ->andFilterWhere($like_conditions)

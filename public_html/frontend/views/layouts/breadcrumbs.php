@@ -11,7 +11,7 @@ if(!empty($breadcrumbs)){
             <? if(!isset($breadcrumbs[$key + 1])){
                echo $crumb['label'];
             }else{ ?>
-                <a href="<?= URL::to($crumb['link']) ?>"><?=  $crumb['label'] ?></a>
+                <a href="/<?= Url::to($crumb['link']) ?>"><?=  $crumb['label'] ?></a>
             <? } ?>
         </li>
     <? } ?>
