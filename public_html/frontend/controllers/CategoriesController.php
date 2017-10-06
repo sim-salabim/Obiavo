@@ -67,6 +67,7 @@ class CategoriesController extends BaseController
             'category'      => $this->category,
             'categories'    => $subCategories,
             'placements'    => $categoryPlacements,
+            'current_action'=> $action,
             'ads'           => (new Ads())->getList($librarySearch)
         ]);
     }
