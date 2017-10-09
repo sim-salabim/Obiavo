@@ -31,17 +31,19 @@ AppAsset::register($this);
         <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff; border-bottom: 1px solid #c0c0c0;">
             <div class="container">
                 <h1 class="display-3"><?= $this->title ?></h1>
-                <p class="lead">Obiavo.ru - сайт бесплатных объявлений России. Ежедневно на сайте размещаются тысячи
-                    частных объявлений. 34454 - Объявления.</p>
+                <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
+                <? if(isset($this->params['seo_text'])){?>
+                    <p class="lead"><?= $this->params['seo_text'] ?></p>
+                <? } ?>
+                <?= $this->render(
+                    'content',
+                    ['content' => $content]
+                ) ?>
             </div>
         </div>
-        <div class="container">
-            <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
-            <?= $this->render(
-                'content',
-                ['content' => $content]
-            ) ?>
-        </div>
+<!--        <div class="container">-->
+<!---->
+<!--        </div>-->
     </div>
 
         <?= $this->render('footer'); ?>

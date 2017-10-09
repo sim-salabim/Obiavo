@@ -15,6 +15,7 @@ $items = [
                 ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'SEO заголовок','model'=>$category->_mttext],
                 ['name' => 'seo_desc','type' => Form::INPUT_TEXT,'label' => 'SEO описание','model'=>$category->_mttext],
                 ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'SEO ключевые слова','model'=>$category->_mttext],
+                ['name' => 'seo_text','type' => Form::INPUT_TEXT,'label' => 'SEO текст','model'=>$category->_text],
             ]
         ],
     ]

@@ -16,12 +16,30 @@ use common\models\Language;
  * @property string $seo_title
  * @property string $seo_desc
  * @property string $seo_keywords
+ * @property string $seo_text
  *
  * @property Languages $languages
  * @property Categories $categories
  */
 class CategoriesText extends \yii\db\ActiveRecord
 {
+    const SCENARIO_DEFAULT = 'default';
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_DEFAULT => [
+                'categories_id',
+                'languages_id',
+                'name',
+                'url',
+                'seo_title',
+                'seo_desc',
+                'seo_keywords',
+                'seo_text'
+            ],
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -54,11 +72,12 @@ class CategoriesText extends \yii\db\ActiveRecord
             'id' => 'ID',
             'categories_id' => 'Categories ID',
             'languages_id' => 'Languages ID',
-            'name' => 'Name',
+            'name' => __('Name'),
             'url' => 'Url',
             'seo_title' => 'Seo Title',
             'seo_desc' => 'Seo Desc',
             'seo_keywords' => 'Seo Keywords',
+            'seo_text' => __('SEO text'),
         ];
     }
 

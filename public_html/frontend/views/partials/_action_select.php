@@ -11,7 +11,7 @@ $action = ($current_action) ? $current_action : '';
 <script>
 $(document).ready(function(){
     $('#<?= $id ?>').change(function(){
-        var selected = $("#<?= $id ?> :selected").val();console.log(window.location.href);
+        var selected = $("#<?= $id ?> :selected").val();
         var action = '<?= $action ?>';
         if(action == ''){
             window.location = window.location.href+"/"+selected;

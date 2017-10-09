@@ -79,4 +79,5 @@ return [
     'You have no ads yet' => 'You have no ads yet',
     'No ads found' => 'No ads found',
     'Ads' => 'Ads',
+    'SEO text' => 'SEO text',
 ];
