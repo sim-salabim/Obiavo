@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-8 col-md-6 col-sm-12">
+    <div class="col-lg-8 col-md-6 col-sm-12 text-align-left">
         <?= $title ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-end">settings</div>

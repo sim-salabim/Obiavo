@@ -5,20 +5,12 @@
  use frontend\widgets\Selectpicker;
  use frontend\helpers\TextHelper;
 ?>
-<div class="content-header">
-    <div class="navbar">
-        <?php if (!empty($placements)) { ?>
-            <?= $this->render('/partials/_action_select',
-                [
-                    'placements' => $placements,
-                    'current_action' => $current_action,
-                    'id' => uniqid("action-select-")
-                ]);?>
-        <?php } ?>
-    </div>
-</div>
-
-<?= $this->render('list', compact('categories'));?>
+<hr>
+<?
+$row_list = (isset($row_list)) ? $row_list : false;
+$current_category = (isset($current_category))  ? $current_category : null;
+?>
+<?= $this->render('list', compact('categories', 'row_list', 'current_category'));?>
 <?=  $this->render('/partials/_ads_list.php',
     [
         'ads' => $ads,

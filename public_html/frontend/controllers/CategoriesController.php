@@ -65,8 +65,9 @@ class CategoriesController extends BaseController
         $librarySearch->setCategory($this->category->id);
         $librarySearch->setAction($action_id);
         return $this->render('index',  [
-            'category'      => $this->category,
+            'current_category'      => $this->category,
             'categories'    => $subCategories,
+            'row_list'      => true,
             'placements'    => $categoryPlacements,
             'current_action'=> $action,
             'ads'           => (new Ads())->getList($librarySearch)

@@ -60,7 +60,7 @@ h1 {
 }
 
 .jumbotron {
-    text-align: center;
+    /*text-align: center;*/
     background-color: #ffffff!important;
 }
 
@@ -282,4 +282,13 @@ ul.bs-autocomplete-menu a {
 }
 .reset-location a{
     font-size: 1.5rem !important;
+}
+.text-align-left{
+    text-align: left !important;
+}
+.color-grey{
+    color: #868e96!important;
+}
+.padding-bottom-10{
+    padding-bottom: 10px;
 }

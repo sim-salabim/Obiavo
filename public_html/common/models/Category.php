@@ -131,7 +131,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(Category::className(), ['id' => 'parent_id']);
+        return $this->hasOne(Category::className(), ['id' => 'parent_id'])->withText();
     }
 
     public function getChildren()
