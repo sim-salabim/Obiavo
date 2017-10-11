@@ -1,4 +1,10 @@
 <?
+/**
+ * $message - текст на аплоадере
+ * $container_id - id html контейнера
+ *
+ */
+
 $message = (isset($message) AND $message) ? $message : __('Click or drop the file here.');
 $container_id = (isset($container_id) AND $container_id) ? $container_id : 'file-uploader';
 ?>

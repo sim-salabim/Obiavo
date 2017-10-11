@@ -1,3 +1,10 @@
+<?
+/**
+ *  $id,
+ *  $placements,
+ *  $current_action, текуший placement
+ */
+?>
 <div class="form-group col-lg-2 col-sm-12 col-md-6">
     <select name="actions" id="<?= $id ?>" class="form-control">
         <? foreach($placements as $placement){ ?>

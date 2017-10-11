@@ -41,9 +41,6 @@ AppAsset::register($this);
                 ) ?>
             </div>
         </div>
-<!--        <div class="container">-->
-<!---->
-<!--        </div>-->
     </div>
 
         <?= $this->render('footer'); ?>
