@@ -23,12 +23,12 @@ use yii\helpers\Url;
                 <? if($current_category->placements){?>
                     <? foreach($current_category->placements as $placement){ ?>
                         <a class="text-secondary"
-                           href="<?= Url::toRoute(['categories/index','category' => $current_category->url])."/".$placement->_text->url ?>">
+                           href="/<?= $current_category->url."/".$placement->_text->url ?>">
                             <?= $placement->_text->name?></a>,
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>
-                    <a class="text-secondary" href="<?= Url::toRoute(['categories/index','category' => $category->url])?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
+                    <a class="text-secondary" href="/<?= $category->url?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
                 <? } ?>
             </span>
         </div>
