@@ -9,12 +9,12 @@
 </div>
 <hr>
 <div class="row">
-    <? if(!count($ads)){?>
+    <? if($ads_search['count'] == 0){?>
         <div class="col-12">
             <?= $no_ads_title; ?>
         </div>
     <? }else{?>
-        <? foreach($ads as $ad){?>
+        <? foreach($ads_search['items'] as $ad){?>
             <div class="col-lg-2">
                 <img class="img-fluid" src="<?= $ad->avatar(true) ?>">
             </div>
@@ -23,6 +23,9 @@
                 <span><small><?= $ad->price . " " . \common\models\Ads::PRICE_LABEL ?></small></span></br>
                 <span><small><?= $ad->text ?></small></span></br>
             </div>
+        <? } ?>
+        <? if(!($loaded >= $ads_search['count'])){?>
+            <?= $this->render('/partials/_load_list.php', ['loaded' => $loaded])?>
         <? } ?>
     <? } ?>
 </div>

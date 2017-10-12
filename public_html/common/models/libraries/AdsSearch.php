@@ -10,7 +10,6 @@ class AdsSearch {
     public $location;
     public $limit;
     public $query;
-    public $offset;
     public $sorting;
     public $expired;
     public $all;
@@ -21,7 +20,6 @@ class AdsSearch {
         $this->category = null;
         $this->action = null;
         $this->limit = 10;
-        $this->offset = 0;
         $this->query = null;
         $this->all = false;
         $this->expired = false;
@@ -103,20 +101,6 @@ class AdsSearch {
      */
     function getLimit(){
         return $this->limit;
-    }
-
-    /**
-     * @param $offset, int
-     */
-    function setOffest($offset){
-        $this->offset = $offset;
-    }
-
-    /**
-     * @return int
-     */
-    function getOffset(){
-        return $this->offset;
     }
 
     /**

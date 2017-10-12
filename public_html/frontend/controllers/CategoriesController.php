@@ -66,6 +66,8 @@ class CategoriesController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setCategory($this->category->id);
         $librarySearch->setAction($action_id);
+        $loaded = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->loaded;
+        $librarySearch->setLimit($loaded);
         if($sort AND $direction) {
             $librarySearch->setSorting($sort." ".$direction);
         }
@@ -75,7 +77,8 @@ class CategoriesController extends BaseController
             'row_list'      => true,
             'placements'    => $categoryPlacements,
             'current_action'=> $action,
-            'ads'           => (new Ads())->getList($librarySearch)
+            'loaded'        => $loaded,
+            'ads_search'    => (new Ads())->getList($librarySearch)
         ]);
     }
 

@@ -222,9 +222,18 @@ class Ads extends \yii\db\ActiveRecord
             ->andFilterWhere($like_conditions)
             ->orderBy($model->sorting)
             ->limit($model->limit)
-            ->offset($model->offset)
             ->orderBy($model->sorting)
             ->all();
-        return $ads;
+        $count = Ads::find()
+            ->where($where_conditions)
+            ->andFilterWhere($expired_conditions)
+            ->andFilterWhere($location_conditions)
+            ->andFilterWhere($category_conditions)
+            ->andFilterWhere($like_conditions)
+            ->orderBy($model->sorting)
+            ->limit($model->limit)
+            ->orderBy($model->sorting)
+            ->count();
+        return ['items' => $ads, 'count' => $count];
     }
 }

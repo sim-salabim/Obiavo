@@ -80,4 +80,5 @@ return [
     'No ads found' => 'No ads found',
     'Ads' => 'Ads',
     'SEO text' => 'SEO text',
+    'Load more' => 'Load more',
 ];

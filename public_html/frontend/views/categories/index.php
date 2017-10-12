@@ -13,7 +13,8 @@ $current_category = (isset($current_category))  ? $current_category : null;
 <?= $this->render('list', compact('categories', 'row_list', 'current_category'));?>
 <?=  $this->render('/partials/_ads_list.php',
     [
-        'ads' => $ads,
+        'ads_search' => $ads_search,
         'title' => __('Ads'),
+        'loaded' => $loaded,
         'no_ads_title' => __('No ads found')
     ]) ?>
