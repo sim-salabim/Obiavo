@@ -223,6 +223,7 @@ class Ads extends \yii\db\ActiveRecord
             ->orderBy($model->sorting)
             ->limit($model->limit)
             ->offset($model->offset)
+            ->orderBy($model->sorting)
             ->all();
         return $ads;
     }

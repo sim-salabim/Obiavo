@@ -14,6 +14,7 @@ class AdsSearch {
     public $sorting;
     public $expired;
     public $all;
+    public $loaded;
 
     function __construct(){
         $this->user = null;
@@ -24,15 +25,14 @@ class AdsSearch {
         $this->query = null;
         $this->all = false;
         $this->expired = false;
+        $this->loaded = $this->limit;
         $this->location = [
             'country' => null,
             'region' => null,
             'city' => null
         ];
-        $this->sorting = [
-            'created_at' => 'SORT_ASC',
-            'title'      => 'SORT_DESC'
-        ];
+        $this->sorting =
+            'created_at ASC, title DESC';
     }
 
     /**
@@ -120,10 +120,10 @@ class AdsSearch {
     }
 
     /**
-     * @param $sorting_arr, array (['id' => SORT_ASC, 'title' => SORT_DESC])
+     * @param $sorting_str, string
      */
-    function setSorting($sorting_arr){
-        $this->sorting = $sorting_arr;
+    function setSorting($sorting_str){
+        $this->sorting = $sorting_str;
     }
 
     /**
@@ -154,7 +154,24 @@ class AdsSearch {
         $this->all = $all;
     }
 
+    /**
+     * @return bool
+     */
     function getAll(){
         return $this->all;
+    }
+
+    /**
+     * @return int
+     */
+    function getLoaded(){
+        return $this->loaded;
+    }
+
+    /**
+     * @param $loaded
+     */
+    function setLoaded($loaded){
+        $this->loaded = $loaded;
     }
 }

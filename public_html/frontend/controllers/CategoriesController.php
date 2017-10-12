@@ -37,6 +37,8 @@ class CategoriesController extends BaseController
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
         $action = Yii::$app->request->get('placement');
+        $sort = Yii::$app->request->get('sort');
+        $direction = Yii::$app->request->get('direction');
         $action_id = null;
         if($action){
             $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
@@ -64,6 +66,9 @@ class CategoriesController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setCategory($this->category->id);
         $librarySearch->setAction($action_id);
+        if($sort AND $direction) {
+            $librarySearch->setSorting($sort." ".$direction);
+        }
         return $this->render('index',  [
             'current_category'      => $this->category,
             'categories'    => $subCategories,
