@@ -30,7 +30,7 @@ class AdsSearch {
             'city' => null
         ];
         $this->sorting =
-            'created_at ASC, title DESC';
+            'created_at DESC, title ASC';
     }
 
     /**

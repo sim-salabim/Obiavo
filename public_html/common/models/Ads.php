@@ -92,9 +92,9 @@ class Ads extends \yii\db\ActiveRecord
     public function avatar($thumbnail = true){
         $thumbnail_str = ($thumbnail) ? Files::THUMBNAIL : '';
         if(isset($this->files[0])){
-            if(file_exists(Yii::$app->params['uploadPath']."/".$this->files[0]->hash.".".$this->files[0]->ext->ext)){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$this->files[0]->hash)){
 
-                return "/files/".$this->files[0]->hash.$thumbnail_str.".".$this->files[0]->ext->ext;
+                return "/files/".$this->files[0]->hash.$thumbnail_str;
             }
         }
         return "/files/placeholder".$thumbnail_str.".png";
@@ -165,11 +165,11 @@ class Ads extends \yii\db\ActiveRecord
         if($model->action) $where_conditions['placements_id'] = $model->action;
         if($model->expired){
             $expired_conditions = [
-                '>' , 'expity_date', time()
+                '<' , 'expity_date', time()
             ];
         }else{
             $expired_conditions = [
-                '<' , 'expiry_date', time()
+                '>' , 'expiry_date', time()
             ];
         }
         if($model->query) $like_conditions = [
@@ -235,5 +235,23 @@ class Ads extends \yii\db\ActiveRecord
             ->orderBy($model->sorting)
             ->count();
         return ['items' => $ads, 'count' => $count];
+    }
+
+    /** Возвращает строку с human date
+     * @return string
+     */
+    public function getHumanDate(){
+        $ad_day_number = date('z', $this->created_at);
+        $today_number = date('z', time());
+        $daystr = '';
+        if($ad_day_number == $today_number){
+            $daystr .= __('Today');
+        }else if($today_number == (1 + $ad_day_number)){
+            $daystr .= __('Yesterday');
+        }else{
+            $daystr .= date('d:m:y', $this->created_at);
+        }
+        $daystr .= ' '.date('H:i', $this->created_at);
+        return $daystr;
     }
 }

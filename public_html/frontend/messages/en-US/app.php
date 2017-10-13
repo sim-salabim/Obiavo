@@ -85,4 +85,6 @@ return [
     'By alphabet' => 'Alphabet',
     'By price' => 'Price',
     'By date' => 'Date',
+    'Today' => 'Today',
+    'Yesterday' => 'Yesterday',
 ];

@@ -88,4 +88,6 @@ return [
     'By alphabet' => 'Алфавиту',
     'By price' => 'Цене',
     'By date' => 'Дате',
+    'Today' => 'Сегодня',
+    'Yesterday' => 'Вчера',
 ];
