@@ -81,4 +81,8 @@ return [
     'Ads' => 'Ads',
     'SEO text' => 'SEO text',
     'Load more' => 'Load more',
+    'Order by:' => 'Order by:',
+    'By alphabet' => 'Alphabet',
+    'By price' => 'Price',
+    'By date' => 'Date',
 ];

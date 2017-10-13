@@ -16,8 +16,8 @@ class AppAsset extends AssetBundle
         'frontend\assets\SiteAsset',
         'frontend\assets\BootstrapAsset',
         'frontend\assets\JqueryAsset',
-//        'frontend\assets\Fontawesome',
         'frontend\assets\SelectAsset',
+        'frontend\assets\FontAwesomeAsset',
     ];
 
     public $publishOptions = [

@@ -84,4 +84,8 @@ return [
     'Ads' => 'Объявления',
     'SEO text' => 'SEO текст',
     'Load more' => 'Загрузить еще',
+    'Order by:' => 'Сортировать по:',
+    'By alphabet' => 'Алфавиту',
+    'By price' => 'Цене',
+    'By date' => 'Дате',
 ];

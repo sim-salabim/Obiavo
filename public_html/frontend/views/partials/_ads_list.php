@@ -2,9 +2,12 @@
     <div class="col-lg-8 col-md-6 col-sm-12 text-align-left">
         <?= $title ?>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-end">
+    <div class="col-lg-3 col-md-5 col-sm-12 d-flex justify-content-end">
         <?=  $this->render('/partials/_filter_select.php',
             []) ?>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-12">
+        <?= $this->render('/partials/_grid_settings.php', []); ?>
     </div>
 </div>
 <hr>

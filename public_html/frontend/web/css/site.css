@@ -292,3 +292,13 @@ ul.bs-autocomplete-menu a {
 .padding-bottom-10{
     padding-bottom: 10px;
 }
+.icon-active{
+    color: #4FB6EB;
+    cursor: pointer;
+}
+.icon-inactive{
+    cursor: pointer;
+}
+.icon-disabled{
+    color: #CACACA;
+}
