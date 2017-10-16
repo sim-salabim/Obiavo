@@ -305,3 +305,12 @@ ul.bs-autocomplete-menu a {
 .ads-pre-text{
     color: #a9a7a7 !important;
 }
+.price-title{
+    font-size: 30px;
+    font-weight: bold;
+    color: #007bff;
+    text-align: center;
+}
+.width-100{
+    width: 100%;
+}

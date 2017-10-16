@@ -118,7 +118,7 @@ class Ads extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'categories_id']);
+        return $this->hasOne(Category::className(), ['id' => 'categories_id'])->with('categoriesText');
     }
 
     /** Генерирует уникальный для объявлений урл
@@ -253,5 +253,16 @@ class Ads extends \yii\db\ActiveRecord
         }
         $daystr .= ' '.date('H:i', $this->created_at);
         return $daystr;
+    }
+
+    function getBreadcrumbs(){
+        $parent = $this->category;
+        $breadcrumbs = [];
+        $breadcrumbs[] = ['label' => $this->title, 'link' => $this->url];
+        while ($parent) {
+            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $parent->_text->url];
+            $parent = $parent->getParent()->one();
+        }
+        return array_reverse($breadcrumbs);
     }
 }

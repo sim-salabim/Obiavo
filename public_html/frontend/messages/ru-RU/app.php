@@ -90,4 +90,6 @@ return [
     'By date' => 'Дате',
     'Today' => 'Сегодня',
     'Yesterday' => 'Вчера',
+    'rub' => 'руб',
+    'Show phone number' => 'Показать номер телефона',
 ];

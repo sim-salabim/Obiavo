@@ -87,4 +87,6 @@ return [
     'By date' => 'Date',
     'Today' => 'Today',
     'Yesterday' => 'Yesterday',
+    'rub' => 'rub',
+    'Show phone number' => 'Show phone number',
 ];

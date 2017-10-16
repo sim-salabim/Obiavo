@@ -102,7 +102,21 @@ class Files extends \yii\db\ActiveRecord
         $thumbnail_str = ($thumbnail) ? Files::THUMBNAIL : '';
         if($file->id){
             if(file_exists(Yii::$app->params['uploadPath']."/".$file->hash)){
-                return "/files/".$file->hash.$thumbnail_str.".".$file->ext->ext;
+                return "/files/".$file->hash.$thumbnail_str;
+            }
+        }
+        return "/files/placeholder".$thumbnail_str.".png";
+    }
+    /**
+     * @param $id
+     * @param bool $thumbnail
+     * @return string
+     */
+    public function getImage($thumbnail = true){
+        $thumbnail_str = ($thumbnail) ? Files::THUMBNAIL : '';
+        if($this->id){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$this->hash)){
+                return "/files/".$this->hash.$thumbnail_str;
             }
         }
         return "/files/placeholder".$thumbnail_str.".png";

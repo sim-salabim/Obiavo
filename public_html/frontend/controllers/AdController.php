@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Ads;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
@@ -25,7 +26,9 @@ class AdController extends BaseController
         ];
     }
 
-
+    /**  Страница добавления обьявления
+     * @return string|\yii\web\Response
+     */
     public function actionNewAdd(){
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -43,6 +46,9 @@ class AdController extends BaseController
         ]);
     }
 
+    /** Сохраняет новое обЬявление, обробатывая post-запрос
+     * @return string|\yii\web\Response
+     */
     public function actionAdd(){
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -66,5 +72,21 @@ class AdController extends BaseController
         } else {
             return $this->render('podat-obiavlenie');
         }
+    }
+
+    public function actionView(){
+        $ad_url = Yii::$app->request->get('adUrl');
+
+        $ad = Ads::find()->where(['url' => $ad_url])->one();
+        $this->setPageTitle($ad->title);
+        $breadcrumbs = $ad->getBreadcrumbs();
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
+        Yii::$app->view->params['h1'] = $ad->title;
+
+        return $this->render('view', [
+            'ad'   => $ad,
+            'show_phone_number' => (Yii::$app->request->get('show_phone_number')) ? Yii::$app->request->get('show_phone_number') : null,
+            'user' => Yii::$app->user->identity,
+        ]);
     }
 }
