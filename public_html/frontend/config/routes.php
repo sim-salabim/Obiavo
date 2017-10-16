@@ -46,4 +46,12 @@ return [
         'pattern' => '/<select-location>/<domain:\w+>',
         'route' => 'location/select-location',
     ],
+    /**
+     * Объявления
+     */
+    [
+        'class' => 'frontend\rules\url\AdUrlRule',
+        'pattern' => '/<adUrl:([0-9a-zA-Z\-]+)>',
+        'route' => 'ad/view',
+    ],
 ];
