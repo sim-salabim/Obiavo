@@ -21,14 +21,13 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::decode(strip_tags($this->title)) ?></title>
              <?php $this->head() ?>
-        <? // frontend\widgets\Frontend::widget()?>
     </head>
     <body>
     <?php $this->beginBody() ?>
 
     <?= $this->render('header'); ?>
     <div id="wrapper">
-        <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff; border-bottom: 1px solid #c0c0c0;">
+        <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff;">
             <div class="container">
                 <h1 class="display-3"><?= $this->title ?></h1>
                 <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>

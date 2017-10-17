@@ -47,9 +47,9 @@ class LocationController extends BaseController
     public function actionSelectLocation(){
         $domain = Yii::$app->request->get('domain');
         if($domain != 'reset') {
-            $location = Region::find()->where(['domain' => $domain])->one();
+            $location = Region::find()->where(['domain' => $domain])->withText()->one();
             if (!$location) {
-                $location = City::find()->where(['domain' => $domain])->one();
+                $location = City::find()->where(['domain' => $domain])->withText()->one();
                 $this->location_domains['city'] = $domain;
                 $this->location_domains['region'] = $location->region->domain;
                 $this->location_domains['country'] = $location->region->country->domain;

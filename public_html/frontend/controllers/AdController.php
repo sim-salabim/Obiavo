@@ -2,7 +2,9 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\libraries\AdsSearch;
 use Yii;
+use common\models\PlacementsText;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use common\models\Category;
@@ -87,6 +89,27 @@ class AdController extends BaseController
             'ad'   => $ad,
             'show_phone_number' => (Yii::$app->request->get('show_phone_number')) ? Yii::$app->request->get('show_phone_number') : null,
             'user' => Yii::$app->user->identity,
+        ]);
+    }
+
+    public function actionSearch(){
+        $sort = Yii::$app->request->get('sort');
+        $direction = Yii::$app->request->get('direction');
+        $query = Yii::$app->request->get('query');
+
+        $this->setPageTitle(__('Search'));
+        Yii::$app->view->params['breadcrumbs'] = [];
+        Yii::$app->view->params['h1'] = __('Search');
+        $librarySearch = new AdsSearch();
+        $loaded = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->loaded;
+        $librarySearch->setLimit($loaded);
+        $librarySearch->setQuery($query);
+        if($sort AND $direction) {
+            $librarySearch->setSorting($sort." ".$direction);
+        }
+        return $this->render('search',  [
+            'loaded'        => $loaded,
+            'ads_search'    => (new Ads())->getList($librarySearch)
         ]);
     }
 }

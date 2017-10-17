@@ -9,15 +9,6 @@
                 aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <!--<button class="navbar-toggler"
-                 type="button"
-                 data-toggle="collapse"
-                 data-target="#navbarSupportedContent"
-                 aria-controls="navbarSupportedContent"
-                 aria-expanded="false"
-                 aria-label="Toggle navigation">
-             <span class="navbar-toggler-icon"></span>
-         </button>-->
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <a class="nav-link"
@@ -27,12 +18,23 @@
                 </a>
                 <a class="navbar-brand mx-2" href="<?= yii\helpers\Url::toRoute('/') ?>">Obiavo.ru</a>
             </ul>
-            <form class="form-inline my-2 mr-4 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><?= __('Search') ?></button>
-            </form>
-            <span class="navbar-text mx-2">Россия</span>
-            <button type="button" class="btn btn-success my-2">+ <?= __('Post an add') ?></button>
+            <div class="form-inline my-2 mr-4 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" id="search-input" placeholder="<?= __('Search') ?>" aria-label="Search">
+                <button id="search-button" class="btn btn-outline-success my-2 my-sm-0"><?= __('Search') ?></button>
+            </div>
+            <span class="navbar-text mx-2"><?
+                if(Yii::$app->location->city){
+                    echo Yii::$app->location->city->_text->name;
+                }else{
+                    if(Yii::$app->location->region){
+                        echo Yii::$app->location->region->_text->name;
+                    }else{
+                        echo 'Россия';
+                    }
+                }
+
+                ?></span>
+            <button type="button" id="new-add-btn" class="btn btn-success my-2">+ <?= __('Post an add') ?></button>
         </div>
     </nav>
 </header>
@@ -64,3 +66,36 @@
 
     </ul>
 </div>
+<?
+$ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
+if(Yii::$app->user->isGuest){
+    $ad_href = \yii\helpers\Url::toRoute('/login');
+}
+?>
+<script>
+    $(document).ready(function(){
+        $('#new-add-btn').bind('click', function(){
+            window.location.href = '<?= $ad_href ?>';
+        });
+        $('#search-button').bind('click', function(){
+            console.log(window.location.origin);
+            var query = $('#search-input').val();
+            var urlArr = window.location.href.split('?');
+            var getParams = [];
+            if(urlArr[1]){
+                var params = urlArr[1].split('&');
+                params.forEach(function(item){
+                    var get = item.split('=');
+                    getParams[get[0]] = get[1];
+                });
+            }
+            getParams['query'] = query;
+            var getString = '?';
+            for (var key in getParams) {
+                getString += key+"="+getParams[key]+'&';
+            }
+            getString = getString.substring(0, getString.length - 1);
+            window.location.href = window.location.origin+ "/poisk" + getString
+        });
+    });
+</script>

@@ -158,4 +158,18 @@ class AdsSearch {
     function setLoaded($loaded){
         $this->loaded = $loaded;
     }
+
+    /**
+     * @param $query
+     */
+    function setQuery($query){
+        $this->query = $query;
+    }
+
+    /**
+     * @return null
+     */
+    function getQuery(){
+        return $this->query;
+    }
 }

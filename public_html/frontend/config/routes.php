@@ -12,6 +12,7 @@ return [
     '/remove-file' => 'files/remove',
     '/nastroiki' => 'users/settings',
     '/moi-obiavleniya' => 'users/my-ads',
+    '/poisk' => 'ad/search',
     /**
      * Класс правила ГОРОД
      */
