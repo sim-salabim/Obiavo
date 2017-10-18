@@ -40,6 +40,7 @@ use yii\helpers\Url;
                     ['label' => 'Страны', 'icon' => 'fa fa-flag-o', 'url' => ['/countries']],
                     ['label' => 'Пoльзователи', 'icon' => 'fa fa-users', 'url' => ['/users']],
                     ['label' => 'Типы объявлений', 'icon' => '', 'url' => ['/placements']],
+                    ['label' => 'CMS страницы', 'icon' => 'fa fa-file-o', 'url' => ['/cms']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],

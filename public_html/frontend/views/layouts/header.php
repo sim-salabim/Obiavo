@@ -9,9 +9,10 @@
                 aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <a class="nav-link"
+                <a class="nav-link d-none d-md-block"
                    href="javascript:openNav()"
                    id="navbarDropdownMenuLink"">
                 <span class="navbar-toggler-icon"></span>
@@ -22,7 +23,7 @@
                 <input class="form-control mr-sm-2" type="text" id="search-input" placeholder="<?= __('Search') ?>" aria-label="Search">
                 <button id="search-button" class="btn btn-outline-success my-2 my-sm-0"><?= __('Search') ?></button>
             </div>
-            <span class="navbar-text mx-2"><?
+            <span class="navbar-text mx-2 text-dark"><?
                 if(Yii::$app->location->city){
                     echo Yii::$app->location->city->_text->name;
                 }else{
@@ -34,11 +35,44 @@
                 }
 
                 ?></span>
+            <ul class=" sidebar sidenav navbar-nav mr-auto d-md-none d-lg-none d-xl-none">
+                <?php if (Yii::$app->user->isGuest) { ?>
+                    <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
+                    <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?>"><?= __('Registration') ?></a></li>
+                <?php } ?>
+                <li><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?= __('_Location') ?></a></li>
+                <?php if (!Yii::$app->user->isGuest) { ?>
+                    <li>
+                        <a href="<?= yii\helpers\Url::toRoute('/im') ?>">
+                            <?= __('My office') ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= yii\helpers\Url::toRoute('/moi-obiavleniya') ?>">
+                            <?= __('My ads') ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= yii\helpers\Url::toRoute('/podat-obiavlenie') ?>">
+                            <?= __('Add ad') ?>
+                        </a>
+                    </li>
+                    <li><a href="<?= yii\helpers\Url::toRoute('/logout') ?>"><?= __('Logout') ?></a></li>
+                <?php } ?>
+
+            </ul>
+
+            <?
+            $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
+            if(Yii::$app->user->isGuest){
+                $ad_href = \yii\helpers\Url::toRoute('/login');
+            }
+            ?>
             <button type="button" id="new-add-btn" class="btn btn-success my-2">+ <?= __('Post an add') ?></button>
         </div>
     </nav>
 </header>
-<div  id="mySidenav">
+<div  id="mySidenav" class="d-none d-md-block">
     <ul class=" sidebar sidenav navbar-nav mr-auto">
         <?php if (Yii::$app->user->isGuest) { ?>
             <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
