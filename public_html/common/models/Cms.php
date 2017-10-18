@@ -86,4 +86,5 @@ class Cms extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CmsText::className(), ['cms_id' => 'id']);
     }
+
 }

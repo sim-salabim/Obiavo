@@ -55,4 +55,12 @@ return [
         'pattern' => '/<adUrl:([0-9a-zA-Z\-]+)>',
         'route' => 'ad/view',
     ],
+    /**
+     *  CMS страницы
+     */
+    [
+        'class' => 'frontend\rules\url\CmsUrlRule',
+        'pattern' => '/<cmsUrl:([0-9a-zA-Z\-]+)>',
+        'route' => 'cms/view',
+    ],
 ];
