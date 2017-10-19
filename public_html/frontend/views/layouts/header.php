@@ -1,6 +1,5 @@
 <header class="header">
-    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light"
-         style="border-bottom: 1px solid #c0c0c0;">
+    <nav class="navbar navbar-expand navbar-light navbar-fixed-top bg-light">
         <button class="navbar-toggler"
                 type="button"
                 onclick="openNav()"
@@ -10,18 +9,48 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <a class="nav-link d-none d-md-block"
+                <a class="nav-link"
                    href="javascript:openNav()"
                    id="navbarDropdownMenuLink"">
                 <span class="navbar-toggler-icon"></span>
                 </a>
                 <a class="navbar-brand mx-2" href="<?= yii\helpers\Url::toRoute('/') ?>">Obiavo.ru</a>
             </ul>
-            <div class="form-inline my-2 mr-4 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" id="search-input" placeholder="<?= __('Search') ?>" aria-label="Search">
-                <button id="search-button" class="btn btn-outline-success my-2 my-sm-0"><?= __('Search') ?></button>
+
+            <div class="dropdown show d-md-none d-lg-none">
+                <a class="btn btn-secondary"
+                   href="#" role="button"
+                   id="dropdownSearchLink"
+                   data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">
+                    <i class="fa fa-search"></i>
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownSearchLink">
+                    <div class="form-inline my-2 mr-4 my-lg-0">
+                        <input class="form-control mr-sm-2" type="text" id="search-input" placeholder="<?= __('Search') ?>" aria-label="Search">
+                        <button id="search-button"
+                                class="btn btn-secondary my-2">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-inline my-2 mr-4 my-lg-0 d-none d-md-block d-lg-block">
+                <input class="form-control mr-sm-2"
+                       type="text"
+                       id="search-input"
+                       placeholder="<?= __('Search') ?>"
+                       aria-label="Search">
+                <button id="search-button"
+                        class="btn btn-secondary my-2">
+                    <i class="fa fa-search"></i>
+                </button>
             </div>
             <span class="navbar-text mx-2 text-dark"><?
                 if(Yii::$app->location->city){
@@ -35,44 +64,14 @@
                 }
 
                 ?></span>
-            <ul class=" sidebar sidenav navbar-nav mr-auto d-md-none d-lg-none d-xl-none">
-                <?php if (Yii::$app->user->isGuest) { ?>
-                    <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
-                    <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?>"><?= __('Registration') ?></a></li>
-                <?php } ?>
-                <li><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?= __('_Location') ?></a></li>
-                <?php if (!Yii::$app->user->isGuest) { ?>
-                    <li>
-                        <a href="<?= yii\helpers\Url::toRoute('/im') ?>">
-                            <?= __('My office') ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= yii\helpers\Url::toRoute('/moi-obiavleniya') ?>">
-                            <?= __('My ads') ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= yii\helpers\Url::toRoute('/podat-obiavlenie') ?>">
-                            <?= __('Add ad') ?>
-                        </a>
-                    </li>
-                    <li><a href="<?= yii\helpers\Url::toRoute('/logout') ?>"><?= __('Logout') ?></a></li>
-                <?php } ?>
 
-            </ul>
+            <button type="button" id="new-add-btn" class="btn btn-success my-2 d-none d-md-block d-lg-block">+ <?= __('Post an add') ?></button>
 
-            <?
-            $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
-            if(Yii::$app->user->isGuest){
-                $ad_href = \yii\helpers\Url::toRoute('/login');
-            }
-            ?>
-            <button type="button" id="new-add-btn" class="btn btn-success my-2">+ <?= __('Post an add') ?></button>
+            <button type="button" id="new-add-btn" class="btn btn-success d-block my-2 d-md-none d-lg-none">+ </button>
         </div>
     </nav>
 </header>
-<div  id="mySidenav" class="d-none d-md-block">
+<div  id="mySidenav">
     <ul class=" sidebar sidenav navbar-nav mr-auto">
         <?php if (Yii::$app->user->isGuest) { ?>
             <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
