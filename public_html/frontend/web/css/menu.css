@@ -13,7 +13,7 @@
 }
 #mySidenav{
     width: 0px;
-    height: 90%;
+    height: 100%;
     overflow: hidden;
     position: absolute;
     z-index: 1; /* Stay on top */

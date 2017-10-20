@@ -1,6 +1,7 @@
-<?php 
-$this->title = __('Password recovery');
-?>
+<h3><?php
+    $this->title = __('Password recovery');
+    ?>
+</h3>
 <form class="form-horizontal" method="post" id="password-recovery-form">
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
@@ -10,8 +11,8 @@ $this->title = __('Password recovery');
         </div>
     <?php  } ?>
     <div class="form-group validation-errors ">
-        <label class="col-sm-2 control-label" for="email">Email</label>
-        <div class="col-md-4">
+
+        <div class="form-group">
             <input id="email" name="email" type="email" placeholder="" class="form-control input-md <?php if(Yii::$app->session->getFlash('recovery_error')){?> is-invalid<?php }?>" >
             <?php if(Yii::$app->session->getFlash('recovery_error')){?>
                 <?php foreach(Yii::$app->session->getFlash('recovery_error') as $er){?>
@@ -23,10 +24,9 @@ $this->title = __('Password recovery');
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-default senddata" data-input="#password-recovery-form"><?= __('Confirm') ?></button>
-        </div>
+
+        <button class="btn btn-success" data-input="#password-recovery-form"><?= __('Confirm') ?></button>
+
     </div>
 
 </form>
-
