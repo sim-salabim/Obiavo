@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Ads;
+use common\models\libraries\AdsSearch;
 use frontend\models\SettingsForm;
 use Yii;
 
@@ -51,6 +53,14 @@ class UsersController extends BaseController
             return $this->goHome();
         }
         $this->setPageTitle(__('My ads'));
-        return $this->render('my-ads', ['ads' => Yii::$app->user->getIdentity()->ads]);
+        $librarySearch = new AdsSearch();
+        $librarySearch->setUser(Yii::$app->user->identity);
+        $librarySearch->setAll(true);
+        $loaded = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->loaded;
+        $librarySearch->setLimit($loaded);
+        return $this->render('my-ads', [
+            'loaded' => $loaded,
+            'ads_search' => (new Ads())->getList($librarySearch)
+        ]);
     }
 }
