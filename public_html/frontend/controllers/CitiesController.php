@@ -31,7 +31,8 @@ class CitiesController extends Controller
             $query = new Query();
             $query->select([
                 'cities.id as id',
-                'cities_text.name as text'
+                'cities_text.name as text',
+                'domain'
             ])->from('cities')
                 ->where(
                         ['like', 'cities_text.name', $post['q']])
@@ -44,7 +45,7 @@ class CitiesController extends Controller
         }
         if(isset($data) and $data){
             foreach($data as $row){
-                $out[$row['text']] = array('id' => $row['id'], 'text' => $row['text']);
+                $out[$row['text']] = array('id' => $row['id'], 'text' => $row['text'], 'domain' => $row['domain']);
             }
         }
         return $out;

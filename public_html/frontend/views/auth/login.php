@@ -32,7 +32,7 @@ $this->title = __('Authorization');
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        <a href="/recovery"><?= __('Forgot your password?') ?></a>
+        <a href="<?= yii\helpers\Url::toRoute('/recovery') ?>"><?= __('Forgot your password?') ?></a>
     </div>
 </div>
 

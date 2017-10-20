@@ -37,7 +37,6 @@ class LocationController extends BaseController
     public function actionVyborGoroda(){
         $regions = Region::find()->all();
         $this->setPageTitle(__('_Location'));
-        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs([['label' => __('_Location'), 'link' => Url::toRoute('vybor-goroda')]]);
         Yii::$app->view->params['h1'] = __('_Location');
         return $this->render('list',  [
             'regions'      => $regions,
