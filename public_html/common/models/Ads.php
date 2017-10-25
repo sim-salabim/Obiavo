@@ -166,7 +166,7 @@ class Ads extends \yii\db\ActiveRecord
         if(!$model->all) {
             if ($model->expired) {
                 $expired_conditions = [
-                    '<', 'expity_date', time()
+                    '<', 'expiry_date', time()
                 ];
             } else {
                 $expired_conditions = [
@@ -266,5 +266,31 @@ class Ads extends \yii\db\ActiveRecord
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
+    }
+
+    /**  Считает активные обьявления
+     * @param null $category_id
+     * @return int|string
+     */
+    public static function countAds($category_id = null){
+        $category_conditions = [];
+        if($category_id) {
+            $cat_ids_arr[] = $category_id;
+            $cats = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('categories')
+                ->groupBy(['id'])
+                ->where(['parent_id' => $category_id])
+                ->all();
+            if(!empty($cats)){
+                foreach($cats as $cat){
+                    array_push($cat_ids_arr, $cat['id']);
+                }
+            }
+            $category_conditions = [
+                'in', 'categories_id', $cat_ids_arr
+            ];
+        }
+        return Ads::find()->where($category_conditions)->andFilterWhere(['>', 'expiry_date', time()])->count();
     }
 }

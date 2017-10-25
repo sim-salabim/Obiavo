@@ -4,7 +4,8 @@ use yii\helpers\Url;
 
 <div class="row site-index">
     <div class="col-12">
-        <?= \Yii::$app->location->domain?> - сайт бесплатных объявлений России. Ежедневно на сайте размещаются тысячи частных объявлений. 34454 - Объявления.
+        <? $header_str = str_replace(['{site-url}','{count-obiavlenya}'], [\Yii::$app->location->domain, countString(\common\models\Ads::countAds(), [__('one_ad'), __('two_ads'), __('more_ads')])],\common\models\Cms::getByTechname('site-header')->_text->text)?>
+        <?= $header_str  ?>
     </div>
     <div class="w-100"><hr></div>
      <div class="col-12 cities-list">

@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Ads;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -79,8 +80,8 @@ class SiteController extends BaseController
                             ->all();
 
         $cities = \common\models\City::find()->withText()->byLocation()->all();
-
-        return $this->render('index',  compact('categories','cities'));
+        $ads_amount = Ads::countAds();
+        return $this->render('index',  compact('categories','cities', 'ads_amount'));
     }
 
     /**

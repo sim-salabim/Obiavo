@@ -89,4 +89,7 @@ return [
     'Yesterday' => 'Yesterday',
     'rub' => 'rub',
     'Show phone number' => 'Show phone number',
+    'one_ad' => 'ad',
+    'two_ads' => 'ads',
+    'more_ads' => 'ads',
 ];

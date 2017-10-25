@@ -87,4 +87,11 @@ class Cms extends \yii\db\ActiveRecord
         return $this->hasMany(CmsText::className(), ['cms_id' => 'id']);
     }
 
+    /**
+     * @param $techname
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function getByTechname($techname){
+        return Cms::find()->where(['techname' => $techname])->one();
+    }
 }
