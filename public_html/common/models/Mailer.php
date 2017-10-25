@@ -18,7 +18,7 @@ class Mailer {
                 ['html' => $template],
                 $arr
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([Yii::$app->params['commonAdminEmail'] => Yii::$app->name])
             ->setTo($send_to)
             ->setSubject($subject)
             ->send();
