@@ -33,8 +33,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownSearchLink">
                     <div class="form-inline my-2 mr-4 my-lg-0">
                         <input class="form-control mr-sm-2" type="text" id="search-input" placeholder="<?= __('Search') ?>" aria-label="Search">
-                        <button id="search-button"
-                                class="btn btn-secondary my-2">
+                        <button class="btn btn-secondary my-2 search-button">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -47,8 +46,7 @@
                        id="search-input"
                        placeholder="<?= __('Search') ?>"
                        aria-label="Search">
-                <button id="search-button"
-                        class="btn btn-secondary my-2">
+                <button class="btn btn-secondary my-2 search-button">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
@@ -111,7 +109,7 @@ if(Yii::$app->user->isGuest){
         $('#new-add-btn').bind('click', function(){
             window.location.href = '<?= $ad_href ?>';
         });
-        $('#search-button').bind('click', function(){
+        $('.search-button').bind('click', function(){
             console.log(window.location.origin);
             var query = $('#search-input').val();
             var urlArr = window.location.href.split('?');
