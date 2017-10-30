@@ -4,9 +4,6 @@ namespace frontend\controllers;
 use common\models\Files;
 use common\models\FilesExts;
 use Yii;
-use yii\imagine\Image;
-use Imagine\Image\Box;
-use Imagine\Image\Point;
 
 class FilesController extends BaseController
 {
@@ -32,9 +29,7 @@ class FilesController extends BaseController
             $file = \yii\web\UploadedFile::getInstanceByName($fileName);
             $hashed_name = md5(time() + \Yii::$app->user->identity->id);
             if ($file->saveAs($uploadPath . '/' . $hashed_name)) {
-                Image::getImagine()->open($uploadPath . '/' . $hashed_name)
-                    ->thumbnail(new Box(150, 150))
-                    ->save($uploadPath . '/' . $hashed_name.Files::THUMBNAIL , ['quality' => 90]);
+                make_thumb($uploadPath . '/' . $hashed_name, $uploadPath . '/' . $hashed_name.Files::THUMBNAIL, 150);
                 $path = $_FILES['file']['name'];
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
                 $extObj = FilesExts::findOne(['ext' => $ext]);

@@ -26,14 +26,12 @@
         "components/jqueryui": "^1.12",
         "kartik-v/yii2-widget-select2": "@dev",
         "perminder-klair/yii2-dropzone": "dev-master",
-        "yiisoft/yii2-imagine": "^2.1",
         "rmrevin/yii2-fontawesome": "~2.17"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
-
         "codeception/base": "^2.2.3",
         "codeception/verify": "~0.3.1"
     },

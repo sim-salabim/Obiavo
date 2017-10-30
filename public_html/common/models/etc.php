@@ -43,3 +43,18 @@ function countString($amount, $array){
     return ((int)$amount) .' ' . $ending;
 
 }
+
+/**  Делаем превьюху картинки
+ * @param $src, источник
+ * @param $dest, назначение
+ * @param $desired_width, желаемая ширина
+ */
+function make_thumb($src, $dest, $desired_width) {
+    $source_image = imagecreatefromjpeg($src);
+    $width = imagesx($source_image);
+    $height = imagesy($source_image);
+    $desired_height = floor($height * ($desired_width / $width));
+    $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
+    imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
+    imagejpeg($virtual_image, $dest);
+}
