@@ -158,6 +158,31 @@ class Ads extends \yii\db\ActiveRecord
                     array_push($cat_ids_arr, $cat['id']);
                 }
             }
+            $cat_ids_arr = array_unique($cat_ids_arr);
+            $cats_2nd = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('categories')
+                ->groupBy(['id'])
+                ->where(['in', 'parent_id', $cat_ids_arr])
+                ->all();
+            if(!empty($cats_2nd)){
+                foreach($cats_2nd as $cat){
+                    array_push($cat_ids_arr, $cat['id']);
+                }
+            }
+            $cat_ids_arr = array_unique($cat_ids_arr);
+            $cats_3nd = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('categories')
+                ->groupBy(['id'])
+                ->where(['in', 'parent_id', $cat_ids_arr])
+                ->all();
+            if(!empty($cats_3nd)){
+                foreach($cats_3nd as $cat){
+                    array_push($cat_ids_arr, $cat['id']);
+                }
+            }
+            $cat_ids_arr = array_unique($cat_ids_arr);
             $category_conditions = [
                 'in', 'categories_id', $cat_ids_arr
             ];
