@@ -1,5 +1,6 @@
 <h3><?php
     $this->title = __('Authorization');
+    $model = Yii::$app->session->getFlash('model');
     ?>
 </h3>
 <form class="form-horizontal" method="post" id="login-form">
@@ -8,7 +9,15 @@
     <!-- Email-->
     <div class="form-group validation-errors ">
         <div class="form-group">
-            <input id="email" name="email" type="email" placeholder="email@mail.com" class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>" required="">
+            <input
+                id="email"
+                name="email"
+                type="email"
+                <? if(isset($model) AND $model->email){?>
+                    value="<?= $model->email ?>"
+                <? }?>
+                placeholder="email@mail.com"
+                class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>" required="">
             <?php if(Yii::$app->session->getFlash('email_error')){?>
                 <div class="invalid-feedback">
                     <?= Yii::$app->session->getFlash('email_error') ?>

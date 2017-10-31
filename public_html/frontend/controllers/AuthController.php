@@ -90,6 +90,7 @@ class AuthController extends Controller
                 foreach($errors as $key => $item){
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
+                \Yii::$app->getSession()->setFlash('model', $model);
                 return $this->redirect('login');
             }
         } else {
@@ -111,6 +112,7 @@ class AuthController extends Controller
                 foreach($errors as $key => $item){
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
+                \Yii::$app->getSession()->setFlash('model', $model);
                 return $this->redirect('registration');
             }else{
                 $user = new User();
@@ -172,6 +174,7 @@ class AuthController extends Controller
                 if(isset($errors['email']) && !empty($errors['email'])){
                     \Yii::$app->getSession()->setFlash('recovery_error', $errors['email']);
                 }
+                \Yii::$app->getSession()->setFlash('model', $model);
                 return $this->redirect('recovery');
             }else{
                 $user = User::findOne(['email' => Yii::$app->request->post('email')]);

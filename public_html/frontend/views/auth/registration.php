@@ -6,6 +6,8 @@ use common\models\City;
 $url = \yii\helpers\Url::toRoute('cities/search-cities-for-select');
 $selectCity = __('Select a city');
 $this->title = __('Registration');
+$model = Yii::$app->session->getFlash('model');
+$city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cities_id])->_text->name : '';
 ?>
 <form class="form-horizontal" method="post" id="registr-form">
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
@@ -23,6 +25,9 @@ $this->title = __('Registration');
                 id="first_name"
                 name="first_name"
                 type="text"
+                <? if(isset($model) AND $model->first_name){?>
+                    value="<?= $model->first_name ?>"
+                <? }?>
                 placeholder="<?= __('Name') ?>"
                 class="form-control input-md <?php if(Yii::$app->session->getFlash('first_name_error')){?> is-invalid<?php }?>">
             <?php if(Yii::$app->session->getFlash('first_name_error')){?>
@@ -40,6 +45,9 @@ $this->title = __('Registration');
                 id="last_name"
                 name="last_name"
                 type="text"
+                <? if(isset($model) AND $model->last_name){?>
+                    value="<?= $model->last_name?>"
+                <? }?>
                 placeholder="<?= __('Surname') ?>"
                 class="form-control input-md <?php if(Yii::$app->session->getFlash('last_name_error')){?> is-invalid<?php }?>">
             <?php if(Yii::$app->session->getFlash('last_name_error')){?>
@@ -57,7 +65,7 @@ $this->title = __('Registration');
             <input
                 class="form-control bs-autocomplete <?php if(Yii::$app->session->getFlash('city_error')){?> is-invalid<?php }?>"
                 id="live-search-select"
-                value=""
+                value="<?= $city_name ?>"
                 placeholder="<?= $selectCity ?>"
                 type="text"
                 data-hidden_field_id="hidden-city"
@@ -69,7 +77,9 @@ $this->title = __('Registration');
                     <?= Yii::$app->session->getFlash('city_error') ?>
                 </div>
             <?php } ?>
-            <input type="hidden" id="hidden-city" name="cities_id" value="">
+            <input type="hidden" id="hidden-city" name="cities_id" <? if(isset($model) AND $model->cities_id){?>
+            value="<?= $model->cities_id ?>"
+            <? }else{?> value=""<? } ?>>
         </div>
     </div>
 
@@ -79,6 +89,9 @@ $this->title = __('Registration');
             <input id="email"
                    name="email"
                    type="email"
+                    <? if(isset($model) AND $model->email){?>
+                        value="<?= $model->email?>"
+                    <? }?>
                    placeholder="email@mail.com"
                    class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>"
                    required="">

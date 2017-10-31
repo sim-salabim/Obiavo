@@ -1,5 +1,6 @@
 <h3><?php
     $this->title = __('Password recovery');
+    $model = Yii::$app->session->getFlash('model');
     ?>
 </h3>
 <form class="form-horizontal" method="post" id="password-recovery-form">
@@ -13,7 +14,15 @@
     <div class="form-group validation-errors ">
 
         <div class="form-group">
-            <input id="email" name="email" type="email" placeholder="" class="form-control input-md <?php if(Yii::$app->session->getFlash('recovery_error')){?> is-invalid<?php }?>" >
+            <input
+                id="email"
+                name="email"
+                type="email"
+                <? if(isset($model) AND $model->email){?>
+                    value="<?= $model->email ?>"
+                <? }?>
+                placeholder=""
+                class="form-control input-md <?php if(Yii::$app->session->getFlash('recovery_error')){?> is-invalid<?php }?>" >
             <?php if(Yii::$app->session->getFlash('recovery_error')){?>
                 <?php foreach(Yii::$app->session->getFlash('recovery_error') as $er){?>
                     <div class="invalid-feedback">
