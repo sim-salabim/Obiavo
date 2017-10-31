@@ -65,6 +65,7 @@ class AdController extends BaseController
                 foreach($errors as $key => $item){
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
+                \Yii::$app->getSession()->setFlash('model', $model);
                 return $this->redirect('podat-obiavlenie');
             }else{
                 $model->newAd();
