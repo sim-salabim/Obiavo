@@ -260,6 +260,7 @@ if(isset($model)){
                         $('#subcategory').html(stringToAppend);
                     }
                 });
+                selectCategoryAction(category_id)
             }
         });
         $('#subcategory').on('change', function(){

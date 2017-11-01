@@ -31,7 +31,6 @@ class NewAdForm extends Model
         return [
             [[
                 'categories_id',
-                'subcategory',
                 'placement_id',
                 'expiry_date',
                 'title',
@@ -40,7 +39,6 @@ class NewAdForm extends Model
                 'cities_id'], 'required', 'message' => __('Required field')],
             [[
                 'categories_id',
-                'subcategory',
                 'placement_id',
                 'expiry_date',
                 'cities_id'], 'integer', 'integerOnly' => true, 'min' => 1],
@@ -52,7 +50,19 @@ class NewAdForm extends Model
     public function newAd(){
         $adsModel = new Ads();
         $adsModel->created_at = time();
-        $adsModel->categories_id = (!$this->subsubcategory) ? $this->subcategory : $this->subsubcategory;
+        $category_id = null;
+        if($this->subsubcategory){
+            $category_id = $this->subsubcategory;
+        }else{
+            if($this->subcategory){
+                $category_id = $this->subcategory;
+            }else{
+                if($this->categories_id){
+                    $category_id = $this->categories_id;
+                }
+            }
+        }
+        $adsModel->categories_id = $category_id;
         $adsModel->cities_id = $this->cities_id;
         $adsModel->users_id = \Yii::$app->user->identity->id;
         $adsModel->title = $this->title;
