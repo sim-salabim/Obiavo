@@ -27,11 +27,11 @@ class FilesController extends BaseController
 
         if (isset($_FILES[$fileName])) {
             $file = \yii\web\UploadedFile::getInstanceByName($fileName);
-            $hashed_name = md5(time() + \Yii::$app->user->identity->id);
+            $hashed_name = md5(time() + \Yii::$app->user->identity->id + uniqid(rand(), true));
             if ($file->saveAs($uploadPath . '/' . $hashed_name)) {
-                make_thumb($uploadPath . '/' . $hashed_name, $uploadPath . '/' . $hashed_name.Files::THUMBNAIL, 150);
                 $path = $_FILES['file']['name'];
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
+                make_thumb($uploadPath . '/' . $hashed_name, $uploadPath . '/' . $hashed_name.Files::THUMBNAIL, 150, $ext);
                 $extObj = FilesExts::findOne(['ext' => $ext]);
                 if(isset($extObj->id)) {
                     $file = new Files();

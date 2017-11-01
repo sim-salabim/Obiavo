@@ -22,6 +22,10 @@ class Files extends \yii\db\ActiveRecord
 {
     public static $_allLanguages;
     const THUMBNAIL = '_thumbnail';
+    const JPG_EXT = 'jpg';
+    const JPEG_EXT = 'jpeg';
+    const PNG_EXT = 'png';
+    const GIF_EXT = 'gif';
 
     public static function tableName()
     {

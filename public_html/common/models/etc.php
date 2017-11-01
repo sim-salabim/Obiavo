@@ -49,12 +49,44 @@ function countString($amount, $array){
  * @param $dest, назначение
  * @param $desired_width, желаемая ширина
  */
-function make_thumb($src, $dest, $desired_width) {
-    $source_image = imagecreatefromjpeg($src);
+function make_thumb($src, $dest, $desired_width, $ext) {
+    $source_image = null;
+    switch($ext){
+        case \common\models\Files::JPG_EXT :
+            $source_image = imagecreatefromjpeg($src);
+            break;
+        case \common\models\Files::JPEG_EXT :
+            $source_image = imagecreatefromjpeg($src);
+            break;
+        case \common\models\Files::PNG_EXT :
+            $source_image = imagecreatefrompng($src);
+            break;
+        case \common\models\Files::GIF_EXT :
+            $source_image = imagecreatefromgif($src);
+            break;
+        default:
+            $source_image = imagecreatefromjpeg($src);
+    }
+
     $width = imagesx($source_image);
     $height = imagesy($source_image);
     $desired_height = floor($height * ($desired_width / $width));
     $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
     imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
-    imagejpeg($virtual_image, $dest);
+    switch($ext){
+        case \common\models\Files::JPG_EXT :
+            imagejpeg($virtual_image, $dest);
+            break;
+        case \common\models\Files::JPEG_EXT :
+            imagejpeg($virtual_image, $dest);
+            break;
+        case \common\models\Files::PNG_EXT :
+            imagepng($virtual_image, $dest);
+            break;
+        case \common\models\Files::GIF_EXT :
+            imagegif($virtual_image, $dest);
+            break;
+        default:
+            imagejpeg($virtual_image, $dest);
+    }
 }
