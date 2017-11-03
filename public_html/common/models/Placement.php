@@ -30,6 +30,13 @@ class Placement extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return string
+     */
+    public function url(){
+        return $this->_text->url.'/';
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()

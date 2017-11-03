@@ -2,23 +2,23 @@
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
-    '/vybor-goroda' => 'location/vybor-goroda',
-    '/podat-obiavlenie' => 'ad/new-add',
-    '/get-sub-categories' => 'categories/get-sub-categories',
-    '/get-category-placement' => 'categories/get-category-placement',
-    '/im' => 'users/im',
-    '/publish-add' => 'ad/add',
-    '/files-upload' => 'files/upload',
-    '/remove-file' => 'files/remove',
-    '/nastroiki' => 'users/settings',
-    '/moi-obiavleniya' => 'users/my-ads',
-    '/poisk' => 'ad/search',
+    'GET /vybor-goroda' => 'location/vybor-goroda',
+    'GET /podat-obiavlenie' => 'ad/new-add/',
+    'POST /get-sub-categories' => 'categories/get-sub-categories',
+    'POST /get-category-placement' => 'categories/get-category-placement',
+    'GET /im' => 'users/im',
+    'POST /publish-add' => 'ad/add',
+    'POST /files-upload' => 'files/upload',
+    'POST /remove-file' => 'files/remove',
+    'GET /nastroiki' => 'users/settings',
+    'GET /moi-obiavleniya' => 'users/my-ads',
+    'GET /poisk' => 'ad/search',
     /**
      * Класс правила ГОРОД
      */
     [
         'class' => 'frontend\rules\url\LocationUrlRule',
-        'pattern' => '/<city:\w+>',
+        'pattern' => '/<domain:\w+>/',
         'route' => 'site/index',
     ],
     /**

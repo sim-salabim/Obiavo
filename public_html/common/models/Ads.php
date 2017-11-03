@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\models\libraries\AdsSearch;
+use frontend\helpers\LocationHelper;
 use Yii;
 use frontend\helpers\TransliterationHelper;
 
@@ -70,7 +71,12 @@ class Ads extends \yii\db\ActiveRecord
             'price' => 'Price',
         ];
     }
-
+    /**
+     * @return string
+     */
+    public function url(){
+        return $this->url.'/';
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -287,7 +293,7 @@ class Ads extends \yii\db\ActiveRecord
         $breadcrumbs = [];
         $breadcrumbs[] = ['label' => $this->title, 'link' => $this->url];
         while ($parent) {
-            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $parent->_text->url];
+            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => '/'.$parent->_text->url."/"];
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);

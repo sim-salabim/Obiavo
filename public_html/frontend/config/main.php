@@ -41,6 +41,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
+            'suffix' => '/',
             'rules' => require(__DIR__ . '/routes.php'),
         ],
         /**

@@ -19,6 +19,7 @@ class m161028_122106_regions_text extends Migration
             'regions_id' => $this->integer()->unsigned()->notNull(),
             'languages_id' => $this->integer()->unsigned()->notNull(),
             'name' => $this->string()->notNull(),
+            'short_name' => $this->string()->null(),
             'name_rp' => $this->string()->null(),
             'name_pp' => $this->string()->null(),
         ], $tableOptions);

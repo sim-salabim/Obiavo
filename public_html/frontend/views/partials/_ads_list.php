@@ -22,7 +22,7 @@
                 <img class="img-fluid" src="<?= $ad->avatar(true) ?>">
             </div>
             <div class="col-lg-10">
-                <span><strong><a href="/<?= $ad->url ?>" ><?= $ad->title ?></a></strong></span></br>
+                <span><strong><a href="/<?= $ad->url() ?>" ><?= $ad->title ?></a></strong></span></br>
                 <span><strong><?= $ad->price . " " . \common\models\Ads::PRICE_LABEL ?></strong></span></br>
                 <span><small class="ads-pre-text"><?= cutText($ad->text, 50) ?></small></span></br>
                 <span><small class="ads-pre-text"><?= $ad->placement->_text->name ?>, <?= $ad->category->_text->name ?>, <?= $ad->city->_text->name ?></small></span></br>

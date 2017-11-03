@@ -50,22 +50,22 @@
                     <i class="fa fa-search"></i>
                 </button>
             </div>
-            <span class="navbar-text mx-2 text-dark"><?
+            <span class="navbar-text mx-2 text-dark"><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?
                 if(Yii::$app->location->city){
                     echo Yii::$app->location->city->_text->name;
                 }else{
                     if(Yii::$app->location->region){
-                        echo Yii::$app->location->region->_text->name;
+                        echo Yii::$app->location->region->_text->short_name;
                     }else{
                         echo 'Россия';
                     }
                 }
 
-                ?></span>
+                ?></a></span>
 
-            <button type="button" id="new-add-btn" class="btn btn-success my-2 d-none d-md-block d-lg-block">+ <?= __('Post an add') ?></button>
+            <button type="button" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn">+ <?= __('Post an add') ?></button>
 
-            <button type="button" id="new-add-btn" class="btn btn-success d-block my-2 d-md-none d-lg-none">+ </button>
+            <button type="button" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn">+ </button>
         </div>
     </nav>
 </header>
@@ -106,7 +106,7 @@ if(Yii::$app->user->isGuest){
 ?>
 <script>
     $(document).ready(function(){
-        $('#new-add-btn').bind('click', function(){
+        $('.new-add-btn').bind('click', function(){
             window.location.href = '<?= $ad_href ?>';
         });
         $('.search-button').bind('click', function(){

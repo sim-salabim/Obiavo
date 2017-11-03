@@ -24,8 +24,6 @@ class LocationUrlRule extends UrlRule implements UrlRuleInterface
 
     public function parseRequest($manager, $request)
     {
-        $pathInfo = $request->getPathInfo();
-
         $result = parent::parseRequest($manager, $request);
 
         if ($result === false) {
@@ -34,16 +32,17 @@ class LocationUrlRule extends UrlRule implements UrlRuleInterface
 
         list($route, $params) = $result;
 
-        $cityName = ArrayHelper::getValue($params, 'city', false);
+        $domain = ArrayHelper::getValue($params, 'domain', false);
 
         $city = \common\models\City::find()
                         ->byLocation()
-                        ->whereDomain($cityName)
+                        ->whereDomain($domain)
                         ->one();
 
-        if (!$city) return false;
-
-        Yii::$app->location->city = $city;
+        if (!$city){
+            $region = \common\models\Region::findOne(['domain' => $domain]);
+            if(!$region) return false;
+        }
 
         return [$route,$params];
     }

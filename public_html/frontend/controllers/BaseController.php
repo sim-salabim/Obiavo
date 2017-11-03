@@ -22,13 +22,14 @@ class BaseController extends \yii\web\Controller {
         }
     }
 
-    public function setBreadcrumbs($array = []){
+    public function setBreadcrumbs($array = [], $show_last_one = false){
         $breadcrumbs = [['label' => __('Home page'), 'link' => URL::to(Yii::$app->homeUrl)]];
         if(!empty($array)){
             foreach($array as $item){
                 $breadcrumbs[] = $item;
             }
         }
+        if(!$show_last_one) array_pop($breadcrumbs);
         return $breadcrumbs;
     }
 
