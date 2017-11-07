@@ -16,7 +16,7 @@ class Form extends Widget {
 
     const INPUT_AREA_TEXT = 'textAreaInput';
 
-    CONST INPUT_TEXT_ACTIVE = 'textActiveInput';
+    CONST INPUT_TEXT_AREA_REACH = 'textAreaReachInput';
 
     const INPUT_CHECKBOX_INACTIVE = 'inputCheckboxInactive';
 
@@ -63,9 +63,14 @@ class Form extends Widget {
         return $this->render('text-input', compact('attribute'));
     }
 
-     protected function textAreaInput($attribute){
+    protected function textAreaInput($attribute){
 
         return $this->render('text-area-input', compact('attribute'));
+    }
+
+    protected function textAreaReachInput($attribute){
+
+        return $this->render('text-area-reach-input', compact('attribute'));
     }
 
     protected function inputCheckboxInactive($attribute){

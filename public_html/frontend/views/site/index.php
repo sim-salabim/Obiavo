@@ -4,7 +4,7 @@ use yii\helpers\Url;
 
 <div class="row site-index">
     <div class="col-12">
-        <? $header_str = str_replace(['{site-url}','{count-obiavlenya}'], [\Yii::$app->location->domain, countString(\common\models\Ads::countAds(), [__('one_ad'), __('two_ads'), __('more_ads')])],\common\models\Cms::getByTechname('site-header')->_text->text)?>
+        <? $header_str = str_replace(['{site-url}','{count-obiavlenya}'], [\Yii::$app->location->domain, countString(\common\models\Ads::countAds(), [__('one_ad'), __('two_ads'), __('more_ads')])],\common\models\Cms::getByTechname('site-header')->_text->seo_text)?>
         <?= $header_str  ?>
     </div>
     <div class="w-100"><hr></div>

@@ -23,9 +23,12 @@ $items = [
         [
             'panel-title' => 'CMS данные',
             'attributes' => [
-                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название (h1)','model'=>$cms->_text],
+                ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'Заголовок','model'=>$cms->_text],
+                ['name' => 'seo_h2','type' => Form::INPUT_TEXT,'label' => 'SEO H2','model'=>$cms->_text],
                 ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL','model'=>$cms->_text],
-                ['name' => 'text','type' => Form::INPUT_TEXT,'label' => 'Текст','model'=>$cms->_text],
+                ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'Ключевые слова','model'=>$cms->_text],
+                ['name' => 'seo_keywords','type' => Form::INPUT_AREA_TEXT,'label' => 'Ключевые слова','model_name'=>'CmsText'],
+                ['name' => 'seo_text','type' => Form::INPUT_TEXT_AREA_REACH ,'label' => 'Tекст','model_name'=>'CmsText', 'model' =>$cms->_text]
             ]
         ],
     ]

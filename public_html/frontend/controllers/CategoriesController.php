@@ -7,6 +7,7 @@ use common\models\Placement;
 use common\models\PlacementsText;
 use Yii;
 use common\models\Category;
+use yii\helpers\Url;
 use yii\web\HttpException;
 use common\models\Language;
 
@@ -18,6 +19,7 @@ class CategoriesController extends BaseController
      */
     protected $category = null;
     protected $placement = null;
+    protected $canonical = null;
 
     public $params;
 
@@ -36,12 +38,14 @@ class CategoriesController extends BaseController
 
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
+        $this->canonical = Url::home(true) . $categoryUrl . "/";
         $action = Yii::$app->request->get('placement');
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');
         $action_id = null;
         if($action){
             $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
+            $this->canonical .= $action . '/';
         }
 
         /**
@@ -63,6 +67,7 @@ class CategoriesController extends BaseController
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['h1'] = $this->category->_text->name;
         Yii::$app->view->params['seo_text'] = $this->category->_text->seo_text;
+        Yii::$app->view->params['canonical'] = $this->canonical;
         $librarySearch = new AdsSearch();
         $librarySearch->setCategory($this->category->id);
         $librarySearch->setAction($action_id);

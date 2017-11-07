@@ -16,6 +16,15 @@ AppAsset::register($this);
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
     <head>
+        <? if(isset($this->params['canonical']) AND $this->params['canonical']){?>
+            <link rel="canonical" href="<?= $this->params['canonical'] ?>">
+        <? } ?>
+        <? if(isset($this->params['desc']) AND $this->params['desc']){?>
+            <meta name="description" content="<?= $this->params['desc'] ?>">
+        <? } ?>
+        <? if(isset($this->params['keywords']) AND $this->params['keywords']){?>
+            <meta name="keywords" content="<?= $this->params['keywords'] ?>">
+        <? } ?>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <?= Html::csrfMetaTags() ?>

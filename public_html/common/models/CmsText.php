@@ -10,8 +10,11 @@ use Yii;
  * @property integer $id
  * @property integer $cms_id
  * @property integer $languages_id
- * @property string $title
- * @property string $text
+ * @property string $seo_title
+ * @property string $seo_h2
+ * @property string $seo_desc
+ * @property string $seo_keywords
+ * @property string $seo_text
  *
  * @property Cms $cms
  * @property Language $languages
@@ -33,9 +36,12 @@ class CmsText extends \yii\db\ActiveRecord
              self::SCENARIO_DEFAULT => [
                  'cms_id',
                  'languages_id',
-                 'name',
+                 'seo_title',
                  'url',
-                 'text'
+                 'seo_text',
+                 'seo_h2',
+                 'seo_desc',
+                 'seo_keywords'
              ],
          ];
      }
@@ -45,9 +51,9 @@ class CmsText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cms_id', 'name'], 'required'],
+            [['cms_id', 'seo_title', 'seo_text'], 'required'],
             [['cms_id', 'languages_id'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['seo_title'], 'string', 'max' => 255],
             [['cms_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cms::className(), 'targetAttribute' => ['cms_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['languages_id'],'default', 'value' => Language::getDefault()->id],
@@ -63,8 +69,11 @@ class CmsText extends \yii\db\ActiveRecord
             'id' => 'ID',
             'cms_id' => 'CMS ID',
             'languages_id' => 'Languages ID',
-            'name' => 'Title',
-            'text' => 'Text',
+            'seo_title' => 'Title',
+            'seo_text' => 'Text',
+            'seo_h2' => 'H2',
+            'seo_desc' => 'Text',
+            'seo_keywords' => 'Text',
         ];
     }
 

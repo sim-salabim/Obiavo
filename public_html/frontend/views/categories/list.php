@@ -2,7 +2,7 @@
 use \frontend\helpers\LocationHelper;
 ?>
 <div class="row">
-    <? if(!isset($row_list) OR ! $row_list){ ?>
+    <? if(!isset($row_list) OR !$row_list){ ?>
 
         <?php foreach ($categories as $category) { ?>
             <div class="col-lg-4 col-xs-2">
