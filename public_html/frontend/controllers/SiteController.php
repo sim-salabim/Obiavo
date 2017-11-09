@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\Cms;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -71,7 +72,6 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
                             ->withText()
@@ -81,6 +81,12 @@ class SiteController extends BaseController
 
         $cities = \common\models\City::find()->withText()->byLocation()->all();
         $ads_amount = Ads::countAds();
+        // достанем цмс страницу site-header чтоб установить сео элементы для главной страницы
+        $cms_page = Cms::getByTechname('site-header');
+        Yii::$app->view->params['desc'] = $cms_page->_text->seo_desc;
+        Yii::$app->view->params['keywords'] = $cms_page->_text->seo_keywords;
+        Yii::$app->view->params['seo_h2'] = $cms_page->_text->seo_h2;
+        $this->setPageTitle($cms_page->_text->seo_title);
         return $this->render('index',  compact('categories','cities', 'ads_amount'));
     }
 

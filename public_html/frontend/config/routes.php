@@ -44,7 +44,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\SelectLocationUrlRule',
-        'pattern' => '/<select-location>/<domain:\w+>',
+        'pattern' => '/select-location/<domain:\w+>',
         'route' => 'location/select-location',
     ],
     /**

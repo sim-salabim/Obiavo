@@ -38,7 +38,13 @@ AppAsset::register($this);
     <div id="wrapper">
         <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff;">
             <div class="container">
-                <h1 class="display-3"><?= $this->title ?></h1>
+                <h1 class="display-3">
+                    <? if(isset($this->params['seo_h2']) AND $this->params['seo_h2'] != ''){
+                        echo $this->params['seo_h2'];
+                    }else{
+                        echo $this->title;
+                    } ?>
+                </h1>
                 <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
                 <? if(isset($this->params['seo_text'])){?>
                     <p class="lead"><?= $this->params['seo_text'] ?></p>

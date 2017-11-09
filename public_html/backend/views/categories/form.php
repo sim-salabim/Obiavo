@@ -42,7 +42,7 @@ $items = [
                 ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'SEO заголовок','model'=>$category->_text],
                 ['name' => 'seo_name','type' => Form::INPUT_TEXT,'label' => 'SEO название (для меню на внешке)','model'=>$category->_text],
                 ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'SEO ключевые слова','model'=>$category->_text],
-                ['name' => 'seo_desc','type' => Form::INPUT_AREA_TEXT,'label' => 'SEO описание','model_name'=>'CategoriesText'],
+                ['name' => 'seo_desc','type' => Form::INPUT_AREA_TEXT,'label' => 'SEO описание','model_name'=>'CategoriesText', 'model' => $category->_text],
                 ['name' => 'seo_h2','type' => Form::INPUT_TEXT,'label' => 'SEO H2','model'=>$category->_text],
                 ['name' => 'seo_text','type' => Form::INPUT_TEXT_AREA_REACH ,'label' => 'SEO текст','model_name'=>'CategoriesText', 'model' => $category->_text]
             ]
