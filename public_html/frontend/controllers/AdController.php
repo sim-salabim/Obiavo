@@ -38,9 +38,9 @@ class AdController extends BaseController
         $this->setPageTitle(__('Add ad'));
         $categories = Category::find()
             ->where(['parent_id' => NULL])
-            ->withText(['laguages_id' => Language::getDefault()->id])
+            ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
-        $cities = City::find()->withText(['laguages_id' => Language::getDefault()->id])->all();
+        $cities = City::find()->withText(['languages_id' => Language::getDefault()->id])->all();
         return $this->render('new', [
             'user' => Yii::$app->user->identity,
             'categories' => $categories,

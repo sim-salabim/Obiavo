@@ -14,6 +14,8 @@ class Form extends Widget {
 
     const INPUT_TEXT = 'textInput';
 
+    const INPUT_HIDDEN = 'inputHidden';
+
     const INPUT_AREA_TEXT = 'textAreaInput';
 
     CONST INPUT_TEXT_AREA_REACH = 'textAreaReachInput';

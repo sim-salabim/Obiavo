@@ -93,7 +93,7 @@ class CategoriesController extends BaseController
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $post = Yii::$app->request->post();
             $subcategories = Category::find()
-                ->withText(['laguages_id' => Language::getDefault()->id])
+                ->withText(['languages_id' => Language::getDefault()->id])
                 ->where(['parent_id' => $post['category_id']])
                 ->all();
             if(count($subcategories)) {
@@ -114,7 +114,7 @@ class CategoriesController extends BaseController
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $post = Yii::$app->request->post();
             $category = Category::find()
-                ->withText(['laguages_id' => Language::getDefault()->id])
+                ->withText(['languages_id' => Language::getDefault()->id])
                 ->where(['id' => $post['category_id']])
                 ->one();
             if(count($category->placements) > 0){

@@ -96,7 +96,7 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
             Yii::$app->location->city = $city;
             return $city;
         }else{
-            $region = Region::find()->withText(['laguages_id' => Language::getDefault()->id])
+            $region = Region::find()->withText(['languages_id' => Language::getDefault()->id])
                 ->where(['domain' => $cityName])
                 ->one();
             if($region){

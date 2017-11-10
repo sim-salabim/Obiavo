@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\models\scopes\CategoryPlacementQuery;
+use common\models\scopes\PlacementCategoryQuery;
 use Yii;
 
 /**
@@ -11,8 +13,9 @@ use Yii;
  * @property integer $categories_id
  * @property integer $placements_id
  *
- * @property Placements $placements
- * @property Categories $categories
+ * @property Placement $placement
+ * @property Category $category
+* @property CategoryPlacementText[] $categoriesPlacementText
  */
 class CategoryPlacement extends \yii\db\ActiveRecord
 {
@@ -24,6 +27,21 @@ class CategoryPlacement extends \yii\db\ActiveRecord
         return 'categories_has_placements';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \backend\behaviors\SaveRelation::className(),
+                'relations' => ['categoriesPlacementText']
+            ],
+            [
+                'class' => \frontend\behaviors\Multilanguage::className(),
+                'relationName' => 'categoriesPlacementText',
+                'relationClassName' => CategoryPlacementText::className(),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -32,9 +50,13 @@ class CategoryPlacement extends \yii\db\ActiveRecord
         return [
             [['categories_id', 'placements_id'], 'required'],
             [['categories_id', 'placements_id'], 'integer'],
-            [['placements_id'], 'exist', 'skipOnError' => true, 'targetClass' => Placements::className(), 'targetAttribute' => ['placements_id' => 'id']],
-            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['categories_id' => 'id']],
+            [['placements_id'], 'exist', 'skipOnError' => true, 'targetClass' => Placement::className(), 'targetAttribute' => ['placements_id' => 'id']],
+            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
         ];
+    }
+
+    public static function find(){
+        return new CategoryPlacementQuery(get_called_class());
     }
 
     /**
@@ -52,16 +74,31 @@ class CategoryPlacement extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlacements()
+    public function getPlacement()
     {
-        return $this->hasOne(Placements::className(), ['id' => 'placements_id']);
+        return $this->hasOne(Placement::className(), ['id' => 'placements_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategories()
+    public function getCategory()
     {
-        return $this->hasOne(Categories::className(), ['id' => 'categories_id']);
+        return $this->hasOne(Category::className(), ['id' => 'categories_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoriesPlacementTexts()
+    {
+        return $this->hasMany(CategoryPlacementText::className(), ['category_placement_id' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoriesPlacementText()
+    {
+        return $this->hasOne(CategoryPlacementText::className(), ['category_placement_id' => 'id']);
     }
 }
