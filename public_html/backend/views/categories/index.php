@@ -47,6 +47,13 @@ $this->title = 'Категории';
             'format'       => TableList::TYPE_MULTI_BUTTON,
         ],
         [
+            'label'        => 'SEO типов',
+            'format'       => TableList::TYPE_OPT_BUTTON,
+            'buttons'      => [
+                'update-seo-attached',
+            ]
+        ],
+        [
             'label'        => 'Управление',
             'format'       => TableList::TYPE_OPT_BUTTON,
             'buttons'      => [

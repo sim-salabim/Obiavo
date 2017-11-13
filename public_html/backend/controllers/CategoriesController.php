@@ -1,6 +1,8 @@
 <?php
 namespace backend\controllers;
 
+use common\models\CategoryPlacement;
+use common\models\CategoryPlacementText;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -116,6 +118,50 @@ class CategoriesController extends BaseController
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
                 JsonData::REFRESHPAGE => '',
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function actionUpdateSeoAttached($id){
+        $categoryPlacementsTexts = CategoryPlacementText::find()->where(['in','category_placement_id', 'SELECT `id` FROM `categories_has_placements`  WHERE `categories_id`='.$id])->all();
+        $categories_placements = CategoryPlacement::find()->where(['categories_id'=>$id])->all();
+        $toUrl = Url::toRoute(['save-seo-attached']);
+
+        return $this->renderAjax('form-seo-attached',  compact('categoryPlacementsTexts', 'id', 'toUrl', 'categories_placements'));
+
+    }
+
+    public function actionSaveSeoAttached(){
+        $post = Yii::$app->request->post();
+        unset($post['json']);
+        $array = [];
+        foreach($post as $key => $row){
+            foreach($row as $k => $v){
+                $array[$k][$key] = $v;
+            }
+        }
+        foreach($array as $key => $values){
+
+                $categoryPlacementText = CategoryPlacementText::find()->where(['category_placement_id' => $key])->one();
+            if(!$categoryPlacementText){
+                $categoryPlacementText = new CategoryPlacementText();
+                $categoryPlacementText->category_placement_id = $key;
+            }
+            foreach ($values as $k => $v){
+                $categoryPlacementText->{$k} = $v;
+            }
+            if(!$categoryPlacementText->save()){
+                return $this->sendJsonData([
+                    JsonData::SHOW_VALIDATION_ERRORS_INPUT => $categoryPlacementText->getErrors(),
+                ]);
+            }
+        }
+        return $this->sendJsonData([
+            JsonData::SUCCESSMESSAGE => "Данные успешно сохранены",
+            JsonData::REFRESHPAGE => '',
         ]);
     }
 

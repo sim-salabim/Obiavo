@@ -14,14 +14,6 @@ use \common\models\CategoryPlacement;
 use \common\models\PlacementsText;
 
 $placements = Placement::find()->withText(['languages_id' => Language::getDefault()->id])->all();
-$test = ArrayHelper::getColumn($category->placements,'id');
-if($category->placements){
-    $arr = [];
-    foreach($category->placements as $pl){
-        $category_placement = CategoryPlacement::find()->withText(['languages_id' => Language::getDefault()->id])->where(['categories_id' => $category->id, 'placements_id' => $pl->id])->one();
-        $arr[$category_placement->id] = [$category_placement];
-    }
-}
 $items = [
     'saveUrl' => $toUrl,
     'rows' => [
@@ -58,20 +50,6 @@ $items = [
         ]
     ]
 ];
-if(!empty($arr)) {
 
-    foreach ($arr as $key => $text_model) {
-        $category_placement = CategoryPlacement::findOne(['id' => $key]);
-        $placement_name = PlacementsText::findOne(['placements_id' => $category_placement->placements_id, 'languages_id' => Language::getDefault()->id])->name;
-        $placement_form_arr = ['panel-title' => 'Seo для связанных типов "'.$placement_name.'"' , 'attributes' => []];
-        $placement_form_arr['attributes'][] = ['name' => 'seo_title', 'type' => Form::INPUT_TEXT, 'label' => 'Сео заголовок', 'model' => $text_model[0]->_text];
-        $placement_form_arr['attributes'][] = ['name' => 'seo_h2', 'type' => Form::INPUT_TEXT, 'label' => 'Сео H2', 'model' => $text_model[0]->_text];
-        $placement_form_arr['attributes'][] = ['name' => 'seo_name', 'type' => Form::INPUT_TEXT, 'label' => 'Сео name', 'model' => $text_model[0]->_text];
-        $placement_form_arr['attributes'][] = ['name' => 'seo_text', 'type' => Form::INPUT_TEXT_AREA_REACH, 'label' => 'Сео текст', 'model_name' => 'CategoryPlacementText', 'model' => $text_model[0]->_text];
-        $placement_form_arr['attributes'][] = ['name' => 'seo_desc', 'type' => Form::INPUT_AREA_TEXT, 'label' => 'Сео описание', 'model_name' => 'CategoryPlacementText', 'model' => $text_model[0]->_text];
-        $placement_form_arr['attributes'][] = ['name' => 'seo_keywords', 'type' => Form::INPUT_TEXT, 'label' => 'Keywords', 'model' => $text_model[0]->_text];
-        array_push($items['rows'], $placement_form_arr);
-    }
-}
 echo Form::widget($items);
 ?>
