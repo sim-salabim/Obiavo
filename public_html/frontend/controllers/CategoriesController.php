@@ -53,10 +53,6 @@ class CategoriesController extends BaseController
          */
         $category = Category::getByOldUrlCache(($categoryUrl) ?: null);
 
-        if (!$category) {
-            throw new HttpException(404, 'Not Found');
-        }
-
         $this->category = $category;
 
         $subCategories = $this->category->children;

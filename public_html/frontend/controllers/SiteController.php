@@ -3,8 +3,10 @@ namespace frontend\controllers;
 
 use common\models\Ads;
 use common\models\Cms;
+use frontend\helpers\LocationHelper;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -72,6 +74,10 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        $url = str_replace('/','',Yii::$app->getRequest()->getUrl());
+        if($url != LocationHelper::getCurrentDomain()){
+            return $this->redirect(Url::toRoute('/'.LocationHelper::getCurrentDomain()));
+        }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
                             ->withText()
