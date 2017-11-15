@@ -3,7 +3,11 @@ namespace frontend\controllers;
 
 use common\models\Ads;
 use common\models\Cms;
+use common\models\Country;
+use common\models\Region;
+use frontend\components\Location;
 use frontend\helpers\LocationHelper;
+use MongoDB\Operation\Count;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\helpers\Url;
@@ -84,8 +88,17 @@ class SiteController extends BaseController
                             ->withChildren()
                             ->orphan()
                             ->all();
-
-        $cities = \common\models\City::find()->withText()->byLocation()->all();
+        Yii::$app->location->country;
+        $country_id = Country::find()->select('id')->where(['domain' => Yii::$app->location->country])->one()->id;
+        $regions_ids = Region::find()->where(['countries_id' => $country_id])->asArray()->all();
+        $regions_arr = [];
+        foreach($regions_ids as $id){
+            $regions_arr[] = $id['id'];
+        }
+        $cities = \common\models\City::find()->withText()
+            ->where(['in','regions_id', $regions_arr])
+            ->limit(30)
+            ->all();
         $ads_amount = Ads::countAds();
         // достанем цмс страницу site-header чтоб установить сео элементы для главной страницы
         $cms_page = Cms::getByTechname('site-header');
