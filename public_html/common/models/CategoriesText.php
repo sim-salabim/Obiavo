@@ -13,6 +13,8 @@ use common\models\Language;
  * @property integer $languages_id
  * @property string $name
  * @property string $url
+ * @property string $seo_name
+ * @property string $seo_h2
  * @property string $seo_title
  * @property string $seo_desc
  * @property string $seo_keywords
@@ -33,6 +35,8 @@ class CategoriesText extends \yii\db\ActiveRecord
                 'languages_id',
                 'name',
                 'url',
+                'seo_name',
+                'seo_h2',
                 'seo_title',
                 'seo_desc',
                 'seo_keywords',
@@ -75,6 +79,8 @@ class CategoriesText extends \yii\db\ActiveRecord
             'name' => __('Name'),
             'url' => 'Url',
             'seo_title' => 'Seo Title',
+            'seo_name' => 'Seo Name',
+            'seo_h2' => 'Seo H2',
             'seo_desc' => 'Seo Desc',
             'seo_keywords' => 'Seo Keywords',
             'seo_text' => __('SEO text'),

@@ -8,11 +8,11 @@ use \frontend\helpers\LocationHelper;
             <div class="col-lg-4 col-xs-2">
                 <ul class="lvl-block" style="list-style: none;">
                     <h4 class="lvl-1">
-                        <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>
+                        <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->seo_name?></a>
                     </h4>
 
                     <?php foreach ($category->children as $child) { ?>
-                        <li class="lvl-2 ml-4" style="color: #777;"><a href="/<?= LocationHelper::getDomainForUrl($child->url())?>"><?= $child->_text->name?></a></li>
+                        <li class="lvl-2 ml-4" style="color: #777;"><a href="/<?= LocationHelper::getDomainForUrl($child->url())?>"><?= $child->_text->seo_name?></a></li>
                     <?php } ?>
                 </ul>
             </div>
@@ -29,7 +29,7 @@ use \frontend\helpers\LocationHelper;
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>
-                    <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
+                    <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->seo_name?></a><? if(isset($categories[++$key])){?>,<? } ?>
                 <? } ?>
             </span>
         </div>
