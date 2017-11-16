@@ -19,11 +19,11 @@ AppAsset::register($this);
         <? if(isset($this->params['canonical']) AND $this->params['canonical']){?>
             <link rel="canonical" href="<?= $this->params['canonical'] ?>">
         <? } ?>
-        <? if(isset($this->params['desc']) AND $this->params['desc']){?>
-            <meta name="description" content="<?= $this->params['desc'] ?>">
+        <? if(isset($this->params['seo_desc']) AND $this->params['seo_desc']){?>
+            <meta name="description" content="<?= $this->params['seo_desc'] ?>">
         <? } ?>
-        <? if(isset($this->params['keywords']) AND $this->params['keywords']){?>
-            <meta name="keywords" content="<?= $this->params['keywords'] ?>">
+        <? if(isset($this->params['seo_keywords']) AND $this->params['seo_keywords']){?>
+            <meta name="keywords" content="<?= $this->params['seo_keywords'] ?>">
         <? } ?>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

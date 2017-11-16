@@ -27,8 +27,8 @@ class CmsController extends BaseController
         $breadcrumbs = [['label' => $cms_page->_text->seo_title, 'link' => $cms_page->_text->url]];
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['h1'] = $cms_page->_text->seo_h2;
-        Yii::$app->view->params['desc'] = $cms_page->_text->seo_desc;
-        Yii::$app->view->params['keywords'] = $cms_page->_text->seo_keywords;
+        Yii::$app->view->params['seo_desc'] = $cms_page->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $cms_page->_text->seo_keywords;
 
         return $this->render('view', [
             'page'   => $cms_page

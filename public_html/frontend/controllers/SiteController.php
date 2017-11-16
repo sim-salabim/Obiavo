@@ -102,8 +102,8 @@ class SiteController extends BaseController
         $ads_amount = Ads::countAds();
         // достанем цмс страницу site-header чтоб установить сео элементы для главной страницы
         $cms_page = Cms::getByTechname('site-header');
-        Yii::$app->view->params['desc'] = $cms_page->_text->seo_desc;
-        Yii::$app->view->params['keywords'] = $cms_page->_text->seo_keywords;
+        Yii::$app->view->params['seo_desc'] = $cms_page->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $cms_page->_text->seo_keywords;
         Yii::$app->view->params['seo_h2'] = $cms_page->_text->seo_h2;
         $this->setPageTitle($cms_page->_text->seo_title);
         return $this->render('index',  compact('categories','cities', 'ads_amount'));

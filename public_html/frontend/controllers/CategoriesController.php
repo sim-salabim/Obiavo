@@ -2,6 +2,8 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\CategoryPlacement;
+use common\models\CategoryPlacementText;
 use common\models\libraries\AdsSearch;
 use common\models\Placement;
 use common\models\PlacementsText;
@@ -59,10 +61,15 @@ class CategoriesController extends BaseController
         $categoryPlacements = $this->category->placements;
 
         $this->setPageTitle($this->category);
+        if($action){
+            $category_placement = CategoryPlacement::find()->where(['placements_id' => $action_id, 'categories_id' => $category->id])->one();
+        }
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['h1'] = $this->category->_text->name;
-        Yii::$app->view->params['seo_text'] = $this->category->_text->seo_text;
+        Yii::$app->view->params['seo_text'] = (!$action) ? $this->category->_text->seo_text : $category_placement->_text->seo_text;
+        Yii::$app->view->params['seo_desc'] = (!$action) ? $this->category->_text->seo_desc : $category_placement->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = (!$action) ? $this->category->_text->seo_keywords : $category_placement->_text->seo_keywords;
         Yii::$app->view->params['canonical'] = $this->canonical;
         $librarySearch = new AdsSearch();
         $librarySearch->setCategory($this->category->id);
