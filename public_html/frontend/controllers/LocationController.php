@@ -74,6 +74,6 @@ class LocationController extends BaseController
             setcookie("city", $this->location_domains['city'], null, '/');
             return $this->redirect(Url::toRoute("/"));
         }
-        return $this->redirect(Url::toRoute("/${domain}"));
+        return $this->redirect(Url::toRoute("/${domain}/"));
     }
 }

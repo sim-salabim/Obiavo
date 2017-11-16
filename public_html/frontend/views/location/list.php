@@ -106,7 +106,8 @@ use yii\helpers\Url;
                 },
 
                 select: function(event, ui) {
-                    window.location.href = window.location.origin + "/" + ui.item.domain
+                    console.log(window.location.origin + "/" + ui.item.domain + "/");
+                    window.location.href = window.location.origin + "/select-location/" + ui.item.domain + "/"
                 },
                 close: function( event, ui ) {
                     if(_search_data.length != 0){

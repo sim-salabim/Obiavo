@@ -18,7 +18,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationUrlRule',
-        'pattern' => '/<domain:\w+>/',
+        'pattern' => '/<domain:([0-9a-zA-Z\-]+)>/',
         'route' => 'site/index',
     ],
     /**
@@ -26,7 +26,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<city:\w+>',
+        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<city:([0-9a-zA-Z\-]+)>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
@@ -35,7 +35,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<placement:\w+>/<city:\w+>',
+        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<placement:\w+>/<city:([0-9a-zA-Z\-]+)>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
@@ -44,7 +44,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\SelectLocationUrlRule',
-        'pattern' => '/select-location/<domain:\w+>',
+        'pattern' => '/select-location/<domain:([0-9a-zA-Z\-]+)>/',
         'route' => 'location/select-location',
     ],
     /**
