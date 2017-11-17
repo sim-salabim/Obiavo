@@ -35,9 +35,11 @@ if(!empty($arr)) {
         $category_placement = CategoryPlacement::findOne(['id' => $key]);
         $placement_name = PlacementsText::findOne(['placements_id' => $category_placement->placements_id, 'languages_id' => Language::getDefault()->id])->name;
         $placement_form_arr = ['panel-title' => 'Seo для связанных типов "'.$placement_name.'"' , 'attributes' => []];
-        $placement_form_arr['attributes'][] = ['name' => "seo_title[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Сео заголовок', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_title'];
-        $placement_form_arr['attributes'][] = ['name' => "seo_h2[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Сео H2', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_h2'];
-        $placement_form_arr['attributes'][] = ['name' => "seo_name[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Сео name', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_name'];
+
+        $placement_form_arr['attributes'][] = ['name' => "name[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Название (для меню на внешке)', 'model' => $text_model, 'manually' => true, 'params_name' => 'name'];
+        $placement_form_arr['attributes'][] = ['name' => "seo_title[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Заголовок', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_title'];
+        $placement_form_arr['attributes'][] = ['name' => "seo_h1[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'H1', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_h1'];
+        $placement_form_arr['attributes'][] = ['name' => "seo_h2[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'H2', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_h2'];
         $placement_form_arr['attributes'][] = ['name' => "seo_text[{$key}]", 'type' => Form::INPUT_TEXT_AREA_REACH, 'label' => 'Сео текст', 'model_name' => 'CategoryPlacementText', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_text'];
         $placement_form_arr['attributes'][] = ['name' => "seo_desc[{$key}]", 'type' => Form::INPUT_AREA_TEXT, 'label' => 'Сео описание', 'model_name' => 'CategoryPlacementText', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_desc'];
         $placement_form_arr['attributes'][] = ['name' => "seo_keywords[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Keywords', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_keywords'];

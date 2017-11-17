@@ -19,8 +19,7 @@ use common\models\scopes\CategoryQuery;
  * @property Category $children
  * @property Placement $placements
  * @property Category[] $categories
- * @property CategoriesAttributes[] $categoriesAttributes
- * @property CategoryGenerated[] $categoryGenerated
+ * @property CategoryAttribute[] $categoriesAttributes
  */
 class Category extends \yii\db\ActiveRecord
 {

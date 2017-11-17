@@ -16,9 +16,12 @@ class m161126_233728_categories_text_table_create extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'categories_id' => $this->integer()->unsigned()->notNull(),
             'languages_id' => $this->integer()->unsigned()->notNull(),
-            'name' => $this->string()->notNull(),
             'url' => $this->string()->notNull(),
+            'seo_h1' => $this->string()->notNull(),
+            'seo_h2' => $this->string()->notNull(),
+            'name' => $this->string()->notNull(),
             'seo_title' => $this->string(),
+            'seo_text' => $this->string(),
             'seo_desc' => $this->string(),
             'seo_keywords' => $this->string(),
         ], $tableOptions);
@@ -38,14 +41,4 @@ class m161126_233728_categories_text_table_create extends Migration
         $this->dropTable('categories_text');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

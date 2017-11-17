@@ -66,7 +66,7 @@ class CategoriesController extends BaseController
         }
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
-        Yii::$app->view->params['h1'] = $this->category->_text->name;
+        Yii::$app->view->params['h1'] = (!$action) ? $this->category->_text->seo_h1 : $category_placement->_text->seo_h1;
         Yii::$app->view->params['seo_text'] = (!$action) ? $this->category->_text->seo_text : $category_placement->_text->seo_text;
         Yii::$app->view->params['seo_desc'] = (!$action) ? $this->category->_text->seo_desc : $category_placement->_text->seo_desc;
         Yii::$app->view->params['seo_keywords'] = (!$action) ? $this->category->_text->seo_keywords : $category_placement->_text->seo_keywords;

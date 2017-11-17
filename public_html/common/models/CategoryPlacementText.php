@@ -11,6 +11,9 @@ use common\models\Language;
  * @property integer $id
  * @property integer $category_placement_id
  * @property integer $languages_id
+ * @property string $name
+ * @property string $seo_h1
+ * @property string $seo_h2
  * @property string $seo_title
  * @property string $seo_desc
  * @property string $seo_keywords
@@ -29,6 +32,9 @@ class CategoryPlacementText extends \yii\db\ActiveRecord
             self::SCENARIO_DEFAULT => [
                 'category_placement_id',
                 'languages_id',
+                'name',
+                'seo_h1',
+                'seo_h2',
                 'seo_title',
                 'seo_desc',
                 'seo_keywords',
@@ -52,7 +58,7 @@ class CategoryPlacementText extends \yii\db\ActiveRecord
         return [
             [['category_placement_id'], 'required'],
             [['category_placement_id', 'languages_id'], 'integer'],
-            [['seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
+            [['seo_title', 'seo_h1','seo_h2','name', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['category_placement_id'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryPlacement::className(), 'targetAttribute' => ['category_placement_id' => 'id']],
             ['languages_id','default','value' => Language::getDefault()->id]
@@ -69,6 +75,9 @@ class CategoryPlacementText extends \yii\db\ActiveRecord
             'category_placement_id' => 'Categories/Placement ID',
             'languages_id' => 'Languages ID',
             'seo_title' => 'Seo Title',
+            'seo' => 'Name',
+            'seo_h1' => 'Seo H1',
+            'seo_h2' => 'Seo H2',
             'seo_desc' => 'Seo Desc',
             'seo_keywords' => 'Seo Keywords',
             'seo_text' => __('SEO text'),

@@ -9,13 +9,14 @@ $items = [
         [
             'panel-title' => 'Текстовые данные - {language}',
             'attributes' => [
-
-                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$category->_mttext],
-                ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL','model'=>$category->_mttext],
-                ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'SEO заголовок','model'=>$category->_mttext],
-                ['name' => 'seo_desc','type' => Form::INPUT_TEXT,'label' => 'SEO описание','model'=>$category->_mttext],
-                ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'SEO ключевые слова','model'=>$category->_mttext],
-                ['name' => 'seo_text','type' => Form::INPUT_TEXT,'label' => 'SEO текст','model'=>$category->_text],
+                ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL','model'=>$category->_text],
+                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название (для меню на внешке)','model'=>$category->_text],
+                ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'Заголовок','model'=>$category->_text],
+                ['name' => 'seo_h1','type' => Form::INPUT_TEXT,'label' => 'H1','model'=>$category->_text],
+                ['name' => 'seo_h2','type' => Form::INPUT_TEXT,'label' => 'H2','model'=>$category->_text],
+                ['name' => 'seo_text','type' => Form::INPUT_TEXT_AREA_REACH ,'label' => 'SEO текст','model_name'=>'CategoriesText', 'model' => $category->_text],
+                ['name' => 'seo_desc','type' => Form::INPUT_AREA_TEXT,'label' => 'SEO описание','model_name'=>'CategoriesText', 'model' => $category->_text],
+                ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'SEO ключевые слова','model'=>$category->_text],
             ]
         ],
     ]

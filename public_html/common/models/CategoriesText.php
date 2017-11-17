@@ -11,9 +11,9 @@ use common\models\Language;
  * @property integer $id
  * @property integer $categories_id
  * @property integer $languages_id
- * @property string $name
  * @property string $url
- * @property string $seo_name
+ * @property string $name
+ * @property string $seo_h1
  * @property string $seo_h2
  * @property string $seo_title
  * @property string $seo_desc
@@ -33,9 +33,9 @@ class CategoriesText extends \yii\db\ActiveRecord
             self::SCENARIO_DEFAULT => [
                 'categories_id',
                 'languages_id',
-                'name',
                 'url',
-                'seo_name',
+                'name',
+                'seo_h1',
                 'seo_h2',
                 'seo_title',
                 'seo_desc',
@@ -60,7 +60,7 @@ class CategoriesText extends \yii\db\ActiveRecord
         return [
             [['categories_id', 'name', 'url'], 'required'],
             [['categories_id', 'languages_id'], 'integer'],
-            [['name', 'url', 'seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
+            [['seo_h1','seo_h2','name', 'url', 'seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
             ['languages_id','default','value' => Language::getDefault()->id]
@@ -76,10 +76,10 @@ class CategoriesText extends \yii\db\ActiveRecord
             'id' => 'ID',
             'categories_id' => 'Categories ID',
             'languages_id' => 'Languages ID',
-            'name' => __('Name'),
             'url' => 'Url',
             'seo_title' => 'Seo Title',
-            'seo_name' => 'Seo Name',
+            'name' => 'Seo Name',
+            'seo_h1' => 'Seo H1',
             'seo_h2' => 'Seo H2',
             'seo_desc' => 'Seo Desc',
             'seo_keywords' => 'Seo Keywords',
@@ -100,6 +100,6 @@ class CategoriesText extends \yii\db\ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasOne(Categories::className(), ['id' => 'categories_id']);
+        return $this->hasOne(Category::className(), ['id' => 'categories_id']);
     }
 }
