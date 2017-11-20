@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use common\models\Region;
 use common\models\City;
 use Yii;
+use yii\db\Query;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
@@ -35,8 +36,11 @@ class LocationController extends BaseController
 
 
     public function actionVyborGoroda(){
-        $regions = Region::find()->all();
+
         $this->setPageTitle(__('_Location'));
+        $regions = Region::find()
+            ->where(['countries_id' => (new Query())->select('id')->from('countries')->where(['domain' => Yii::$app->location->country ])->one()])
+            ->all();
         Yii::$app->view->params['h1'] = __('_Location');
         return $this->render('list',  [
             'regions'      => $regions,

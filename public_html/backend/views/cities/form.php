@@ -10,7 +10,8 @@ $items = [
             'panel-title' => 'Основныe данные',
             'attributes' => [
                   ['name' => 'domain','type' => Form::INPUT_TEXT,'label' => 'Домен','model'=>$city],
-                  ['name' => 'active','type' => Form::INPUT_CHECKBOX_INACTIVE,'label'=>'активность','model' => $city],
+                  ['name' => 'active','type' => Form::INPUT_CHECKBOX,'label'=>'Активность','model' => $city, 'model_name' => 'City'],
+                  ['name' => 'show_on_site','type' => Form::INPUT_CHECKBOX, 'label'=>'Отображение на главной','model' => $city, 'model_name' => 'City'],
             ]
         ],
         [

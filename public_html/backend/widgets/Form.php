@@ -22,6 +22,8 @@ class Form extends Widget {
 
     const INPUT_CHECKBOX_INACTIVE = 'inputCheckboxInactive';
 
+    const INPUT_CHECKBOX = 'inputCheckbox';
+
     const MULTISELECT = 'multiselect';
 
     public function getViewPath()
@@ -63,6 +65,10 @@ class Form extends Widget {
     protected function textInput($attribute){
 
         return $this->render('text-input', compact('attribute'));
+    }
+
+    protected function inputCheckbox($attribute){
+        return $this->render('input-checkbox', compact('attribute'));
     }
 
     protected function textAreaInput($attribute){

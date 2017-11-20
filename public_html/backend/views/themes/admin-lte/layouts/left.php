@@ -35,18 +35,18 @@ use yii\helpers\Url;
             [
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
-                    ['label' => 'Категории', 'icon' => 'fa fa-bars', 'url' => ['/categories']],
-                    ['label' => 'Языки', 'icon' => 'fa fa-language', 'url' => ['/languages']],
-                    ['label' => 'Страны', 'icon' => 'fa fa-flag-o', 'url' => ['/countries']],
-                    ['label' => 'Пoльзователи', 'icon' => 'fa fa-users', 'url' => ['/users']],
+                    ['label' => 'Категории', 'icon' => 'bars', 'url' => ['/categories']],
+                    ['label' => 'Языки', 'icon' => 'language', 'url' => ['/languages']],
+                    ['label' => 'Страны', 'icon' => 'flag-o', 'url' => ['/countries']],
+                    ['label' => 'Пoльзователи', 'icon' => 'users', 'url' => ['/users']],
                     ['label' => 'Типы объявлений', 'icon' => '', 'url' => ['/placements']],
-                    ['label' => 'CMS страницы', 'icon' => 'fa fa-file-o', 'url' => ['/cms']],
+                    ['label' => 'CMS страницы', 'icon' => 'file-o', 'url' => ['/cms']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
-                    ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],
+                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
+                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'На главную', 'icon' => 'fa fa-dashboard go-frontend-domain', 'url' => \Yii::$app->params['staticDomain']],
+                    ['label' => 'На главную', 'icon' => 'dashboard go-frontend-domain', 'url' => \Yii::$app->params['staticDomain']],
                     /*
                     [
                         'label' => 'Same tools',

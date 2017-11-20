@@ -97,6 +97,7 @@ class SiteController extends BaseController
         }
         $cities = \common\models\City::find()->withText()
             ->where(['in','regions_id', $regions_arr])
+            ->andWhere(['show_on_site' => 1])
             ->limit(30)
             ->all();
         $ads_amount = Ads::countAds();
