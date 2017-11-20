@@ -32,7 +32,7 @@
 
                 <div class="dropdown-menu" aria-labelledby="dropdownSearchLink">
                     <div class="form-inline my-2 mr-4 my-lg-0">
-                        <input class="form-control mr-sm-2" type="text" id="search-input" placeholder="<?= __('Search') ?>" aria-label="Search">
+                        <input class="form-control mr-sm-2 search-input-dropdown" type="text" placeholder="<?= __('Search') ?>" aria-label="Search">
                         <button class="btn btn-secondary my-2 search-button">
                             <i class="fa fa-search"></i>
                         </button>
@@ -41,9 +41,8 @@
             </div>
 
             <div class="form-inline my-2 mr-4 my-lg-0 d-none d-md-block d-lg-block">
-                <input class="form-control mr-sm-2"
+                <input class="form-control mr-sm-2 search-input"
                        type="text"
-                       id="search-input"
                        placeholder="<?= __('Search') ?>"
                        aria-label="Search">
                 <button class="btn btn-secondary my-2 search-button">
@@ -110,8 +109,10 @@ if(Yii::$app->user->isGuest){
             window.location.href = '<?= $ad_href ?>';
         });
         $('.search-button').bind('click', function(){
-            console.log(window.location.origin);
-            var query = $('#search-input').val();
+            var query = $('.search-input-dropdown').val();
+            if(query == ''){
+                query = $('.search-input').val();
+            }
             var urlArr = window.location.href.split('?');
             var getParams = [];
             if(urlArr[1]){
@@ -127,7 +128,7 @@ if(Yii::$app->user->isGuest){
                 getString += key+"="+getParams[key]+'&';
             }
             getString = getString.substring(0, getString.length - 1);
-            window.location.href = window.location.origin+ "/poisk" + getString
+            window.location.href = window.location.origin+ "/poisk/" + getString
         });
     });
 </script>
