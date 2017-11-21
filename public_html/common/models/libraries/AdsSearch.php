@@ -25,12 +25,23 @@ class AdsSearch {
         $this->expired = false;
         $this->loaded = $this->limit;
         $this->location = [
-            'country' => null,
-            'region' => null,
-            'city' => null
+            'country' => \Yii::$app->location->country,
+            'region' => \Yii::$app->location->region,
+            'city' => \Yii::$app->location->city
         ];
         $this->sorting =
             'created_at DESC, title ASC';
+    }
+
+    function setLocation($location){
+        $this->location = $location;
+    }
+
+    /**
+     * @return array
+     */
+    function getLocation(){
+        return $this->location;
     }
 
     /**

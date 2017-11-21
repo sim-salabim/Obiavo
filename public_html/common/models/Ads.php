@@ -16,6 +16,7 @@ use frontend\helpers\TransliterationHelper;
  * @property integer $categories_id
  * @property string $title
  * @property string $text
+ * @property boolean $nly_locally
  * @property int $price
  * @property int $prlacements_id
  * @property int $created_at
@@ -49,6 +50,7 @@ class Ads extends \yii\db\ActiveRecord
             [['cities_id', 'users_id', 'categories_id'], 'required'],
             [['title', ], 'string', 'max' => 100],
             [['text', ], 'string', 'max' => 1000],
+            [['only_locally'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
@@ -210,14 +212,14 @@ class Ads extends \yii\db\ActiveRecord
         ];
         $cities_id_arr = [];
         if($model->location['city']){
-            $cities_id_arr = [$model->location['city']];
+            $cities_id_arr = [$model->location['city']->id];
         }else{
             if($model->location['region']){
                 $cities_ids = (new \yii\db\Query())
                     ->select(['id'])
                     ->from('cities')
                     ->groupBy(['id'])
-                    ->where(['regions_id' => $model->location['region']])
+                    ->where(['regions_id' => $model->location['region']->id])
                     ->all();
                 if(!empty($cities_ids)){
                     foreach($cities_ids as $id){
@@ -229,7 +231,8 @@ class Ads extends \yii\db\ActiveRecord
                     ->select(['id'])
                     ->from('cities')
                     ->groupBy(['id'])
-                    ->where(['regions_id' => 'SELECT id FROM regions WHERE countries_id = '.$model->location['country']])
+                    ->where(['in','regions_id' ,
+                        (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $model->location['country']->id])])
                     ->all();
                 if(!empty($cities_ids)){
                     foreach($cities_ids as $id){

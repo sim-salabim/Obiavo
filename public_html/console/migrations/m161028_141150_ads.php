@@ -20,6 +20,7 @@ class m161028_141150_ads extends Migration
             'title' => $this->string()->notNull(),
             'text' => $this->text()->notNull(),
             'price' => $this->integer(),
+            'only_locally' => 'TINYINT NOT NULL DEFAULT 1',
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
