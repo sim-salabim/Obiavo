@@ -79,8 +79,10 @@ class AdController extends BaseController
 
     public function actionView(){
         $ad_url = Yii::$app->request->get('adUrl');
-
+        $city = Yii::$app->request->get('city');
+        //TODO проверка есть ли домен
         $ad = Ads::find()->where(['url' => $ad_url])->one();
+        if(($ad->only_locally AND ($ad->city->domain != $city)) OR (!$ad->only_locally AND $city)) throw new HttpException(404, 'Not Found');
         $this->setPageTitle($ad->title);
         $breadcrumbs = $ad->getBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);

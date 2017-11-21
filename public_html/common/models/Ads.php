@@ -16,7 +16,7 @@ use frontend\helpers\TransliterationHelper;
  * @property integer $categories_id
  * @property string $title
  * @property string $text
- * @property boolean $nly_locally
+ * @property boolean $only_locally
  * @property int $price
  * @property int $prlacements_id
  * @property int $created_at
@@ -77,7 +77,11 @@ class Ads extends \yii\db\ActiveRecord
      * @return string
      */
     public function url(){
-        return $this->url.'/';
+        $domain = '';
+        if($this->only_locally){
+            $domain = $this->city->domain."/";
+        }
+        return $this->url.'/'.$domain;
     }
     /**
      * @return \yii\db\ActiveQuery
