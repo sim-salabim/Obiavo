@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\models\libraries\AdsSearch;
+use frontend\helpers\ArrayHelper;
 use frontend\helpers\LocationHelper;
 use Yii;
 use frontend\helpers\TransliterationHelper;
@@ -152,49 +153,17 @@ class Ads extends \yii\db\ActiveRecord
 
     public function getList(AdsSearch $model){
         $where_conditions = [];
+        $user_conditions = [];
         $like_conditions = [];
         $category_conditions = [];
         $location_conditions = [];
         $expired_conditions = [];
-        if($model->user) $where_conditions['users_id'] = $model->user->id;
+        if($model->user) $user_conditions['users_id'] = $model->user->id;
         if($model->category) {
-            $cat_ids_arr[] = "$model->category";
-            $cats = (new \yii\db\Query())
-                ->select(['id'])
-                ->from('categories')
-                ->groupBy(['id'])
-                ->where(['parent_id' => $model->category])
-                ->all();
-            if(!empty($cats)){
-                foreach($cats as $cat){
-                    array_push($cat_ids_arr, $cat['id']);
-                }
-            }
-            $cat_ids_arr = array_unique($cat_ids_arr);
-            $cats_2nd = (new \yii\db\Query())
-                ->select(['id'])
-                ->from('categories')
-                ->groupBy(['id'])
-                ->where(['in', 'parent_id', $cat_ids_arr])
-                ->all();
-            if(!empty($cats_2nd)){
-                foreach($cats_2nd as $cat){
-                    array_push($cat_ids_arr, $cat['id']);
-                }
-            }
-            $cat_ids_arr = array_unique($cat_ids_arr);
-            $cats_3nd = (new \yii\db\Query())
-                ->select(['id'])
-                ->from('categories')
-                ->groupBy(['id'])
-                ->where(['in', 'parent_id', $cat_ids_arr])
-                ->all();
-            if(!empty($cats_3nd)){
-                foreach($cats_3nd as $cat){
-                    array_push($cat_ids_arr, $cat['id']);
-                }
-            }
-            $cat_ids_arr = array_unique($cat_ids_arr);
+            $category = Category::findOne($model->category);
+            $kids_categories = $category->getAllChildren([$category]);
+            array_push($kids_categories, $category);
+            $cat_ids_arr = ArrayHelper::getColumn($kids_categories, 'id');
             $category_conditions = [
                 'in', 'categories_id', $cat_ids_arr
             ];
@@ -257,24 +226,34 @@ class Ads extends \yii\db\ActiveRecord
         $ads = Ads::find()
             ->where($where_conditions)
             ->andFilterWhere($expired_conditions)
+            ->andFilterWhere($user_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
             ->andFilterWhere($like_conditions)
             ->orderBy($model->sorting)
             ->limit($model->limit)
-            ->orderBy($model->sorting)
             ->all();
         $count = Ads::find()
             ->where($where_conditions)
+            ->andFilterWhere($user_conditions)
             ->andFilterWhere($expired_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
             ->andFilterWhere($like_conditions)
             ->orderBy($model->sorting)
-            ->limit($model->limit)
-            ->orderBy($model->sorting)
             ->count();
-        return ['items' => $ads, 'count' => $count];
+        $price_range = (new \yii\db\Query())
+            ->select('MAX(price) as max, MIN(price) as min')
+            ->from('ads')
+            ->where($where_conditions)
+            ->andFilterWhere($user_conditions)
+            ->andFilterWhere($expired_conditions)
+            ->andFilterWhere($location_conditions)
+            ->andFilterWhere($category_conditions)
+            ->andFilterWhere($like_conditions)
+            ->orderBy($model->sorting)
+            ->one();
+        return ['items' => $ads, 'count' => $count, 'price_range' => $price_range];
     }
 
     /** Возвращает строку с human date

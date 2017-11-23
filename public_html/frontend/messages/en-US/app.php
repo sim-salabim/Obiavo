@@ -92,4 +92,8 @@ return [
     'one_ad' => 'ad',
     'two_ads' => 'ads',
     'more_ads' => 'ads',
+    'price from' => 'price from',
+    'prices from' => 'prices from',
+    '_to' => 'to',
+    'in' => 'in',
 ];

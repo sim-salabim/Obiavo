@@ -22,6 +22,15 @@ class BaseController extends \yii\web\Controller {
         }
     }
 
+    public function setSeo($seo_h1, $seo_h2, $seo_text, $seo_desc, $seo_keywords, $canonical = null){
+        Yii::$app->view->params['seo_h1'] = $seo_h1;
+        Yii::$app->view->params['seo_h2'] = $seo_h2;
+        Yii::$app->view->params['seo_text'] = $seo_text;
+        Yii::$app->view->params['seo_desc'] = $seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $seo_keywords;
+        Yii::$app->view->params['canonical'] = $canonical;
+    }
+
     public function setBreadcrumbs($array = [], $show_last_one = false){
         $breadcrumbs = [['label' => __('Home page'), 'link' => URL::to(Yii::$app->homeUrl)]];
         if(!empty($array)){

@@ -144,11 +144,6 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasMany(CategoriesAttributes::className(), ['categories_id' => 'id']);
     }
 
-    public function getCategoryGenerated()
-    {
-        return $this->hasMany(CategoryGenerate::className(), ['categories_id' => 'id']);
-    }
-
     public function getCategoriesTexts()
     {
         return $this->hasMany(CategoriesText::className(), ['categories_id' => 'id']);
@@ -239,6 +234,37 @@ class Category extends \yii\db\ActiveRecord
                     ->where(['IN','parent_id',$parentIds])
                     ->with('categoriesText')
                     ->all();
+    }
+
+    /**
+     *   Рекурсивно перебирает все категории и извлекает их дочерние категории
+     *
+     * @param array $categories[], Category
+     * @param array $result, массив уже извлеченных категорий
+     * @return array
+     */
+    public static function getAllChildren($categories = [], $result = []){
+        $parentIds = ArrayHelper::getColumn($categories, 'id');
+        $categories_result = Category::find()
+            ->where(['IN','parent_id',$parentIds])
+            ->with('categoriesText')
+            ->all();
+        if(count($categories_result)) {
+            $has_kids = false;
+            foreach ($categories_result as $row) {
+                array_push($result, $row);
+                if($row->children){
+                    $has_kids = true;
+                }
+            }
+            if($has_kids){
+                return Category::getAllChildren($categories_result, $result);
+            }else{
+                return $result;
+            }
+        }else{
+            return $result;
+        }
     }
 
     /**
