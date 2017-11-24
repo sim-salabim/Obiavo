@@ -23,9 +23,8 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  *
  * @property Ads[] $ads
- * @property Cities $cities
- * @property UsersMessages[] $usersMessages
- * @property UsersMessages[] $usersMessages0
+ * @property City $city
+ * @property AdsView[] $views
  */
 
 class User extends ActiveRecord implements IdentityInterface
@@ -204,24 +203,28 @@ class User extends ActiveRecord implements IdentityInterface
 //        $this->password_reset_token = null;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getAds()
     {
         return $this->hasMany(Ads::className(), ['users_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getViews()
+    {
+        return $this->hasMany(AdsView::className(), ['views_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getCity()
     {
         return $this->hasOne(City::className(), ['id' => 'cities_id']);
-    }
-
-    public function getUsersMessagesToUser()
-    {
-        return $this->hasMany(UsersMessages::className(), ['to_users_id' => 'id']);
-    }
-
-    public function getUsersMessagesFromUser()
-    {
-        return $this->hasMany(UsersMessages::className(), ['from_users_id' => 'id']);
     }
 
     public function getFullName(){

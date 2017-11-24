@@ -99,4 +99,10 @@ return [
     'in' => 'в',
     'prices from' => 'цены от',
     '_to' => 'до',
+    'one_view' => 'просмотр',
+    'two_views' => 'просмотра',
+    'more_views' => 'просмотров',
+    'one finished deal' => 'завершенная сделка',
+    'two finished deals' => 'завершенные сделки',
+    'more finished deals' => 'завершенных сделок',
 ];

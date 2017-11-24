@@ -2,16 +2,13 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\Category;
 use common\models\CategoryPlacement;
-use common\models\CategoryPlacementText;
+use common\models\Language;
 use common\models\libraries\AdsSearch;
-use common\models\Placement;
 use common\models\PlacementsText;
 use Yii;
-use common\models\Category;
 use yii\helpers\Url;
-use yii\web\HttpException;
-use common\models\Language;
 
 
 class CategoriesController extends BaseController
@@ -66,7 +63,6 @@ class CategoriesController extends BaseController
         $subCategories = $this->category->children;
         $categoryPlacements = $this->category->placements;
 
-
         if($action){
             $category_placement = CategoryPlacement::find()->where(['placements_id' => $action_id, 'categories_id' => $category->id])->one();
             $this->seo_title = $category_placement->_text->seo_title;
@@ -97,8 +93,8 @@ class CategoriesController extends BaseController
         $ads_list = $ads_model->getList($librarySearch);
         $this->switchSeoKeys($ads_list);
         $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
-
         $this->setPageTitle($this->seo_title);
+
         return $this->render('index',  [
             'current_category'      => $this->category,
             'categories'    => $subCategories,
@@ -191,12 +187,16 @@ class CategoriesController extends BaseController
                 '{key:location-of}',
                 '{key:price-range}',
                 '{key:site}',
+                '{key:count-views}',
+                '{key:count-finished-deals}',
             ],
             [
                 countString($adsList['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
                 $location->_text->name_pp,
                 __('prices from')." ".$adsList['price_range']['min']." ".__('_to')." ".$adsList['price_range']['max'],
-                Yii::$app->location->country->domain
+                Yii::$app->location->country->domain,
+                countString($adsList['views_amount'], [__('one_view'), __('two_views'), __('more_views')]),
+                countString($adsList['finished_deals'], [__('one finished deal'), __('two finished deals'), __('more finished deals'),]),
             ],
             $this->seo_desc);
         $this->seo_text = str_replace(
@@ -204,13 +204,17 @@ class CategoriesController extends BaseController
                 '{key:count-proposals}',
                 '{key:price-range}',
                 '{key:location-of}',
-                '{key:site}'
+                '{key:site}',
+                '{key:count-views}',
+                '{key:count-finished-deals}',
             ],
             [
                 countString($adsList['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
                 __('prices from')." ".$adsList['price_range']['min']." ".__('_to')." ".$adsList['price_range']['max'],
                 $location->_text->name_pp,
-                Yii::$app->location->country->domain
+                Yii::$app->location->country->domain,
+                countString($adsList['views_amount'], [__('one_view'), __('two_views'), __('more_views'),]),
+                countString($adsList['finished_deals'], [__('one finished deal'), __('two finished deals'), __('more finished deals'),]),
             ],
             $this->seo_text);
     }

@@ -2,15 +2,14 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
-use common\models\libraries\AdsSearch;
-use Yii;
-use common\models\PlacementsText;
-use yii\helpers\Url;
-use yii\web\HttpException;
+use common\models\AdsView;
 use common\models\Category;
-use common\models\Language;
 use common\models\City;
+use common\models\Language;
+use common\models\libraries\AdsSearch;
 use frontend\models\NewAdForm;
+use Yii;
+use yii\web\HttpException;
 
 class AdController extends BaseController
 {
@@ -87,7 +86,7 @@ class AdController extends BaseController
         $breadcrumbs = $ad->getBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['h1'] = $ad->title;
-
+        AdsView::eraseView($ad->id, Yii::$app->user->id);
         return $this->render('view', [
             'ad'   => $ad,
             'show_phone_number' => (Yii::$app->request->get('show_phone_number')) ? Yii::$app->request->get('show_phone_number') : null,

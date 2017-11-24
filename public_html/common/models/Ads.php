@@ -29,6 +29,7 @@ use frontend\helpers\TransliterationHelper;
 * @property Category $category
 * @property Placement $placement
  * @property Files[] $files
+ * @property AdsView[] $views
  *
  */
 class Ads extends \yii\db\ActiveRecord
@@ -97,6 +98,12 @@ class Ads extends \yii\db\ActiveRecord
     public function getFiles(){
         return $this->hasMany(Files::className(), ['id' => 'files_id'])
             ->viaTable('ads_has_files', ['ads_id' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getViews(){
+        return $this->hasMany(AdsView::className(), ['id' => 'users_id']);
     }
 
     /**
@@ -253,7 +260,26 @@ class Ads extends \yii\db\ActiveRecord
             ->andFilterWhere($like_conditions)
             ->orderBy($model->sorting)
             ->one();
-        return ['items' => $ads, 'count' => $count, 'price_range' => $price_range];
+        $views_expired_conditions = ['>', 'expiry_date', time()];
+        $views_amount = (new \yii\db\Query())
+            ->from('ads_views')
+            ->where(['in', 'ads_id',
+                (new \yii\db\Query())
+                ->select('id')
+                ->from('ads')
+                ->andFilterWhere($user_conditions)
+                ->andFilterWhere($views_expired_conditions)
+                ->andFilterWhere($location_conditions)
+                ->andFilterWhere($category_conditions)
+                ->andFilterWhere($like_conditions)
+                ->orderBy($model->sorting)
+            ])
+            ->count();
+        $finished_ads = (new \yii\db\Query())
+            ->from('ads')
+            ->andFilterWhere(['>', 'expiry_date', time()])
+            ->count();
+        return ['items' => $ads, 'count' => $count, 'price_range' => $price_range, 'views_amount' => $views_amount, 'finished_deals' => $finished_ads];
     }
 
     /** Возвращает строку с human date

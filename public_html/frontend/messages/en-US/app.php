@@ -96,4 +96,10 @@ return [
     'prices from' => 'prices from',
     '_to' => 'to',
     'in' => 'in',
+    'one_view' => 'view',
+    'two_views' => 'views',
+    'more_views' => 'views',
+    'one finished deal' => 'finished deal',
+    'two finished deals' => 'finished deals',
+    'more finished deals' => 'finished deals',
 ];
