@@ -21,7 +21,7 @@ class m171109_073152_category_placement_text_table extends Migration
             'seo_h2' => $this->string(),
             'name' => $this->string(),
             'seo_text' => $this->text(),
-            'seo_desc' => $this->string(),
+            'seo_desc' => $this->text(),
             'seo_keywords' => $this->string(),
         ], $tableOptions);
 
