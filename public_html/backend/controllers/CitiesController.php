@@ -1,7 +1,11 @@
 <?php
 namespace backend\controllers;
 
+use common\models\CityOrder;
+use common\models\Country;
+use common\models\Language;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -52,6 +56,75 @@ class CitiesController extends BaseController
         }
 
         return $this->render('index',  compact('region','cities'));
+    }
+
+    public function actionOrderCountryList(){
+        $countries = Country::find()->withText()->all();
+
+        return $this->render('order/index',  compact('countries'));
+    }
+
+    public function actionCityOrder($country_id){
+        $cities = CityOrder::find()->where(['in','cities_id',
+            (new \yii\db\Query())->select('id')->from('cities')->where(['in','regions_id',
+                (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])
+            ])])
+            ->all();
+
+        $homeLink = ['label' => 'Настройка порядка вывода городов', 'url' => '/cities/order-country-list'];
+        $country = Country::findOne($country_id);
+        $breadcrumbs = \yii\widgets\Breadcrumbs::widget([
+            'homeLink' => $homeLink,
+            'links' => [$country->_text->name]
+        ]);
+        return $this->render('order/city-order',  compact('country_id', 'cities', 'breadcrumbs'));
+    }
+
+    public function actionSearch(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $country_id = $post['country_id'];
+        $cities = City::find()
+            ->where(['not in', 'cities.id',
+            (new \yii\db\Query())->select('cities_id')->from('cities_order')
+        ])
+            ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
+            ->andFilterWhere(['like', 'cities_text.name', $query])
+            ->andFilterWhere(['in', 'cities.regions_id',
+                (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])
+            ->all();
+        $result = [];
+        foreach($cities as $city){
+            $result[$city->_text->name] = array('id' => $city->id, 'text' => $city->_text->name, 'domain' => $city->domain);
+        }
+        return $result;
+    }
+
+    public function actionSaveOrder(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $city_order_to_delete = CityOrder::find()->where(['in','cities_id',
+            (new Query())->select('id')->from('cities')->where(['in', 'regions_id',
+                (new Query())->select('id')->from('regions')->where(['countries_id' => $post['country_id']])
+            ])]
+            )->all();
+        if(count($city_order_to_delete)){
+            foreach ($city_order_to_delete as $row){
+                $row->delete();
+            }
+        }
+
+        if(count($post['city_order'])){
+            foreach($post['city_order'] as $k => $r){
+                $order = new CityOrder();
+                $order->cities_id = $r;
+                $order->order = $k;
+                $order->save();
+            }
+        }
+        return $this->redirect(Url::toRoute("cities/city-order?country_id=".$post['country_id']));
     }
 
     public function actionCreate($id){

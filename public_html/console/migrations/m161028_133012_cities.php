@@ -17,7 +17,6 @@ class m161028_133012_cities extends Migration
             'regions_id' => $this->integer()->unsigned()->notNull(),
             'domain' => $this->string()->notNull(),
             'active' => $this->boolean()->defaultValue(1),
-            'show_on_site' => $this->boolean()->defaultValue(0),
             'meta_google' => $this->string(),
             'meta_yandex' => $this->string(),
             'longitude' => $this->string(100),

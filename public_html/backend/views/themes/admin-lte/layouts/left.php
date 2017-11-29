@@ -38,6 +38,7 @@ use yii\helpers\Url;
                     ['label' => 'Категории', 'icon' => 'bars', 'url' => ['/categories']],
                     ['label' => 'Языки', 'icon' => 'language', 'url' => ['/languages']],
                     ['label' => 'Страны', 'icon' => 'flag-o', 'url' => ['/countries']],
+                    ['label' => 'Настройка порядка городов', 'icon' => 'building-o', 'url' => ['/cities/order-country-list']],
                     ['label' => 'Пoльзователи', 'icon' => 'users', 'url' => ['/users']],
                     ['label' => 'Типы объявлений', 'icon' => '', 'url' => ['/placements']],
                     ['label' => 'CMS страницы', 'icon' => 'file-o', 'url' => ['/cms']],

@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\CityOrder;
 use common\models\Cms;
 use common\models\Country;
 use common\models\Region;
@@ -95,10 +96,10 @@ class SiteController extends BaseController
         foreach($regions_ids as $id){
             $regions_arr[] = $id['id'];
         }
-        $cities = \common\models\City::find()->withText()
-            ->where(['in','regions_id', $regions_arr])
-            ->andWhere(['show_on_site' => 1])
-            ->limit(30)
+        $cities = CityOrder::find()->withText()
+            ->leftJoin('cities', 'cities.id = cities_order.cities_id')
+            ->where(['in','cities.regions_id', $regions_arr])
+            ->orderBy(['cities_order.order' => SORT_ASC])
             ->all();
         $ads_amount = Ads::countAds();
         // достанем цмс страницу site-header чтоб установить сео элементы для главной страницы
