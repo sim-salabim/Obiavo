@@ -23,6 +23,7 @@ class m171018_063104_cms_tables extends Migration
             'cms_id' => $this->integer(10)->unsigned()->notNull(),
             'url' => $this->string()->notNull(),
             'seo_title' => $this->string()->notNull(),
+            'seo_h1' => $this->string(),
             'seo_h2' => $this->string(),
             'seo_desc' => $this->text(),
             'seo_keywords' => $this->string(),

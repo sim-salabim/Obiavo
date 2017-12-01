@@ -19,13 +19,6 @@ class CategoriesController extends BaseController
     protected $category = null;
     protected $placement = null;
     protected $canonical = null;
-    protected $seo_h1 = null;
-    protected $seo_h2 = null;
-    protected $seo_text = null;
-    protected $seo_title = null;
-    protected $seo_desc = null;
-    protected $seo_keywords = null;
-
     public $params;
 
     /**
@@ -145,77 +138,5 @@ class CategoriesController extends BaseController
         }
         $action_json .= ']';
         return $action_json;
-    }
-
-    private function switchSeoKeys(Array $adsList){
-        $location = Yii::$app->location->country;
-        if(Yii::$app->location->city){
-            $location = Yii::$app->location->city;
-        }else if(Yii::$app->location->region){
-            $location = Yii::$app->location->region;
-        }
-        $this->seo_title = str_replace(
-            [
-                '{key:ads-amount}',
-                '{key:price_from}',
-                '{key:location}',
-                '{key:site}'
-            ],
-            [
-                countString($adsList['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
-                __('price from')." ".$adsList['price_range']['min'],
-                $location->_text->name,
-                Yii::$app->location->country->domain
-            ],
-            $this->seo_title);
-
-        $this->seo_h1 = str_replace('{key:location-in}', __('in')." ".$location->_text->name_rp, $this->seo_h1);
-        $this->seo_h2 = str_replace('{key:location_pp}', $location->_text->name_pp, $this->seo_h2);
-        $this->seo_keywords = str_replace(
-            [
-                '{key:location-in}',
-                '{key:location}'
-            ],
-            [
-                __('in')." ".$location->_text->name_rp,
-                $location->_text->name
-            ],
-            $this->seo_keywords);
-        $this->seo_desc = str_replace(
-            [
-                '{key:ads-amount}',
-                '{key:location-of}',
-                '{key:price-range}',
-                '{key:site}',
-                '{key:count-views}',
-                '{key:count-finished-deals}',
-            ],
-            [
-                countString($adsList['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
-                $location->_text->name_pp,
-                __('prices from')." ".$adsList['price_range']['min']." ".__('_to')." ".$adsList['price_range']['max'],
-                Yii::$app->location->country->domain,
-                countString($adsList['views_amount'], [__('one_view'), __('two_views'), __('more_views')]),
-                countString($adsList['finished_deals'], [__('one finished deal'), __('two finished deals'), __('more finished deals'),]),
-            ],
-            $this->seo_desc);
-        $this->seo_text = str_replace(
-            [
-                '{key:count-proposals}',
-                '{key:price-range}',
-                '{key:location-of}',
-                '{key:site}',
-                '{key:count-views}',
-                '{key:count-finished-deals}',
-            ],
-            [
-                countString($adsList['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
-                __('prices from')." ".$adsList['price_range']['min']." ".__('_to')." ".$adsList['price_range']['max'],
-                $location->_text->name_pp,
-                Yii::$app->location->country->domain,
-                countString($adsList['views_amount'], [__('one_view'), __('two_views'), __('more_views'),]),
-                countString($adsList['finished_deals'], [__('one finished deal'), __('two finished deals'), __('more finished deals'),]),
-            ],
-            $this->seo_text);
     }
 }

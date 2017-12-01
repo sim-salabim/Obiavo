@@ -158,7 +158,19 @@ class Ads extends \yii\db\ActiveRecord
         }
     }
 
-    public function getList(AdsSearch $model){
+    /**
+     *
+     *
+     * @param AdsSearch $model
+     * @param bool $ads_list, выводить ли список
+     * @return array [
+     * 'items' - список обьявлений,
+     * 'count' - количество обьявлений попавших под выборку(не учитывая параметров пагинации),
+     * 'price_range' - массив с мин и макс ценой в выборке ['min', 'max'],
+     * 'views_amount' - общее количество просмотров обьявлений попавших под выборку,
+     * 'finished_deals' - количество завершенных сделок попавших под выборкку]
+     */
+    public function getList(AdsSearch $model, $ads_list = true){
         $where_conditions = [];
         $user_conditions = [];
         $like_conditions = [];
@@ -230,16 +242,19 @@ class Ads extends \yii\db\ActiveRecord
             $location_conditions = ['cities_id' => 0];
         }
 
-        $ads = Ads::find()
-            ->where($where_conditions)
-            ->andFilterWhere($expired_conditions)
-            ->andFilterWhere($user_conditions)
-            ->andFilterWhere($location_conditions)
-            ->andFilterWhere($category_conditions)
-            ->andFilterWhere($like_conditions)
-            ->orderBy($model->sorting)
-            ->limit($model->limit)
-            ->all();
+        $ads = [];
+        if($ads_list) {
+            $ads = Ads::find()
+                ->where($where_conditions)
+                ->andFilterWhere($expired_conditions)
+                ->andFilterWhere($user_conditions)
+                ->andFilterWhere($location_conditions)
+                ->andFilterWhere($category_conditions)
+                ->andFilterWhere($like_conditions)
+                ->orderBy($model->sorting)
+                ->limit($model->limit)
+                ->all();
+        }
         $count = Ads::find()
             ->where($where_conditions)
             ->andFilterWhere($user_conditions)
@@ -277,7 +292,7 @@ class Ads extends \yii\db\ActiveRecord
             ->count();
         $finished_ads = (new \yii\db\Query())
             ->from('ads')
-            ->andFilterWhere(['>', 'expiry_date', time()])
+            ->andFilterWhere(['<', 'expiry_date', time()])
             ->count();
         return ['items' => $ads, 'count' => $count, 'price_range' => $price_range, 'views_amount' => $views_amount, 'finished_deals' => $finished_ads];
     }
@@ -309,31 +324,5 @@ class Ads extends \yii\db\ActiveRecord
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
-    }
-
-    /**  Считает активные обьявления
-     * @param null $category_id
-     * @return int|string
-     */
-    public static function countAds($category_id = null){
-        $category_conditions = [];
-        if($category_id) {
-            $cat_ids_arr[] = $category_id;
-            $cats = (new \yii\db\Query())
-                ->select(['id'])
-                ->from('categories')
-                ->groupBy(['id'])
-                ->where(['parent_id' => $category_id])
-                ->all();
-            if(!empty($cats)){
-                foreach($cats as $cat){
-                    array_push($cat_ids_arr, $cat['id']);
-                }
-            }
-            $category_conditions = [
-                'in', 'categories_id', $cat_ids_arr
-            ];
-        }
-        return Ads::find()->where($category_conditions)->andFilterWhere(['>', 'expiry_date', time()])->count();
     }
 }

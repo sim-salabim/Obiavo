@@ -5,6 +5,7 @@ use common\models\Ads;
 use common\models\CityOrder;
 use common\models\Cms;
 use common\models\Country;
+use common\models\libraries\AdsSearch;
 use common\models\Region;
 use frontend\components\Location;
 use frontend\helpers\LocationHelper;
@@ -25,6 +26,7 @@ use frontend\models\ContactForm;
 
 class SiteController extends BaseController
 {
+
     /**
      * @inheritdoc
      */
@@ -101,14 +103,26 @@ class SiteController extends BaseController
             ->where(['in','cities.regions_id', $regions_arr])
             ->orderBy(['cities_order.order' => SORT_ASC])
             ->all();
-        $ads_amount = Ads::countAds();
         // достанем цмс страницу site-header чтоб установить сео элементы для главной страницы
         $cms_page = Cms::getByTechname('site-header');
-        Yii::$app->view->params['seo_desc'] = $cms_page->_text->seo_desc;
-        Yii::$app->view->params['seo_keywords'] = $cms_page->_text->seo_keywords;
-        Yii::$app->view->params['seo_h2'] = $cms_page->_text->seo_h2;
-        $this->setPageTitle($cms_page->_text->seo_title);
-        return $this->render('index',  compact('categories','cities', 'ads_amount'));
+        //настройка сое вещей
+        $this->seo_title = $cms_page->_text->seo_title;
+        $this->seo_text = $cms_page->_text->seo_text;
+        $this->seo_h1 = $cms_page->_text->seo_h1;
+        $this->seo_h2 = $cms_page->_text->seo_h2;
+        $this->seo_desc = $cms_page->_text->seo_desc;
+        $this->seo_keywords = $cms_page->_text->seo_keywords;
+        $librarySearch = new AdsSearch();
+        $ads_model = new Ads();
+        $ads_list = $ads_model->getList($librarySearch, false);
+        $this->switchSeoKeys($ads_list);
+        Yii::$app->view->params['seo_desc'] = $this->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $this->seo_keywords;
+        Yii::$app->view->params['seo_h1'] = $this->seo_h1;
+        Yii::$app->view->params['seo_h2'] = $this->seo_h2;
+        $this->setPageTitle($this->seo_title);
+        $seo_text = $this->seo_text;
+        return $this->render('index',  compact('categories','cities', 'seo_text'));
     }
 
     /**
@@ -251,4 +265,5 @@ class SiteController extends BaseController
     {
         return Yii::$app->response->redirect($href);
     }
+
 }

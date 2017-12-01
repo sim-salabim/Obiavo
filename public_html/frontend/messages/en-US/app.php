@@ -102,4 +102,6 @@ return [
     'one finished deal' => 'finished deal',
     'two finished deals' => 'finished deals',
     'more finished deals' => 'finished deals',
+    'price not defined' => 'price not defined',
+    'prices not defined' => 'prices not defined',
 ];
