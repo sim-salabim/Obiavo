@@ -14,7 +14,7 @@ $container_id = (isset($container_id) AND $container_id) ? $container_id : 'file
 <?=
 \kato\DropZone::widget([
     'options' => [
-        'url' => '/files-upload',
+        'url' => '/files-upload/',
         'method' => 'POST',
         'addRemoveLinks' => true,
         'paramName' => 'file',
@@ -33,7 +33,7 @@ $container_id = (isset($container_id) AND $container_id) ? $container_id : 'file
             var data = JSON.parse(file.xhr.response)
             $('input[value='+data.id+']').remove();
             $.ajax({
-                url: '/remove-file',
+                url: '/remove-file/',
                 data: {id: data.id},
                 method: 'POST'
             });

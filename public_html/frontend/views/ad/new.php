@@ -64,7 +64,7 @@ if(isset($model)){
     }
 }
 ?>
-<form id="new-ad-form" method="post" enctype="multipart/form-data" action="/publish-add">
+<form id="new-ad-form" method="post" enctype="multipart/form-data" action="/publish-add/">
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
@@ -247,7 +247,7 @@ if(isset($model)){
             var category_id = $('#category-select :selected').val();
             if(category_id != 0) {
                 $.ajax({
-                    url: '/get-sub-categories',
+                    url: '/get-sub-categories/',
                     data: {category_id: category_id},
                     method: 'POST',
                     success: function (data) {
@@ -270,7 +270,7 @@ if(isset($model)){
             if(sub_category_id != 0 && has_children == 1){
                 $('#subsubdiv').show();
                 $.ajax({
-                    url: '/get-sub-categories',
+                    url: '/get-sub-categories/',
                     data: {category_id: sub_category_id},
                     method: 'POST',
                     success: function(data){
@@ -319,7 +319,7 @@ if(isset($model)){
             cleanActionSelect();
             if(categoryId != 0) {
                 $.ajax({
-                    url: '/get-category-placement',
+                    url: '/get-category-placement/',
                     data: {category_id: categoryId},
                     method: 'POST',
                     success: function (data) {

@@ -39,7 +39,10 @@ class AdController extends BaseController
             ->where(['parent_id' => NULL])
             ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
-        $cities = City::find()->withText(['languages_id' => Language::getDefault()->id])->all();
+        $cities = City::find()
+            ->withText(['languages_id' => Language::getDefault()->id])
+            ->where(['id' => '317'])// потом убрать, а пока для красоты
+            ->all();
         return $this->render('new', [
             'user' => Yii::$app->user->identity,
             'categories' => $categories,
@@ -65,11 +68,11 @@ class AdController extends BaseController
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
                 \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('podat-obiavlenie');
+                return $this->redirect('/podat-obiavlenie/');
             }else{
                 $model->newAd();
                 \Yii::$app->getSession()->setFlash('message', __('Add successfully added.'));
-                return $this->redirect('podat-obiavlenie');
+                return $this->redirect('/podat-obiavlenie/');
             }
         } else {
             return $this->render('podat-obiavlenie');
