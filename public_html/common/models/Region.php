@@ -115,9 +115,10 @@ class Region extends \yii\db\ActiveRecord
 
     public static function getCitiesByRegionId($id)
     {
-        $cities = (new Query())->select('*')->from('cities')
+        $cities = (new Query())
+            ->select('*, cities.id as id')->from('cities')
             ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
-            ->where(['regions_id' => $id])
+            ->where(['cities.regions_id' => $id])
             ->andWhere(['languages_id' => Yii::$app->location->country->languages_id])
             ->orderBy(['name' => SORT_ASC])
             ->all();

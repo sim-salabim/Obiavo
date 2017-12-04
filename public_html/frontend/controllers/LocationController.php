@@ -39,7 +39,9 @@ class LocationController extends BaseController
     public function actionVyborGoroda(){
 
         $this->setPageTitle(__('_Location'));
-        $regions = (new Query())->select('*')->from('regions')
+        $regions = (new Query())
+            ->select('*, regions.id as id')
+            ->from('regions')
             ->leftJoin('regions_text', 'regions_text.regions_id = regions.id')
             ->where(['countries_id' => Yii::$app->location->country->id])
             ->andWhere(['languages_id' => Yii::$app->location->country->languages_id])
