@@ -209,4 +209,14 @@ class CitiesController extends BaseController
             'city' => $city
         ]);
     }
+
+    public function actionRemoveOrder(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $order = CityOrder::findOne($post['id']);
+        if($order){
+            $order->delete();
+        }
+        return true;
+    }
 }

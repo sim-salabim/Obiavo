@@ -35,7 +35,7 @@
             <input type="hidden" name="country_id" value="<?= $country_id ?>">
         <div id="sortable1" class="col-lg-12">
                 <? foreach($cities as $city){ ?>
-                    <pre style="cursor: move"><?= $city->_text->name ?><input type="hidden" name="city_order[]" value="<?= $city->cities_id ?>"></pre>
+                    <pre style="cursor: move" id="pre-<?= $city->id ?>"><?= $city->_text->name ?><input type="hidden" name="city_order[]" value="<?= $city->cities_id ?>"><i class="fa fa-window-close close-icon"  aria-hidden="true" onclick="removeOrder('<?= $city->id ?>')"></i></pre>
                 <? } ?>
         </div>
         <div class="col-lg-12" style="padding-bottom: 10px;">
@@ -119,7 +119,7 @@
                 },
 
                 select: function(event, ui) {
-                    $('#sortable1').prepend('<pre style="cursor: move">'+ui.item.text+'<input type="hidden" name="city_order[]" value="'+ui.item.id+'"></pre>')
+                    $('#sortable1').prepend('<pre style="cursor: move" id="pre-'+ui.item.id+'">'+ui.item.text+'<input type="hidden" name="city_order[]" value="'+ui.item.id+'"><i class="fa fa-window-close close-icon"  aria-hidden="true" onclick="removeOrder('+ui.item.id+')"></i></pre>')
                 },
                 close: function( event, ui ) {
                     if(_search_data.length != 0){
@@ -152,4 +152,14 @@
             $('#form-order').submit();
         });
     });
+    function removeOrder(id){
+        $.ajax({
+            method: "POST",
+            data: {id:id},
+            url:'<?= \yii\helpers\Url::toRoute('cities/remove-order') ?>',
+            success: function(){
+                $('#pre-'+id).remove();
+            }
+        });
+    }
 </script>

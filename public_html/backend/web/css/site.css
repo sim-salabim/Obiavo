@@ -135,3 +135,7 @@ a.desc:after {
 }
 
 #form-update .glyphicon { margin-right:5px; }
+.close-icon{
+    cursor: pointer;
+    float: right;
+}
