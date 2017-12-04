@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Language;
 use common\models\Region;
 use common\models\City;
 use Yii;
@@ -38,8 +39,11 @@ class LocationController extends BaseController
     public function actionVyborGoroda(){
 
         $this->setPageTitle(__('_Location'));
-        $regions = Region::find()
-            ->where(['countries_id' => (new Query())->select('id')->from('countries')->where(['domain' => Yii::$app->location->country ])->one()])
+        $regions = (new Query())->select('*')->from('regions')
+            ->leftJoin('regions_text', 'regions_text.regions_id = regions.id')
+            ->where(['countries_id' => Yii::$app->location->country->id])
+            ->andWhere(['languages_id' => Yii::$app->location->country->languages_id])
+            ->orderBy(['name' => SORT_ASC])
             ->all();
         Yii::$app->view->params['h1'] = __('_Location');
         return $this->render('list',  [
@@ -78,6 +82,7 @@ class LocationController extends BaseController
             setcookie("city", $this->location_domains['city'], null, '/');
             return $this->redirect(Url::toRoute("/"));
         }
+
         return $this->redirect(Url::toRoute("/${domain}/"));
     }
 }

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\models\scopes\RegionQuery;
+use yii\db\Query;
 
 /**
  * This is the model class for table "regions".
@@ -110,5 +111,16 @@ class Region extends \yii\db\ActiveRecord
     public function getRegionTexts()
     {
         return $this->hasMany(RegionText::className(), ['regions_id' => 'id']);
+    }
+
+    public static function getCitiesByRegionId($id)
+    {
+        $cities = (new Query())->select('*')->from('cities')
+            ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
+            ->where(['regions_id' => $id])
+            ->andWhere(['languages_id' => Yii::$app->location->country->languages_id])
+            ->orderBy(['name' => SORT_ASC])
+            ->all();
+        return $cities;
     }
 }
