@@ -175,19 +175,38 @@ class Category extends \yii\db\ActiveRecord
     }
 
     public function setPlacements($placementsIds) {
-        $categoryPlacements = new CategoryPlacement;
-
-        $rows = [];
-        foreach ($placementsIds as $placeId){
-            $rows[] = [$this->id, $placeId];
+        $existing_ids = [];
+        foreach($this->placements as $epl){
+            $existing_ids[] = $epl->id;
         }
-
-        $this->deletePlacements();
+        $rows_to_insert = [];
+        $ids_to_remove = [];
+        foreach ($placementsIds as $placeId){
+            if(!in_array($placeId, $existing_ids)){
+                $rows_to_insert[] = [$this->id, $placeId];
+            }
+        }
+        foreach ($existing_ids as $e_id){
+            if(!in_array($e_id, $placementsIds)){
+                $ids_to_remove[] = $e_id;
+            }
+        }
+        if(!empty($ids_to_remove)){
+            foreach($ids_to_remove as $id_to_remove){
+                $cat_to_delete = CategoryPlacement::find()
+                    ->where(['categories_id' => $this->id])
+                    ->andWhere(['placements_id' => $id_to_remove])
+                    ->one();
+                if($cat_to_delete){
+                    $cat_to_delete->delete();
+                }
+            }
+        }
 
         Yii::$app->db->createCommand()->batchInsert(
                     CategoryPlacement::tableName(),
                     ['categories_id','placements_id'],
-                    $rows
+                    $rows_to_insert
                 )
                 ->execute();
     }
