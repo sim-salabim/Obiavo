@@ -46,16 +46,22 @@ AppAsset::register($this);
                     } ?>
                 </h1>
                 <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
-                <? if(isset($this->params['seo_h2']) AND $this->params['seo_h2'] != ''){?>
-                    <h2><?= $this->params['seo_h2'] ?></h2>
-                <? } ?>
-                <? if(isset($this->params['seo_text'])){?>
-                    <p class="lead"><?= $this->params['seo_text'] ?></p>
-                <? } ?>
                 <?= $this->render(
                     'content',
                     ['content' => $content]
                 ) ?>
+                <div class="container">
+                    <? if(isset($this->params['seo_h2']) AND $this->params['seo_h2'] != ''){?>
+                        <div class="col-12">
+                            <h2><?= $this->params['seo_h2'] ?></h2>
+                        </div>
+                    <? } ?>
+                    <? if(isset($this->params['seo_text'])){?>
+                        <div class="col-12">
+                            <p class="lead"><?= $this->params['seo_text'] ?></p>
+                        </div>
+                    <? } ?>
+                </div>
             </div>
         </div>
     </div>
