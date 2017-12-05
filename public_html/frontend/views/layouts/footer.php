@@ -1,4 +1,4 @@
-<footer class="footer bg-light fixed-bottom">
+<footer class="footer bg-light ">
     <div class="container">
         <p class="float-left float-xs-none text-secondary">Obiavo.ru - объявления от частных лиц и компаний</p>
         <ul class="nav justify-content-end">

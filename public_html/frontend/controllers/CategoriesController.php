@@ -33,7 +33,6 @@ class CategoriesController extends BaseController
         ];
     }
 
-
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
         $this->canonical = Url::home(true) . $categoryUrl . "/";
@@ -45,7 +44,9 @@ class CategoriesController extends BaseController
             $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
             $this->canonical .= $action . '/';
         }
-
+        if(Yii::$app->request->get('city')){
+            $this->canonical .=  Yii::$app->request->get('city'). '/';
+        }
         /**
          * В данном месте проверку можно убрать, т.к. она осуществляется в правиле для роута
          */
