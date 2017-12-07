@@ -60,7 +60,7 @@ class AdController extends BaseController
         $model = new NewAdForm();
         if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $model->load(Yii::$app->request->post(),'');
+            $model->load(Yii::$app->request->post(), '');
             $model->cities_id = Yii::$app->user->identity->cities_id;// пока ид города оставим захардкоженным
             if(!$model->validate()) {
                 $errors = $model->getErrors();

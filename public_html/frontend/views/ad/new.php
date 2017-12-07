@@ -43,6 +43,8 @@ $selected_sub_sub_category = null;
 $selected_placement_id = null;
 $placements = null;
 $model = Yii::$app->session->getFlash('model');
+
+//print_r($model->categories_id);exit;
 if(isset($model)){
     $selected_category_id = ($model->categories_id AND $model->categories_id != 0) ? $model->categories_id : null;
     $selected_category = ($selected_category_id) ? \common\models\Category::findOne(['id' => $selected_category_id]) : null;
@@ -96,8 +98,8 @@ if(isset($model)){
                 <? if($sub_categories){
                     foreach ($sub_categories as $sc){
                         ?>
-                        <option value="<?= $sc->id ?>" <? if($selected_sub_category AND $sc->id == $selected_sub_category->id){?>selected<?}?> ><?= $sc->_text->name ?></option>
-                    <? }} ?>
+                        <option value="<?= $sc->id ?>" <? if($selected_sub_category AND $sc->id == $selected_sub_category->id){?>selected<?}?>    <? if(count($sc->children)){?>has_children="1"<? }else{?> has_children="0"<? } ?>><?= $sc->_text->name ?></option>
+                      <? }} ?>
             </select>
             <?php if(Yii::$app->session->getFlash('subcategory_error')){?>
                 <div class="invalid-feedback">
@@ -246,20 +248,7 @@ if(isset($model)){
             cleanSubSelect();
             var category_id = $('#category-select :selected').val();
             if(category_id != 0) {
-                $.ajax({
-                    url: '/get-sub-categories/',
-                    data: {category_id: category_id},
-                    method: 'POST',
-                    success: function (data) {
-                        var subcats = JSON.parse(data);
-                        var stringToAppend = '<option value="0"><?= __('Subcategory') ?></option>'
-                        subcats.forEach(function (item, i) {
-                            stringToAppend += '<option value="' + item.id + '" has_children="' + item.has_children + '">' + item.name + '</option>';
-                        });
-                        $('#subcategory option').remove();
-                        $('#subcategory').html(stringToAppend);
-                    }
-                });
+                getSubCategories(category_id, '#subcategory');
                 selectCategoryAction(category_id)
             }
         });
@@ -269,24 +258,15 @@ if(isset($model)){
             cleanSubSubSelect()
             if(sub_category_id != 0 && has_children == 1){
                 $('#subsubdiv').show();
-                $.ajax({
-                    url: '/get-sub-categories/',
-                    data: {category_id: sub_category_id},
-                    method: 'POST',
-                    success: function(data){
-                        subsubcats = JSON.parse(data);
-                        var stringToAppend = '<option value="0"><?= __('Subcategory') ?></option>'
-                        subsubcats.forEach(function(item){
-                            stringToAppend += '<option value="'+item.id+'" has_children="'+item.has_children+'">'+item.name+'</option>';
-                            $('#subsubcategory option').remove();
-                            $('#subsubcategory').html(stringToAppend);
-                        });
-                    }
-                });
+                getSubCategories(sub_category_id, '#subsubcategory');
             }else{
                 $('#subsubdiv').hide();
-                selectCategoryAction(sub_category_id)
+                if($('#category-select :selected').val() != 0){
+                    selectCategoryAction($('#category-select :selected').val())
+                }
             }
+
+            selectCategoryAction(sub_category_id);
         });
         $('#subsubcategory').on('change', function(){
             var sub_sub_category_id = $('#subsubcategory :selected').val();
@@ -294,6 +274,13 @@ if(isset($model)){
                 selectCategoryAction(sub_sub_category_id)
             }else{
                 cleanActionSelect()
+                if($('#subcategory :selected').val() != 0){
+                    selectCategoryAction($('#subcategory :selected').val())
+                }else{
+                    if($('#category-select :selected').val() != 0){
+                        selectCategoryAction($('#category-select :selected').val())
+                    }
+                }
             }
         });
 
@@ -304,7 +291,7 @@ if(isset($model)){
         }
         function cleanSubSelect(){
             var action = '<?= __('Subcategory'); ?>';
-            $('#subcategory').html("<option value='0'>"+action+"</option>");
+            $('#s0ubcategory').html("<option value='0'>"+action+"</option>");
             $('#subsubcategory option:first').attr('value', '');
             cleanSubSubSelect();
         }
@@ -316,6 +303,7 @@ if(isset($model)){
         }
 
         function selectCategoryAction(categoryId) {
+            $('#action_select').prop("disabled", true);
             cleanActionSelect();
             if(categoryId != 0) {
                 $.ajax({
@@ -324,16 +312,34 @@ if(isset($model)){
                     method: 'POST',
                     success: function (data) {
                         actions = JSON.parse(data);
-                        console.log(actions);
                         var stringToAppend = '<option value="0"><?= __('Action') ?></option>'
                         actions.forEach(function (item) {
                             stringToAppend += '<option value="' + item.id + '">' + item.name + '</option>';
                             $('#action_select option').remove();
                             $('#action_select').html(stringToAppend);
                         });
+                        $('#action_select').prop("disabled", false);
                     }
                 });
             }
+        }
+
+        function getSubCategories(category_id, select_id){
+            $('#action_select').prop("disabled", true);
+            $.ajax({
+                url: '/get-sub-categories/',
+                data: {category_id: category_id},
+                method: 'POST',
+                success: function (data) {
+                    var subcats = JSON.parse(data);
+                    var stringToAppend = '<option value="0"><?= __('Subcategory') ?></option>'
+                    subcats.forEach(function (item, i) {
+                        stringToAppend += '<option value="' + item.id + '" has_children="' + item.has_children + '">' + item.name + '</option>';
+                    });
+                    $(select_id+' option').remove();
+                    $(select_id).html(stringToAppend);
+                }
+            });
         }
     })
 </script>

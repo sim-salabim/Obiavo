@@ -29,6 +29,7 @@ class NewAdForm extends Model
     public function rules()
     {
         return [
+            [['subcategory', 'subsubcategory'], 'integer'],
             [[
                 'categories_id',
                 'placement_id',

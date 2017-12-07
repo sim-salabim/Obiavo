@@ -16,7 +16,7 @@ use common\models\scopes\CategoryQuery;
  *
  * @property Ads[] $ads
  * @property Category $parent
- * @property Category $children
+ * @property Category[] $children
  * @property Placement $placements
  * @property Category[] $categories
  * @property CategoryAttribute[] $categoriesAttributes
