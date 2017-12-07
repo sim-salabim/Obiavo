@@ -47,10 +47,8 @@ class CategoriesController extends BaseController
         if(Yii::$app->request->get('city')){
             $this->canonical .=  Yii::$app->request->get('city'). '/';
         }
-        /**
-         * В данном месте проверку можно убрать, т.к. она осуществляется в правиле для роута
-         */
-        $category = Category::getByOldUrlCache(($categoryUrl) ?: null);
+
+        $category = Category::getByUrl($categoryUrl);
 
         $this->category = $category;
 

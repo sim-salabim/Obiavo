@@ -377,4 +377,8 @@ class Category extends \yii\db\ActiveRecord
         }
         return $data;
     }
+
+    public static function getByUrl($url){
+        return self::find()->searchUrlByLanguage($url)->one();
+    }
 }

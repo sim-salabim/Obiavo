@@ -72,8 +72,11 @@ class NewAdForm extends Model
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
-        Files::linkFilesToModel($_POST['files'], $adsModel);
+        if(isset($_POST['files'])) {
+            Files::linkFilesToModel($_POST['files'], $adsModel);
+        }
         Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel]);
+        return $adsModel;
     }
     /** Валидация субкатегории 3-го уровня
      *

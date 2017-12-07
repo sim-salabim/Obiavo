@@ -65,9 +65,11 @@ class PlacementsController extends BaseController
     {
         $placement = ($id) ? Placement::findOne($id) : new Placement;
 
-        $placement->loadWithRelation(['placementsText'],Yii::$app->request->post());
-        $placement->save();
-
+        if(!$placement->saveWithRelation(Yii::$app->request->post())){
+            return $this->sendJsonData([
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $placement->getErrors(),
+            ]);
+        }
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "Тип \"{$placement->_text->name}\" успешно сохранен",
                 JsonData::REFRESHPAGE => '',

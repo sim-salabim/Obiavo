@@ -105,7 +105,7 @@ return [
     'one finished deal' => 'завершенная сделка',
     'two finished deals' => 'завершенные сделки',
     'more finished deals' => 'завершенных сделок',
-    'price not defined' => 'цена не установлена',
+    'price not defined' => 'цена не указана',
     'prices not defined' => 'цены не указаны',
     'one_proposal' => 'предложение',
     'two_proposals' => 'предложения',
