@@ -22,6 +22,7 @@ class NewAdForm extends Model
     public $title;
     public $text;
     public $price;
+    public $files = [];
 
     /**
      * @inheritdoc
@@ -30,6 +31,7 @@ class NewAdForm extends Model
     {
         return [
             [['subcategory', 'subsubcategory'], 'integer'],
+            [['files'], 'safe'],
             [[
                 'categories_id',
                 'placement_id',
@@ -44,7 +46,7 @@ class NewAdForm extends Model
                 'expiry_date',
                 'cities_id'], 'integer', 'integerOnly' => true, 'min' => 1],
             [['expiry_date','price'], 'integer', 'message' => __('Incorrect format')],
-            ['subsubcategory', 'validateSubSubCategory']
+           // ['subsubcategory', 'validateSubSubCategory']
         ];
     }
 

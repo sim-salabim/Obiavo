@@ -71,7 +71,6 @@ class AdController extends BaseController
                 return $this->redirect('/podat-obiavlenie/');
             }else{
                 $model = $model->newAd();
-                \Yii::$app->getSession()->setFlash('message', __('Add successfully added.'));
                 return $this->redirect("/$model->url/");
             }
         } else {

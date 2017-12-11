@@ -43,9 +43,9 @@ $selected_sub_sub_category = null;
 $selected_placement_id = null;
 $placements = null;
 $model = Yii::$app->session->getFlash('model');
-
-//print_r($model->categories_id);exit;
+$files = [];
 if(isset($model)){
+    $files = $model->files;
     $selected_category_id = ($model->categories_id AND $model->categories_id != 0) ? $model->categories_id : null;
     $selected_category = ($selected_category_id) ? \common\models\Category::findOne(['id' => $selected_category_id]) : null;
     $sub_categories = ($selected_category) ? $selected_category->children : null;
@@ -70,11 +70,6 @@ if(isset($model)){
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
-        <?php  if(Yii::$app->session->getFlash('message')){ ?>
-            <div class="alert alert-success col-12" role="alert">
-                <?= Yii::$app->session->getFlash('message'); ?>
-            </div>
-        <?php  } ?>
         <div class="form-group col-lg-2 col-sm-12 col-md-6">
             <select name="categories_id" id="category-select" class="form-control <?php if(Yii::$app->session->getFlash('categories_id_error')){?> is-invalid<?php }?>">
                 <option value="0"><?= __('Category') ?></option>
@@ -228,7 +223,7 @@ if(isset($model)){
             <?php } ?>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="file-uploader">
-            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader']) ?>
+            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
         </div>
     </div>
     <hr>
