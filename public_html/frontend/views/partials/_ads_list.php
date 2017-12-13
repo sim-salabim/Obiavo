@@ -29,8 +29,8 @@
                 <span><small class="ads-pre-text"><?= $ad->getHumanDate() ?></small></span></br>
             </div>
         <? } ?>
-        <? if(!($loaded >= $ads_search['count'])){?>
-            <?= $this->render('/partials/_load_list.php', ['loaded' => $loaded])?>
+        <? if($library_search->limit < $ads_search['count']){?>
+            <?= $this->render('/partials/_pagination.php', ['ads_search' => $ads_search, 'library_search'=> $library_search])?>
         <? } ?>
     <? } ?>
 </div>

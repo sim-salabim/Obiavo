@@ -170,7 +170,7 @@ class Ads extends \yii\db\ActiveRecord
      * 'views_amount' - общее количество просмотров обьявлений попавших под выборку,
      * 'finished_deals' - количество завершенных сделок попавших под выборкку]
      */
-    public function getList(AdsSearch $model, $ads_list = true){
+    public static function getList(AdsSearch $model, $ads_list = true){
         $where_conditions = [];
         $user_conditions = [];
         $like_conditions = [];
@@ -252,6 +252,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->andFilterWhere($category_conditions)
                 ->andFilterWhere($like_conditions)
                 ->orderBy($model->sorting)
+                ->offset($model->page)
                 ->limit($model->limit)
                 ->all();
         }

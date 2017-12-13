@@ -13,17 +13,17 @@ class AdsSearch {
     public $sorting;
     public $expired;
     public $all;
-    public $loaded;
+    public $page;
 
     function __construct(){
         $this->user = null;
         $this->category = null;
         $this->action = null;
-        $this->limit = 10;
+        $this->limit = 2;
         $this->query = null;
         $this->all = false;
         $this->expired = false;
-        $this->loaded = $this->limit;
+        $this->page = 1;
         $this->location = [
             'country' => \Yii::$app->location->country,
             'region' => \Yii::$app->location->region,
@@ -33,6 +33,23 @@ class AdsSearch {
             'created_at DESC, title ASC';
     }
 
+    /**
+     * @param $page
+     */
+    function setPage($page){
+        $this->page = $page;
+    }
+
+    /**
+     * @return int
+     */
+    function getPage(){
+        return $this->page;
+    }
+
+    /**
+     * @param $location
+     */
     function setLocation($location){
         $this->location = $location;
     }
@@ -154,20 +171,6 @@ class AdsSearch {
      */
     function getAll(){
         return $this->all;
-    }
-
-    /**
-     * @return int
-     */
-    function getLoaded(){
-        return $this->loaded;
-    }
-
-    /**
-     * @param $loaded
-     */
-    function setLoaded($loaded){
-        $this->loaded = $loaded;
     }
 
     /**

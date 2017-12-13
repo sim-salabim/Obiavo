@@ -76,13 +76,13 @@ class CategoriesController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setCategory($this->category->id);
         $librarySearch->setAction($action_id);
-        $loaded = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->loaded;
-        $librarySearch->setLimit($loaded);
+        $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
+        $librarySearch->setPage($page);
         if($sort AND $direction) {
             $librarySearch->setSorting($sort." ".$direction);
         }
-        $ads_model = new Ads();
-        $ads_list = $ads_model->getList($librarySearch);
+
+        $ads_list = Ads::getList($librarySearch);
         $this->switchSeoKeys($ads_list);
         $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
         $this->setPageTitle($this->seo_title);
@@ -93,8 +93,9 @@ class CategoriesController extends BaseController
             'row_list'      => true,
             'placements'    => $categoryPlacements,
             'current_action'=> $action,
-            'loaded'        => $loaded,
-            'ads_search'    => $ads_list
+            'page'          => $page,
+            'ads_search'    => $ads_list,
+            'library_search'=> $librarySearch
         ]);
     }
 

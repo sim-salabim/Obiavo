@@ -14,7 +14,8 @@ $current_category = (isset($current_category))  ? $current_category : null;
 <?=  $this->render('/partials/_ads_list.php',
     [
         'ads_search' => $ads_search,
+        'library_search'=> $library_search,
         'title' => __('Ads'),
-        'loaded' => $loaded,
+        'page' => $page,
         'no_ads_title' => __('No ads found')
     ]) ?>
