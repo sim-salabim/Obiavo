@@ -121,4 +121,6 @@ return [
     'salary not defined' => 'salary not defined',
     'slr not defined' => 'salary not defined',
     'slr_from' => 'salary from',
+    'Prev.' => 'Previous',
+    'Next.' => 'Next',
 ];

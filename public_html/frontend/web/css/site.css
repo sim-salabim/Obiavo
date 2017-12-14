@@ -320,3 +320,14 @@ ul.bs-autocomplete-menu a {
 .cities-list{
     color: #007bff;
 }
+.pagination-link{
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+}
+.pagination-link-active{
+    border: 1px solid #ddd;
+}
