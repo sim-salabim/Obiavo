@@ -12,11 +12,13 @@ $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
 <hr>
     <nav class=padding-top-10">
         <ul class="pagination">
-            <li class="page-item <? if($library_search->page == 1){?>disabled<? } ?>">
+            <? if($library_search->page != 1){?>
+            <li class="page-item ">
                 <a class="pagination-link" href="?<?= str_replace('{key:page}','page='.($library_search->page - 1),$nav_str) ?>">
                     <span aria-hidden="true">&laquo; <?= __('Prev.') ?></span>
                 </a>
             </li>
+            <? } ?>
             <?
             $i = 1;
             while($i <= $pages_amount){?>
@@ -29,11 +31,13 @@ $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
                 </li>
             <? ++$i;
             } ?>
-            <li class="page-item  <? if($library_search->page == $pages_amount){?>disabled<? } ?>">
+            <? if($library_search->page != $pages_amount){?>
+            <li class="page-item ">
                 <a class="pagination-link" href="?<?= str_replace('{key:page}','page='.($library_search->page + 1),$nav_str) ?>">
                     <span aria-hidden="true"><?= __('Next.') ?> &raquo;</span>
                 </a>
             </li>
+            <? } ?>
         </ul>
     </nav>
 </div>

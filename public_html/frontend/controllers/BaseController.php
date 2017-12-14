@@ -15,6 +15,10 @@ class BaseController extends \yii\web\Controller {
     protected $seo_desc;
     protected $seo_keywords;
 
+    /**
+     * @param null $title
+     * @return \frontend\helpers\type|string
+     */
     public function setPageTitle($title = null){
 
         if (!$title){
@@ -30,6 +34,32 @@ class BaseController extends \yii\web\Controller {
         }
     }
 
+    /**
+     * @param $ads_search[], массив , результат работы Ads::getList()
+     * @param AdsSearch $library_search , настроенный обьект
+     * @param $current_page, текущая страница
+     */
+    public function setNextAndPrevious($ads_search, AdsSearch $library_search, $current_page){
+        $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
+        $url = Url::home(true).substr(Yii::$app->request->getPathInfo(), 1);
+        if($current_page == 1){
+            Yii::$app->view->params['next'] = $url."?page=2";
+        }else if($current_page == $pages_amount){
+            Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
+        }else{
+            Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
+            Yii::$app->view->params['next'] = $url."?page=".($current_page + 1);;
+        }
+    }
+
+    /**
+     * @param $seo_h1
+     * @param $seo_h2
+     * @param $seo_text
+     * @param $seo_desc
+     * @param $seo_keywords
+     * @param null $canonical
+     */
     public function setSeo($seo_h1, $seo_h2, $seo_text, $seo_desc, $seo_keywords, $canonical = null){
         Yii::$app->view->params['seo_h1'] = $seo_h1;
         Yii::$app->view->params['seo_h2'] = $seo_h2;
@@ -100,6 +130,11 @@ class BaseController extends \yii\web\Controller {
         $this->seo_text = str_replace($keys_arr, $replace_arr, $this->seo_text);
     }
 
+    /**
+     * @param array $array[label => '', link =>'']
+     * @param bool $show_last_one
+     * @return array
+     */
     public function setBreadcrumbs($array = [], $show_last_one = false){
         $breadcrumbs = [['label' => __('Home page'), 'link' => URL::to(Yii::$app->homeUrl)]];
         if(!empty($array)){

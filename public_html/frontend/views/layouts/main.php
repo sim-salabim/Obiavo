@@ -19,6 +19,12 @@ AppAsset::register($this);
         <? if(isset($this->params['canonical']) AND $this->params['canonical']){?>
             <link rel="canonical" href="<?= $this->params['canonical'] ?>">
         <? } ?>
+        <? if(isset($this->params['prev']) AND $this->params['prev']){?>
+            <link rel="prev" href="<?= $this->params['prev'] ?>">
+        <? } ?>
+        <? if(isset($this->params['next']) AND $this->params['next']){?>
+            <link rel="next" href="<?= $this->params['next'] ?>">
+        <? } ?>
         <? if(isset($this->params['seo_desc']) AND $this->params['seo_desc']){?>
             <meta name="description" content="<?= $this->params['seo_desc'] ?>">
         <? } ?>
