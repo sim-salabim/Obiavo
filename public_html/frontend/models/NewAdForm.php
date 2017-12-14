@@ -3,6 +3,7 @@ namespace frontend\models;
 
 use common\models\Ads;
 use common\models\Placement;
+use frontend\helpers\TransliterationHelper;
 use Yii;
 use yii\base\Model;
 use common\models\Mailer;
@@ -74,6 +75,8 @@ class NewAdForm extends Model
         $adsModel->expiry_date = time() + $this->expiry_date;
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
+        $adsModel->save();
+        $adsModel->url = $adsModel->id."-".TransliterationHelper::transliterate($this->title);
         $adsModel->save();
         if(isset($_POST['files'])) {
             Files::linkFilesToModel($_POST['files'], $adsModel);
