@@ -123,4 +123,8 @@ return [
     'slr_from' => 'salary from',
     'Prev.' => 'Previous',
     'Next.' => 'Next',
+    'Page' => 'Page',
+    'ads in city' => 'ads in city',
+    'ads in' => 'ads in',
+    'on the site' => 'on the site',
 ];

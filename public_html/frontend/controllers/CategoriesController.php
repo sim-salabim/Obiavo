@@ -85,6 +85,9 @@ class CategoriesController extends BaseController
         $ads_list = Ads::getList($librarySearch);
         $this->switchSeoKeys($ads_list);
         $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
+        if($page > 1){
+            $this->seo_title .= $this->seo_title." - ".__('Page')." ".$page;
+        }
         $this->setPageTitle($this->seo_title);
         $this->setNextAndPrevious($ads_list, $librarySearch, $page);
         return $this->render('index',  [

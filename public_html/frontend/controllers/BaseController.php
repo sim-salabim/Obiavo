@@ -109,7 +109,7 @@ class BaseController extends \yii\web\Controller {
            /*{key:count-ads}*/countString($ads_list['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
             /*{key:price-from}*/($ads_list['price_range']['min']) ? __('price from')." ".$ads_list['price_range']['min']." ".__('r.') : __('price not defined'),
             /*{key:location}*/$location->_text->name,
-            /*{key:site}*/ucfirst (Yii::$app->location->country->domain),
+            /*{key:site}*/ucfirst(Yii::$app->location->country->domain),
             /*{key:location-in}*/__('in')." ".$location->_text->name_rp,
             /*{key:location-of}*/$location->_text->name_pp,
             /*{key:prices-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('prices from')." ".$ads_list['price_range']['min']." ".__('r.')." ".__('_to')." ".$ads_list['price_range']['max']." ".__('r.') : __('prices not defined'),
