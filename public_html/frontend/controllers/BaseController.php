@@ -42,13 +42,15 @@ class BaseController extends \yii\web\Controller {
     public function setNextAndPrevious($ads_search, AdsSearch $library_search, $current_page){
         $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
         $url = Url::home(true).substr(Yii::$app->request->getPathInfo(), 1);
-        if($current_page == 1){
-            Yii::$app->view->params['next'] = $url."?page=2";
-        }else if($current_page == $pages_amount){
-            Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
-        }else{
-            Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
-            Yii::$app->view->params['next'] = $url."?page=".($current_page + 1);;
+        if($pages_amount > 1 AND count($ads_search['items']) > 0){
+            if($current_page == 1){
+                Yii::$app->view->params['next'] = $url."?page=2";
+            }else if($current_page == $pages_amount){
+                Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
+            }else{
+                Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
+                Yii::$app->view->params['next'] = $url."?page=".($current_page + 1);;
+            }
         }
     }
 

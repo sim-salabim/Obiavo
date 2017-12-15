@@ -19,7 +19,7 @@ class AdsSearch {
         $this->user = null;
         $this->category = null;
         $this->action = null;
-        $this->limit = 2;
+        $this->limit = 10;
         $this->query = null;
         $this->all = false;
         $this->expired = false;

@@ -252,7 +252,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->andFilterWhere($category_conditions)
                 ->andFilterWhere($like_conditions)
                 ->orderBy($model->sorting)
-                ->offset($model->page)
+                ->offset(($model->page - 1)* $model->limit)
                 ->limit($model->limit)
                 ->all();
         }
