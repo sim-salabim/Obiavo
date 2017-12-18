@@ -90,7 +90,7 @@ class CitiesController extends BaseController
             (new \yii\db\Query())->select('cities_id')->from('cities_order')
         ])
             ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
-            ->andFilterWhere(['like', 'cities_text.name', $query])
+            ->andWhere("cities_text.name LIKE '".$query."%'")
             ->andFilterWhere(['in', 'cities.regions_id',
                 (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])
             ->all();

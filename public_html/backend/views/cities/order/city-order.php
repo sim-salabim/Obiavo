@@ -114,7 +114,7 @@
                 },
 
                 focus: function(event, ui) {
-                    _this.val(ui.item[_data.item_label]);
+                   // _this.val(ui.item[_data.item_label]);
                     event.preventDefault();
                 },
 
