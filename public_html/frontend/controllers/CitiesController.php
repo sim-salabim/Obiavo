@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\db\Expression;
 use yii\web\Controller;
 use yii\db\Query as Query;
 
@@ -37,9 +38,9 @@ class CitiesController extends Controller
                 'countries.domain as country_domain',
                 'cities.domain as domain'
             ])->from('cities')
-                ->where(
-                        ['like', 'cities_text.name', $post['q']])
+                ->where("cities_text.name LIKE '".$post['q']."%'")
                 ->andWhere(['countries.domain' => Yii::$app->location->country])
+                ->andWhere(['cities_text.languages_id' => Yii::$app->location->country->languages_id])
                 ->join('LEFT OUTER JOIN',
                     'cities_text',
                     'cities_text.cities_id = cities.id'
@@ -57,7 +58,7 @@ class CitiesController extends Controller
         }
         if(isset($data) and $data){
             foreach($data as $row){
-                $out[$row['text']] = array('id' => $row['id'], 'text' => $row['text'], 'domain' => $row['domain']);
+                $out[] = array('id' => $row['id'], 'text' => $row['text'], 'domain' => $row['domain']);
             }
         }
         return $out;

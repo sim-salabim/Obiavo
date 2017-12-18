@@ -1,3 +1,10 @@
+<?
+/**
+ * title, str
+ * $ads_search, array - результат работы Ads::getList()
+ * library_search, LibrarySearch - настртоенный обьект LibrarySearch
+ */
+?>
 <div class="row">
     <div class="col-lg-8 col-md-6 col-sm-12 text-align-left">
         <?= $title ?>

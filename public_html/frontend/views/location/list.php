@@ -60,7 +60,9 @@ use yii\helpers\Url;
                 _data = _this.data(),
                 _search_data = [],
                 _visible_field = $('#' + _data.item_id),
-                _hidden_field = $('#' + _data.hidden_field_id);
+                _hidden_field = $('#' + _data.hidden_field_id),
+                _selected_text = '',
+                _selected_id = '';
 
 
             _this.after('<div class="bs-autocomplete-feedback form-control-feedback"><div class="loader"><?= __('Search...') ?></div></div>')
@@ -101,18 +103,18 @@ use yii\helpers\Url;
                 },
 
                 focus: function(event, ui) {
-                    _this.val(ui.item[_data.item_label]);
                     event.preventDefault();
                 },
 
-                select: function(event, ui) {
-                    console.log(window.location.origin + "/" + ui.item.domain + "/");
+                select: function(event, ui) {console.log(ui);
+                    _hidden_field.val(ui.item.id);
+                    _visible_field.val(ui.item.text);
+                    _selected_text = ui.item.text;
+                    _selected_id = ui.item.id;
                     window.location.href = window.location.origin + "/select-location/" + ui.item.domain + "/"
                 },
                 close: function( event, ui ) {
-                    if(_search_data.length != 0){
-                        _hidden_field.val(_search_data[_visible_field.val()].id);
-                    }
+
                 }
             })
                 .data('ui-autocomplete')._renderItem = function(ul, item) {
