@@ -21,6 +21,7 @@ use yii\db\Query;
  * @property City[] $cities
  * @property Country $countries
  * @property RegionText[] $regionsTexts
+ * @property SocialNetworksGroups $socialNetworksGroups
  */
 class Region extends \yii\db\ActiveRecord
 {
@@ -96,6 +97,14 @@ class Region extends \yii\db\ActiveRecord
     public function getCountry()
     {
         return $this->hasOne(Country::className(), ['id' => 'countries_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSocialNetworkGroups()
+    {
+        return $this->hasMany(SocialNetworksGroups::className(), ['cregions_id' => 'id']);
     }
 
     public function getRegionText()

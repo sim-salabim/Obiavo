@@ -13,6 +13,7 @@ use common\models\scopes\CategoryQuery;
  * @property integer $parent_id
  * @property string $techname
  * @property integer $active
+ * @property integer $social_networks_groups_main_id
  *
  * @property Ads[] $ads
  * @property Category $parent
@@ -20,6 +21,7 @@ use common\models\scopes\CategoryQuery;
  * @property Placement $placements
  * @property Category[] $categories
  * @property CategoryAttribute[] $categoriesAttributes
+ * @property SocialNetworksGroupsMain $socialNetworkGroupMain
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -131,6 +133,14 @@ class Category extends \yii\db\ActiveRecord
     public function getParent()
     {
         return $this->hasOne(Category::className(), ['id' => 'parent_id'])->withText();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSocialNetworkGroupMain()
+    {
+        return $this->hasOne(SocialNetworksGroupsMain::className(), ['social_networks_groups_main_id' => 'id']);
     }
 
     public function getChildren()

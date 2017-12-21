@@ -22,6 +22,7 @@ use common\models\scopes\CityQuery;
  * @property Region $regions
  * @property CityText[] $cityTexts
  * @property Users[] $users
+ * @property SocialNetworksGroups[] $socialNetworksGroups
  */
 class City extends \yii\db\ActiveRecord
 {
@@ -104,6 +105,14 @@ class City extends \yii\db\ActiveRecord
     public function getAds()
     {
         return $this->hasMany(Ads::className(), ['cities_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSocialNetworkGroups()
+    {
+        return $this->hasMany(SocialNetworksGroups::className(), ['cities_id' => 'id']);
     }
 
     /**
