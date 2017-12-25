@@ -9,7 +9,7 @@ use common\models\libraries\AdsSearch;
 use common\models\PlacementsText;
 use Yii;
 use yii\helpers\Url;
-
+use yii\web\HttpException;
 
 class CategoriesController extends BaseController
 {
@@ -39,6 +39,7 @@ class CategoriesController extends BaseController
         $action = Yii::$app->request->get('placement');
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');
+        $this->checkGetParams();
         $action_id = null;
         if($action){
             $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
@@ -83,6 +84,9 @@ class CategoriesController extends BaseController
         }
 
         $ads_list = Ads::getList($librarySearch);
+        if($page > 1 AND !count($ads_list['items'])){
+            throw new HttpException(404, 'Not Found');
+        }
         $this->switchSeoKeys($ads_list);
         $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
         if($page > 1){
@@ -102,6 +106,10 @@ class CategoriesController extends BaseController
         ]);
     }
 
+    /** Возвращает дочерние категории для категории $POST['category_id']
+     *
+     * @return string
+     */
     public function actionGetSubCategories(){
         $subcats_json = '[';
         if (Yii::$app->request->isPost){
@@ -123,6 +131,10 @@ class CategoriesController extends BaseController
         return $subcats_json;
     }
 
+    /** Возвращает виды обьявлений для категории $POST['category_id']
+     *
+     * @return string
+     */
     public function actionGetCategoryPlacement(){
         $action_json = '[';
         if (Yii::$app->request->isPost){
@@ -141,5 +153,32 @@ class CategoriesController extends BaseController
         }
         $action_json .= ']';
         return $action_json;
+    }
+
+    /** Проверяет корректны ли GET параметры сортировки
+     *  если нет выводит 404 Exception
+     * @throws HttpException
+     */
+    private function checkGetParams(){
+        $sort = Yii::$app->request->get('sort');
+        $direction = Yii::$app->request->get('direction');
+        if(($sort AND !$direction) OR ($direction AND !$sort)){
+            throw new HttpException(404, 'Not Found');
+        }else{
+            if($sort){
+                if($sort == 'created_at' || $sort == 'price' || $sort == 'title'){
+                    true;
+                }else{
+                    throw new HttpException(404, 'Not Found');
+                }
+            }
+            if($direction) {
+                if ($direction == 'desc' || $direction == 'asc') {
+                    true;
+                } else {
+                    throw new HttpException(404, 'Not Found');
+                }
+            }
+        }
     }
 }
