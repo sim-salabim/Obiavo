@@ -6,6 +6,9 @@ namespace common\models;
  * @package common\models
  *
  * @property string $name
+ * @property integer $default_group_id
+ *
+ * @property SocialNetworks $default
  */
 class SocialNetworks extends \yii\db\ActiveRecord
 {
@@ -34,5 +37,13 @@ class SocialNetworks extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Название',
         ];
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    function getDefault(){
+        return $this->hasOne(SocialNetworksGroups::className(), ['default_group_id' => 'id']);
     }
 }
