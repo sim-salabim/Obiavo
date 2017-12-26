@@ -42,6 +42,7 @@ use yii\helpers\Url;
                     ['label' => 'Пoльзователи', 'icon' => 'users', 'url' => ['/users']],
                     ['label' => 'Типы объявлений', 'icon' => '', 'url' => ['/placements']],
                     ['label' => 'CMS страницы', 'icon' => 'file-o', 'url' => ['/cms']],
+                    ['label' => 'Соц Сети', 'icon' => 'facebook-square', 'url' => ['/sn']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

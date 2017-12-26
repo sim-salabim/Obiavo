@@ -23,6 +23,7 @@ class m171221_070915_social_network_groups extends Migration
             'code_lg' => $this->text(),
         ], $tableOptions);
         $this->addColumn('social_networks', 'default_group_id', $this->integer()->unsigned()->null());
+        $this->addColumn('social_networks', 'order', $this->integer()->defaultValue(0));
         $this->createIndex('idx_dgid_id', 'social_networks', 'default_group_id');
         $this->addForeignKey('dgid_ibfk_1', 'social_networks', 'default_group_id', 'social_networks_groups', 'id', 'SET NULL', 'SET NULL');
         $this->createIndex('idx_sngmid_id', 'social_networks_groups', 'social_networks_groups_main_id');
