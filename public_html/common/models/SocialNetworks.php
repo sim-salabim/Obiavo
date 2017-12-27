@@ -45,6 +45,6 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     function getDefault(){
-        return $this->hasOne(SocialNetworksGroups::className(), ['default_group_id' => 'id']);
+        return $this->hasOne(SocialNetworksGroups::className(), ['id' => 'default_group_id']);
     }
 }

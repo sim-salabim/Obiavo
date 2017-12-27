@@ -3,6 +3,7 @@ namespace backend\controllers;
 
 use common\models\CategoryPlacement;
 use common\models\CategoryPlacementText;
+use common\models\SocialNetworksGroups;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -203,5 +204,22 @@ class CategoriesController extends BaseController
         return $this->render('savelang',[
             'category' => $category,
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function actionSearch(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $sns = SocialNetworksGroups::find()
+            ->where("name LIKE '".$query."%'")
+            ->all();
+        $result = [];
+        foreach($sns as $sn){
+            $result[$sn->id] = array('id' => $sn->id, 'text' => $sn->name);
+        }
+        return $result;
     }
 }

@@ -26,6 +26,8 @@ class Form extends Widget {
 
     const MULTISELECT = 'multiselect';
 
+    const SEARCH_AUTOCOMPLETE = 'searchAutocomplete';
+
     public function getViewPath()
     {
         return \Yii::getAlias('@app/widgets/views/form');
@@ -60,6 +62,10 @@ class Form extends Widget {
         }
 
         $row['panel-content'] = $panelForm;
+    }
+
+    protected function searchAutocomplete($attribute){
+        return $this->render('search-autocomplete', compact('attribute'));
     }
 
     protected function textInput($attribute){
