@@ -1,16 +1,18 @@
 <?
 /**
- *  $attribute - array(label, name, model, type, url)
+ *  $attribute - array(label, name, model, type, url, placeholder)
  *      label - название поля;
  *      name - название инпута (name="name");
  *      model - класс модели;
  *      type - Form::SEARCH_AUTOCOMPLETE;
- *      url - урл для ajax поиска
+ *      url - урл для ajax поиска;
+ *      placeholder;
  */
 $id = uniqid();
 $model_name = $attribute['model_name'];
 $visible_value = ($attribute['model']->default) ? $attribute['model']->default->name : null;
 $hidden_value = ($attribute['model']->default) ? $attribute['model']->default->id : null;
+$placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 'Начните печатать...'
 ?>
 <div class="form-group row validation-errors">
     <label class="col-xs-2 col-form-label"><?= $attribute['label'] ?></label>
@@ -20,6 +22,7 @@ $hidden_value = ($attribute['model']->default) ? $attribute['model']->default->i
         id="input-<?= $id ?>"
         value="<?= $visible_value ?>"
         type="text"
+        placeholder="<?= $placeholder ?>"
         data-hidden_field_id="hidden-<?= $id ?>"
         data-item_id="input-<?= $id ?>"
         data-item_label="text"

@@ -38,7 +38,7 @@ $breadcrumbs = '';
         [
             'label'        => 'Название',
             'content'      => function($model){
-                $html = $model->name;
+                $html = '<a href="'.Url::to(['sn-main-groups/', 'sn_id' => $model->id]).'">'.$model->name.'</a>';
                 return $html;
             },
         ],
