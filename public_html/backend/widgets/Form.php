@@ -26,6 +26,8 @@ class Form extends Widget {
 
     const MULTISELECT = 'multiselect';
 
+    const SELECT = 'select';
+
     const SEARCH_AUTOCOMPLETE = 'searchAutocomplete';
 
     public function getViewPath()
@@ -90,6 +92,10 @@ class Form extends Widget {
     protected function inputCheckboxInactive($attribute){
 
         return $this->render('input-checkbox-inactive', compact('attribute'));
+    }
+
+    protected function select($attribute){
+        return $this->render('input-select', compact('attribute'));
     }
 
     protected function multiselect($attribute){
