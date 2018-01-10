@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "countries_text".
  *
@@ -15,8 +13,6 @@ use Yii;
  *
  * @property Countries $countries
  */
-use common\models\Language;
-
 class CountryText extends \yii\db\ActiveRecord
 {
     /**

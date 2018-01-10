@@ -12,9 +12,6 @@ use common\models\Category;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class CategoriesController extends BaseController
 {
     /**

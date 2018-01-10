@@ -14,22 +14,15 @@ $breadcrumbs = '';
         <button class="btn btn-primary loadcontent"
                 data-link="<?= Url::toRoute(['create'])?>">
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
-            Создать новую сеть
-        </button>
-        <button class="btn btn-primary loadcontent"
-                data-link="<?= Url::toRoute(['sn-order'])?>"
-                id="order_settings"
-        >
-            <i class="fa fa-fw -square -circle fa-arrows-v"></i>
-            Редактировать порядок
+            Создать новую группу
         </button>
     </div>
 
     <?= $breadcrumbs;?>
 
 <?= TableList::widget([
-    'title' => 'Социальные сети',
-    'data'  => $social_networks,
+    'title' => 'Сообщества',
+    'data'  => $sn_groups,
     'columns' => [
         [
             'attribute'    => 'id',

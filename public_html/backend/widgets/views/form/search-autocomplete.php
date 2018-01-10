@@ -19,7 +19,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
     <label class="col-xs-2 col-form-label"><?= $attribute['label'] ?></label>
     <div class="col-xs-10">
     <input
-        class="form-control bs-autocomplete"
+        class="form-control bs-autocomplete-<?= $id ?>"
         id="input-<?= $id ?>"
         value="<?= $visible_value ?>"
         type="text"
@@ -62,7 +62,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
     });
 
     (function() {
-        $('.bs-autocomplete').each(function() {
+        $('.bs-autocomplete-<?= $id ?>').each(function() {
             var _this = $(this),
                 _data = _this.data(),
                 _search_data = [],
@@ -88,7 +88,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
                         url: '<?= \yii\helpers\Url::toRoute($attribute['url']) ?>',
                         data: {query: $('#input-'+'<?= $id ?>').val()},
                         success: function(data) {
-                            _search_data = data
+                            _search_data = data;
                             $('input.suggest-user').removeClass('ui-autocomplete-loading');
                             if(_search_data.length == 0){
                                 _hidden_field.val('');
@@ -116,7 +116,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
                     _hidden_field.val(ui.item.id);
                 },
                 close: function( event, ui ) {
-                    if(_search_data.length != 0){
+                    if (_search_data.length != 0) {
                         _visible_field.val(_search_data[_hidden_field.val()].text);
                     }
                 }

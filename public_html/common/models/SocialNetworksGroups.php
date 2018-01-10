@@ -9,6 +9,10 @@ namespace common\models;
  * @property string $code_sm
  * @property string $code_md
  * @property string $code_lg
+ * @property integer $cities_id
+ * @property integer $regions_id
+ * @property integer $social_networks_id
+ * @property integer $social_networks_groups_main_id
  *
  * @property City $city
  * @property Region $region
@@ -29,9 +33,21 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['name', 'code_md', 'code_sm', 'code_lg'], 'required'],
         ];
     }
 
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \backend\behaviors\SaveData::className()
+            ],
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -47,14 +63,14 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     function getCity(){
-        return $this->hasOne(City::className(), ['cities_id' => 'id']);
+        return $this->hasOne(City::className(), ['id' => 'cities_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     function getRegion(){
-        return $this->hasOne(Region::className(), ['regions_id' => 'id']);
+        return $this->hasOne(Region::className(), ['id' => 'regions_id']);
     }
 
     /**
@@ -68,6 +84,6 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     function getSocialNetworksGroupMain(){
-        return $this->hasOne(SocialNetworksGroupsMain::className(), ['social_networks_groups_main_id' => 'id']);
+        return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
     }
 }

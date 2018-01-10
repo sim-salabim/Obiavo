@@ -90,7 +90,7 @@
                     $.ajax({
                         dataType: "json",
                         type : 'POST',
-                        url: '<?= \yii\helpers\Url::toRoute('cities/search') ?>',
+                        url: '<?= \yii\helpers\Url::toRoute('cities/search-for-ordering') ?>',
                         data: {query: $('input#live-search-select').val(),country_id:<?= $country_id ?>},
                         success: function(data) {
                             _search_data = data

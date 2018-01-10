@@ -10,9 +10,6 @@ use common\models\LanguageText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class LanguagesController extends BaseController
 {
     /**

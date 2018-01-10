@@ -14,9 +14,6 @@ use comon\models\CityText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class CitiesController extends BaseController
 {
     /**
@@ -80,11 +77,11 @@ class CitiesController extends BaseController
         return $this->render('order/city-order',  compact('country_id', 'cities', 'breadcrumbs'));
     }
 
-    public function actionSearch(){
+    public function actionSearchForOrdering(){
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $query = $post['query'];
-        $country_id = $post['country_id'];
+        $country_id = (isset($post['country_id'])) ? $post['country_id'] : 1;// захардкодим пока так
         $cities = City::find()
             ->where(['not in', 'cities.id',
             (new \yii\db\Query())->select('cities_id')->from('cities_order')
@@ -97,6 +94,24 @@ class CitiesController extends BaseController
         $result = [];
         foreach($cities as $city){
             $result[$city->_text->name] = array('id' => $city->id, 'text' => $city->_text->name, 'domain' => $city->domain);
+        }
+        return $result;
+    }
+
+    public function actionSearch(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $country_id = (isset($post['country_id'])) ? $post['country_id'] : 1;// захардкодим пока так
+        $cities = City::find()
+            ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
+            ->where("cities_text.name LIKE '".$query."%'")
+            ->andFilterWhere(['in', 'cities.regions_id',
+                (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])
+            ->all();
+        $result = [];
+        foreach($cities as $city){
+            $result[$city->id] = array('id' => $city->id, 'text' => $city->_text->name);
         }
         return $result;
     }

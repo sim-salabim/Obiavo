@@ -9,9 +9,6 @@ use yii\filters\AccessControl;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class CmsController extends BaseController
 {
     /**

@@ -11,9 +11,6 @@ use common\models\CountryText;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class SnMainGroupsController extends BaseController
 {
     /**
@@ -71,9 +68,7 @@ class SnMainGroupsController extends BaseController
         } else {
             $main_group = new SocialNetworksGroupsMain();
         }
-        $main_group->name = $post['SocialNetworksGroupsMain']['name'];
-        if (!$main_group->save()){
-
+        if (!$main_group->saveData($post['SocialNetworksGroupsMain'])){
             return $this->sendJsonData([
                 JsonData::SHOW_VALIDATION_ERRORS_INPUT => $main_group->getErrors(),
             ]);
@@ -97,4 +92,17 @@ class SnMainGroupsController extends BaseController
         ]);
     }
 
+    public function actionSearch(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $sn_groups_main = SocialNetworksGroupsMain::find()
+            ->where("name LIKE '".$query."%'")
+            ->all();
+        $result = [];
+        foreach($sn_groups_main as $main_group){
+            $result[$main_group->id] = array('id' => $main_group->id, 'text' => $main_group->name);
+        }
+        return $result;
+    }
 }

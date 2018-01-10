@@ -17,7 +17,7 @@
                    value="<?=Yii::$app->request->csrfToken?>"/>
             <div id="sortable1" class="col-lg-12">
                     <? foreach($sns as $sn){ ?>
-                        <pre style="cursor: move" id="pre-<?= $sn->id ?>"><?= $sn->name ?><input type="hidden" name="sn_order[]" value="<?= $sn->id ?>"></pre>
+                        <pre style="cursor: move" id="pre-<?= $sn->id ?>"><?= $sn->name ?><input type="hidden" name="sn_order[]" value="<?= $sn->id ?>"><i class="fa fa-arrows-v float-right" aria-hidden="true"></i></pre>
                     <? } ?>
             </div>
             <div class="col-lg-12" style="padding-bottom: 10px;">

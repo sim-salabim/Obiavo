@@ -2,9 +2,7 @@
 
 namespace common\models;
 
-use Yii;
 use common\models\scopes\CountryQuery;
-use common\models\CountryText;
 
 /**
  * This is the model class for table "countries".

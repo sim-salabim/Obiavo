@@ -22,6 +22,7 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['name'], 'required',],
         ];
     }
 
@@ -35,7 +36,14 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
             'name' => 'Название',
         ];
     }
-
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \backend\behaviors\SaveData::className()
+            ],
+        ];
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -44,6 +44,7 @@ use yii\helpers\Url;
                     ['label' => 'CMS страницы', 'icon' => 'file-o', 'url' => ['/cms']],
                     ['label' => 'Соц Сети', 'icon' => 'facebook-square', 'url' => ['/sn']],
                     ['label' => 'Основные группы соцсетей', 'icon' => 'object-group', 'url' => ['/sn-main-groups']],
+                    ['label' => 'Сообщества соцсетей', 'icon' => 'child', 'url' => ['/sn-groups']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

@@ -9,9 +9,6 @@ use common\models\Placement;
 use common\helpers\JsonData;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class PlacementsController extends BaseController
 {
     /**

@@ -12,9 +12,6 @@ use yii\helpers\Url;
 use common\models\Country;
 use common\models\Language;
 
-/**
- * Site controller
- */
 class RegionsController extends BaseController
 {
     /**
@@ -156,5 +153,22 @@ class RegionsController extends BaseController
             'homeLink' => $homeLink,
             'links' => isset($breadcrumbs) ? $breadcrumbs : []
         ]);
+    }
+
+    public function actionSearch(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $country_id = (isset($post['country_id'])) ? $post['country_id'] : 1;
+        $regions = Region::find()
+            ->leftJoin('regions_text', 'regions_text.regions_id = regions.id')
+            ->where("regions_text.name LIKE '".$query."%'")
+            ->andWhere('countries_id = '.$country_id)
+            ->all();
+        $result = [];
+        foreach($regions as $region){
+            $result[$region->id] = array('id' => $region->id, 'text' => $region->_text->name, 'domain' => $region->domain);
+        }
+        return $result;
     }
 }
