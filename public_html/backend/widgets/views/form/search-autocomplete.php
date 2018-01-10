@@ -2,6 +2,7 @@
 /**
  *  $attribute - array(label, name, model, type, url, placeholder)
  *      label - название поля;
+ *      current_value - [id => , title => ], текущее значение
  *      name - название инпута (name="name");
  *      model - класс модели;
  *      type - Form::SEARCH_AUTOCOMPLETE;
@@ -10,8 +11,8 @@
  */
 $id = uniqid();
 $model_name = $attribute['model_name'];
-$visible_value = ($attribute['model']->default) ? $attribute['model']->default->name : null;
-$hidden_value = ($attribute['model']->default) ? $attribute['model']->default->id : null;
+$visible_value = ($attribute['current_value']['title']) ? $attribute['current_value']['title'] : null;
+$hidden_value = ($attribute['current_value']['id']) ? $attribute['current_value']['id'] : null;
 $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 'Начните печатать...'
 ?>
 <div class="form-group row validation-errors">

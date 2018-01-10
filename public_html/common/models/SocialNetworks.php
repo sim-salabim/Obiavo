@@ -8,7 +8,7 @@ namespace common\models;
  * @property string $name
  * @property integer $default_group_id
  *
- * @property SocialNetworks $default
+ * @property SocialNetworksGroups $default
  */
 class SocialNetworks extends \yii\db\ActiveRecord
 {

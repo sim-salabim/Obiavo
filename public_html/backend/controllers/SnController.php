@@ -11,9 +11,6 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 
-/**
- * Site controller
- */
 class SnController extends BaseController
 {
     /**
@@ -127,44 +124,5 @@ class SnController extends BaseController
             JsonData::SUCCESSMESSAGE => "Успешно удалено",
             JsonData::REFRESHPAGE => '',
         ]);
-    }
-
-    public function actionSaveLang($id,$languages_id){
-        $city = City::find()
-            ->where(['id' => $id])
-            ->withText($languages_id)
-            ->one();
-
-        if ($this->isJson()){
-            $text = $city->_mttext;
-            $text->cities_id = $city->id;
-            $text->languages_id = $languages_id;
-            $text->load(Yii::$app->request->post());
-
-            if ($text->save()){
-                return $this->sendJsonData([
-                    JsonData::SUCCESSMESSAGE => "\"{$text->name}\" успешно сохранено",
-                    JsonData::REFRESHPAGE => '',
-                ]);
-            }
-
-            return $this->sendJsonData([
-                JsonData::SHOW_VALIDATION_ERRORS_INPUT => \yii\widgets\ActiveForm::validate($text),
-            ]);
-        }
-
-        return $this->render('savelang',[
-            'city' => $city
-        ]);
-    }
-
-    public function actionRemoveOrder(){
-        $post = Yii::$app->request->post();
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $order = CityOrder::findOne($post['id']);
-        if($order){
-            $order->delete();
-        }
-        return true;
     }
 }
