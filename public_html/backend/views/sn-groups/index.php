@@ -36,6 +36,34 @@ $breadcrumbs = '';
             },
         ],
         [
+            'label'        => 'Соцсеть',
+            'content'      => function($model){
+                $html = $model->socialNetwork->name;
+                return $html;
+            },
+        ],
+        [
+            'label'        => 'основная группа',
+            'content'      => function($model){
+                $html = ($model->socialNetworksGroupMain) ? $model->socialNetworksGroupMain->name : '<span class="badge badge-warning">Не выбранa</span>';
+                return $html;
+            },
+        ],
+        [
+            'label'        => 'Город',
+            'content'      => function($model){
+                $html = (isset($model->city->_text->name)) ? $model->city->_text->name : '<span class="badge badge-warning">Не выбран</span>';
+                return $html;
+            },
+        ],
+        [
+            'label'        => 'Город',
+            'content'      => function($model){
+                $html = (isset($model->region->_text->name)) ? $model->region->_text->name : '<span class="badge badge-warning">Не выбран</span>';
+                return $html;
+            },
+        ],
+        [
             'label'        => 'Управление',
             'format'       => TableList::TYPE_OPT_BUTTON,
             'buttons'      => [

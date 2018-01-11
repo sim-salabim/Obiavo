@@ -77,7 +77,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     function getSocialNetwork(){
-        return $this->hasOne(SocialNetworks::className(), ['social_networks_id' => 'id']);
+        return $this->hasOne(SocialNetworks::className(), ['id' => 'social_networks_id']);
     }
 
     /**

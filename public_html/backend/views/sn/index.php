@@ -43,6 +43,13 @@ $breadcrumbs = '';
             },
         ],
         [
+            'label'        => 'Группа по умолчанию',
+            'content'      => function($model){
+                $html = ($model->default) ? $model->default->name : '<span class="badge badge-warning">Не выбранa</span>';
+                return $html;
+            },
+        ],
+        [
             'label'        => 'Управление',
             'format'       => TableList::TYPE_OPT_BUTTON,
             'buttons'      => [
