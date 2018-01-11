@@ -74,10 +74,14 @@ class SnGroupsController extends BaseController
         } else {
             $sn_group = new SocialNetworksGroups();
         }
-
-        if (!$sn_group->saveData($post['SocialNetworksGroups'])){
+        $sn_group->load($post);
+        if (!$sn_group->save()){
+            $errors = [];
+            foreach ($sn_group->getErrors() as $key => $error){
+                $errors['socialnetworksgroups-'.$key] = $error;
+            }
             return $this->sendJsonData([
-                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $sn_group->getErrors(),
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
         }
         return $this->sendJsonData([

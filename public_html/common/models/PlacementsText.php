@@ -49,7 +49,7 @@ class PlacementsText extends \yii\db\ActiveRecord
             'id' => 'ID',
             'languages_id' => 'Languages ID',
             'placements_id' => 'Placements ID',
-            'name' => 'Name',
+            'name' => 'Название',
             'url' => 'SEO Url',
         ];
     }

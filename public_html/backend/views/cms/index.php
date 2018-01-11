@@ -1,8 +1,7 @@
 <?php
-Use yii\helpers\Url;
-use yii\widgets\Breadcrumbs;
 use backend\widgets\TableList;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = 'CMS страницы';
 ?>
@@ -10,8 +9,6 @@ $this->title = 'CMS страницы';
 <div id="loadcontent-container" style="display: none"></div>
 
 <div id="categories-table">
-
-
     <div class="well">
         <button class="btn btn-primary loadcontent"
                 data-link="<?= Url::toRoute(['create'])?>">

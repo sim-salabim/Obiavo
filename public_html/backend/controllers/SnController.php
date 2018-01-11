@@ -2,8 +2,6 @@
 namespace backend\controllers;
 
 use common\helpers\JsonData;
-use common\models\City;
-use common\models\CityOrder;
 use common\models\Country;
 use common\models\SocialNetworks;
 use Yii;
@@ -32,6 +30,18 @@ class SnController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                 ],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
             ],
         ];
     }
@@ -104,11 +114,14 @@ class SnController extends BaseController
         } else {
             $sn = new SocialNetworks();
         }
-        $sn->name = $post['SocialNetworks']['name'];
-        $sn->default_group_id = (isset($post['SocialNetworks']['default_group_id']) AND $post['SocialNetworks']['default_group_id'] != "") ? $post['SocialNetworks']['default_group_id'] : null;
+        $sn->load($post);
         if (!$sn->save()){
+            $errors = [];
+            foreach ($sn->getErrors() as $key => $error){
+                $errors['socialnetworks-'.$key] = $error;
+            }
             return $this->sendJsonData([
-                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $sn->getErrors(),
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
         }
         return $this->sendJsonData([

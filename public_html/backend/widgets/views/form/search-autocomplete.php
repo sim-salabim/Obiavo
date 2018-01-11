@@ -1,15 +1,16 @@
 <?
 /**
- *  $attribute - array(label, name, model, type, url, placeholder)
+ *  $attribute - array(label, name, model, type, url, placeholder, input_id)
  *      label - название поля;
  *      current_value - [id => , title => ], текущее значение
  *      name - название инпута (name="name");
  *      model - класс модели;
  *      type - Form::SEARCH_AUTOCOMPLETE;
  *      url - урл для ajax поиска;
+ *      input_id - id, который присвоиться инпуту, если не предоставлен, то притсваивается 'input-.uniqid()'
  *      placeholder;
  */
-$id = uniqid();
+$id = (isset($attribute['input_id'])) ? $attribute['input_id'] : 'input-'.uniqid();
 $model_name = $attribute['model_name'];
 $visible_value = ($attribute['current_value']['title']) ? $attribute['current_value']['title'] : null;
 $hidden_value = ($attribute['current_value']['id']) ? $attribute['current_value']['id'] : null;
@@ -20,12 +21,12 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
     <div class="col-xs-10">
     <input
         class="form-control bs-autocomplete-<?= $id ?>"
-        id="input-<?= $id ?>"
+        id="<?= $id ?>"
         value="<?= $visible_value ?>"
         type="text"
         placeholder="<?= $placeholder ?>"
         data-hidden_field_id="hidden-<?= $id ?>"
-        data-item_id="input-<?= $id ?>"
+        data-item_id="<?= $id ?>"
         data-item_label="text"
         autocomplete="off">
         <input type="hidden" id="hidden-<?= $id ?>" name="<?= $model_name ?>[<?= $attribute['name'] ?>]" value="<?= $hidden_value ?>">
@@ -33,8 +34,8 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#input-<?= $id ?>').on('keyup', function(){
-            var visible_val = $('#input-<?= $id ?>').val();
+        $('#<?= $id ?>').on('keyup', function(){
+            var visible_val = $('#<?= $id ?>').val();
             var hidden_val = $('#hidden-<?= $id ?>').val();
             if(visible_val != hidden_val){
                 $('#hidden-<?= $id ?>').val('');
@@ -86,7 +87,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
                         dataType: "json",
                         type : 'POST',
                         url: '<?= \yii\helpers\Url::toRoute($attribute['url']) ?>',
-                        data: {query: $('#input-'+'<?= $id ?>').val()},
+                        data: {query: $('#'+'<?= $id ?>').val()},
                         success: function(data) {
                             _search_data = data;
                             $('input.suggest-user').removeClass('ui-autocomplete-loading');

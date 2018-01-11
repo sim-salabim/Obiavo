@@ -25,7 +25,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
-            [['name'], 'required'],
+            [['name', 'default_group_id'], 'required'],
         ];
     }
 
@@ -37,9 +37,21 @@ class SocialNetworks extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
+            'default_group_id' => 'Группа по умолчанию',
         ];
     }
 
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \backend\behaviors\SaveData::className()
+            ],
+        ];
+    }
 
     /**
      * @return \yii\db\ActiveQuery

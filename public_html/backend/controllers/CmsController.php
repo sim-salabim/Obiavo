@@ -1,12 +1,11 @@
 <?php
 namespace backend\controllers;
 
+use common\helpers\JsonData;
 use common\models\Cms;
 use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\helpers\JsonData;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 
 class CmsController extends BaseController
@@ -85,7 +84,7 @@ class CmsController extends BaseController
         if ($id){
             $cms = Cms::findOne($id);
         } else {
-            $cms = new Cms;
+            $cms = new Cms();
         }
         if (!$cms->saveWithRelation($post)){
             return $this->sendJsonData([

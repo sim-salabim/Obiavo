@@ -6,10 +6,7 @@
  * @var string toUrl ссылку куда отправлять данные на обработку
  */
 
-use yii\helpers\Url;
-use yii\bootstrap\Html;
 use backend\widgets\Form;
-use yii\helpers\ArrayHelper;
 
 $items = [
     'saveUrl' => $toUrl,

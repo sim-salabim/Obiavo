@@ -33,7 +33,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
-            [['name', 'code_md', 'code_sm', 'code_lg'], 'required'],
+            [['name', 'code_md'], 'required'],
         ];
     }
 
@@ -56,6 +56,9 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
+            'code_lg' => 'Большой блок',
+            'code_md' => 'Средний блок',
+            'code_sm' => 'Маленький блок',
         ];
     }
 

@@ -3,7 +3,6 @@
 namespace common\models;
 
 use common\models\scopes\CmsQuery;
-use Yii;
 
 /**
  * This is the model class for table "cms".

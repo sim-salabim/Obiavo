@@ -10,9 +10,9 @@ use yii\helpers\Html;
         $value = ($attribute['model']->{$attribute['name']}) ? $attribute['model']->{$attribute['name']} : '';
         $name = $attribute['model_name']."[".$attribute['name']."]";
     ?>
-        <?= Html::textarea($name, $value,['class' => 'form-control']);?>
+        <?= Html::textarea($name, $value,['class' => 'form-control', 'id' => mb_strtolower($attribute['model_name'])."-".$attribute['name']]);?>
     <? } else {?>
-        <textarea class="form-control" name="<?= $attribute['name'] ?>" ><?= $attribute['model']->{$attribute['params_name']} ?></textarea>
+        <textarea class="form-control" id="<?= mb_strtolower($attribute['model_name'])."-".$attribute['name'] ?>" name="<?= $attribute['name'] ?>" ><?= $attribute['model']->{$attribute['params_name']} ?></textarea>
     <? } ?>
 </div>
 

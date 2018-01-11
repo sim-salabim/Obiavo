@@ -1,17 +1,18 @@
 <?php
-use yii\helpers\Url;
+use backend\widgets\Form;
 
-$form = [
-    [
-        'panel-title' => 'Текстовые данные',
-        'columns' => [
-            // attribute:typeField:label
-            ['attributes' => 'name:text:Название', 'model' => $placement->_text],
-            ['attributes' => 'url:text:Seo Url', 'model' => $placement->_text],
+$items = [
+    'saveUrl' => $toUrl,
+    'rows' => [
+        [
+            'panel-title' => 'Текстовые данные',
+            'attributes' => [
+                ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$placement->_text],
+                ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'Seo URL','model'=>$placement->_text],
+            ]
         ]
     ],
 ];
 
-$saveUrl = $toUrl;
-
-echo $this->render('/templates/form',compact('form','saveUrl'));
+echo Form::widget($items);
+?>
