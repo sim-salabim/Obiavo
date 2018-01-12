@@ -43,6 +43,12 @@ $this->title = 'Категории';
             },
         ],
         [
+            'label'        => 'Осцновная соц. группа',
+            'content'      => function($model){
+                              return ($model->socialNetworkGroupMain) ? $model->socialNetworkGroupMain->name : '<span class="badge badge-warning">Не выбранa</span>';
+            },
+        ],
+        [
             'label'        => 'Тексты',
             'format'       => TableList::TYPE_MULTI_BUTTON,
         ],

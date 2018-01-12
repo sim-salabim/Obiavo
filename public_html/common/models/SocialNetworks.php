@@ -59,4 +59,23 @@ class SocialNetworks extends \yii\db\ActiveRecord
     function getDefault(){
         return $this->hasOne(SocialNetworksGroups::className(), ['id' => 'default_group_id']);
     }
+
+    /**
+     * @param array $keys
+     * @return array(key => value, key => value....)
+     */
+    static function getAllAsArray($keys = ['id', 'name']){
+        $result = [];
+        $groups = SocialNetworks::find()->all();
+        if(!empty($groups)){
+            foreach($groups as $k => $group){
+                foreach($keys as $key){
+                    if(isset($group->{$key})) {
+                        $result[$k][$key] = $group->{$key};
+                    }
+                }
+            }
+        }
+        return $result;
+    }
 }

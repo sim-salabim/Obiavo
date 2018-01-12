@@ -140,7 +140,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getSocialNetworkGroupMain()
     {
-        return $this->hasOne(SocialNetworksGroupsMain::className(), ['social_networks_groups_main_id' => 'id']);
+        return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
     }
 
     public function getChildren()

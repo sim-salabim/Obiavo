@@ -50,4 +50,23 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
     function getCategory(){
         return $this->hasOne(Category::className(), ['id' => 'social_networks_groups_main_id']);
     }
+
+    /**
+     * @param array $keys
+     * @return array(key => value, key => value....)
+     */
+    static function getAllAsArray($keys = ['id', 'name']){
+        $result = [];
+        $groups = SocialNetworksGroupsMain::find()->all();
+        if(!empty($groups)){
+            foreach($groups as $k => $group){
+                foreach($keys as $key){
+                    if(isset($group->{$key})) {
+                        $result[$k][$key] = $group->{$key};
+                    }
+                }
+            }
+        }
+        return $result;
+    }
 }

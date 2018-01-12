@@ -7,11 +7,10 @@
  */
 
 use backend\widgets\Form;
-use yii\helpers\ArrayHelper;
-use \common\models\Language;
+use common\models\Language;
 use common\models\Placement;
-use \common\models\CategoryPlacement;
-use \common\models\PlacementsText;
+use common\models\SocialNetworksGroupsMain;
+use yii\helpers\ArrayHelper;
 
 $placements = Placement::find()->withText(['languages_id' => Language::getDefault()->id])->all();
 $items = [
@@ -34,6 +33,7 @@ $items = [
                       'options' => ['multiple' => true]
                     ]
                 ],
+                ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(), 'model_name' => 'Categories','label' => 'Активность','model'=>$category, 'model_name' => 'Category'],
             ]
         ],
         [
