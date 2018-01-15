@@ -19,7 +19,7 @@ use common\models\scopes\CityQuery;
  * @property string $latitude
  *
  * @property Ads[] $ads
- * @property Region $regions
+ * @property Region $region
  * @property CityText[] $cityTexts
  * @property Users[] $users
  * @property SocialNetworksGroups[] $socialNetworksGroups

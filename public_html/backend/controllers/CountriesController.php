@@ -121,4 +121,23 @@ class CountriesController extends BaseController
             'country' => $country
         ]);
     }
+
+    /** Используется для инпута с автокомплитом
+     *
+     * @return array
+     */
+    public function actionSearch(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $countries = Country::find()
+            ->leftJoin('countries_text', 'countries_text.countries_id = countries.id')
+            ->where("countries_text.name LIKE '".$query."%'")
+            ->all();
+        $result = [];
+        foreach($countries as $country){
+            $result[$country->id] = array('id' => $country->id, 'text' => $country->_text->name);
+        }
+        return $result;
+    }
 }

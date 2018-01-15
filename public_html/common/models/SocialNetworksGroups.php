@@ -11,9 +11,11 @@ namespace common\models;
  * @property string $code_lg
  * @property integer $cities_id
  * @property integer $regions_id
+ * @property integer $countries_id
  * @property integer $social_networks_id
  * @property integer $social_networks_groups_main_id
  *
+ * @property Country $country
  * @property City $city
  * @property Region $region
  * @property SocialNetworks $socialNetwork
@@ -33,7 +35,10 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
-            [['name', 'code_md'], 'required'],
+            [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
+            [['social_networks_groups_main_id', 'social_networks_id', 'cities_id', 'regions_id'], 'integer'],
+            [['code_md', 'code_sm', 'code_lg'], 'string'],
+            [['countries_id'], 'validateLocation', 'skipOnEmpty' => false, 'skipOnError' => false]
         ];
     }
 
@@ -56,10 +61,21 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
+            'social_networks_groups_main_id' => 'Основная група',
+            'social_networks_id' => 'Соцсеть',
+            'countries_id' => 'Страна',
+            'regions_id' => 'Регион',
+            'cities_id' => 'Город',
             'code_lg' => 'Большой блок',
             'code_md' => 'Средний блок',
             'code_sm' => 'Маленький блок',
         ];
+    }
+
+    public function validateLocation($attribute,$params, $validator){
+        if(!$this->countries_id and !$this->cities_id and !$this->regions_id){
+            $this->addError('countries_id','Необходимо заполнить хотя бы поле "Страна"');
+        }
     }
 
     /**
@@ -67,6 +83,12 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
      */
     function getCity(){
         return $this->hasOne(City::className(), ['id' => 'cities_id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    function getCountry(){
+        return $this->hasOne(Country::className(), ['id' => 'countries_id']);
     }
 
     /**

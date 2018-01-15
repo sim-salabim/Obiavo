@@ -5,6 +5,7 @@ use common\helpers\JsonData;
 use common\models\City;
 use common\models\CityOrder;
 use common\models\Country;
+use common\models\Region;
 use common\models\SocialNetworks;
 use common\models\SocialNetworksGroups;
 use Yii;
@@ -73,6 +74,16 @@ class SnGroupsController extends BaseController
             $sn_group = SocialNetworksGroups::findOne($id);
         } else {
             $sn_group = new SocialNetworksGroups();
+        }
+        if($post['SocialNetworksGroups']['cities_id']){
+            $city = City::findOne($post['SocialNetworksGroups']['cities_id']);
+            $post['SocialNetworksGroups']['regions_id'] = $city->region->id;
+            $post['SocialNetworksGroups']['countries_id'] = $city->region->country->id;
+        }else{
+            if($post['SocialNetworksGroups']['regions_id']) {
+                $region = Region::findOne($post['SocialNetworksGroups']['regions_id']);
+                $post['SocialNetworksGroups']['countries_id'] = $region->country->id;
+            }
         }
         $sn_group->load($post);
         if (!$sn_group->save()){

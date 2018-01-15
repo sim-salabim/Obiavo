@@ -50,16 +50,23 @@ $breadcrumbs = '';
             },
         ],
         [
-            'label'        => 'Город',
+            'label'        => 'Страна',
             'content'      => function($model){
-                $html = (isset($model->city->_text->name)) ? $model->city->_text->name : '<span class="badge badge-warning">Не выбран</span>';
+                $html = (isset($model->country->_text->name)) ? $model->country->_text->name : '<span class="badge badge-warning">Не выбрана</span>';
+                return $html;
+            },
+        ],
+        [
+            'label'        => 'Регион',
+            'content'      => function($model){
+                $html = (isset($model->region->_text->name)) ? $model->region->_text->name : '<span class="badge badge-warning">Не выбран</span>';
                 return $html;
             },
         ],
         [
             'label'        => 'Город',
             'content'      => function($model){
-                $html = (isset($model->region->_text->name)) ? $model->region->_text->name : '<span class="badge badge-warning">Не выбран</span>';
+                $html = (isset($model->city->_text->name)) ? $model->city->_text->name : '<span class="badge badge-warning">Не выбран</span>';
                 return $html;
             },
         ],
