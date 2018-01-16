@@ -14,6 +14,7 @@ class m171221_062802_social_networks extends Migration
         $this->createTable('social_networks', [
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string()->notNull(),
+            'active' => $this->boolean()->defaultValue(false),
         ], $tableOptions);
 
     }

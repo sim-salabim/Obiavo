@@ -50,6 +50,13 @@ $breadcrumbs = '';
             },
         ],
         [
+            'label'        => 'Активность',
+            'content'      => function($model){
+                $html = ($model->active) ? '<span class="btn btn-success btn-xs">Активно</span>' : '<span class="btn btn-danger btn-xs">Неактивно</span>';
+                return $html;
+            },
+        ],
+        [
             'label'        => 'Управление',
             'format'       => TableList::TYPE_OPT_BUTTON,
             'buttons'      => [

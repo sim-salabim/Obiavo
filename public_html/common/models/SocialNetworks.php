@@ -7,6 +7,7 @@ namespace common\models;
  *
  * @property string $name
  * @property integer $default_group_id
+ * @property boolean $active
  *
  * @property SocialNetworksGroups $default
  */
@@ -25,6 +26,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['active'], 'integer', 'max' => 1, 'min' => 0],
             [['name', 'default_group_id'], 'required'],
         ];
     }
@@ -37,6 +39,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
+            'active' => 'Активность',
             'default_group_id' => 'Группа по умолчанию',
         ];
     }
