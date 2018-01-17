@@ -203,19 +203,21 @@ class CategoriesController extends BaseController
         ]);
     }
 
-    /**
+    /** Используется для инпута с автокомплитом
+     *
      * @return array
      */
     public function actionSearch(){
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $query = $post['query'];
-        $sns = SocialNetworksGroups::find()
-            ->where("name LIKE '".$query."%'")
+        $categories = Category::find()
+            ->leftJoin('categories_text', 'categories_text.categories_id = categories.id')
+            ->where("categories_text.name LIKE '".$query."%'")
             ->all();
         $result = [];
-        foreach($sns as $sn){
-            $result[$sn->id] = array('id' => $sn->id, 'text' => $sn->name);
+        foreach($categories as $category){
+            $result[$category->id] = array('id' => $category->id, 'text' => $category->_text->name);
         }
         return $result;
     }

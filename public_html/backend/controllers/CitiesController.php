@@ -98,6 +98,9 @@ class CitiesController extends BaseController
         return $result;
     }
 
+    /** Используется для инпута с автокомплитом backend/widgets/views/form/search-autocomplete.php
+     * @return array
+     */
     public function actionSearch(){
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

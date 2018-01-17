@@ -50,6 +50,13 @@ $breadcrumbs = '';
             },
         ],
         [
+            'label'        => 'Категория',
+            'content'      => function($model){
+                $html = (isset($model->category->_text->name)) ? $model->category->_text->name : '<span class="badge badge-warning">Не выбрана</span>';
+                return $html;
+            },
+        ],
+        [
             'label'        => 'Страна',
             'content'      => function($model){
                 $html = (isset($model->country->_text->name)) ? $model->country->_text->name : '<span class="badge badge-warning">Не выбрана</span>';
