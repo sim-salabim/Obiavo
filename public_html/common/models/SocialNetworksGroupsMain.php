@@ -7,6 +7,7 @@ namespace common\models;
  *
  * @property string $name
  * @property Category $category
+ * @property SocialNetworksGroups[] $sn_groups
  */
 class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
 {
@@ -49,6 +50,13 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
      */
     function getCategory(){
         return $this->hasOne(Category::className(), ['id' => 'social_networks_groups_main_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    function getSnGroups(){
+        return $this->hasMany(SocialNetworksGroups::className(), ['social_networks_groups_main_id' => 'id']);
     }
 
     /**

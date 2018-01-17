@@ -84,42 +84,6 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * Сохраняем связанные модели через populateRecord
-     * @param type $insert
-     */
-//    public function beforeSave($insert) {
-//
-//        if (!parent::beforeSave($insert)) {
-//            return false;
-//        }
-//
-//        $relateModels = $this->getRelatedRecords();
-//        foreach ($relateModels as $relateName => $model) {
-//
-//            if ($model->scenario === self::SCENARIO_BEFORESAVE)
-//                $this->link($relateName, $model);
-//        }
-//
-//        return true;
-//    }
-
-//    public function afterSave($insert, $changedAttributes) {
-//
-//        parent::afterSave($insert, $changedAttributes);
-//
-//        $relateModels = $this->getRelatedRecords();
-//        foreach ($relateModels as $relateName => $model) {
-////            var_dump(new CategoryGenerate);
-////                var_dump($this->getRelation('categoryGenerated'));die;
-//
-//                $this->link('categoryGenerated', $model);
-////            }
-//        }
-//
-//        return true;
-//    }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getAds()
@@ -227,13 +191,6 @@ class Category extends \yii\db\ActiveRecord
                 ->delete(CategoryPlacement::tableName(), ['=','categories_id', $this->id])
                 ->execute();
     }
-
-    /**
-     * Форматированный перевод
-     */
-//    public function get_text(){
-//        return yii\helpers\ArrayHelper::getValue($this->categoriesText, 'name','Нет перевода');
-//    }
 
     /**
      * URL на основе связанной таблицы
@@ -390,5 +347,23 @@ class Category extends \yii\db\ActiveRecord
 
     public static function getByUrl($url){
         return self::find()->searchUrlByLanguage($url)->one();
+    }
+
+    /** Возвращает основную группу (SocialNetworksGroupsMain) текущей категории, если группы нет, то
+     *  пробует найти ее у родительской категории и тд. Если не находит -
+     *  возвращает false
+     *
+     * @return bool|SocialNetworksGroupsMain
+     */
+    public function getSnMainGroup(){
+        if($this->socialNetworkGroupMain){
+            return $this->socialNetworkGroupMain;
+        }else{
+            if($this->parent){
+                return $this->parent->getSnMainGroup();
+            }else{
+                return false;
+            }
+        }
     }
 }

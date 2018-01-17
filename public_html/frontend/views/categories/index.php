@@ -1,9 +1,4 @@
 <?php
- use frontend\helpers\ArrayHelper;
- use yii\helpers\Url;
- use common\models\Category;
- use frontend\widgets\Selectpicker;
- use frontend\helpers\TextHelper;
 ?>
 <hr>
 <?
@@ -16,6 +11,6 @@ $current_category = (isset($current_category))  ? $current_category : null;
         'ads_search' => $ads_search,
         'library_search'=> $library_search,
         'title' => __('Ads'),
-        'page' => $page,
-        'no_ads_title' => __('No ads found')
+        'no_ads_title' => __('No ads found'),
+        'current_category' => $current_category
     ]) ?>

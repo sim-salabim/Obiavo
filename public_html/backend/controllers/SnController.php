@@ -52,7 +52,7 @@ class SnController extends BaseController
         if ($sn_id){
             $sn = SocialNetworks::findOne($sn_id);
         } else {
-            $social_networks = SocialNetworks::find()->all();
+            $social_networks = SocialNetworks::find()->orderBy('order ASC')->all();
         }
 
         return $this->render('index',  compact('sn', 'social_networks'));
@@ -65,7 +65,9 @@ class SnController extends BaseController
     }
 
     public function actionSnOrder(){
-        $sns = SocialNetworks::find()->orderBy(['order' => SORT_ASC])
+        $sns = SocialNetworks::find()
+            ->where(['active' => 1])
+            ->orderBy(['order' => SORT_ASC])
             ->all();
 
         $homeLink = ['label' => 'Настройка порядка вывода блоков групп соцсетей', 'url' => '/sn/order-sn-list'];

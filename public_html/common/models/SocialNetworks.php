@@ -1,6 +1,7 @@
 <?php
-
 namespace common\models;
+
+use Yii;
 /**
  * Class SocialNetworks
  * @package common\models
@@ -80,5 +81,119 @@ class SocialNetworks extends \yii\db\ActiveRecord
             }
         }
         return $result;
+    }
+
+    public function getGroupsBlock(Category $category){
+        $location = \Yii::$app->location;
+        $group = null;
+        if($location->city){
+            $group = $this->getBlockByCityAndCategory($category);
+            if(!$group){
+                $group = $this->getBlockByRegionAndCategory($category);
+                if(!$group){
+                    $group = $this->getBlockByCountryAndCategory($category);
+                    if(!$group){
+                        $group = $this->default;
+                    }
+                }
+            }
+        }else if(!$location->city and $location->region){
+            if($location->region){
+                $group = $this->getBlockByRegionAndCategory($category);
+                if(!$group){
+                    $group = $this->getBlockByCountryAndCategory($category);
+                }else{
+                    $group = $this->default;
+                }
+            }else{
+                $group = $this->default;
+            }
+        }else if(!$location->city and !$location->region and $location->country){
+            $group = $this->getBlockByCountryAndCategory($category);
+            if(!$group){
+                $group = $this->default;
+            }
+        }
+        return $group;
+    }
+
+    /** Проверяет есть ли соцгруппы у полученой категории для города локации, если нет, то смотрит родительскую и тд
+     *  если ничего не найдено возвращает false
+     *
+     * @param Category $category
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    public function getBlockByCityAndCategory(Category $category){
+        $location = Yii::$app->location;
+        $group = SocialNetworksGroups::find()
+            ->where([
+                'cities_id' => $location->city->id,
+                'categories_id' => $category->id,
+                'social_networks_id' => $this->id
+            ])
+            ->one();
+        if(!empty($group)){
+            return $group;
+        }else{
+            if($category->parent){
+                return $this->getBlockByCityAndCategory($category->parent);
+            }else{
+                return false;
+            }
+        }
+    }
+    /** Проверяет есть ли соцгруппы у полученой категории для региона локации, если нет, то смотрит родительскую и тд
+     *  если ничего не найдено возвращает false
+     *
+     * @param Category $category
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    public function getBlockByRegionAndCategory(Category $category){
+        $location = Yii::$app->location;
+        $group = SocialNetworksGroups::find()
+            ->where([
+                'cities_id' => null,
+                'regions_id' => $location->region->id,
+                'categories_id' => $category->id,
+                'social_networks_id' => $this->id
+            ])
+            ->one();
+        if(!empty($group)){
+            return $group;
+        }else{
+            if($category->parent){
+                return $this->getBlockByCityAndCategory($category->parent);
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /** Проверяет есть ли соцгруппы у полученой категории для страны локации, если нет, то смотрит родительскую и тд
+     *  если ничего не найдено возвращает false
+     *
+     * @param Category $category
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    public function getBlockByCountryAndCategory(Category $category){
+        $location = Yii::$app->location;
+        $group = SocialNetworksGroups::find()
+            ->where([
+                'cities_id' => null,
+                'regions_id' => null,
+                'countries_id' => $location->country->id,
+                'categories_id' => $category->id,
+                'social_networks_id' => $this->id
+            ])
+            ->one();
+        if(!empty($group)){
+            return $group;
+        }else{
+            if($category->parent){
+                return $this->getBlockByCityAndCategory($category->parent);
+            }else{
+                return false;
+            }
+        }
     }
 }

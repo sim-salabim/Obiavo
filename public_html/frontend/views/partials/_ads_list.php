@@ -3,6 +3,8 @@
  * title, str
  * $ads_search, array - результат работы Ads::getList()
  * library_search, LibrarySearch - настртоенный обьект LibrarySearch
+ * no_ads_title, str -
+ * current_category, Category
  */
 ?>
 <div class="row">
@@ -40,4 +42,5 @@
             <?= $this->render('/partials/_pagination.php', ['ads_search' => $ads_search, 'library_search'=> $library_search])?>
         <? } ?>
     <? } ?>
+    <?= $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
 </div>
