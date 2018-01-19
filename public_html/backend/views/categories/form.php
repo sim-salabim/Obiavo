@@ -33,7 +33,7 @@ $items = [
                       'options' => ['multiple' => true]
                     ]
                 ],
-                ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(), 'model_name' => 'Categories','label' => 'Активность','model'=>$category, 'model_name' => 'Category'],
+                ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(), 'model_name' => 'Categories','label' => 'Основная соц группа','model'=>$category, 'model_name' => 'Category'],
             ]
         ],
         [
