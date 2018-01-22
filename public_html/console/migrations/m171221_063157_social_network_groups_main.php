@@ -14,6 +14,7 @@ class m171221_063157_social_network_groups_main extends Migration
         $this->createTable('social_networks_groups_main', [
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string()->notNull(),
+            'as_default' => $this->boolean()->defaultValue(false),
         ], $tableOptions);
         $this->addColumn('categories', 'social_networks_groups_main_id', $this->integer()->unsigned());
         $this->createIndex('idx_sngm_id', 'categories', 'social_networks_groups_main_id');

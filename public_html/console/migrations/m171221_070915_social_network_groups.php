@@ -15,7 +15,6 @@ class m171221_070915_social_network_groups extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'social_networks_groups_main_id' => $this->integer()->unsigned()->notNull(),
             'social_networks_id' => $this->integer()->unsigned()->notNull(),
-            'categories_id' => $this->integer(10)->unsigned()->null(),
             'countries_id' => $this->integer()->unsigned()->null(),
             'cities_id' => $this->integer()->unsigned()->null(),
             'regions_id' => $this->integer()->unsigned()->null(),
@@ -32,8 +31,6 @@ class m171221_070915_social_network_groups extends Migration
         $this->addForeignKey('sngmid_ibfk_1', 'social_networks_groups', 'social_networks_groups_main_id', 'social_networks_groups_main', 'id', 'CASCADE', 'CASCADE');
         $this->createIndex('idx_sn_id', 'social_networks_groups', 'social_networks_id');
         $this->addForeignKey('sn_id_ibfk_1', 'social_networks_groups', 'social_networks_id', 'social_networks', 'id', 'CASCADE', 'CASCADE');
-        $this->createIndex('idx_sncat_id', 'social_networks_groups', 'categories_id');
-        $this->addForeignKey('sncat_id_ibfk_1', 'social_networks_groups', 'categories_id', 'categories', 'id', 'SET NULL', 'NO ACTION');
         $this->createIndex('idx_sncoi_id', 'social_networks_groups', 'countries_id');
         $this->addForeignKey('sncoi_id_ibfk_1', 'social_networks_groups', 'countries_id', 'countries', 'id', 'SET NULL', 'SET NULL');
         $this->createIndex('idx_snci_id', 'social_networks_groups', 'cities_id');

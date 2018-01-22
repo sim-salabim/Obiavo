@@ -12,16 +12,15 @@ namespace common\models;
  * @property integer $cities_id
  * @property integer $regions_id
  * @property integer $countries_id
- * @property integer $categories_id
  * @property integer $social_networks_id
  * @property integer $social_networks_groups_main_id
  *
  * @property Country $country
- * @property Category $category
  * @property City $city
  * @property Region $region
  * @property SocialNetworks $socialNetwork
  * @property SocialNetworksGroupsMain $socialNetworksGroupMain
+ * @property SocialNetworksGroupsMain[] $socialNetworksGroupMainDefault
  */
 class SocialNetworksGroups extends \yii\db\ActiveRecord
 {
@@ -39,7 +38,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
-            [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id', 'categories_id'], 'required'],
+            [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
             [['social_networks_groups_main_id', 'social_networks_id', 'cities_id', 'regions_id'], 'integer'],
             [['code_md', 'code_sm', 'code_lg'], 'string'],
             [['countries_id'], 'validateLocation', 'skipOnEmpty' => false, 'skipOnError' => false]
@@ -86,13 +85,6 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    function getCategory(){
-        return $this->hasOne(Category::className(), ['id' => 'categories_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     function getCity(){
         return $this->hasOne(City::className(), ['id' => 'cities_id']);
     }
@@ -122,6 +114,14 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
      */
     function getSocialNetworksGroupMain(){
         return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    function getSocialNetworksGroupMainDefault(){
+        return $this->hasMany(SocialNetworksGroupsMain::className(), ['id' => 'main_group_id'])
+            ->viaTable('social_networks_groups_main_groups', ['main_group_id' => 'id']);
     }
 
     /** wozwra]aet

@@ -21,7 +21,7 @@ use common\models\scopes\CategoryQuery;
  * @property Placement $placements
  * @property Category[] $categories
  * @property CategoryAttribute[] $categoriesAttributes
- * @property SocialNetworksGroupsMain $socialNetworkGroupMain
+ * @property SocialNetworksGroupsMain[] $socialNetworkGroupMain
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -102,9 +102,9 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSocialNetworkGroupMain()
-    {
-        return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
+    function getSocialNetworkGroupMain(){
+        return $this->hasMany(SocialNetworksGroupsMain::className(), ['id' => 'categories_id'])
+            ->viaTable('social_networks_groups_categories', ['categories_id' => 'id']);
     }
 
     public function getChildren()

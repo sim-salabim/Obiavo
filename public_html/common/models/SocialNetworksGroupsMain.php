@@ -6,7 +6,10 @@ namespace common\models;
  * @package common\models
  *
  * @property string $name
- * @property Category $category
+ * @property boolean $as_default
+ *
+ * @property SocialNetworksGroups[] $default_groups
+ * @property Category[] $categories
  * @property SocialNetworksGroups[] $sn_groups
  */
 class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
@@ -48,8 +51,16 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    function getCategory(){
-        return $this->hasOne(Category::className(), ['id' => 'social_networks_groups_main_id']);
+    function getCategories(){
+        return $this->hasMany(Category::className(), ['id' => 'categories_id'])
+            ->viaTable('social_networks_groups_main_groups', ['categories_id' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    function getDefaultGroups(){
+        return $this->hasMany(SocialNetworksGroups::className(), ['id' => 'group_id'])
+            ->viaTable('social_networks_groups_categories', ['group_id' => 'id']);
     }
 
     /**
