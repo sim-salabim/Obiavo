@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <?php
 use backend\widgets\TableList;
 use yii\helpers\Url;
@@ -32,6 +34,14 @@ $breadcrumbs = '';
             'label'        => 'Название',
             'content'      => function($model){
                 $html = $model->name;
+                return $html;
+            },
+        ],
+        [
+            'label'        => 'По умолчанию',
+            'content'      => function($model){
+                $html = '';
+                if($model->as_default) $html = '<span class="btn btn-success btn-xs">По умолчанию</span>';
                 return $html;
             },
         ],

@@ -3,6 +3,7 @@ namespace backend\controllers;
 
 use common\models\SocialNetworksGroupsMain;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -77,6 +78,21 @@ class SnMainGroupsController extends BaseController
             return $this->sendJsonData([
                 JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
+        }
+        if(isset($post['DefaultGroups']) and !empty($post['DefaultGroups'])){
+            (new Query())
+                ->createCommand()
+                ->delete('social_networks_groups_main_groups', ['main_group_id' => $main_group->id])
+                ->execute();
+            foreach($post['DefaultGroups'] as $k => $v){
+                if($v['id'][0] != ""){
+                    (new Query)
+                        ->createCommand()
+                        ->insert('social_networks_groups_main_groups', ['main_group_id' => $main_group->id, 'group_id' => $v['id'][0]])
+                        ->execute();
+                }
+
+            }
         }
 
         return $this->sendJsonData([

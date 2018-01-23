@@ -14,7 +14,7 @@ $options = array_merge($baseOptions,$options);
     <?= Html::tag('label',$label,['class' => 'col-xs-2 col-form-label']);?>
     <div class="col-xs-10">
     <?= Selectpicker::widget([
-        'values' => $values,
+        'values' => $default_groups_values,
         'selected' => $selected,
         'options' => $options,
         'name' => $name

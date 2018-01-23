@@ -112,14 +112,13 @@ class SnGroupsController extends BaseController
     /**
      * @return array
      */
-    public function actionSearch(){
+    public function actionSearch($sn_id = null){
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $query = $post['query'];
-        $sn_id = null;
         $andWhere = [];
-        if(isset($post['sn_id'])){
-            $andWhere = ['social_networks_id' => $post['sn_id']];
+        if($sn_id){
+            $andWhere = ['social_networks_id' => $sn_id];
         }
         $groups = SocialNetworksGroups::find()
             ->where("name LIKE '".$query."%'")

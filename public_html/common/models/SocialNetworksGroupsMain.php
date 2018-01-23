@@ -8,9 +8,9 @@ namespace common\models;
  * @property string $name
  * @property boolean $as_default
  *
- * @property SocialNetworksGroups[] $default_groups
+ * @property SocialNetworksGroups[] $defaultGroups
  * @property Category[] $categories
- * @property SocialNetworksGroups[] $sn_groups
+ * @property SocialNetworksGroups[] $snGroups
  */
 class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
 {
@@ -27,6 +27,7 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
         return [
             [['name'], 'string', 'max' => 255],
             [['name'], 'required',],
+            [['as_default'], 'boolean',],
         ];
     }
 
@@ -38,6 +39,7 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
+            'as_default' => 'Использовать по умолчанию',
         ];
     }
     public function behaviors()
@@ -60,7 +62,7 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
      */
     function getDefaultGroups(){
         return $this->hasMany(SocialNetworksGroups::className(), ['id' => 'group_id'])
-            ->viaTable('social_networks_groups_categories', ['group_id' => 'id']);
+            ->viaTable('social_networks_groups_main_groups', ['main_group_id' => 'id']);
     }
 
     /**
