@@ -18,6 +18,7 @@ namespace common\models;
  * @property Country $country
  * @property City $city
  * @property Region $region
+ * @property Category[] $categories
  * @property SocialNetworks $socialNetwork
  * @property SocialNetworksGroupsMain $socialNetworksGroupMain
  * @property SocialNetworksGroupsMain[] $socialNetworksGroupMainDefault
@@ -66,7 +67,6 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
             'name' => 'Название',
             'social_networks_groups_main_id' => 'Основная група',
             'social_networks_id' => 'Соцсеть',
-            'categories_id' => 'Категория',
             'countries_id' => 'Страна',
             'regions_id' => 'Регион',
             'cities_id' => 'Город',
@@ -122,6 +122,14 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     function getSocialNetworksGroupMainDefault(){
         return $this->hasMany(SocialNetworksGroupsMain::className(), ['id' => 'main_group_id'])
             ->viaTable('social_networks_groups_main_groups', ['main_group_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    function getCategories(){
+        return $this->hasMany(Category::className(), ['id' => 'categories_id'])
+            ->viaTable('social_networks_groups_categories', ['group_id' => 'id']);
     }
 
     /** wozwra]aet

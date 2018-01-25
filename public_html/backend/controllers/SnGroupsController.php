@@ -3,12 +3,11 @@ namespace backend\controllers;
 
 use common\helpers\JsonData;
 use common\models\City;
-use common\models\CityOrder;
-use common\models\Country;
 use common\models\Region;
 use common\models\SocialNetworks;
 use common\models\SocialNetworksGroups;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -94,6 +93,16 @@ class SnGroupsController extends BaseController
             return $this->sendJsonData([
                 JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
+        }
+        (new Query())
+            ->createCommand()
+            ->delete('social_networks_groups_categories', ['group_id' => $sn_group->id])
+            ->execute();
+        foreach($post['categories_id'] as $id){
+            (new Query)
+                ->createCommand()
+                ->insert('social_networks_groups_categories', ['group_id' => $sn_group->id, 'categories_id' => $id])
+                ->execute();
         }
         return $this->sendJsonData([
             JsonData::SUCCESSMESSAGE => "Успешно сохранено",

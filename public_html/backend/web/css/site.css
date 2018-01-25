@@ -142,3 +142,6 @@ a.desc:after {
 .float-right{
     float: right;
 }
+.cursor-pointer{
+    cursor: pointer;
+}

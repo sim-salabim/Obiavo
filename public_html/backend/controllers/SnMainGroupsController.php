@@ -1,15 +1,12 @@
 <?php
 namespace backend\controllers;
 
+use common\helpers\JsonData;
 use common\models\SocialNetworksGroupsMain;
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\Country;
-use common\models\CountryText;
-use common\helpers\JsonData;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 
 class SnMainGroupsController extends BaseController

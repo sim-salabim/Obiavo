@@ -45,7 +45,7 @@ $this->title = 'Категории';
         [
             'label'        => 'Осцновная соц. группа',
             'content'      => function($model){
-                              return ($model->socialNetworkGroupMain) ? $model->socialNetworkGroupMain->name : '<span class="badge badge-warning">Не выбранa</span>';
+                              return ($model->socialNetworkGroupsMain) ? $model->socialNetworkGroupsMain[0]->name : '<span class="badge badge-warning">Не выбранa</span>';
             },
         ],
         [
