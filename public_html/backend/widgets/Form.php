@@ -29,6 +29,7 @@ class Form extends Widget {
     const SELECT = 'select';
 
     const SEARCH_AUTOCOMPLETE = 'searchAutocomplete';
+    const SEARCH_AUTOCOMPLETE_MULTISELECT = 'searchAutocompleteMultiselect';
 
     public function getViewPath()
     {
@@ -68,6 +69,10 @@ class Form extends Widget {
 
     protected function searchAutocomplete($attribute){
         return $this->render('search-autocomplete', compact('attribute'));
+    }
+
+    protected function searchAutocompleteMultiselect($attribute){
+        return $this->render('search-autocomplete-multiselect', compact('attribute'));
     }
 
     protected function textInput($attribute){
