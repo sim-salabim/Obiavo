@@ -73,6 +73,21 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает соц группу для SocialNetworks->id $sn_id и SocialNetworksGroupsMain->id $main_group_id
+     * @param $sn_id, SocialNetworks->id
+     * @param $main_group_id, SocialNetworksGroupsMain->id
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function getBlockBySocialNetworkId($sn_id, $main_group_id){
+        return SocialNetworksGroups::find()
+            ->select('social_networks_groups.*')
+            ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups_main_groups.main_group_id = social_networks_groups_main.id')
+            ->leftJoin('social_networks_groups', 'social_networks_groups.id = social_networks_groups_main_groups.group_id')
+            ->where(['social_networks_groups_main.id' => $main_group_id])
+            ->andWhere(['social_networks_groups.social_networks_id' => $sn_id])
+            ->one();
+    }
+    /**
      * @param array $keys
      * @return array(key => value, key => value....)
      */
