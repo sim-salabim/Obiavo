@@ -5,6 +5,18 @@ Use yii\helpers\Url;
 use backend\widgets\TableList;
 
 $breadcrumbs = '';
+$sort = \Yii::$app->request->get('sort');
+$dir = \Yii::$app->request->get('dir');
+$main_group_label  = '<a id="main_group_sorting" href="?sort=main_group&dir=DESC">Основная группа</a>';
+if($sort and $dir){
+    if($sort == 'main_group' and $dir == 'DESC'){
+        $main_group_label  = '<a id="main_group_sorting" href="?sort=main_group&dir=ASC">Основная группа</a> <i class="fa fa-caret-down" aria-hidden="true"></i>';
+    }
+    if($sort == 'main_group' and $dir == 'ASC'){
+        $main_group_label  = '<a id="main_group_sorting" href="?sort=main_group&dir=DESC">Основная группа</a> <i class="fa fa-caret-up" aria-hidden="true"></i>';
+    }
+}
+
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
@@ -43,7 +55,7 @@ $breadcrumbs = '';
             },
         ],
         [
-            'label'        => 'основная группа',
+            'label'        => $main_group_label,
             'content'      => function($model){
                 $html = ($model->socialNetworksGroupMain) ? $model->socialNetworksGroupMain->name : '<span class="badge badge-warning">Не выбранa</span>';
                 return $html;
