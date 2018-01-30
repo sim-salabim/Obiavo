@@ -170,7 +170,6 @@ class SocialNetworks extends \yii\db\ActiveRecord
             ->select('social_networks_groups.*')
             ->where([
                 'social_networks_groups.cities_id' => $location->city->id,
-                'social_networks_groups.categories_id' => $category->id,
                 'social_networks_groups.social_networks_id' => $this->id
             ])
             ->leftJoin('social_networks_groups_categories', 'social_networks_groups_categories.group_id = social_networks_groups.id')
@@ -199,7 +198,6 @@ class SocialNetworks extends \yii\db\ActiveRecord
             ->where([
                 'social_networks_groups.cities_id' => null,
                 'social_networks_groups.regions_id' => $location->region->id,
-                'social_networks_groups.categories_id' => $category->id,
                 'social_networks_groups.social_networks_id' => $this->id
             ])
             ->leftJoin('social_networks_groups_categories', 'social_networks_groups_categories.group_id = social_networks_groups.id')

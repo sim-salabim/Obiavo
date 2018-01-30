@@ -46,15 +46,21 @@ class Location extends Component {
             }else{
                 $country = Country::find()->where(['domain' => $_COOKIE['country']])->one();
             }
-            $this->country = $country ? $country : Country::find()->one();
+            $this->_country = $country ? $country : Country::find()->one();
         }
         if(isset($_COOKIE['region'])){
             $region = Region::find()->where(['domain' => $_COOKIE['region']])->one();
             $this->_region = ($region) ? $region : null;
+            if($this->_region){
+                $this->_country = $this->_region->country;
+            }
         }
         if(isset($_COOKIE['city'])){
             $city = City::find()->where(['domain' => $_COOKIE['city']])->one();
             $this->_city = ($city) ? $city : null;
+            if($this->_city){
+                $this->_region = $this->_city->region;
+            }
         }
 
 //        $lang = $this->country->language;
@@ -102,6 +108,8 @@ class Location extends Component {
         if (! $city) return;
 
         $this->_city = $city;
+        $this->_region = $city->region;
+        $this->_country = $city->region->country;
         $this->_locationObject = $city;
     }
 
@@ -115,6 +123,7 @@ class Location extends Component {
         if (!$region) return;
 
         $this->_region = $region;
+        $this->_country = $region->country;
         $this->_locationObject = $region;
     }
 
@@ -136,7 +145,10 @@ class Location extends Component {
     }
 
     public function getName_pp(){
-
-        return $this->_locationObject->_text->name_pp;
+        if($this->_locationObject) {
+            return $this->_locationObject->_text->name_pp;
+        }else{
+            return null;
+        }
     }
 }
