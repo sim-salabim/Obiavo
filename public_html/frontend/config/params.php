@@ -5,4 +5,5 @@ return [
     'mainDomain' => 'obiavo.ru',
     'basePath' => dirname(__DIR__),
     'uploadPath' => dirname(__DIR__)."/web/files",
+    'FBAppId' => "576754169327687",
 ];
