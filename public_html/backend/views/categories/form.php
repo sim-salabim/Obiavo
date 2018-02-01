@@ -28,9 +28,12 @@ $items = [
                     'model' => $category,
 
                     'selectpicker' => [
-                      'values' => ArrayHelper::map($placements, 'id','_text.name'),
-                      'selected' => ArrayHelper::getColumn($category->placements,'id'),
-                      'options' => ['multiple' => true]
+                        'values' => ArrayHelper::map($placements, 'id','_text.name'),
+                        'selected' => ArrayHelper::getColumn($category->placements,'id'),
+                        'options' => [
+                            'data-live-search' => true,
+                            'multiple' => true
+                        ]
                     ]
                 ],
                 ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(), 'model_name' => 'Categories','label' => 'Основная соц группа','model'=>$category, 'model_name' => 'Category'],
