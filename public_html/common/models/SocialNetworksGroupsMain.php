@@ -55,7 +55,7 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
      */
     function getCategories(){
         return $this->hasMany(Category::className(), ['id' => 'categories_id'])
-            ->viaTable('social_networks_groups_main_groups', ['categories_id' => 'id']);
+            ->viaTable('social_networks_groups_main_categories', ['main_group_id' => 'id']);
     }
     /**
      * @return \yii\db\ActiveQuery

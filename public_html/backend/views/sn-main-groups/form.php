@@ -19,8 +19,14 @@ if(count($active_networks)){
         }else{
             $current_value = ['id'=>'', 'title'=>''];
         }
-        $sn_inputs[] = ['name' => "id",'type' => Form::SEARCH_AUTOCOMPLETE,'label' => 'Группа для '.$snt->name, 'model_name' => "DefaultGroups[]", 'model'=>$sn_group_model, 'url' => 'sn-groups/search?sn_id='.$snt->id, 'placeholder' => 'Начните печатать название группы...', 'current_value' => 1, 'input_id' => uniqid(), 'current_value' => $current_value];
+        $sn_inputs[] = ['name' => "id",'type' => Form::SEARCH_AUTOCOMPLETE,'label' => 'Группа для '.$snt->name, 'model_name' => "DefaultGroups[]", 'model'=>$sn_group_model, 'url' => 'sn-groups/search?sn_id='.$snt->id, 'placeholder' => 'Начните печатать название группы...', 'input_id' => uniqid(), 'current_value' => $current_value];
     }
+}
+
+$categories_values = [];
+foreach($main_group->categories as $k => $category){
+    $categories_values[$k]['id'] = $category->id;
+    $categories_values[$k]['title'] = $category->_text->name;
 }
 
 $items = [
@@ -32,6 +38,12 @@ $items = [
                   ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$main_group],
                   ['name' => 'as_default','type' => Form::INPUT_CHECKBOX,'label' => 'Использовать по умолчанию', 'model_name'=> 'SocialNetworksGroupsMain','model'=>$main_group],
             ],
+        ],
+        [
+            'panel-title' => 'Привязанные категории',
+            'attributes' =>[
+                ['name' => 'categories_id','type' => Form::SEARCH_AUTOCOMPLETE_MULTISELECT,'label' => 'Категории', 'model_name' => 'SocialNetworksGroupsMain', 'model'=>$main_group, 'url' => 'categories/search ', 'placeholder' => 'Начните печатать название категории...', 'current_values' => $categories_values, 'input_id' => 'socialnetworksgroups-categories_id']
+            ]
         ],
         [
             'panel-title' => 'Сообщества по умолчанию',

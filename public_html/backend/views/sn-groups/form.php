@@ -12,10 +12,6 @@ $current_region_value['title'] = ($sn_group->regions_id) ? $sn_group->region->_t
 $current_country_value = [];
 $current_country_value['id'] = ($sn_group->countries_id) ? $sn_group->countries_id : null;
 $current_country_value['title'] = ($sn_group->countries_id) ? $sn_group->country->_text->name : null;
-$categories_values = [];
-foreach($sn_group->categories as $category){
-    $categories_values[] = ['id' => $category->id, 'title' => $category->techname];
-}
 $items = [
     'saveUrl' => $toUrl,
     'rows' => [
@@ -31,12 +27,6 @@ $items = [
                 ['name' => 'code_sm','type' => Form::INPUT_AREA_TEXT,'label' => 'Маленький блок','model'=>$sn_group, 'model_name' => 'SocialNetworksGroups', 'rows_amount' => 12],
                 ['name' => 'code_md','type' => Form::INPUT_AREA_TEXT,'label' => 'Средний блок','model'=>$sn_group, 'model_name' => 'SocialNetworksGroups', 'rows_amount' => 12],
                 ['name' => 'code_lg','type' => Form::INPUT_AREA_TEXT,'label' => 'Большой блок','model'=>$sn_group, 'model_name' => 'SocialNetworksGroups', 'rows_amount' => 12],
-            ]
-        ],
-        [
-            'panel-title' => 'Привязанные категории',
-            'attributes' =>[
-                ['name' => 'categories_id','type' => Form::SEARCH_AUTOCOMPLETE_MULTISELECT,'label' => 'Категории', 'model_name' => 'SocialNetworksGroups', 'model'=>$sn_group, 'url' => 'categories/search ', 'placeholder' => 'Начните печатать название категории...', 'current_values' => $categories_values, 'input_id' => 'socialnetworksgroups-categories_id']
             ]
         ]
     ]

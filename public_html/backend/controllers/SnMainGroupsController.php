@@ -91,7 +91,16 @@ class SnMainGroupsController extends BaseController
 
             }
         }
-
+        (new Query())
+            ->createCommand()
+            ->delete('social_networks_groups_main_categories', ['main_group_id' => $main_group->id])
+            ->execute();
+        foreach($post['categories_id'] as $id){
+            (new Query)
+                ->createCommand()
+                ->insert('social_networks_groups_main_categories', ['main_group_id' => $main_group->id, 'categories_id' => $id])
+                ->execute();
+        }
         return $this->sendJsonData([
             JsonData::SUCCESSMESSAGE => "\"{$main_group->name}\" успешно сохранено",
             JsonData::REFRESHPAGE => '',

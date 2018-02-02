@@ -18,10 +18,8 @@ namespace common\models;
  * @property Country $country
  * @property City $city
  * @property Region $region
- * @property Category[] $categories
  * @property SocialNetworks $socialNetwork
  * @property SocialNetworksGroupsMain $socialNetworksGroupMain
- * @property SocialNetworksGroupsMain[] $socialNetworksGroupMainDefault
  */
 class SocialNetworksGroups extends \yii\db\ActiveRecord
 {
@@ -114,22 +112,6 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
      */
     function getSocialNetworksGroupMain(){
         return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    function getSocialNetworksGroupMainDefault(){
-        return $this->hasMany(SocialNetworksGroupsMain::className(), ['id' => 'main_group_id'])
-            ->viaTable('social_networks_groups_main_groups', ['main_group_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    function getCategories(){
-        return $this->hasMany(Category::className(), ['id' => 'categories_id'])
-            ->viaTable('social_networks_groups_categories', ['group_id' => 'id']);
     }
 
     /** wozwra]aet

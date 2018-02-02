@@ -98,16 +98,6 @@ class SnGroupsController extends BaseController
                 JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
         }
-        (new Query())
-            ->createCommand()
-            ->delete('social_networks_groups_categories', ['group_id' => $sn_group->id])
-            ->execute();
-        foreach($post['categories_id'] as $id){
-            (new Query)
-                ->createCommand()
-                ->insert('social_networks_groups_categories', ['group_id' => $sn_group->id, 'categories_id' => $id])
-                ->execute();
-        }
         return $this->sendJsonData([
             JsonData::SUCCESSMESSAGE => "Успешно сохранено",
             JsonData::REFRESHPAGE => '',
