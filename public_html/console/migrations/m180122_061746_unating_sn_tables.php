@@ -19,7 +19,7 @@ class m180122_061746_unating_sn_tables extends Migration
         $this->createIndex('idx_sngmc_c_id', 'social_networks_groups_main_categories', 'categories_id');
         $this->addForeignKey('sngmc_c_ibfk_1', 'social_networks_groups_main_categories', 'categories_id', 'categories', 'id', 'CASCADE', 'CASCADE');
         $this->createIndex('idx_sngmc_g_id', 'social_networks_groups_main_categories', 'main_group_id');
-        $this->addForeignKey('sngmc_g_ibfk_1', 'social_networks_groups_main_categories', 'main_group_id', 'social_networks_groups', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('sngmc_g_ibfk_1', 'social_networks_groups_main_categories', 'main_group_id', 'social_networks_groups_main', 'id', 'CASCADE', 'CASCADE');
         $this->addCommentOnColumn('social_networks_groups_main_categories','categories_id','ID категории');
         $this->addCommentOnColumn('social_networks_groups_main_categories','main_group_id','ID обьединения групп social_networks_groups_main.id');
 

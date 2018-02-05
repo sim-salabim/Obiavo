@@ -75,6 +75,13 @@ class SnMainGroupsController extends BaseController
             return $this->sendJsonData([
                 JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
+        }else{
+            if($post['SocialNetworksGroupsMain']['as_default'] == 1){
+                (new Query())
+                    ->createCommand()
+                    ->update('social_networks_groups_main', ['as_default'=>0], 'id <> '.$main_group->id)
+                    ->execute();
+            }
         }
         if(isset($post['DefaultGroups']) and !empty($post['DefaultGroups'])){
             (new Query())
@@ -91,15 +98,18 @@ class SnMainGroupsController extends BaseController
 
             }
         }
+
         (new Query())
             ->createCommand()
             ->delete('social_networks_groups_main_categories', ['main_group_id' => $main_group->id])
             ->execute();
-        foreach($post['categories_id'] as $id){
-            (new Query)
-                ->createCommand()
-                ->insert('social_networks_groups_main_categories', ['main_group_id' => $main_group->id, 'categories_id' => $id])
-                ->execute();
+        if(isset($post['categories_id'])){
+            foreach($post['categories_id'] as $id){
+                (new Query)
+                    ->createCommand()
+                    ->insert('social_networks_groups_main_categories', ['main_group_id' => $main_group->id, 'categories_id' => $id])
+                    ->execute();
+            }
         }
         return $this->sendJsonData([
             JsonData::SUCCESSMESSAGE => "\"{$main_group->name}\" успешно сохранено",
