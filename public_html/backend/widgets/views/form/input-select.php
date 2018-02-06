@@ -10,7 +10,7 @@ use yii\helpers\Html;
         <select name="<?= $attribute['model_name']."[".$attribute['name']."]" ?>" class="form-control">
             <? if(!empty($attribute['options'])){
                 foreach($attribute['options'] as $option){ ?>
-                <option value="<?= $option['id'] ?>" <? if($attribute['model']->{$attribute['name']} == $option['id']){ ?>selected<? } ?>><?= $option['name'] ?></option>
+                <option value="<?= $option['id'] ?>" <? if($attribute['model']->{$attribute['name']} == $option['id'] OR ($option['id'] == $attribute['selected'])){ ?>selected<? } ?>><?= $option['name'] ?></option>
             <? }} ?>
         </select>
 

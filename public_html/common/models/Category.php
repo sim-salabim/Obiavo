@@ -104,7 +104,8 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getSocialNetworkGroupsMain()
     {
-        return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
+        return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'main_group_id'])
+            ->viaTable('social_networks_groups_main_categories', ['categories_id' => 'id']);
     }
 
     /**

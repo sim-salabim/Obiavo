@@ -11,7 +11,7 @@ use common\models\Language;
 use common\models\Placement;
 use common\models\SocialNetworksGroupsMain;
 use yii\helpers\ArrayHelper;
-
+$main_group_selected = $category->socialNetworkGroupsMain ? $category->socialNetworkGroupsMain->id : null;
 $placements = Placement::find()->withText(['languages_id' => Language::getDefault()->id])->all();
 $items = [
     'saveUrl' => $toUrl,
@@ -36,7 +36,7 @@ $items = [
                         ]
                     ]
                 ],
-                ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(), 'model_name' => 'Categories','label' => 'Основная соц группа','model'=>$category, 'model_name' => 'Category'],
+                ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(), 'model_name' => 'Categories','label' => 'Основная соц группа','model'=>$category, 'model_name' => 'Category', 'selected' => $main_group_selected],
             ]
         ],
         [

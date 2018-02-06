@@ -105,4 +105,36 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
         }
         return $result;
     }
+
+    /**
+     * @param $sn_id
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    function getDefaultGroupBySnId($sn_id){
+        $group = SocialNetworksGroups::find()
+            ->where([
+                'social_networks_groups.social_networks_id' => $sn_id,
+                'social_networks_groups_main_groups.main_group_id' => $this->id
+            ])
+            ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups.id = social_networks_groups_main_groups.group_id')
+            ->leftJoin('social_networks_groups_main', 'social_networks_groups_main_groups.main_group_id = social_networks_groups_main.id')
+            ->one();
+        return $group ? $group : false;
+    }
+
+    /**
+     * @param $sn_id
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    function getDefaultGroupBySnIdFromDefault($sn_id){
+        $group = SocialNetworksGroups::find()
+            ->where([
+                'social_networks_groups.social_networks_id' => $sn_id,
+                'social_networks_groups_main.as_default' => 1
+            ])
+            ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups.id = social_networks_groups_main_groups.group_id')
+            ->leftJoin('social_networks_groups_main', 'social_networks_groups_main_groups.main_group_id = social_networks_groups_main.id')
+            ->one();
+        return $group ? $group : false;
+    }
 }

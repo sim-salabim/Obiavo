@@ -113,6 +113,17 @@ class CategoriesController extends BaseController
         if (!empty($post['placements'])){
             $category->setPlacements($post['placements']);
         }
+        (new Query())
+            ->createCommand()
+            ->delete('social_networks_groups_main_categories', ['categories_id' => $category->id])
+            ->execute();
+
+        if(isset($post['Category']['social_networks_groups_main_id'])){
+            (new Query)
+                ->createCommand()
+                ->insert('social_networks_groups_main_categories', ['categories_id' => $category->id, 'main_group_id' => $post['Category']['social_networks_groups_main_id']])
+                ->execute();
+        }
 
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
