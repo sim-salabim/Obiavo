@@ -12,7 +12,7 @@ class m180122_061746_unating_sn_tables extends Migration
         }
 
         $this->createTable('social_networks_groups_main_categories', [
-            'categories_id' => $this->integer(10)->unsigned()->notNull(),
+            'categories_id' => $this->integer(10)->unsigned()->notNull()->unique(),
             'main_group_id' => $this->integer(10)->unsigned()->notNull(),
         ], $tableOptions);
         $this->addCommentOnTable('social_networks_groups_main_categories', 'Таблица для свазывания сообществ соцсетей и категорий обьявлений');

@@ -33,7 +33,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
             <span class="badge badge-primary" id="selected-<?= $id ?>">
                 <?= $v['title'] ?>
                 <i class="fa fa-times cursor-pointer selected-item" onclick="$(this).parent().remove()" aria-hidden="true">
-                    <input type="hidden" name="<?= $attribute['name'] ?>[]" value="<?= $v['id'] ?>">
+                    <input type="hidden" name="<?= $attribute['name'] ?>[]" class="hidden-input-<?= $id ?>" value="<?= $v['id'] ?>">
                 </i>
             </span>
             <? } ?>
@@ -90,12 +90,28 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
                 autoFocus: true,
 
                 source: function(request, response) {
-//                    _hidden_field.val('');
+                    var excudeStr = '';
+                    <? if(isset($attribute['exclude_selected']) and $attribute['exclude_selected']){?>
+                        var hiddenInputs = $('.hidden-input-<?= $id ?>');
+                        if(hiddenInputs.length){
+                            for (var i = 0; i < hiddenInputs.length; i++) {
+                                var nextIndex = i + 1;
+                                if(hiddenInputs[nextIndex]) {
+                                    excudeStr += hiddenInputs[i].value + ","
+                                }else{
+                                    excudeStr += hiddenInputs[i].value
+                                }
+                            }
+                        }
+                    <? } ?>
                     $.ajax({
                         dataType: "json",
                         type : 'POST',
                         url: '<?= \yii\helpers\Url::toRoute($attribute['url']) ?>',
-                        data: {query: $('#'+'<?= $id ?>').val()},
+                        data: {
+                            query: $('#'+'<?= $id ?>').val(),
+                            excludedIds: excudeStr
+                        },
                         success: function(data) {
                             _search_data = data;
                             $('input.suggest-user').removeClass('ui-autocomplete-loading');
@@ -120,7 +136,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
 
                 select: function(event, ui) {
                     var selected= 'opa';
-                    _div_container.append('<span class="badge badge-primary ka" >'+ui.item.text+' <i class="fa fa-times cursor-pointer selected-item" aria-hidden="true" onclick="$(this).parent().remove()"><input type="hidden" name="<?= $attribute['name'] ?>[]" value="'+ui.item.id+'"></i></span>')
+                    _div_container.append('<span class="badge badge-primary ka" >'+ui.item.text+' <i class="fa fa-times cursor-pointer selected-item" aria-hidden="true" onclick="$(this).parent().remove()"><input type="hidden" name="<?= $attribute['name'] ?>[]" class="hidden-input-<?= $id ?>" value="'+ui.item.id+'"></i></span>')
                 },
                 close: function( event, ui ) {
 

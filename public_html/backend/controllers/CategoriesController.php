@@ -5,6 +5,7 @@ use common\models\CategoryPlacement;
 use common\models\CategoryPlacementText;
 use common\models\SocialNetworksGroups;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -214,6 +215,41 @@ class CategoriesController extends BaseController
         $categories = Category::find()
             ->leftJoin('categories_text', 'categories_text.categories_id = categories.id')
             ->where("categories_text.name LIKE '".$query."%'")
+            ->all();
+        $result = [];
+        foreach($categories as $category){
+            $result[$category->id] = array('id' => $category->id, 'text' => $category->_text->name);
+        }
+        return $result;
+    }
+
+    public function actionSearchForMainGroups(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $query = $post['query'];
+        $andWhere = '';
+        $selected_ids = (new Query())->select('categories_id as id')->from('social_networks_groups_main_categories')->all();
+        $not_in_str = "(";
+        if(count($selected_ids)){
+             foreach ($selected_ids as $k => $v){
+                 $not_in_str .= $v['id'];
+                 $nextIdx = $k + 1;
+                 if(isset($selected_ids[$nextIdx]) OR (isset($post['excludedIds']) and $post['excludedIds'] != '')){
+                     $not_in_str .= ",";
+                 }
+             }
+        }
+        if(isset($post['excludedIds']) and $post['excludedIds'] != ''){
+            $not_in_str .= $post['excludedIds'];
+        }
+        $not_in_str .= ')';
+        if($not_in_str != '()') {
+            $andWhere .= 'categories.id NOT IN ' . $not_in_str;
+        }
+        $categories = Category::find()
+            ->leftJoin('categories_text', 'categories_text.categories_id = categories.id')
+            ->where("categories_text.name LIKE '".$query."%'")
+            ->andWhere($andWhere)
             ->all();
         $result = [];
         foreach($categories as $category){

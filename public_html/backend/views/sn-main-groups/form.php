@@ -42,7 +42,7 @@ $items = [
         [
             'panel-title' => 'Привязанные категории',
             'attributes' =>[
-                ['name' => 'categories_id','type' => Form::SEARCH_AUTOCOMPLETE_MULTISELECT,'label' => 'Категории', 'model_name' => 'SocialNetworksGroupsMain', 'model'=>$main_group, 'url' => 'categories/search ', 'placeholder' => 'Начните печатать название категории...', 'current_values' => $categories_values, 'input_id' => 'socialnetworksgroups-categories_id']
+                ['name' => 'categories_id','type' => Form::SEARCH_AUTOCOMPLETE_MULTISELECT,'label' => 'Категории', 'model_name' => 'SocialNetworksGroupsMain', 'model'=>$main_group, 'url' => 'categories/search-for-main-groups ', 'placeholder' => 'Начните печатать название категории...', 'current_values' => $categories_values, 'input_id' => 'socialnetworksgroups-categories_id', 'exclude_selected' => true]
             ]
         ],
         [
