@@ -138,7 +138,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
         $group = null;
         if($main_group) {
             $group = SocialNetworksGroups::find()
-                ->select('social_networks_groupss.*')
+                ->select('social_networks_groups.*')
                 ->where([
                     'social_networks_groups.cities_id' => $location->city->id,
                     'social_networks_groups.regions_id' => $location->city->region->id,
