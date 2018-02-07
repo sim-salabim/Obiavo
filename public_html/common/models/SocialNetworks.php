@@ -138,16 +138,15 @@ class SocialNetworks extends \yii\db\ActiveRecord
         $group = null;
         if($main_group) {
             $group = SocialNetworksGroups::find()
-                ->select('social_networks_groups.*')
+                ->select('social_networks_groupss.*')
                 ->where([
                     'social_networks_groups.cities_id' => $location->city->id,
-                    'social_networks_groups.regions_id' => $location->region->id,
-                    'social_networks_groups.countries_id' => $location->country->id,
+                    'social_networks_groups.regions_id' => $location->city->region->id,
+                    'social_networks_groups.countries_id' => $location->city->region->country->id,
                     'social_networks_groups.social_networks_id' => $this->id,
                     'social_networks_groups_main_categories.categories_id' => $category->id
                 ])
-                ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups_main_groups.main_group_id = social_networks_groups.social_networks_groups_main_id')
-                ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups_main_groups.main_group_id')
+                ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups.social_networks_groups_main_id')
                 ->one();
         }
         return $group;
@@ -168,12 +167,11 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 ->where([
                     'social_networks_groups.cities_id' => null,
                     'social_networks_groups.regions_id' => $location->region->id,
-                    'social_networks_groups.countries_id' => $location->country->id,
+                    'social_networks_groups.countries_id' => $location->region->country->id,
                     'social_networks_groups.social_networks_id' => $this->id,
                     'social_networks_groups_main_categories.categories_id' => $category->id
                 ])
-                ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups_main_groups.main_group_id = social_networks_groups.social_networks_groups_main_id')
-                ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups_main_groups.main_group_id')
+                ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups.social_networks_groups_main_id')
                 ->one();
         }
         return $group;
@@ -199,8 +197,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
                     'social_networks_groups.social_networks_id' => $this->id,
                     'social_networks_groups_main_categories.categories_id' => $category->id
                 ])
-                ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups_main_groups.main_group_id = social_networks_groups.social_networks_groups_main_id')
-                ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups_main_groups.main_group_id')
+                ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups.social_networks_groups_main_id')
                 ->one();
         }
         return $group;
