@@ -7,6 +7,11 @@ $sort = (isset($_GET['sort'])) ? 'sort='.$_GET['sort'].'&' : '';
 $direction = (isset($_GET['direction'])) ? 'direction='.$_GET['direction'].'&' : '';
 $nav_str = $sort.$direction.'{key:page}';
 $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
+$action = $current_action ? $current_action."/" : '';
+$link = "/$current_category->url/$action";
+if($sort != '' OR $direction != ''){
+    $link .= "?".$sort.$direction;
+}
 ?>
 <div class="col-lg-12">
 <hr>
@@ -14,7 +19,8 @@ $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
         <ul class="pagination">
             <? if($library_search->page != 1){?>
             <li class="page-item ">
-                <a class="pagination-link" href="?<?= str_replace('{key:page}','page='.($library_search->page - 1),$nav_str) ?>">
+                <? $prev_href = ($library_search->page == 2) ? $link : "?".str_replace('{key:page}','page='.($library_search->page - 1),$nav_str) ?>
+                <a class="pagination-link" href="<?= $prev_href ?>">
                     <span aria-hidden="true">&laquo; <?= __('Prev.') ?></span>
                 </a>
             </li>
@@ -24,9 +30,10 @@ $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
             while($i <= $pages_amount){?>
                 <li class="page-item ">
                     <? if($i != $library_search->page){?>
-                    <a class="pagination-link" href="?<?= str_replace('{key:page}','page='.$i,$nav_str) ?>"><?= $i ?></a>
+                        <? $href = ($i == 1) ? $link : "?".str_replace('{key:page}','page='.$i,$nav_str) ?>
+                        <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
                     <? }else{ ?>
-                    <span class="pagination-link pagination-link-active"><?= $i ?></span>
+                        <span class="pagination-link pagination-link-active"><?= $i ?></span>
                     <? } ?>
                 </li>
             <? ++$i;

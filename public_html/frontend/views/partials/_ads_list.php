@@ -39,7 +39,13 @@
             </div>
         <? } ?>
         <? if($library_search->limit < $ads_search['count']){?>
-            <?= $this->render('/partials/_pagination.php', ['ads_search' => $ads_search, 'library_search'=> $library_search])?>
+            <?= $this->render('/partials/_pagination.php',
+                [
+                    'ads_search' => $ads_search,
+                    'library_search'=> $library_search,
+                    'current_category' => $current_category,
+                    'current_action' => $current_action
+                ])?>
         <? } ?>
     <? } ?>
     <?= $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>

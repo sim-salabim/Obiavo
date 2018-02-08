@@ -12,5 +12,6 @@ $current_category = (isset($current_category))  ? $current_category : null;
         'library_search'=> $library_search,
         'title' => __('Ads'),
         'no_ads_title' => __('No ads found'),
-        'current_category' => $current_category
+        'current_category' => $current_category,
+        'current_action' => $current_action
     ]) ?>
