@@ -119,7 +119,9 @@ if(Yii::$app->user->isGuest){
                 var params = urlArr[1].split('&');
                 params.forEach(function(item){
                     var get = item.split('=');
-                    getParams[get[0]] = get[1];
+                    if(get[0] != 'page'){
+                        getParams[get[0]] = get[1];
+                    }
                 });
             }
             getParams['query'] = query;

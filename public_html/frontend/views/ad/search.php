@@ -1,7 +1,7 @@
 <?=  $this->render('/partials/_ads_list.php',
     [
-        'ads_search' => $ads_search,
         'title' => __('Ads'),
-        'loaded' => $loaded,
-        'no_ads_title' => __('No ads found')
+        'ads_search' => (new \common\models\Ads())->getList($library_search),
+        'no_ads_title' => __('No ads found'),
+        'library_search' => $library_search
     ]) ?>

@@ -102,20 +102,19 @@ class AdController extends BaseController
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');
         $query = Yii::$app->request->get('query');
+        $page = Yii::$app->request->get('page') ?: 1;
 
         $this->setPageTitle(__('Search'));
         Yii::$app->view->params['breadcrumbs'] = [];
         Yii::$app->view->params['h1'] = __('Search');
         $librarySearch = new AdsSearch();
-        $loaded = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->loaded;
-        $librarySearch->setLimit($loaded);
         $librarySearch->setQuery($query);
+        $librarySearch->setPage($page);
         if($sort AND $direction) {
             $librarySearch->setSorting($sort." ".$direction);
         }
         return $this->render('search',  [
-            'loaded'        => $loaded,
-            'ads_search'    => (new Ads())->getList($librarySearch)
+            'library_search' => $librarySearch
         ]);
     }
 }

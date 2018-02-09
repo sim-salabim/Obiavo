@@ -1,11 +1,12 @@
 <?
 /**
  * title, str
- * $ads_search, array - результат работы Ads::getList()
  * library_search, LibrarySearch - настртоенный обьект LibrarySearch
  * no_ads_title, str -
  * current_category, Category
  */
+$current_category = isset($current_category) ? $current_category : null;
+$current_action = isset($current_action) ? $current_action : null;
 ?>
 <div class="row">
     <div class="col-lg-8 col-md-6 col-sm-12 text-align-left">
@@ -48,5 +49,7 @@
                 ])?>
         <? } ?>
     <? } ?>
-    <?= $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
+    <? if ($current_category){?>
+        <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
+    <? } ?>
 </div>

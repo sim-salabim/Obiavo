@@ -5,13 +5,15 @@
  */
 $sort = (isset($_GET['sort'])) ? 'sort='.$_GET['sort'].'&' : '';
 $direction = (isset($_GET['direction'])) ? 'direction='.$_GET['direction'].'&' : '';
-$nav_str = $sort.$direction.'{key:page}';
+$query = (isset($_GET['query'])) ? 'query='.$_GET['query'].'&' : '';
+$nav_str = $sort.$direction.$query.'{key:page}';
 $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
-$action = $current_action ? $current_action."/" : '';
-$link = "/$current_category->url/$action";
+$action = isset($current_action)  ? $current_action."/" : '';
+$link = (isset($current_category) and $current_category) ? "/$current_category->url/$action" : '';
 if($sort != '' OR $direction != ''){
     $link .= "?".$sort.$direction;
 }
+$link .= ($link == '' AND $query != '') ? "?".$query : $query;
 ?>
 <div class="col-lg-12">
 <hr>
