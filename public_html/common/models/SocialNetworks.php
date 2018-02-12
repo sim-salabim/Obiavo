@@ -87,37 +87,39 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @param Category $category
      * @return array|bool|null|\yii\db\ActiveRecord
      */
-    public function getGroupsBlock(Category $category){
+    public function getGroupsBlock(Category $category = null){
         $location = \Yii::$app->location;
         $group = null;
-        if($category->socialNetworkGroupsMain){
-            if($location->city){
-                $group = $this->getBlockByCityAndCategory($category);
-                if(!$group){
-                    $group = $this->getBlockByRegionAndCategory($category);
-                    if(!$group){
-                        $group = $this->getBlockByCountryAndCategory($category);
+        if($category) {
+            if ($category->socialNetworkGroupsMain) {
+                if ($location->city) {
+                    $group = $this->getBlockByCityAndCategory($category);
+                    if (!$group) {
+                        $group = $this->getBlockByRegionAndCategory($category);
+                        if (!$group) {
+                            $group = $this->getBlockByCountryAndCategory($category);
+                        }
                     }
-                }
-            }else if(!$location->city and $location->region){
-                if($location->region){
-                    $group = $this->getBlockByRegionAndCategory($category);
-                    if(!$group){
-                        $group = $this->getBlockByCountryAndCategory($category);
+                } else if (!$location->city and $location->region) {
+                    if ($location->region) {
+                        $group = $this->getBlockByRegionAndCategory($category);
+                        if (!$group) {
+                            $group = $this->getBlockByCountryAndCategory($category);
+                        }
                     }
+                } else if (!$location->city and !$location->region and $location->country) {
+                    $group = $this->getBlockByCountryAndCategory($category);
                 }
-            }else if(!$location->city and !$location->region and $location->country){
-                $group = $this->getBlockByCountryAndCategory($category);
+            } else {
+                if ($category->parent) {
+                    return $this->getGroupsBlock($category->parent);
+                }
             }
-        }else{
-            if($category->parent){
-                return $this->getGroupsBlock($category->parent);
-            }
-        }
-        if(!$group AND $category->socialNetworkGroupsMain){
-            $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
-            if(!$group){
-                $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnIdFromDefault($this->id);
+            if (!$group AND $category->socialNetworkGroupsMain) {
+                $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
+                if (!$group) {
+                    $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnIdFromDefault($this->id);
+                }
             }
         }
         if(!$group){

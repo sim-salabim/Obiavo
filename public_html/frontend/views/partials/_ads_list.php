@@ -49,7 +49,6 @@ $current_action = isset($current_action) ? $current_action : null;
                 ])?>
         <? } ?>
     <? } ?>
-    <? if ($current_category){?>
-        <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
-    <? } ?>
+    <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
+
 </div>
