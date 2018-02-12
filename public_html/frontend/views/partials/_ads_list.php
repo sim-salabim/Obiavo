@@ -2,11 +2,15 @@
 /**
  * title, str
  * library_search, LibrarySearch - настртоенный обьект LibrarySearch
- * no_ads_title, str -
+ * no_ads_title, str - текс показываемый при отсутствии обьявлений в списке
  * current_category, Category
+ * show_sn_widgets, boolean - показывать или нет блок виджетов соцсетей
+ * root_url, string|null - роут без GET параметров
  */
 $current_category = isset($current_category) ? $current_category : null;
 $current_action = isset($current_action) ? $current_action : null;
+$show_sn_widgets = isset($show_sn_widgets) ? $show_sn_widgets : true;
+$root_url = isset($root_url) ? $root_url : null;
 ?>
 <div class="row">
     <div class="col-lg-8 col-md-6 col-sm-12 text-align-left">
@@ -45,10 +49,12 @@ $current_action = isset($current_action) ? $current_action : null;
                     'ads_search' => $ads_search,
                     'library_search'=> $library_search,
                     'current_category' => $current_category,
-                    'current_action' => $current_action
+                    'current_action' => $current_action,
+                    'root_url'       => $root_url
                 ])?>
         <? } ?>
     <? } ?>
-    <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
-
+    <? if($show_sn_widgets){?>
+        <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
+    <? } ?>
 </div>

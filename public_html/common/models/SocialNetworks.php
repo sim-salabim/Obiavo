@@ -84,10 +84,10 @@ class SocialNetworks extends \yii\db\ActiveRecord
     }
 
     /** Возвращает группу
-     * @param Category $category
+     * @param Category|null $category
      * @return array|bool|null|\yii\db\ActiveRecord
      */
-    public function getGroupsBlock(Category $category = null){
+    public function getGroupsBlock($category = null){
         $location = \Yii::$app->location;
         $group = null;
         if($category) {

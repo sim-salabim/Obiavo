@@ -56,11 +56,14 @@ class UsersController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setUser(Yii::$app->user->identity);
         $librarySearch->setAll(true);
-        $loaded = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->loaded;
-        $librarySearch->setLimit($loaded);
+        $limit = (Yii::$app->request->get('loaded')) ? Yii::$app->request->get('loaded') + $librarySearch->limit : $librarySearch->limit;
+        $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
+        $librarySearch->setPage($page);
+        $librarySearch->setLimit($limit);
         return $this->render('my-ads', [
-            'loaded' => $loaded,
-            'ads_search' => (new Ads())->getList($librarySearch)
+            'loaded' => $limit,
+            'ads_search' => (new Ads())->getList($librarySearch),
+            'library_search' => $librarySearch
         ]);
     }
 }

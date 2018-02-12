@@ -2,7 +2,9 @@
 /**
  * ads_search - результат текущей выборки Ads()::getList()
  * library_search - обьект с параметрами списка, AdsSearch()
+ * root_url - url без параметром
  */
+$root_url = isset($root_url) ? $root_url : false;
 $sort = (isset($_GET['sort'])) ? 'sort='.$_GET['sort'].'&' : '';
 $direction = (isset($_GET['direction'])) ? 'direction='.$_GET['direction'].'&' : '';
 $query = (isset($_GET['query'])) ? 'query='.$_GET['query'].'&' : '';
@@ -14,6 +16,7 @@ if($sort != '' OR $direction != ''){
     $link .= "?".$sort.$direction;
 }
 $link .= ($link == '' AND $query != '') ? "?".$query : $query;
+if($link == '' AND $root_url) $link .= '/'.$root_url;
 ?>
 <div class="col-lg-12">
 <hr>
