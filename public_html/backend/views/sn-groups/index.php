@@ -43,7 +43,7 @@ if($sort and $dir){
         [
             'label'        => 'Название',
             'content'      => function($model){
-                $html = $model->name;
+                $html = ($model->url AND $model->url != '') ? '<a href="'.$model->url.'">'.$model->name.'</a>' : $model->name;
                 return $html;
             },
         ],

@@ -6,6 +6,9 @@ namespace common\models;
  * @package common\models
  *
  * @property string $name
+ * @property string $token
+ * @property string $url
+ * @property string $group_id
  * @property string $code_sm
  * @property string $code_md
  * @property string $code_lg
@@ -23,7 +26,6 @@ namespace common\models;
  */
 class SocialNetworksGroups extends \yii\db\ActiveRecord
 {
-    private $available_networks = ['vk.com', 'facebook.com', 'ok.ru'];
 
     static function tableName()
     {
@@ -36,7 +38,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     function rules()
     {
         return [
-            [['name'], 'string', 'max' => 255],
+            [['name', 'token', 'url', 'group_id'], 'string', 'max' => 255],
             [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
             [['social_networks_groups_main_id', 'social_networks_id', 'cities_id', 'regions_id'], 'integer'],
             [['code_md', 'code_sm', 'code_lg'], 'string'],
@@ -68,6 +70,9 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
             'countries_id' => 'Страна',
             'regions_id' => 'Регион',
             'cities_id' => 'Город',
+            'url' => 'Город',
+            'token' => 'Город',
+            'group_id' => 'Город',
             'code_lg' => 'Большой блок',
             'code_md' => 'Средний блок',
             'code_sm' => 'Маленький блок',
@@ -114,27 +119,4 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
         return $this->hasOne(SocialNetworksGroupsMain::className(), ['id' => 'social_networks_groups_main_id']);
     }
 
-    /** wozwra]aet
-     *
-     * @param $city_id
-     * @param Category $category
-     * @return null
-     */
-    public function getGroupsByCity($city_id, Category $category){
-        $main_group = $category->getSnMainGroup();
-        $groups = null;
-        if($main_group){
-            $groups = SocialNetworksGroups::find()
-                ->where('social_networks_groups_main_id', '=', $main_group->id)
-                ->andWhere('cities_id', '=', $city_id)
-                ->andWhere('social_networks_id', 'NOT IN', (new \yii\db\Query())->select('id')->from('social_networks')->where('name', 'IN', $this->available_networks))
-                ->find();
-        }
-        return $groups;
-    }
-
-    public static function getSocialNetworksGroupsBlocks(Category $current_category){
-//        $location = Yii::$app->location;
-//        if
-    }
 }

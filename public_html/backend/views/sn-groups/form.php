@@ -19,6 +19,9 @@ $items = [
             'panel-title' => 'Основныe данные',
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название группы','model'=>$sn_group],
+                ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL группы','model'=>$sn_group],
+                ['name' => 'token','type' => Form::INPUT_TEXT,'label' => 'Токен','model'=>$sn_group],
+                ['name' => 'group_id','type' => Form::INPUT_TEXT,'label' => 'ID соцгруппы','model'=>$sn_group],
                 ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(),'label' => 'Основная группа','model'=>$sn_group, 'model_name' => 'SocialNetworksGroups'],
                 ['name' => 'social_networks_id','type' => Form::SELECT, 'options' => SocialNetworks::getAllAsArray(),'label' => 'Соцсеть','model'=>$sn_group, 'model_name' => 'SocialNetworksGroups'],
                 ['name' => 'countries_id','type' => Form::SEARCH_AUTOCOMPLETE,'label' => 'Страна', 'model_name' => 'SocialNetworksGroups', 'model'=>$sn_group, 'url' => 'countries/search ', 'placeholder' => 'Начните печатать название страны...', 'current_value' => $current_country_value, 'input_id' => 'socialnetworksgroups-countries_id'],
