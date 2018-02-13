@@ -27,7 +27,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
-            [['active'], 'integer', 'max' => 1, 'min' => 0],
+            [['active', 'autoposting'], 'integer', 'max' => 1, 'min' => 0],
             [['name', 'default_group_id'], 'required'],
         ];
     }

@@ -6,7 +6,8 @@ $current_value['id'] = (isset($sn->default_group_id) and $sn->default_group_id) 
 $current_value['title'] = (isset($sn->default_group_id) and $sn->default_group_id) ? $sn->default->name : null;
 $attributes = [
     ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$sn],
-    ['name' => 'active','type' => Form::INPUT_CHECKBOX,'label' => 'Активность','model'=>$sn, 'model_name' => 'SocialNetworks']
+    ['name' => 'active','type' => Form::INPUT_CHECKBOX,'label' => 'Активность','model'=>$sn, 'model_name' => 'SocialNetworks'],
+    ['name' => 'autoposting','type' => Form::INPUT_CHECKBOX,'label' => 'Автопостинг','model'=>$sn, 'model_name' => 'SocialNetworks'],
 ];
 $default_group = null;
 if($sn->id){

@@ -6,7 +6,6 @@ namespace common\models;
  * @package common\models
  *
  * @property string $name
- * @property string $token
  * @property string $url
  * @property string $group_id
  * @property string $code_sm
@@ -38,7 +37,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     function rules()
     {
         return [
-            [['name', 'token', 'url', 'group_id'], 'string', 'max' => 255],
+            [['name', 'url', 'group_id'], 'string', 'max' => 255],
             [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
             [['social_networks_groups_main_id', 'social_networks_id', 'cities_id', 'regions_id'], 'integer'],
             [['code_md', 'code_sm', 'code_lg'], 'string'],
@@ -71,8 +70,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
             'regions_id' => 'Регион',
             'cities_id' => 'Город',
             'url' => 'Город',
-            'token' => 'Город',
-            'group_id' => 'Город',
+            'group_id' => 'ID группы',
             'code_lg' => 'Большой блок',
             'code_md' => 'Средний блок',
             'code_sm' => 'Маленький блок',

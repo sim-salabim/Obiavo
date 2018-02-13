@@ -20,7 +20,6 @@ class m171221_070915_social_network_groups extends Migration
             'regions_id' => $this->integer()->unsigned()->null(),
             'name' => $this->string()->notNull(),
             'url' => $this->string()->null(),
-            'token' => $this->string()->null(),
             'group_id' => $this->string()->null(),
             'code_sm' => $this->text(),
             'code_md' => $this->text(),
