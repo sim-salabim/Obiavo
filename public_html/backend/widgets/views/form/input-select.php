@@ -1,5 +1,15 @@
 <?php
 use yii\helpers\Html;
+
+/**
+ * $attributes[
+ *      label,
+ *      model_name - название используемой модели,
+ *      name - название параметра (должно совпадать с названием а аттрибутом в модели),
+ *      options - опшены для селекта, массив в виде [[id=>, name=>], [id=>, name=>]...]
+ *      selected - id выбранного элемента
+ * ]
+ */
 ?>
 
 <?= Html::beginTag('div', ['class' => 'form-group row validation-errors']);?>

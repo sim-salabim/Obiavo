@@ -15,6 +15,12 @@ use Yii;
 class SocialNetworks extends \yii\db\ActiveRecord
 {
 
+    const VK_COM = 'vk.com';
+    const FB_COM = 'facebook.com';
+    const OK_RU = 'ok.ru';
+    const TWITTER = 'twitter';
+    const INSTAGRAM = 'instagram.com';
+
     static function tableName()
     {
         return 'social_networks';
@@ -71,6 +77,27 @@ class SocialNetworks extends \yii\db\ActiveRecord
     static function getAllAsArray($keys = ['id', 'name']){
         $result = [];
         $groups = SocialNetworks::find()->all();
+        if(!empty($groups)){
+            foreach($groups as $k => $group){
+                foreach($keys as $key){
+                    if(isset($group->{$key})) {
+                        $result[$k][$key] = $group->{$key};
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $keys
+     * @return array(key => value, key => value....)
+     */
+    static function getAllAsArrayForAutoposting($keys = ['id', 'name']){
+        $result = [];
+        $groups = SocialNetworks::find()
+            ->where(['active'=>1,'autoposting'=>1])
+            ->all();
         if(!empty($groups)){
             foreach($groups as $k => $group){
                 foreach($keys as $key){
@@ -203,5 +230,19 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 ->one();
         }
         return $group;
+    }
+
+    /**
+     * Извлекает текущую задачу автопостинга для соцсети в соответствии с установленым проиритетом
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    function getActiveAutopostingTask(){
+        return AutopostingTasks::find()
+            ->select('autoposting_tasks.*')
+            ->leftJoin('social_networks_groups', 'social_networks_groups.id = autoposting_tasks.social_networks_groups_id')
+            ->leftJoin('social_networks', 'social_networks.id = social_networks_groups.social_networks_id')
+            ->where(['autoposting_tasks.status' => AutopostingTasks::STATUS_PENDING, 'social_networks.id' => $this->id])
+            ->orderBy('autoposting_tasks.priority DESC, autoposting_tasks.created_at ASC')
+            ->one();
     }
 }

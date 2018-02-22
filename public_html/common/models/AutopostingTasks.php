@@ -21,6 +21,7 @@ namespace common\models;
 class AutopostingTasks extends \yii\db\ActiveRecord
 {
     const STATUS_PENDING = 'PENDING';
+    const STATUS_IN_PROGRESS = 'IN_PROGRESS';
     const STATUS_FAILED = 'FAILED';
     const STATUS_POSTED = 'POSTED';
     /**
@@ -39,8 +40,7 @@ class AutopostingTasks extends \yii\db\ActiveRecord
         return [
             [['ads_id', 'social_networks_groups_id'], 'required'],
             [['status'], 'string'],
-            [['text', ], 'string', 'max' => 1000],
-            [['create_at', 'posted_at', 'supposed_at']]
+            [['created_at', 'posted_at', 'supposed_at'], 'string']
         ];
     }
 

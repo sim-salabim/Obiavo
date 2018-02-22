@@ -68,15 +68,33 @@ class Files extends \yii\db\ActiveRecord
     {
         return $this->hasOne(FilesExts::className(), ['id' => 'files_exts_id']);
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExtType()
+    {
+        return $this->ext->ext_type;
+    }
 
     /**
      * @return string
      */
     public function getFilePath(){
-        $file = self::findOne(['id' => $this->id]);
-        if($file->id){
-            if(file_exists(Yii::$app->params['uploadPath']."/".$file->hash)){
-                return Yii::$app->params['uploadPath']."/".$file->hash.".".$file->ext->ext;
+        if($this->id){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$this->hash)){
+                return Yii::$app->params['uploadPath']."/".$this->hash.".".$this->ext->ext;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilePathWithoutHash(){
+        if($this->id){
+            if(file_exists(Yii::$app->params['uploadPath']."/".$this->hash)){
+                return Yii::$app->params['uploadPath']."/".$this->hash;
             }
         }
         return false;

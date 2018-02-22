@@ -117,7 +117,7 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
                     _hidden_field.val(ui.item.id);
                 },
                 close: function( event, ui ) {
-                    if (_search_data.length != 0) {
+                    if (_search_data.length != 0 && typeof _search_data[_hidden_field.val()] != "undefined") {
                         _visible_field.val(_search_data[_hidden_field.val()].text);
                     }
                 }

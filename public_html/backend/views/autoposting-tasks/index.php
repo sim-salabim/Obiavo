@@ -57,6 +57,7 @@ $breadcrumbs = '';
                     if($model->status == \common\models\AutopostingTasks::STATUS_PENDING) $html .= '<span class="btn btn-warning btn-xs">Ожидание</span>';
                     if($model->status == \common\models\AutopostingTasks::STATUS_FAILED) $html .= '<span class="btn btn-danger btn-xs">Ошибка</span>';
                     if($model->status == \common\models\AutopostingTasks::STATUS_POSTED) $html .= '<span class="btn btn-success btn-xs">Выполнено</span>';
+                    if($model->status == \common\models\AutopostingTasks::STATUS_IN_PROGRESS) $html .= '<span class="btn btn-light btn-xs">Выполняется</span>';
                     return $html;
                 },
             ],

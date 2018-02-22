@@ -3,8 +3,6 @@ namespace backend\controllers;
 
 use common\helpers\JsonData;
 use common\models\AutopostingTasks;
-use common\models\Country;
-use common\models\SocialNetworks;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -107,5 +105,9 @@ class AutopostingTasksController extends BaseController
             JsonData::SUCCESSMESSAGE => "Успешно удалено",
             JsonData::REFRESHPAGE => '',
         ]);
+    }
+
+    public function actionHandleTask(){
+
     }
 }
