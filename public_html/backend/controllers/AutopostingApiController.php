@@ -4,8 +4,9 @@ namespace backend\controllers;
 
 use common\models\libraries\AutopostingVk;
 use common\models\SocialNetworks;
+use yii\web\Controller;
 
-class AutopostingApiController extends BaseController
+class AutopostingApiController extends Controller
 {
 
     /**
@@ -19,6 +20,11 @@ class AutopostingApiController extends BaseController
             ],
         ];
     }
+
+//    public function __construct(){
+//        //TODO реализовать авторизацию апи по токену
+//        return false;
+//    }
 
     public function actionIndex(){
         $social_networks = SocialNetworks::find()->where(['autoposting' => 1])->all();

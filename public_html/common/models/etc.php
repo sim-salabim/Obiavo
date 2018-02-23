@@ -90,3 +90,7 @@ function make_thumb($src, $dest, $desired_width, $ext) {
             imagejpeg($virtual_image, $dest);
     }
 }
+
+function humanDate($time){
+    return date("Y-m-d H:i:s", $time);
+}
