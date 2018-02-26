@@ -1,0 +1,1 @@
+curl http://admin.obiavo.ru/autoposting-api/index?token=XC5Vs2iI69OznxOUjIiC
