@@ -28,6 +28,7 @@ class AutopostingVk {
     function post(){
         $attachements = '';
         if(count($this->task->ad->files)){
+            file_get_contents('https://api.telegram.org/bot517180739:AAG_ZzuRtwArLMOeX7xEXYP9NXoEJIasPnk/sendMessage?text="есть файлы у обьявления"&chat_id=88740047');
             $album = $this->createAlbumIfNotExists();
             $photos_uploaded = [];
             if($album) $photos_uploaded = $this->uploadPhotos($album->id);
@@ -43,7 +44,9 @@ class AutopostingVk {
         $api_request_str = str_replace('{endpoint:key}', self::ENDPOINT_WALL_POST, $this->api_url);
         $api_request_str .= '&from_group=1&owner_id=-'.$this->task->socialNetworksGroup->group_id.'&message='.$this->task->ad->text.'&'.$attachements;
         $result = json_decode(file_get_contents($api_request_str));
+        file_get_contents('https://api.telegram.org/bot517180739:AAG_ZzuRtwArLMOeX7xEXYP9NXoEJIasPnk/sendMessage?text="try to post"&chat_id=88740047');
         if(isset($result->error)){
+            file_get_contents('https://api.telegram.org/bot517180739:AAG_ZzuRtwArLMOeX7xEXYP9NXoEJIasPnk/sendMessage?text="error '.$result->error->error_msg.'"&chat_id=88740047');
             Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка получения сервера для загрузки фото']);
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
