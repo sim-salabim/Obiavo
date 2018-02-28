@@ -21,7 +21,7 @@ class AutopostingVk {
 
     function __construct(AutopostingTasks $task){
         $this->task = $task;
-        $this->access_token = \Yii::$app->params['VK_access_token'];
+        $this->access_token = $task->socialNetworksGroup->token;
         $this->api_url = 'https://api.vk.com/method/{endpoint:key}?access_token='.$this->access_token.'&v='.self::API_VERSION;
     }
 
@@ -44,7 +44,7 @@ class AutopostingVk {
         $api_request_str .= '&from_group=1&owner_id=-'.$this->task->socialNetworksGroup->group_id.'&message='.urlencode($this->task->ad->text).'&'.$attachements;
         $result = json_decode(file_get_contents($api_request_str));
         if(isset($result->error)){
-            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка получения сервера для загрузки фото']);
+            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка публикации поста на стене', 'details' => 'Произошла ошибка публикации в на стене <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/wall.post">Документация по вызванному методу</a>']);
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
         }else if(isset($result->response)){
@@ -60,7 +60,7 @@ class AutopostingVk {
         $api_request_get_server .= '&album_id='.$album_id.'&group_id='.$this->task->socialNetworksGroup->group_id;
         $api_request_get_server_response = json_decode(file_get_contents($api_request_get_server));
         if(isset($api_request_get_server_response->error)){
-            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'vapi-error', ['error' => $api_request_get_server_response->error->error_msg, 'request' => $api_request_get_server, 'message' => 'Ошибка получения сервера для загрузки фото']);
+            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'vapi-error', ['error' => $api_request_get_server_response->error->error_msg, 'request' => $api_request_get_server, 'message' => 'Ошибка получения сервера для загрузки фото', 'details' => 'Произошла ошибка при получении сервера для загрузки фотографий для <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.getUploadServer">Документация по вызванному методу</a>']);
             return;
         }
         $idx = 1;
@@ -97,12 +97,12 @@ class AutopostingVk {
                 $api_request_save_photos .= '&group_id='.$this->task->socialNetworksGroup->group_id.'&album_id='.$resp_body->aid.'&server='.$resp_body->server.'&hash='.$resp_body->hash.'&photos_list='.$resp_body->photos_list;
                 $api_save_photos_response = json_decode(file_get_contents($api_request_save_photos));
                 if(isset($api_save_photos_response->error)){
-                    Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $api_save_photos_response->error->error_msg, 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка получения сервера для загрузки фото']);
+                    Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $api_save_photos_response->error->error_msg, 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка сохранения фото в альбоме', 'details' => 'Произошла ошибка загрузки фотo в альбом <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.save">Документация по вызванному методу</a>']);
                 }else if(isset($api_save_photos_response->response)){
                     return $api_save_photos_response->response;
                 }
             }else{
-                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => "Ошибка CURL запроса во время загрузки фотографий", 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка получения сервера для загрузки фото']);
+                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => "Ошибка CURL запроса во время загрузки фотографий", 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка CURL запроса во время загрузки фотографий']);
             }
         }
         return [];

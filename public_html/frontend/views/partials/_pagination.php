@@ -2,7 +2,7 @@
 /**
  * ads_search - результат текущей выборки Ads()::getList()
  * library_search - обьект с параметрами списка, AdsSearch()
- * root_url - url без параметром
+ * root_url - url без параметров
  */
 $root_url = isset($root_url) ? $root_url : false;
 $sort = (isset($_GET['sort'])) ? 'sort='.$_GET['sort'].'&' : '';
@@ -11,7 +11,8 @@ $query = (isset($_GET['query'])) ? 'query='.$_GET['query'].'&' : '';
 $nav_str = $sort.$direction.$query.'{key:page}';
 $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
 $action = isset($current_action)  ? $current_action."/" : '';
-$link = (isset($current_category) and $current_category) ? "/$current_category->url/$action" : '';
+$city = (Yii::$app->request->get('city')) ? Yii::$app->request->get('city')."/" : '';
+$link = (isset($current_category) and $current_category) ? "/$current_category->url/$action".$city : '';
 if($sort != '' OR $direction != ''){
     $link .= "?".$sort.$direction;
 }
