@@ -8,6 +8,6 @@ class TelegrammLoging {
         $method = 'sendMessage';
         $token = '517180739:AAG_ZzuRtwArLMOeX7xEXYP9NXoEJIasPnk';
         $url = "https://api.telegram.org/bot$token/$method?text=$message&chat_id=$chat_id";
-        file_get_contents($url);
+        //file_get_contents($url);
     }
 }
