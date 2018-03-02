@@ -4,6 +4,7 @@ namespace common\models\libraries;
 use common\models\AutopostingTasks;
 use common\models\Files;
 use common\models\Mailer;
+use common\models\Settings;
 
 class AutopostingVk {
 
@@ -21,38 +22,52 @@ class AutopostingVk {
 
     function __construct(AutopostingTasks $task){
         $this->task = $task;
-        $this->access_token = $task->socialNetworksGroup->token;
+        $vk_token = null;
+        if($task->socialNetworksGroup->token){
+            $vk_token = $task->socialNetworksGroup->token;
+        }else{
+            $settings = Settings::find()->one();
+            if($settings AND $settings->vk_token){
+                $vk_token = $settings->vk_token;
+            }
+        }
+        $this->access_token = $vk_token;
         $this->api_url = 'https://api.vk.com/method/{endpoint:key}?access_token='.$this->access_token.'&v='.self::API_VERSION;
     }
 
     function post(){
-        $attachements = '';
-        if(count($this->task->ad->files)){
-            $album = $this->createAlbumIfNotExists();
-            $photos_uploaded = [];
-            if($album) $photos_uploaded = $this->uploadPhotos($album->id);
-            if(!empty($photos_uploaded)){
-                $attachements .= 'attachments=';
-                foreach ($photos_uploaded as $i => $photo){
-                    $attachements .= 'photo'.$photo->owner_id.'_'.$photo->id;
-                    $next = $i + 1;
-                    if(isset($photos_uploaded[$next])) $attachements .= ',';
+        if($this->access_token) {
+            $attachements = '';
+            if (count($this->task->ad->files)) {
+                $album = $this->createAlbumIfNotExists();
+                $photos_uploaded = [];
+                if ($album) $photos_uploaded = $this->uploadPhotos($album->id);
+                if (!empty($photos_uploaded)) {
+                    $attachements .= 'attachments=';
+                    foreach ($photos_uploaded as $i => $photo) {
+                        $attachements .= 'photo' . $photo->owner_id . '_' . $photo->id;
+                        $next = $i + 1;
+                        if (isset($photos_uploaded[$next])) $attachements .= ',';
+                    }
                 }
             }
-        }
-        $api_request_str = str_replace('{endpoint:key}', self::ENDPOINT_WALL_POST, $this->api_url);
-        $api_request_str .= '&from_group=1&owner_id=-'.$this->task->socialNetworksGroup->group_id.'&message='.urlencode($this->task->ad->text).'&'.$attachements;
-        $result = json_decode(file_get_contents($api_request_str));
-        if(isset($result->error)){
-            TelegrammLoging::send('<p>Ошибка публикации поста на стене для группы '.$this->task->socialNetworksGroup->group_id.'</p></br><code>'.$result->error->error_msg.'</code></br>'.$api_request_str);
-            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка публикации поста на стене', 'details' => 'Произошла ошибка публикации в на стене <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/wall.post">Документация по вызванному методу</a>']);
-            $this->task->status = AutopostingTasks::STATUS_FAILED;
-            $this->task->save();
-        }else if(isset($result->response)){
-            $task = $this->task;
-            $task->status = AutopostingTasks::STATUS_POSTED;
-            $this->task->posted_at = humanDate(time());
-            $task->save();
+            $api_request_str = str_replace('{endpoint:key}', self::ENDPOINT_WALL_POST, $this->api_url);
+            $api_request_str .= '&from_group=1&owner_id=-' . $this->task->socialNetworksGroup->group_id . '&message=' . urlencode($this->task->ad->text) . '&' . $attachements;
+            $result = json_decode(file_get_contents($api_request_str));
+            if (isset($result->error)) {
+                TelegrammLoging::send('Ошибка публикации поста на стене для группы ' . $this->task->socialNetworksGroup->group_id . ' ' . $result->error->error_msg . ' ' . $api_request_str);
+                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка публикации поста на стене', 'details' => 'Произошла ошибка публикации в на стене <a href="' . $this->task->socialNetworksGroup->url . '">сообщества</a>. <a href="https://vk.com/dev/wall.post">Документация по вызванному методу</a>']);
+                $this->task->status = AutopostingTasks::STATUS_FAILED;
+                $this->task->save();
+            } else if (isset($result->response)) {
+                $task = $this->task;
+                $task->status = AutopostingTasks::STATUS_POSTED;
+                $this->task->posted_at = humanDate(time());
+                $task->save();
+            }
+        }else{
+            TelegrammLoging::send('Отсутствует токен для группы ' . $this->task->socialNetworksGroup->group_id);
+            Mailer::send(\Yii::$app->params['debugEmail'], "Отсутствие VK токена", 'api-error', ['error' => "Не найден токен доступа для группы ID ".$this->task->socialNetworksGroup->group_id]);
         }
     }
 

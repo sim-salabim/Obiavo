@@ -5,9 +5,8 @@ namespace common\models;
 /**
  * This is the model class for table "settings".
  *
- * @property string $techname
- *
- * @property  CmsText[] $cmsTexts
+ * @property integer $id
+ * @property string $vk_token
  */
 class Settings extends \yii\db\ActiveRecord
 {
