@@ -110,6 +110,15 @@ class SocialNetworks extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    static function getNetworksForAutoposting(){
+        return SocialNetworks::find()
+            ->where(['autoposting' => 1])
+            ->all();
+    }
+
     /** Возвращает группу
      * @param Category|null $category
      * @return array|bool|null|\yii\db\ActiveRecord
@@ -149,6 +158,53 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 }
             }
         }
+        if(!$group){
+            $group = $this->default;
+        }
+        return $group;
+    }
+
+    /**
+     *  Возвращает сообщество соцсети $this, для объявления $ad
+     *
+     * @param Ads $ad, экземпляр класса объявлений
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    public function getGroupForAutoposting(Ads $ad){
+        $group = null;
+        if ($ad->category->socialNetworkGroupsMain) {
+            if ($ad->city) {
+                $group = $this->getBlockByCityAndCategory($ad->category);
+                if (!$group) {
+                    $group = $this->getBlockByRegionAndCategory($ad->category);
+                    if (!$group) {
+                        $group = $this->getBlockByCountryAndCategory($ad->category);
+                    }
+                }
+            }
+            if (!$group) {
+                if ($ad->city->region) {
+                    $group = $this->getBlockByRegionAndCategory($ad->category);
+                    if (!$group) {
+                        $group = $this->getBlockByCountryAndCategory($ad->category);
+                    }
+                }
+            }
+            if (!$group) {
+                $group = $this->getBlockByCountryAndCategory($ad->category);
+            }
+        } else {
+            if ($ad->category->parent) {
+                return $this->getGroupsBlock($ad->category->parent);
+            }
+        }
+        if (!$group AND $ad->category->socialNetworkGroupsMain) {
+            $group = $ad->category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
+            if (!$group) {
+                $group = $ad->category->socialNetworkGroupsMain->getDefaultGroupBySnIdFromDefault($this->id);
+            }
+        }
+
         if(!$group){
             $group = $this->default;
         }

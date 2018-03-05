@@ -77,4 +77,20 @@ class AutopostingTasks extends \yii\db\ActiveRecord
         $daystr .= ' '.date('H:i', $this->created_at);
         return $daystr;
     }
+
+    /**
+     *  Создает задачу для автопостинга для всех соцсетей для которых он включен
+     *
+     * @param Ads $ad, экземпляр класса объявлений
+     */
+    static public function createTasks(Ads $ad){
+        $networks = SocialNetworks::getNetworksForAutoposting();
+        foreach($networks as $network){
+            $group = $network->getGroupForAutoposting($ad);
+            $task = new self();
+            $task->ads_id = $ad->id;
+            $task->social_networks_groups_id = $group->id;
+            $task->save();
+        }
+    }
 }

@@ -51,14 +51,16 @@ class AutopostingVk {
                     }
                 }
             }
+            $message = file_get_contents(\Yii::getAlias('@common').'/views/vk-post.php');
+            $message = str_replace(['{key:message}', '{key:price}', '{key:phonenumber}'], [$this->task->ad->text, $this->task->ad->price." ".__('rub'), $this->task->ad->user->phone_number], $message);
             $api_request_str = str_replace('{endpoint:key}', self::ENDPOINT_WALL_POST, $this->api_url);
-            $api_request_str .= '&from_group=1&owner_id=-' . $this->task->socialNetworksGroup->group_id . '&message=' . urlencode($this->task->ad->text) . '&' . $attachements;
+            $api_request_str .= '&from_group=1&owner_id=-' . $this->task->socialNetworksGroup->group_id . '&message=' . urlencode($message) . '&' . $attachements;
             $result = json_decode(file_get_contents($api_request_str));
             if (isset($result->error)) {
-                TelegrammLoging::send('Ошибка публикации поста на стене для группы ' . $this->task->socialNetworksGroup->group_id . ' ' . $result->error->error_msg . ' ' . $api_request_str);
-                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка публикации поста на стене', 'details' => 'Произошла ошибка публикации в на стене <a href="' . $this->task->socialNetworksGroup->url . '">сообщества</a>. <a href="https://vk.com/dev/wall.post">Документация по вызванному методу</a>']);
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
+                TelegrammLoging::send('Ошибка публикации поста на стене для группы ' . $this->task->socialNetworksGroup->group_id . ' ' . $result->error->error_msg . ' ' . $api_request_str);
+                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $result->error->error_msg, 'request' => $api_request_str, 'message' => 'Ошибка публикации поста на стене', 'details' => 'Произошла ошибка публикации в на стене <a href="' . $this->task->socialNetworksGroup->url . '">сообщества</a>. <a href="https://vk.com/dev/wall.post">Документация по вызванному методу</a>']);
             } else if (isset($result->response)) {
                 $task = $this->task;
                 $task->status = AutopostingTasks::STATUS_POSTED;
@@ -66,6 +68,8 @@ class AutopostingVk {
                 $task->save();
             }
         }else{
+            $this->task->status = AutopostingTasks::STATUS_FAILED;
+            $this->task->save();
             TelegrammLoging::send('Отсутствует токен для группы ' . $this->task->socialNetworksGroup->group_id);
             Mailer::send(\Yii::$app->params['debugEmail'], "Отсутствие VK токена", 'api-error', ['error' => "Не найден токен доступа для группы ID ".$this->task->socialNetworksGroup->group_id]);
         }
@@ -77,7 +81,7 @@ class AutopostingVk {
         $api_request_get_server_response = json_decode(file_get_contents($api_request_get_server));
         if(isset($api_request_get_server_response->error)){
             TelegrammLoging::send('<p>Ошибка получения сервера для загрузки фото для группы '.$this->task->socialNetworksGroup->group_id.'</p></br><code>'.$api_request_get_server_response->error->error_msg.'</code></br>'.$api_request_get_server);
-            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'vapi-error', ['error' => $api_request_get_server_response->error->error_msg, 'request' => $api_request_get_server, 'message' => 'Ошибка получения сервера для загрузки фото', 'details' => 'Произошла ошибка при получении сервера для загрузки фотографий для <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.getUploadServer">Документация по вызванному методу</a>']);
+            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $api_request_get_server_response->error->error_msg, 'request' => $api_request_get_server, 'message' => 'Ошибка получения сервера для загрузки фото', 'details' => 'Произошла ошибка при получении сервера для загрузки фотографий для <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.getUploadServer">Документация по вызванному методу</a>']);
             return;
         }
         $idx = 1;
@@ -120,6 +124,8 @@ class AutopostingVk {
                     return $api_save_photos_response->response;
                 }
             }else{
+                $this->task->status = AutopostingTasks::STATUS_FAILED;
+                $this->task->save();
                 TelegrammLoging::send('<p>Ошибка CURL запроса во время загрузки фотографий '.$this->task->socialNetworksGroup->group_id.'</p></br>'.$api_request_get_server_response->response->upload_url);
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => "Ошибка CURL запроса во время загрузки фотографий", 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка CURL запроса во время загрузки фотографий']);
             }

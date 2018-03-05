@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Ads;
 use common\models\AdsView;
+use common\models\AutopostingTasks;
 use common\models\Category;
 use common\models\City;
 use common\models\Language;
@@ -71,6 +72,7 @@ class AdController extends BaseController
                 return $this->redirect('/podat-obiavlenie/');
             }else{
                 $model = $model->newAd();
+                AutopostingTasks::createTasks($model);
                 return $this->redirect("/$model->url/");
             }
         } else {
