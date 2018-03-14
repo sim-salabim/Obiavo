@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\libraries\AutopostingFb;
 use common\models\libraries\AutopostingVk;
 use common\models\Mailer;
 use common\models\SocialNetworks;
@@ -36,6 +37,8 @@ class AutopostingApiController extends Controller
                     switch ($sn->name){
                         case SocialNetworks::VK_COM :
                             (new AutopostingVk($task))->post();
+                        case SocialNetworks::FB_COM :
+                            (new AutopostingFb($task))->post();
                     }
                 }
             }

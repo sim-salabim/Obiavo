@@ -31,6 +31,14 @@ $this->title = 'Настройки';
                     },
                 ],
                 [
+                    'label'        => 'FB токен',
+                    'content'      => function($model){
+                        $html = $model->fb_token;
+
+                        return $html;
+                    },
+                ],
+                [
                     'label'        => 'Управление',
                     'format'       => TableList::TYPE_OPT_BUTTON,
                     'buttons'      => [

@@ -12,6 +12,7 @@ $items = [
             'panel-title' => 'Параметры',
             'attributes' => [
                 ['name' => 'vk_token','type' => Form::INPUT_TEXT,'label' => 'VK токен','model'=>$setting],
+                ['name' => 'fb_token','type' => Form::INPUT_TEXT,'label' => 'FB токен','model'=>$setting],
             ]
         ],
     ]

@@ -13,7 +13,8 @@ class m180302_053103_settings_table extends Migration
 
         $this->createTable('settings', [
             'id' => $this->primaryKey()->unsigned(),
-            'vk_token' => $this->string()->null()
+            'vk_token' => $this->string()->null(),
+            'fb_token' => $this->string()->null()
             ], $tableOptions);
     }
 
