@@ -17,7 +17,7 @@ class AutopostingTwitter {
 
     function post(){
 
-        $connection = new TwitterAuth($this->group->consumer_key, $this->group->consumer_secret, $this->group->token, $this->group->group_id);
+        $connection = new TwitterAuth($this->group->consumer_key, $this->group->consumer_secret, $this->group->group_id, $this->group->token);
         $statuses = $connection->post("statuses/update", array("status" => $this->task->ad->title));
         if($connection->getLastHttpCode() != 200){
             TelegrammLoging::send('Ошибка публикации в Twitter  ID сообщества'.$this->task->socialNetworksGroup->id.' '.$statuses->errors[0]->message);
