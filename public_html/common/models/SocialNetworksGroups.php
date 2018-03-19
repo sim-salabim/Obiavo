@@ -9,6 +9,8 @@ namespace common\models;
  * @property string $url
  * @property string $group_id
  * @property string $token
+ * @property string $consumer_key
+ * @property string $consumer_secret
  * @property string $code_sm
  * @property string $code_md
  * @property string $code_lg
@@ -38,7 +40,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     function rules()
     {
         return [
-            [['name', 'url', 'group_id', 'token'], 'string', 'max' => 255],
+            [['name', 'url', 'group_id', 'token', 'consumer_key', 'consumer_secret'], 'string', 'max' => 255],
             [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
             [['social_networks_groups_main_id', 'social_networks_id', 'cities_id', 'regions_id'], 'integer'],
             [['code_md', 'code_sm', 'code_lg'], 'string'],

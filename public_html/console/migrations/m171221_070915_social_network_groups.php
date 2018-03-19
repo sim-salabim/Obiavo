@@ -21,6 +21,8 @@ class m171221_070915_social_network_groups extends Migration
             'name' => $this->string()->notNull(),
             'url' => $this->string()->null(),
             'group_id' => $this->string()->null(),
+            'consumer_key' => $this->string()->null(),
+            'consumer_secret' => $this->string()->null(),
             'token' => $this->string()->null(),
             'code_sm' => $this->text(),
             'code_md' => $this->text(),
