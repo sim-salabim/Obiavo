@@ -41,7 +41,7 @@ class SocialNetworksGroups extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'url', 'group_id', 'token', 'consumer_key', 'consumer_secret'], 'string', 'max' => 255],
-            [['name', 'code_sm', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
+            [['name', 'social_networks_groups_main_id', 'social_networks_id'], 'required'],
             [['social_networks_groups_main_id', 'social_networks_id', 'cities_id', 'regions_id'], 'integer'],
             [['code_md', 'code_sm', 'code_lg'], 'string'],
             [['countries_id'], 'validateLocation', 'skipOnEmpty' => false, 'skipOnError' => false]
