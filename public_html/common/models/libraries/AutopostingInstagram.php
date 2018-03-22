@@ -70,6 +70,7 @@ class AutopostingInstagram {
                 $photoFilename = \Yii::$app->params['uploadPath'] . "/" . $this->task->ad->files[0]->hash."_copy";
             }
             try {
+                TelegrammLoging::send('Публикация в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.' Текст: '.$captionText);
                 $ig->timeline->uploadPhoto($photoFilename, ['caption' => $captionText]);
             } catch (\Exception $e) {
                 echo 'Something went wrong: ' . $e->getMessage() . "\n";
