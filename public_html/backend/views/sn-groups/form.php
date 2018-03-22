@@ -20,8 +20,8 @@ $items = [
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название группы','model'=>$sn_group],
                 ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL группы','model'=>$sn_group],
-                ['name' => 'group_id','type' => Form::INPUT_TEXT,'label' => 'ID соцгруппы','model'=>$sn_group, 'label_desc' => 'Access Token для Twitter' ],
-                ['name' => 'token','type' => Form::INPUT_TEXT,'label' => 'Токен группы','model'=>$sn_group,'label_desc' => 'Access Token Secret для Twitter' ],
+                ['name' => 'group_id','type' => Form::INPUT_TEXT,'label' => 'ID соцгруппы','model'=>$sn_group, 'label_desc' => 'Access Token для Twitter или Instagram username' ],
+                ['name' => 'token','type' => Form::INPUT_TEXT,'label' => 'Токен группы','model'=>$sn_group,'label_desc' => 'Access Token Secret для Twitter или пароль instagramm ' ],
                 ['name' => 'consumer_key','type' => Form::INPUT_TEXT,'label' => 'Consumer key','model'=>$sn_group,'label_desc' => 'Только для Twitter' ],
                 ['name' => 'consumer_secret','type' => Form::INPUT_TEXT,'label' => 'Consumer secret','model'=>$sn_group,'label_desc' => 'Только для Twitter' ],
                 ['name' => 'social_networks_groups_main_id','type' => Form::SELECT, 'options' => SocialNetworksGroupsMain::getAllAsArray(),'label' => 'Основная группа','model'=>$sn_group, 'model_name' => 'SocialNetworksGroups'],
