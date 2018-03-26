@@ -34,8 +34,9 @@ class AutopostingInstagram {
             } catch (\Exception $e) {
 //                $this->task->status = AutopostingTasks::STATUS_FAILED;
 //                $this->task->save();
-                TelegrammLoging::send('Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.', ID здачи: '.$this->task->id.' '.$e->getMessage());
-                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Instagram", 'api-error', ['message' =>$e->getMessage()]);
+                echo 'Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.', ID здачи: '.$this->task->id.' '.$e->getMessage();
+//                TelegrammLoging::send('Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.', ID здачи: '.$this->task->id.' '.$e->getMessage());
+//                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Instagram", 'api-error', ['message' =>$e->getMessage()]);
                 exit(0);
             }
             list($width, $height) = getimagesize($photoFilename);
