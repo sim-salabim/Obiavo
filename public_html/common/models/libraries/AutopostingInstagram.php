@@ -32,8 +32,8 @@ class AutopostingInstagram {
             try {
                 $ig->login($username, $password);
             } catch (\Exception $e) {
-                $this->task->status = AutopostingTasks::STATUS_FAILED;
-                $this->task->save();
+//                $this->task->status = AutopostingTasks::STATUS_FAILED;
+//                $this->task->save();
                 TelegrammLoging::send('Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.', ID здачи: '.$this->task->id.' '.$e->getMessage());
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Instagram", 'api-error', ['message' =>$e->getMessage()]);
                 exit(0);
@@ -79,11 +79,11 @@ class AutopostingInstagram {
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Instagram", 'api-error', ['message' =>$e->getMessage()]);
                 exit(0);
             }
-            $this->task->status = AutopostingTasks::STATUS_POSTED;
-            $this->task->save();
+//            $this->task->status = AutopostingTasks::STATUS_POSTED;
+//            $this->task->save();
         }else{
-            $this->task->status = AutopostingTasks::STATUS_FAILED;
-            $this->task->save();
+//            $this->task->status = AutopostingTasks::STATUS_FAILED;
+//            $this->task->save();
         }
     }
 }
