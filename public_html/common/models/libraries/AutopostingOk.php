@@ -54,14 +54,14 @@ class AutopostingOk {
             $result = $this->getUrl("https://api.ok.ru/fb.do", "POST", $params);
             if (isset($result['error_code']) && $result['error_code'] == 5000){
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
-                $this->task->status->save();
+                $this->task->save();
             }else{
                 $this->task->status = AutopostingTasks::STATUS_POSTED;
-                $this->task->status->save();
+                $this->task->save();
             }
         }else{
             $this->task->status = AutopostingTasks::STATUS_POSTED;
-            $this->task->status->save();
+            $this->task->save();
         }
     }
 
