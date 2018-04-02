@@ -91,7 +91,7 @@ class Files extends \yii\db\ActiveRecord
     /**
      * @return string
      */
-    public function getFilePathWithoutHash(){
+    public function getFilePathWithoutExt(){
         if($this->id){
             if(file_exists(Yii::$app->params['uploadPath']."/".$this->hash)){
                 return Yii::$app->params['uploadPath']."/".$this->hash;

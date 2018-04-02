@@ -87,13 +87,13 @@ class AutopostingVk {
         $idx = 1;
         $file_list = [];
         foreach ($this->task->ad->files as $file){
-            if(($file->ext->ext == Files::JPG_EXT OR $file->ext->ext == Files::JPEG_EXT OR $file->ext->ext == Files::PNG_EXT OR $file->ext->ext == Files::GIF_EXT) AND getimagesize($file->getFilePathWithoutHash())){// файлы других форматов vk api не принимает
-                $image_size = getimagesize($file->getFilePathWithoutHash());
-                if(filesize($file->getFilePathWithoutHash()) < 50000000
+            if(($file->ext->ext == Files::JPG_EXT OR $file->ext->ext == Files::JPEG_EXT OR $file->ext->ext == Files::PNG_EXT OR $file->ext->ext == Files::GIF_EXT) AND getimagesize($file->getFilePathWithoutExt())){// файлы других форматов vk api не принимает
+                $image_size = getimagesize($file->getFilePathWithoutExt());
+                if(filesize($file->getFilePathWithoutExt()) < 50000000
                     AND ($image_size[0]+$image_size[1] < 14000)
                     AND ($image_size[1]/$image_size[0] > 0.05 OR $image_size[0]/$image_size[1] > 0.05)
                     AND $idx < 6){//можно загрузить не более 5-и файлов, файлы больше 50мб, с суммой сторон больше 14000px и соотношением сторон более 1/20 vk api не принимает
-                    $file_list['file'.$idx] = new \CURLFile($file->getFilePathWithoutHash(), $file->ext->mime, $file->hash.".".$file->ext->ext);
+                    $file_list['file'.$idx] = new \CURLFile($file->getFilePathWithoutExt(), $file->ext->mime, $file->hash.".".$file->ext->ext);
                     ++$idx;
                 }
             }

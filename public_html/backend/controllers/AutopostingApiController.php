@@ -5,6 +5,7 @@ use common\models\libraries\AutopostingFb;
 use common\models\libraries\AutopostingInstagram;
 use common\models\libraries\AutopostingTwitter;
 use common\models\libraries\AutopostingVk;
+use common\models\libraries\AutopostingOk;
 use common\models\Mailer;
 use common\models\SocialNetworks;
 use yii\web\Controller;
@@ -48,6 +49,9 @@ class AutopostingApiController extends Controller
                             break;
                         case SocialNetworks::INSTAGRAM :
                             (new AutopostingInstagram($task))->post();
+                            break;
+                        case SocialNetworks::OK_RU :
+                            (new AutopostingOk($task))->post();
                             break;
                     }
                 }
