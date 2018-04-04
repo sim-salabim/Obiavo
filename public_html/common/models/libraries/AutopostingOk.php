@@ -49,9 +49,13 @@ class AutopostingOk {
         $params["access_token"] = $this->access_token;
         $params["sig"]=$sig;
         $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params), true);
+        print_r('Первая отправка: ');
+        print_r($result);
 //Если парсер не смог открыть нашу ссылку (иногда он это делает со второй попытки), то отправляем ещё раз
         if (isset($result['error_code']) && $result['error_code'] == 5000) {
             $result = $this->getUrl("https://api.ok.ru/fb.do", "POST", $params);
+            print_r('Вторая отправка: ');
+            print_r($result);
             if (isset($result['error_code']) && $result['error_code'] == 5000){
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
