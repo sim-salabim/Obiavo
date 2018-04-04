@@ -7,6 +7,10 @@ namespace common\models;
  *
  * @property integer $id
  * @property string $vk_token
+ * @property string $fb_token
+ * @property string $ok_token
+ * @property string $ok_public_key
+ * @property string $ok_secret_key
  */
 class Settings extends \yii\db\ActiveRecord
 {
@@ -25,7 +29,7 @@ class Settings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['vk_token'], 'string', 'max' => 255],
+            [['vk_token', 'fb_token', 'ok_token', 'ok_public_key','ok_secret_key'], 'string', 'max' => 255],
         ];
     }
 

@@ -23,19 +23,8 @@ $this->title = 'Настройки';
             'data'  => $setting,
             'columns' => [
                 [
-                    'label'        => 'VK токен',
+                    'label'        => 'Общие настройки',
                     'content'      => function($model){
-                        $html = $model->vk_token;
-
-                        return $html;
-                    },
-                ],
-                [
-                    'label'        => 'FB токен',
-                    'content'      => function($model){
-                        $html = $model->fb_token;
-
-                        return $html;
                     },
                 ],
                 [

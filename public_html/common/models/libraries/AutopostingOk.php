@@ -3,21 +3,47 @@ namespace common\models\libraries;
 
 use common\models\AutopostingTasks;
 use common\models\Mailer;
+use common\models\Settings;
 
 class AutopostingOk {
 
     private $task;
     private $group;
     private $access_token;
-    private $private_key;
+    private $secret_key;
     private $public_key;
 
     function __construct(AutopostingTasks $task){
         $this->task = $task;
         $this->group = $this->task->socialNetworksGroup;
-        $this->access_token = $this->group->token;
-        $this->private_key = $this->group->consumer_secret;
-        $this->public_key = $this->group->consumer_key;
+        $access_token = null;
+        $settings = Settings::find()->one();
+        if($this->group->token){
+            $access_token = $this->group->token;
+        }else{
+            if($settings AND $settings->ok_token){
+                $access_token = $settings->ok_token;
+            }
+        }
+        $secret_key = null;
+        if($this->group->consumer_secret){
+            $secret_key = $this->group->consumer_secret;
+        }else{
+            if($settings AND $settings->ok_secret_key){
+                $secret_key = $settings->ok_secret_key;
+            }
+        }
+        $public_key = null;
+        if($this->group->consumer_key){
+            $public_key = $this->group->consumer_key;
+        }else{
+            if($settings AND $settings->ok_public_key){
+                $public_key = $settings->ok_public_key;
+            }
+        }
+        $this->access_token = $access_token;
+        $this->secret_key = $secret_key;
+        $this->public_key = $public_key;
     }
 
     function post(){
@@ -45,17 +71,13 @@ class AutopostingOk {
                     ]}',
             "format"=>"json"
         );
-        $sig = md5($this->arInStr($params).md5("{$this->access_token}{$this->private_key}"));
+        $sig = md5($this->arInStr($params).md5("{$this->access_token}{$this->secret_key}"));
         $params["access_token"] = $this->access_token;
         $params["sig"]=$sig;
         $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params), true);
-        print_r('Первая отправка: ');
-        print_r($result);
 //Если парсер не смог открыть нашу ссылку (иногда он это делает со второй попытки), то отправляем ещё раз
         if (isset($result['error_code']) && $result['error_code'] == 5000) {
             $result = $this->getUrl("https://api.ok.ru/fb.do", "POST", $params);
-            print_r('Вторая отправка: ');
-            print_r($result);
             if (isset($result['error_code']) && $result['error_code'] == 5000){
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
@@ -76,7 +98,7 @@ class AutopostingOk {
             "gid" => $this->group->group_id,
         );
         $album_id = null;
-        $sig = md5($this->arInStr($get_albums_params).md5("{$this->access_token}{$this->private_key}"));
+        $sig = md5($this->arInStr($get_albums_params).md5("{$this->access_token}{$this->secret_key}"));
         $get_albums_params["access_token"] = $this->access_token;
         $get_albums_params["sig"]=$sig;
         $get_album_result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $get_albums_params), true);
@@ -92,7 +114,7 @@ class AutopostingOk {
                     "gid" => $this->group->group_id,
                     "title" => 'Альбом ' . $this->group->name
                 ];
-                $sig = md5($this->arInStr($add_album_params) . md5("{$this->access_token}{$this->private_key}"));
+                $sig = md5($this->arInStr($add_album_params) . md5("{$this->access_token}{$this->secret_key}"));
                 $add_album_params["access_token"] = $this->access_token;
                 $add_album_params["sig"] = $sig;
                 $add_album_result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $add_album_params), true);
@@ -118,7 +140,7 @@ class AutopostingOk {
                 "title" => 'Альбом ' . $this->group->name,
                 "count" => count($this->task->ad->files)
             ];
-            $sig = md5($this->arInStr($begining_adding_photos_params) . md5("{$this->access_token}{$this->private_key}"));
+            $sig = md5($this->arInStr($begining_adding_photos_params) . md5("{$this->access_token}{$this->secret_key}"));
             $begining_adding_photos_params["access_token"] = $this->access_token;
             $begining_adding_photos_params["sig"] = $sig;
             $begining_adding_photos_result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $begining_adding_photos_params), true);
