@@ -3,7 +3,9 @@ namespace common\models\libraries;
 
 use common\models\AutopostingTasks;
 use common\models\Mailer;
-use common\models\Settings;
+use Facebook\Authentication\OAuth2Client;
+use Facebook\FacebookApp;
+use Facebook\FacebookClient;
 
 class AutopostingFb {
 
@@ -12,25 +14,30 @@ class AutopostingFb {
     private $task;
     private $group_id;
     private $token;
+    private $app_id;
+    private $app_secret;
 
     function __construct(AutopostingTasks $task){
+        $this->app_id = $this->task->socialNetworksGroup->consumer_key;
+        $this->app_secret = $this->task->socialNetworksGroup->consumer_secret;
         $this->task = $task;
         $this->group_id = $this->task->socialNetworksGroup->group_id;
-        $token = null;
-        if($task->socialNetworksGroup->token){
-            $this->token = $task->socialNetworksGroup->token;
-        }else{
-            $settings = Settings::find()->one();
-            if($settings AND $settings->fb_token){
-                $this->token = $settings->fb_token;
-            }
-        }
+        $this->token = $this->task->socialNetworksGroup->token;
+
+        $oauth2Fb = new OAuth2Client(new FacebookApp($this->app_id, $this->app_secret), new FacebookClient());
+        $longLivedToken = $oauth2Fb->getLongLivedAccessToken($this->token);
+        $this->token = $longLivedToken->getValue();
+        $this->task->socialNetworksGroup->token = $longLivedToken->getValue();
+        $this->task->socialNetworksGroup->save();
+
     }
 
     function post(){
         $postfields = [
             'message' => $this->task->ad->text,
             'access_token' => $this->token,
+            'place' => $this->group_id,
+            'published' => true,
             'link' => $this->task->ad->city->region->country->domain.'/'.$this->task->ad->url()
         ];
         $ch = curl_init();
