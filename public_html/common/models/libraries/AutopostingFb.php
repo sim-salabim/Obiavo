@@ -18,9 +18,9 @@ class AutopostingFb {
     private $app_secret;
 
     function __construct(AutopostingTasks $task){
+        $this->task = $task;
         $this->app_id = $this->task->socialNetworksGroup->consumer_key;
         $this->app_secret = $this->task->socialNetworksGroup->consumer_secret;
-        $this->task = $task;
         $this->group_id = $this->task->socialNetworksGroup->group_id;
         $this->token = $this->task->socialNetworksGroup->token;
 
