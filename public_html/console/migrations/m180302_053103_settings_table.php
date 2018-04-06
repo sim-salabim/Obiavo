@@ -15,6 +15,8 @@ class m180302_053103_settings_table extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'vk_token' => $this->string()->null(),
             'fb_token' => $this->string()->null(),
+            'fb_app_id' => $this->string()->null(),
+            'fb_app_secret' => $this->string()->null(),
             'ok_token' => $this->string()->null(),
             'ok_public_key' => $this->string()->null(),
             'ok_secret_key' => $this->string()->null()

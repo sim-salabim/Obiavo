@@ -3,6 +3,7 @@ namespace common\models\libraries;
 
 use common\models\AutopostingTasks;
 use common\models\Mailer;
+use common\models\Settings;
 use Facebook\Authentication\OAuth2Client;
 use Facebook\FacebookApp;
 use Facebook\FacebookClient;
@@ -19,10 +20,11 @@ class AutopostingFb {
 
     function __construct(AutopostingTasks $task){
         $this->task = $task;
-        $this->app_id = $this->task->socialNetworksGroup->consumer_key;
-        $this->app_secret = $this->task->socialNetworksGroup->consumer_secret;
+        $settings = Settings::find()->one();
+        $this->app_id = (!$this->task->socialNetworksGroup->consumer_key) ? $settings->fb_app_id : $this->task->socialNetworksGroup->consumer_key;
+        $this->app_secret = (!$this->task->socialNetworksGroup->consumer_secret) ? $settings->fb_app_secret : $this->task->socialNetworksGroup->consumer_key;
         $this->group_id = $this->task->socialNetworksGroup->group_id;
-        $this->token = $this->task->socialNetworksGroup->token;
+        $this->token = (!$this->task->socialNetworksGroup->token) ? $settings->fb_token : $this->task->socialNetworksGroup->token;
 
         $oauth2Fb = new OAuth2Client(new FacebookApp($this->app_id, $this->app_secret), new FacebookClient());
         $longLivedToken = $oauth2Fb->getLongLivedAccessToken($this->token);
