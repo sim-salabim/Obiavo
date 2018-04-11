@@ -17,10 +17,12 @@ class AutopostingFb {
     private $token;
     private $app_id;
     private $app_secret;
+    private $fb_email;
 
     function __construct(AutopostingTasks $task){
         $this->task = $task;
         $settings = Settings::find()->one();
+        $this->fb_email = $settings->fb_email;
         $this->app_id = (!$this->task->socialNetworksGroup->consumer_key) ? $settings->fb_app_id : $this->task->socialNetworksGroup->consumer_key;
         $this->app_secret = (!$this->task->socialNetworksGroup->consumer_secret) ? $settings->fb_app_secret : $this->task->socialNetworksGroup->consumer_key;
         $this->group_id = $this->task->socialNetworksGroup->group_id;
@@ -57,6 +59,9 @@ class AutopostingFb {
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
         }else{
+            if($this->fb_email) {
+                Mailer::send("asmaliaks@gmail.com", $this->task->ad->title, 'fb-publication', ['ad' => $this->task->ad], ['name' => 'Facebook Admin', 'email' => $this->fb_email]);
+            }
             $this->task->status = AutopostingTasks::STATUS_POSTED;
             $this->task->save();
         }

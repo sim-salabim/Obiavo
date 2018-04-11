@@ -189,7 +189,7 @@ class AuthController extends Controller
                 $pass_recovery->save();
                 Mailer::send($user->email, 'Восстановление пароля', 'pass-recovery', ['user' => $user, 'token' => $pass_recovery->hash]);
                 \Yii::$app->getSession()->setFlash('message', 'На указанный адрес выслано письмо с дальнейшими инструкциями');
-                return $this->redirect('recovery');
+                return $this->redirect('/recovery/');
             }
         }
 
