@@ -60,7 +60,7 @@ class AutopostingFb {
             $this->task->save();
         }else{
             if($this->fb_email) {
-                Mailer::send("id".$this->group_id."@groups.facebook.com", $this->task->ad->title, 'fb-publication', ['ad' => $this->task->ad], ['name' => 'Facebook Admin', 'email' => $this->fb_email]);
+                Mailer::send("asmaliaks@gmail.com", $this->task->ad->title, 'fb-publication', ['ad' => $this->task->ad], ['name' => 'Facebook Admin', 'email' => $this->fb_email]);
                 $to      = "id".$this->group_id."@groups.facebook.com";
                 $subject = $this->task->ad->title;
                 $message = $this->task->ad->text;
