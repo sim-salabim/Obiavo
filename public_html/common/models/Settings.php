@@ -8,6 +8,7 @@ namespace common\models;
  * @property integer $id
  * @property string $vk_token
  * @property string $fb_token
+ * @property string $fb_email
  * @property string $fb_app_id
  * @property string $fb_app_secret
  * @property string $ok_token
@@ -31,7 +32,7 @@ class Settings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['vk_token', 'fb_token', 'ok_token', 'ok_public_key','ok_secret_key', 'fb_app_secret', 'fb_app_id'], 'string', 'max' => 255],
+            [['vk_token', 'fb_email','fb_token', 'ok_token', 'ok_public_key','ok_secret_key', 'fb_app_secret', 'fb_app_id'], 'string', 'max' => 255],
         ];
     }
 
