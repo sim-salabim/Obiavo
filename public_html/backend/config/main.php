@@ -16,6 +16,21 @@ return [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport'=>false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+//                'host' => 'smtp.gmail.com',
+//                'username' => '*********',
+//                'password' => '*********',
+                'host' => 'smtp.mail.ru',
+                'username' => '********',
+                'password' => '********',
+                'port' => '465',
+                'encryption' => 'ssl',
+            ]
+        ],
         'user' => [
             'class' => 'common\models\WebUser',
             'identityClass' => 'common\models\User',
