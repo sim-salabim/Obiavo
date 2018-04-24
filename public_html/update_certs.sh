@@ -1,1 +1,1 @@
-/home/YaAdmin/certbot-auto renew --dry-run
+/home/YaAdmin/certbot-auto renew --pre-hook "service nginx stop" --post-hook "service nginx start"
