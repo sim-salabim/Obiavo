@@ -1,1 +1,1 @@
-./certbot-auto renew --dry-run
+/home/YaAdmin/certbot-auto renew --dry-run
