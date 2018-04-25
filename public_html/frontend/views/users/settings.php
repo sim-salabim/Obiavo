@@ -7,7 +7,7 @@ $this->title = __('My settings');
     </div>
 </div>
 <hr>
-<form id="my-settings" method="POST" action="/nastroiki">
+<form id="my-settings" method="POST" action="/nastroiki/">
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">

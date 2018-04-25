@@ -10,7 +10,8 @@ return [
     'POST /publish-add' => 'ad/add',
     'POST /files-upload' => 'files/upload',
     'POST /remove-file' => 'files/remove',
-    'GET /nastroiki' => 'users/settings',
+    'GET /nastroiki/' => 'users/settings',
+    'POST /nastroiki/' => 'users/settings',
     'GET /moi-obiavleniya' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
     /**

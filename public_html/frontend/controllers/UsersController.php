@@ -37,11 +37,11 @@ class UsersController extends BaseController
                 foreach($errors as $key => $item){
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
-                return $this->redirect('/nastroiki');
+                return $this->redirect('/nastroiki/');
             }else{
                 $model->changeSettings();
                 \Yii::$app->getSession()->setFlash('message', __('Successfully saved'));
-                return $this->redirect('/nastroiki');
+                return $this->redirect('/nastroiki/');
             }
         } else {
             return $this->render('settings');
