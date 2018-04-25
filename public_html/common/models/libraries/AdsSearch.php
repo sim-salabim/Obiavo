@@ -8,6 +8,7 @@ class AdsSearch {
     public $category;
     public $action;
     public $location;
+    public $consider_location;
     public $limit;
     public $query;
     public $sorting;
@@ -16,6 +17,7 @@ class AdsSearch {
     public $page;
 
     function __construct(){
+        $this->consider_location = true;
         $this->user = null;
         $this->category = null;
         $this->action = null;
@@ -31,6 +33,20 @@ class AdsSearch {
         ];
         $this->sorting =
             'created_at DESC, title ASC';
+    }
+
+    /**
+     * @param $consider_location, boolean
+     */
+    function setConsiderLocation($consider_location){
+        $this->consider_location = $consider_location;
+    }
+
+    /**
+     * @return bool
+     */
+    function getConsiderLocation(){
+        return $this->consider_location;
     }
 
     /**

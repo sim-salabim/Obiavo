@@ -60,6 +60,7 @@ class UsersController extends BaseController
         $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
         $librarySearch->setPage($page);
         $librarySearch->setLimit($limit);
+        $librarySearch->setConsiderLocation(false);
         return $this->render('my-ads', [
             'loaded' => $limit,
             'ads_search' => (new Ads())->getList($librarySearch),

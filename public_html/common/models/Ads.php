@@ -202,46 +202,48 @@ class Ads extends \yii\db\ActiveRecord
         if($model->query) $like_conditions = [
             'like', 'title' , "$model->query"
         ];
-        $cities_id_arr = [];
-        if($model->location['city']){
-            $cities_id_arr = [$model->location['city']->id];
-        }else{
-            if($model->location['region']){
-                $cities_ids = (new \yii\db\Query())
-                    ->select(['id'])
-                    ->from('cities')
-                    ->groupBy(['id'])
-                    ->where(['regions_id' => $model->location['region']->id])
-                    ->all();
-                if(!empty($cities_ids)){
-                    foreach($cities_ids as $id){
-                        array_push($cities_id_arr, $id['id']);
+        if($model->consider_location) {
+            $cities_id_arr = [];
+            if ($model->location['city']) {
+                $cities_id_arr = [$model->location['city']->id];
+            } else {
+                if ($model->location['region']) {
+                    $cities_ids = (new \yii\db\Query())
+                        ->select(['id'])
+                        ->from('cities')
+                        ->groupBy(['id'])
+                        ->where(['regions_id' => $model->location['region']->id])
+                        ->all();
+                    if (!empty($cities_ids)) {
+                        foreach ($cities_ids as $id) {
+                            array_push($cities_id_arr, $id['id']);
+                        }
                     }
-                }
-            }else{
-                $cities_ids = (new \yii\db\Query())
-                    ->select(['id'])
-                    ->from('cities')
-                    ->groupBy(['id'])
-                    ->where(['in','regions_id' ,
-                        (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $model->location['country']->id])])
-                    ->all();
-                if(!empty($cities_ids)){
-                    foreach($cities_ids as $id){
-                        array_push($cities_id_arr, $id['id']);
+                } else {
+                    $cities_ids = (new \yii\db\Query())
+                        ->select(['id'])
+                        ->from('cities')
+                        ->groupBy(['id'])
+                        ->where(['in', 'regions_id',
+                            (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $model->location['country']->id])])
+                        ->all();
+                    if (!empty($cities_ids)) {
+                        foreach ($cities_ids as $id) {
+                            array_push($cities_id_arr, $id['id']);
+                        }
                     }
                 }
             }
+            if (!empty($cities_id_arr)) {
+                $location_conditions = ['in', 'cities_id', $cities_id_arr];
+            } else if (
+                empty($cities_id_arr)
+                AND
+                ($model->location['city'] OR $model->location['region'] OR $model->location['country'])
+            ) {
+                $location_conditions = ['cities_id' => 0];
+            }
         }
-        if(!empty($cities_id_arr)){
-            $location_conditions = ['in', 'cities_id', $cities_id_arr];
-        }else if(
-            empty($cities_id_arr)
-            AND
-            ($model->location['city'] OR $model->location['region'] OR $model->location['country'])){
-            $location_conditions = ['cities_id' => 0];
-        }
-
         $ads = [];
         if($ads_list) {
             $ads = Ads::find()
