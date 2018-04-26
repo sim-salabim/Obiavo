@@ -175,7 +175,7 @@ class AuthController extends Controller
                     \Yii::$app->getSession()->setFlash('recovery_error', $errors['email']);
                 }
                 \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('recovery');
+                return $this->redirect('/recovery/');
             }else{
                 $user = User::findOne(['email' => Yii::$app->request->post('email')]);
                 $pass_recovery = PasswordRecovery::findOne(['users_id' => $user->id, 'recovered' => PasswordRecovery::NOT_RECOVERED]);
