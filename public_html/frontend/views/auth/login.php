@@ -17,7 +17,7 @@
                     value="<?= $model->email ?>"
                 <? }?>
                 placeholder="email@mail.com"
-                class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>" required="">
+                class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>" >
             <?php if(Yii::$app->session->getFlash('email_error')){?>
                 <div class="invalid-feedback">
                     <?= Yii::$app->session->getFlash('email_error') ?>
@@ -29,7 +29,7 @@
     <!-- Password-->
     <div class="form-group validation-errors ">
         <div class="form-group">
-            <input id="password" name="password" type="password" placeholder="<?= __('Password') ?>" class="form-control input-md <?php if(Yii::$app->session->getFlash('password_error')){?> is-invalid<?php }?>" required="">
+            <input id="password" name="password" type="password" placeholder="<?= __('Password') ?>" class="form-control input-md <?php if(Yii::$app->session->getFlash('password_error')){?> is-invalid<?php }?>">
             <?php if(Yii::$app->session->getFlash('password_error')){?>
                 <div class="invalid-feedback">
                     <?= Yii::$app->session->getFlash('password_error') ?>

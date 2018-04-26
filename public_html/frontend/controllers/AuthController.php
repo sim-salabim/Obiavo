@@ -91,7 +91,7 @@ class AuthController extends Controller
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
                 \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('login');
+                return $this->redirect('/login/');
             }
         } else {
             return $this->render('login');
@@ -113,7 +113,7 @@ class AuthController extends Controller
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
                 \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('registration');
+                return $this->redirect('/registration/');
             }else{
                 $user = new User();
                 $user->email = $model->email;
@@ -124,7 +124,7 @@ class AuthController extends Controller
                 $user->setPassword($model->password);
                 $user->save();
                 \Yii::$app->getSession()->setFlash('message', __('Successfully registered. Please sign in using your email and password'));
-                return $this->redirect('registration');
+                return $this->redirect('/registration/');
             }
         } else {
             return $this->render('registration');
@@ -217,7 +217,7 @@ class AuthController extends Controller
                 $pass_recovery = PasswordRecovery::findOne(['hash' => Yii::$app->request->post('key'), 'recovered' => PasswordRecovery::NOT_RECOVERED]);
                 if(!$pass_recovery){
                     \Yii::$app->getSession()->setFlash('error', 'Пожалуйста запросите восстановление пароля еще раз или обратитесь к администраторам');
-                    return $this->redirect('reset');
+                    return $this->redirect('/reset/');
                 }
                 $pass_recovery->recovered = PasswordRecovery::RECOVERED;
                 $pass_recovery->updated_at = time();
@@ -230,7 +230,7 @@ class AuthController extends Controller
                 $user->setPassword(Yii::$app->request->post('pass'));
                 $user->save();
                 \Yii::$app->getSession()->setFlash('message', 'Пароль успешно обновлен, авторизуйтесь.');
-                return $this->redirect('reset');
+                return $this->redirect('/reset/');
             }
         }else{
             $key = Yii::$app->request->get('key');
