@@ -4,6 +4,7 @@
     ?>
 </h3>
 <form class="form-horizontal" method="post" id="password-recovery-form">
+    <hr>
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <?php  if(Yii::$app->session->getFlash('message')){ ?>
@@ -17,7 +18,6 @@
             <input
                 id="email"
                 name="email"
-                type="email"
                 <? if(isset($model) AND $model->email){?>
                     value="<?= $model->email ?>"
                 <? }?>
@@ -32,6 +32,7 @@
             <?php } ?>
         </div>
     </div>
+    <hr>
     <div class="form-group">
 
         <button class="btn btn-success" data-input="#password-recovery-form"><?= __('Confirm') ?></button>
