@@ -8,6 +8,7 @@ use common\models\Category;
 use common\models\City;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
+use frontend\models\LoginForm;
 use frontend\models\NewAdForm;
 use Yii;
 use yii\web\HttpException;
@@ -118,5 +119,26 @@ class AdController extends BaseController
         return $this->render('search',  [
             'library_search' => $librarySearch
         ]);
+    }
+
+    public function actionNewAddLogin(){
+        if(Yii::$app->request->isPost){
+            $model = new LoginForm();
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $model->load(Yii::$app->request->post(),'');
+            if ($model->login()) {
+                return $this->redirect('/podat-obiavlenie/');
+            } elseif(!$model->validate()) {
+                $errors = $model->getErrors();
+                foreach($errors as $key => $item){
+                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
+                }
+                \Yii::$app->getSession()->setFlash('model', $model);
+                return $this->redirect('/opublikovat-obiavlenie/');
+            }
+        }else{
+            $this->setPageTitle(__('Add ad'));
+            return $this->render('new-ad-login');
+        }
     }
 }

@@ -100,7 +100,7 @@
 <?
 $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
 if(Yii::$app->user->isGuest){
-    $ad_href = \yii\helpers\Url::toRoute('/login');
+    $ad_href = \yii\helpers\Url::toRoute('/opublikovat-obiavlenie');
 }
 ?>
 <script>
