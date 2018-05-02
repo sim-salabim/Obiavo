@@ -331,3 +331,7 @@ ul.bs-autocomplete-menu a {
 .pagination-link-active{
     border: 1px solid #ddd;
 }
+.grey-text{
+    color: #818182;
+    padding-top: 20px;
+}

@@ -11,7 +11,7 @@
         <div class="alert alert-success" role="alert">
             <?= Yii::$app->session->getFlash('message'); ?>
         </div>
-    <?php  } ?>
+    <?php  }?>
     <div class="form-group validation-errors ">
 
         <div class="form-group">
@@ -30,6 +30,9 @@
                     </div>
                 <?php } ?>
             <?php } ?>
+            <div class="grey-text">
+                <?= __('Password recovery steps will be sent on your email'); ?>
+            </div>
         </div>
     </div>
     <hr>

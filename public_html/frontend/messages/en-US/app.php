@@ -128,4 +128,5 @@ return [
     'ads in' => 'ads in',
     'on the site' => 'on the site',
     'Please sign in first' => 'Please sign in first',
+    'Password recovery steps will be sent on your email' => 'Password recovery steps will be sent on your email',
 ];
