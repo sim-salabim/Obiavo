@@ -30,7 +30,8 @@
     color: #0f0f0f;
 }
 .header {
-    border-bottom: 1px solid #c0c0c0;
+    /*border-bottom: 1px solid #c0c0c0;*/
     width: 100%;
     display: block;
+    border-bottom: 0px solid #c0c0c0;
 }

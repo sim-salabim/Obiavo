@@ -39,7 +39,8 @@ h1 {
     cursor: pointer;
 }
 .navbar {
-    border-bottom: 1px solid #c0c0c0;
+    /*border-bottom: 1px solid #c0c0c0;*/
+    box-shadow: 0px 0px 10px 0px #c7c7c7;
 }
 .wrap {
     min-height: 100%;
