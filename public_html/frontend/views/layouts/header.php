@@ -95,7 +95,6 @@
         <?php } ?>
 
     </ul>
-    <hr>
 </div>
 <?
 $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
