@@ -52,6 +52,8 @@ class UsersController extends BaseController
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+        $sort = Yii::$app->request->get('sort');
+        $direction = Yii::$app->request->get('direction');
         $this->setPageTitle(__('My ads'));
         $librarySearch = new AdsSearch();
         $librarySearch->setUser(Yii::$app->user->identity);
@@ -61,6 +63,9 @@ class UsersController extends BaseController
         $librarySearch->setPage($page);
         $librarySearch->setLimit($limit);
         $librarySearch->setConsiderLocation(false);
+        if($sort AND $direction) {
+            $librarySearch->setSorting($sort." ".$direction);
+        }
         return $this->render('my-ads', [
             'loaded' => $limit,
             'ads_search' => (new Ads())->getList($librarySearch),
