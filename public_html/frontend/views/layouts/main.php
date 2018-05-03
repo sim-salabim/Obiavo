@@ -88,9 +88,10 @@ AppAsset::register($this);
     <?php $this->endBody() ?>
     <script>
         function openNav() {
-            console.log(document.getElementById("mySidenav").style.width);
             if (document.getElementById("mySidenav").style.width == "0px" || document.getElementById("mySidenav").style.width == "") {
                 document.getElementById("mySidenav").style.width = "250px";
+                var heignt = document.getElementById("wrapper").clientHeight + 40;
+                document.getElementById("mySidenav").style.height = heignt+"px";
             } else {
                 document.getElementById("mySidenav").style.width = "0px";
             }
