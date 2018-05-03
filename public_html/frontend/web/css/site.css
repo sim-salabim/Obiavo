@@ -336,3 +336,7 @@ ul.bs-autocomplete-menu a {
     color: #818182;
     padding-top: 20px;
 }
+.ui-menu-item-wrapper{
+    background-color: inherit !important;
+    border: none !important;
+}
