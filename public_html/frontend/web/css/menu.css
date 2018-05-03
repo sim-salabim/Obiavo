@@ -18,7 +18,7 @@
     overflow: hidden;
     position: absolute;
     z-index: 1000; /* Stay on top */
-    top: 70px;
+    top: 72px;
     background-color: #ffffff;
     left: 0;
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
