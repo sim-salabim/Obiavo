@@ -26,7 +26,7 @@ class RegistrForm extends Model
     public function rules()
     {
         return [
-            [['email', 'password','cities_id', 'first_name', 'last_name'], 'required', 'message' => __('Required field')],
+            [['email', 'password','cities_id', 'first_name', 'last_name', 'cities_id'], 'required', 'message' => __('Required field')],
             ['email','email', 'message' => __('Incorrect email')],
             ['email','unique', 'targetClass' => \common\models\User::className(),
                                 'message' => __('User already exists')],

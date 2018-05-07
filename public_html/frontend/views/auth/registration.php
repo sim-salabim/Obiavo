@@ -62,7 +62,7 @@ $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cit
 
         <div class="form-group">
             <input
-                class="form-control bs-autocomplete <?php if(Yii::$app->session->getFlash('city_error')){?> is-invalid<?php }?>"
+                class="form-control bs-autocomplete <?php if(Yii::$app->session->getFlash('cities_id_error')){?> is-invalid<?php }?>"
                 id="live-search-select"
                 value="<?= $city_name ?>"
                 placeholder="<?= $selectCity ?>"
@@ -71,9 +71,9 @@ $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cit
                 data-item_id="live-search-select"
                 data-item_label="text"
                 autocomplete="off">
-            <?php if(Yii::$app->session->getFlash('city_error')){?>
+            <?php if(Yii::$app->session->getFlash('cities_id_error')){?>
                 <div class="invalid-feedback">
-                    <?= Yii::$app->session->getFlash('city_error') ?>
+                    <?= Yii::$app->session->getFlash('cities_id_error') ?>
                 </div>
             <?php } ?>
             <input type="hidden" id="hidden-city" name="cities_id" <? if(isset($model) AND $model->cities_id){?>
@@ -213,7 +213,7 @@ $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cit
                 select: function(event, ui) {
                     _hidden_field.val(ui.item.id);
                     _this.val(ui.item[_data.item_label]);
-                    _hidden_field.val(ui.item[_data.item_id]);
+                    _hidden_field.val(ui.item.id);
                     event.preventDefault();
                 },
                 close: function( event, ui ) {
