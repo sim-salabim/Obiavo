@@ -90,7 +90,14 @@ AppAsset::register($this);
         function openNav() {
             if (document.getElementById("mySidenav").style.width == "0px" || document.getElementById("mySidenav").style.width == "") {
                 document.getElementById("mySidenav").style.width = "250px";
-                var heignt = document.getElementById("wrapper").clientHeight + 38;
+                var headerHeight = document.getElementById("main-header").offsetHeight;
+                var heignt;
+                if(headerHeight == 70){
+                    document.getElementById("mySidenav").style.top = '72px';
+                }else if(headerHeight == 86){
+                    document.getElementById("mySidenav").style.top = '88px'
+                }
+                heignt = document.getElementById("wrapper").clientHeight + 38;
                 document.getElementById("mySidenav").style.height = heignt+"px";
             } else {
                 document.getElementById("mySidenav").style.width = "0px";

@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" id="main-header">
     <nav class="navbar navbar-expand navbar-light navbar-fixed-top bg-light">
         <button class="navbar-toggler"
                 type="button"
