@@ -33,9 +33,7 @@ class AdController extends BaseController
      * @return string|\yii\web\Response
      */
     public function actionNewAdd(){
-        if (Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+
         $this->setPageTitle(__('Add ad'));
         $categories = Category::find()
             ->where(['parent_id' => NULL])
@@ -45,8 +43,9 @@ class AdController extends BaseController
             ->withText(['languages_id' => Language::getDefault()->id])
             ->where(['id' => '317'])// потом убрать, а пока для красоты
             ->all();
+        $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
         return $this->render('new', [
-            'user' => Yii::$app->user->identity,
+            'user' => $user,
             'categories' => $categories,
             'cities' => $cities,
         ]);

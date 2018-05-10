@@ -99,13 +99,11 @@
 </div>
 <?
 $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
-if(Yii::$app->user->isGuest){
-    $ad_href = \yii\helpers\Url::toRoute('/opublikovat-obiavlenie');
-}
 ?>
 <script>
     $(document).ready(function(){
         $('.new-add-btn').bind('click', function(){
+            console.log('<?= $ad_href ?>');
             window.location.href = '<?= $ad_href ?>';
         });
         $('.search-button').bind('click', function(){

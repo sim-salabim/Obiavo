@@ -4,7 +4,6 @@ return [
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
     'GET /vybor-goroda' => 'location/vybor-goroda',
     'GET /podat-obiavlenie' => 'ad/new-add/',
-    'GET /opublikovat-obiavlenie' => 'ad/new-add-login',
     'POST /opublikovat-obiavlenie' => 'ad/new-add-login',
     'POST /get-sub-categories' => 'categories/get-sub-categories',
     'POST /get-category-placement' => 'categories/get-category-placement',
