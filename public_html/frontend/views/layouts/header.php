@@ -40,7 +40,10 @@
                 </div>
             </div>
 
-            <div class="form-inline my-2 mr-4 my-lg-0 d-none d-md-block d-lg-block">
+            <div
+                class="form-inline my-2 mr-4 my-lg-0 d-none d-md-block d-lg-block"
+                style="margin-bottom: 0 !important; margin-top: 0 !important"
+            >
                 <input class="form-control mr-sm-2 search-input"
                        type="text"
                        placeholder="<?= __('Search') ?>"
