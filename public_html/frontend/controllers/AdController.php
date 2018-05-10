@@ -133,11 +133,10 @@ class AdController extends BaseController
                     \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
                 }
                 \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('/opublikovat-obiavlenie/');
+                return $this->redirect('/podat-obiavlenie/');
             }
         }else{
-            $this->setPageTitle(__('Add ad'));
-            return $this->render('new-ad-login');
+            return $this->redirect('/podat-obiavlenie/');
         }
     }
 }

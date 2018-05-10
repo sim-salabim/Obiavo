@@ -30,7 +30,62 @@
         </div>
     </div>
     <hr>
-<? }?>
+<? }else{?>
+        <hr>
+        <div class="col-md-12 alert alert-light" role="alert"><?= __('Please sign in first') ?></div>
+        <form class="form-horizontal" method="post" id="login-form">
+            <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+                   value="<?=Yii::$app->request->csrfToken?>"/>
+            <!-- Email-->
+            <div class="form-group validation-errors ">
+                <div class="form-group">
+                    <input
+                        id="email"
+                        name="email"
+                        <? if(isset($model) AND $model->email){?>
+                            value="<?= $model->email ?>"
+                        <? }?>
+                        placeholder="email@mail.com"
+                        class="form-control input-md <?php if(Yii::$app->session->getFlash('email_error')){?> is-invalid<?php }?>" >
+                    <?php if(Yii::$app->session->getFlash('email_error')){?>
+                        <div class="invalid-feedback">
+                            <?= Yii::$app->session->getFlash('email_error') ?>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+
+            <!-- Password-->
+            <div class="form-group validation-errors ">
+                <div class="form-group">
+                    <input id="password" name="password" type="password" placeholder="<?= __('Password') ?>" class="form-control input-md <?php if(Yii::$app->session->getFlash('password_error')){?> is-invalid<?php }?>">
+                    <?php if(Yii::$app->session->getFlash('password_error')){?>
+                        <div class="invalid-feedback">
+                            <?= Yii::$app->session->getFlash('password_error') ?>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <a class="text-info"
+                   href="<?= yii\helpers\Url::toRoute('/registration') ?>"
+                   style="margin-right: 20px;">
+                    <?= __('Registration') ?>
+                </a>
+
+                <a class="text-info" href="<?= yii\helpers\Url::toRoute('/recovery') ?>"><?= __('Forgot your password?') ?></a>
+            </div>
+            <hr>
+            <div class="form-group">
+                <button class="btn btn-success" data-input="#login-form"><?= __('Sign in') ?></button>
+
+            </div>
+
+        </form>
+        <hr>
+
+    <? } ?>
 <div class="row padding-bottom-10">
     <div class="col <? if(!$user){?>color-disabled<? } ?>">
         <?= __('Select category')?>
@@ -47,7 +102,7 @@ $selected_placement_id = null;
 $placements = null;
 $model = Yii::$app->session->getFlash('model');
 $files = [];
-if(isset($model)){
+if(isset($model) and $user){
     $files = $model->files;
     $selected_category_id = ($model->categories_id AND $model->categories_id != 0) ? $model->categories_id : null;
     $selected_category = ($selected_category_id) ? \common\models\Category::findOne(['id' => $selected_category_id]) : null;
@@ -76,9 +131,11 @@ if(isset($model)){
         <div class="form-group col-lg-2 col-sm-12 col-md-6">
             <select name="categories_id" <? if(!$user){?> disabled<? } ?> id="category-select" class="form-control <?php if(Yii::$app->session->getFlash('categories_id_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
                 <option value="0"><?= __('Category') ?></option>
-                <? foreach ($categories as $category){?>
-                    <? $has_children = (count($category->children) > 0) ? 1 : 0; ?>
-                    <option value="<?= $category->id ?>" <? if((isset($model) AND ($model->categories_id AND $model->categories_id != 0)) AND $model->categories_id == $category->id){?>selected<? }?> has_children="<?= $has_children ?>"><?= $category->_text->name ?></option>
+                <? if($user){?>
+                    <? foreach ($categories as $category){?>
+                        <? $has_children = (count($category->children) > 0) ? 1 : 0; ?>
+                        <option value="<?= $category->id ?>" <? if((isset($model) AND ($model->categories_id AND $model->categories_id != 0)) AND $model->categories_id == $category->id){?>selected<? }?> has_children="<?= $has_children ?>"><?= $category->_text->name ?></option>
+                    <? } ?>
                 <? } ?>
             </select>
             <?php if(Yii::$app->session->getFlash('categories_id_error')){?>
@@ -94,7 +151,7 @@ if(isset($model)){
                 id="subcategory"
                 class="form-control <?php if(Yii::$app->session->getFlash('subcategory_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
                 <option value="0"><?= __('Subcategory') ?></option>
-                <? if($sub_categories){
+                <? if($sub_categories and $user){
                     foreach ($sub_categories as $sc){
                         ?>
                         <option value="<?= $sc->id ?>" <? if($selected_sub_category AND $sc->id == $selected_sub_category->id){?>selected<?}?>    <? if(count($sc->children)){?>has_children="1"<? }else{?> has_children="0"<? } ?>><?= $sc->_text->name ?></option>
@@ -113,7 +170,7 @@ if(isset($model)){
                 id="subsubcategory"
                 class="form-control <?php if(Yii::$app->session->getFlash('subsubcategory_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
                 <option value=""><?= __('Subcategory') ?></option>
-                <? if($sub_sub_categories){
+                <? if($sub_sub_categories and $user ){
                     foreach ($sub_sub_categories as $ssc){
                     ?>
                     <option value="<?= $ssc->id ?>" <? if($selected_sub_sub_category AND $ssc->id == $selected_sub_sub_category->id){?>selected<?}?> ><?= $ssc->_text->name ?></option>
@@ -132,7 +189,7 @@ if(isset($model)){
                 id="action_select"
                 class="form-control <?php if(Yii::$app->session->getFlash('placement_id_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
                 <option value="0"><?= __('Action') ?></option>
-                <? if($placements){
+                <? if($placements and $user){
                     foreach ($placements as $pl){
                         ?>
                         <option value="<?= $pl->id ?>" <? if($pl->id == $selected_placement_id){?>selected<?}?> ><?= $pl->_text->name ?></option>
@@ -167,6 +224,7 @@ if(isset($model)){
                 <? if(!$user){?> disabled<? } ?>
                 name="expiry_date"
                 class="form-control <?php if(Yii::$app->session->getFlash('expiry_date_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
+                <? if($user){ ?>
                 <option value="0" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 0){?>selected<? }?>><?= __('Time') ?></option>
                 <option value="86400" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 86400){?>selected<? }?>><?= __('One day') ?></option>
                 <option value="172800" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 172800){?>selected<? }?>><?= __('Two days') ?></option>
@@ -178,6 +236,7 @@ if(isset($model)){
                 <option value="1209600" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 1209600){?>selected<? }?>><?= __('Two weeks') ?></option>
                 <option value="1814400" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 1814400){?>selected<? }?>><?= __('Three weeks') ?></option>
                 <option value="2419200" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 2419200){?>selected<? }?>><?= __('One month') ?></option>
+                <? } ?>
             </select>
             <?php if(Yii::$app->session->getFlash('expiry_date_error')){?>
                 <div class="invalid-feedback">
@@ -195,7 +254,7 @@ if(isset($model)){
                 class="form-control <?php if(Yii::$app->session->getFlash('title_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>"
                 type="text"
                 name="title"
-                <? if(isset($model) AND $model->title){?>
+                <? if($user AND isset($model) AND $model->title){?>
                     value="<?= $model->title ?>"
                 <? }?>
                 placeholder="<?= __('Title')?>">
@@ -210,7 +269,7 @@ if(isset($model)){
                 <? if(!$user){?> disabled<? } ?>
                 class="form-control <?php if(Yii::$app->session->getFlash('text_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>"
                 rows="10"
-                name="text"><? if(isset($model) AND $model->text){?><?= $model->text ?><? }?></textarea>
+                name="text"><? if($user AND isset($model) AND $model->text){?><?= $model->text ?><? }?></textarea>
             <?php if(Yii::$app->session->getFlash('text_error')){?>
                 <div class="invalid-feedback">
                     <?= Yii::$app->session->getFlash('text_error') ?>
@@ -223,7 +282,7 @@ if(isset($model)){
                 class="form-control <?php if(Yii::$app->session->getFlash('price_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>"
                 type="text"
                 name="price"
-                <? if(isset($model) AND $model->price){?>
+                <? if($user AND isset($model) AND $model->price){?>
                 value="<?= $model->price ?>"
                 <? }?>
                 placeholder="<?= __('Price')?>">
