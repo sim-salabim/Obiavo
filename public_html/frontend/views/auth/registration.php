@@ -81,6 +81,26 @@ $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cit
             <? }else{?> value=""<? } ?>>
         </div>
     </div>
+    <!--  Номер телефона  -->
+    <div class="form-group validation-errors">
+
+        <div class="form-group">
+            <input
+                id="phone_number"
+                name="phone_number"
+                type="text"
+                <? if(isset($model) AND $model->phone_number){?>
+                    value="<?= $model->phone_number?>"
+                <? }?>
+                placeholder="<?= __('Phone Number') ?>"
+                class="form-control input-md <?php if(Yii::$app->session->getFlash('phone_number_error')){?> is-invalid<?php }?>">
+            <?php if(Yii::$app->session->getFlash('phone_number_error')){?>
+                <div class="invalid-feedback">
+                    <?= Yii::$app->session->getFlash('phone_number_error') ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
 
     <!-- Email-->
     <div class="form-group validation-errors">

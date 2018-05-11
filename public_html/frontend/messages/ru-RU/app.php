@@ -17,6 +17,7 @@ return [
     'Sign up' => 'Зарегистрироваться',
     'Required field' => 'Поле обязательно для заполнения',
     'Incorrect email' => 'Некорректный email',
+    'Incorrect phone number' => 'Некорректный номер',
     'Passwords don\'t match' => 'Пароли не совпадают',
     'User already exists' => 'Данный пользователь уже зарегистрирован',
     'Search...' => 'Поиск...',
@@ -129,6 +130,8 @@ return [
     'Page' => 'Страница',
     'ads in' => 'объявления в',
     'on the site' => 'на сайте',
+    'Min length is ' => 'Минимальная длина ',
+    'Phone number must contain digits only' => 'Номер должен содержать только цифры',
     'Please sign in first' => 'Для того чтобы подать объявление вам необходимо авторизоваться или зарегистрироваться на нашем сайте.',
     'Password recovery steps will be sent on your email' => 'На ваш электронный адрес будет выслано письмо с инструкцией для восстановления пароля.',
 ];

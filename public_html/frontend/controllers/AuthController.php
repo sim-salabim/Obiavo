@@ -120,6 +120,7 @@ class AuthController extends Controller
                 $user->last_name = $model->last_name;
                 $user->first_name = $model->first_name;
                 $user->cities_id = $model->cities_id;
+                $user->phone_number = $model->phone_number;
                 $user->created_at = time();
                 $user->setPassword($model->password);
                 $user->save();

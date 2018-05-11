@@ -15,7 +15,9 @@ class RegistrForm extends Model
     public $first_name = '';
     public $last_name = '';
     public $cities_id;
+    public $phone_number;
     public $rememberMe = true;
+    const PHONE_NUMBER_MIN_LENGTH = 8;
 
     private $_user;
 
@@ -26,12 +28,12 @@ class RegistrForm extends Model
     public function rules()
     {
         return [
-            [['email', 'password','cities_id', 'first_name', 'last_name', 'cities_id'], 'required', 'message' => __('Required field')],
+            [['email', 'password','cities_id', 'first_name', 'last_name', 'cities_id', 'phone_number'], 'required', 'message' => __('Required field')],
             ['email','email', 'message' => __('Incorrect email')],
             ['email','unique', 'targetClass' => \common\models\User::className(),
                                 'message' => __('User already exists')],
             ['rememberMe', 'boolean'],
-//            ['password', 'validatePassword'],
+            ['phone_number', 'validatePhoneNumber'],
             ['password', 'string', 'min' => 6, 'message' => __('Password must be minimum 6 characters long')],
         ];
     }
@@ -64,6 +66,7 @@ class RegistrForm extends Model
             $user->last_name = $this->last_name;
             $user->cities_id = $this->city;
             $user->email = $this->email;
+            $user->phone_number = $this->phone_number;
             $user->password = $this->password;
 
             if ($user->validate()){
@@ -73,5 +76,18 @@ class RegistrForm extends Model
         }
 
         return $this->_user;
+    }
+
+    /**
+     * @param $attribute
+     * @param $params
+     */
+    public function validatePhoneNumber($attribute, $params){
+        if (!is_numeric($this->phone_number)) {
+            $this->addError($attribute, __('Phone number must contain digits only'));
+        }
+        if(strlen($this->phone_number) < self::PHONE_NUMBER_MIN_LENGTH){
+            $this->addError($attribute, __('Min length is ').self::PHONE_NUMBER_MIN_LENGTH);
+        }
     }
 }

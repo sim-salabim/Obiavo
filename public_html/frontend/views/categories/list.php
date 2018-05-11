@@ -5,7 +5,7 @@ use \frontend\helpers\LocationHelper;
     <? if(!isset($row_list) OR !$row_list){ ?>
 
         <?php foreach ($categories as $category) { ?>
-            <div class="col-lg-4 col-xs-2">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <ul class="lvl-block" style="list-style: none;">
                     <h4 class="lvl-1">
                         <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>

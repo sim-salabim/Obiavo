@@ -18,6 +18,7 @@ return [
     'Sign up' => 'Sign up',
     'Required field' => 'Required field',
     'Incorrect email' => 'Incorrect email',
+    'Incorrect phone number' => 'Incorrect phone number',
     'Passwords don\'t match' => 'Passwords don\'t match',
     'User already exists' => 'User already exists',
     'Search' => 'Search',
@@ -128,5 +129,7 @@ return [
     'ads in' => 'ads in',
     'on the site' => 'on the site',
     'Please sign in first' => 'Please sign in first',
+    'Min length is ' => 'Min length is ',
+    'Phone number must contain digits only' => 'Phone number must contain digits only',
     'Password recovery steps will be sent on your email' => 'Password recovery steps will be sent on your email',
 ];
