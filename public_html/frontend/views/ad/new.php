@@ -1,13 +1,11 @@
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user) {?>
-    <div class="row">
-        <div class="col">
-            <?= __('_Contacts')?>
-        </div>
-    </div>
     <hr>
 
     <div class="row">
+        <div class="col-12">
+            <?= __('_Contacts')?>
+        </div>
         <div class="col-sm-12 col-md-6">
             <?= __('Your email')?>
         </div>

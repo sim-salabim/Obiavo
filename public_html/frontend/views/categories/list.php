@@ -22,10 +22,10 @@ use \frontend\helpers\LocationHelper;
         <div class="col-12 padding-bottom-10">
             <span class="color-grey">
                 <? if($current_category->placements){?>
-                    <? foreach($current_category->placements as $placement){ ?>
+                    <? foreach($current_category->placements as $k => $placement){ ?>
                         <a class="text-secondary"
                            href="/<?= LocationHelper::getDomainForUrl($current_category->url().$placement->url()) ?>">
-                            <?= $placement->_text->name?></a>,
+                            <?= $placement->_text->name?></a><? if(($k + 1) < count($current_category->placements) or count($categories)){?>,<? } ?>
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>

@@ -13,14 +13,14 @@ $show_sn_widgets = isset($show_sn_widgets) ? $show_sn_widgets : true;
 $root_url = isset($root_url) ? $root_url : null;
 ?>
 <div class="row">
-    <div class="col-lg-8 col-md-6 col-sm-12 text-align-left">
+    <div class="col-lg-7 col-md-4 col-sm-12 text-align-left">
         <?= $title ?>
     </div>
-    <div class="col-lg-3 col-md-5 col-sm-12 d-flex justify-content-end">
+    <div class="col-lg-3 col-md-5 col-sm-12 d-flex justify-content-end ">
         <?=  $this->render('/partials/_filter_select.php',
             []) ?>
     </div>
-    <div class="col-lg-1 col-md-1 col-sm-12">
+    <div class="col-lg-2 col-md-3 col-sm-12 text-align-right-grid">
         <?= $this->render('/partials/_grid_settings.php', []); ?>
     </div>
 </div>

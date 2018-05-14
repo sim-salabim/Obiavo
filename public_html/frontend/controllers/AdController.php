@@ -41,7 +41,7 @@ class AdController extends BaseController
             ->all();
         $cities = City::find()
             ->withText(['languages_id' => Language::getDefault()->id])
-            ->where(['id' => '317'])// потом убрать, а пока для красоты
+           // ->where(['id' => '317'])// потом убрать, а пока для красоты
             ->all();
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
         return $this->render('new', [

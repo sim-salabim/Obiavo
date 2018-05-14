@@ -13,11 +13,11 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
 
     public $depends = [
-        'frontend\assets\SiteAsset',
         'frontend\assets\BootstrapAsset',
         'frontend\assets\JqueryAsset',
         'frontend\assets\SelectAsset',
         'frontend\assets\FontAwesomeAsset',
+        'frontend\assets\SiteAsset',
     ];
 
     public $publishOptions = [

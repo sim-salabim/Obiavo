@@ -52,7 +52,7 @@ AppAsset::register($this);
     <div id="wrapper">
         <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff;">
             <div class="container">
-                <h1 class="display-3">
+                <h1 class="h1-header">
                     <? if(isset($this->params['seo_h1']) AND $this->params['seo_h1'] != ''){
                         echo $this->params['seo_h1'];
                     }else{
