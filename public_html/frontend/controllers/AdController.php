@@ -8,9 +8,18 @@ use common\models\Category;
 use common\models\City;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
+use common\models\libraries\AutopostingFb;
+use common\models\libraries\AutopostingInstagram;
+use common\models\libraries\AutopostingOk;
+use common\models\libraries\AutopostingTwitter;
+use common\models\libraries\AutopostingVk;
+use common\models\SocialNetworks;
+use common\models\SocialNetworksGroups;
+use common\models\TestTasks;
 use frontend\models\LoginForm;
 use frontend\models\NewAdForm;
 use Yii;
+use yii\base\Exception;
 use yii\web\HttpException;
 
 class AdController extends BaseController
@@ -138,5 +147,71 @@ class AdController extends BaseController
         }else{
             return $this->redirect('/podat-obiavlenie/');
         }
+    }
+
+    public function actionTest(){
+        $ad_id = Yii::$app->request->get('ad');
+        $ad = Ads::findOne($ad_id);
+        if (Yii::$app->user->isGuest or Yii::$app->user->id != $ad->users_id or Yii::$app->user->identity->patronymic != 'admin123456' or !$ad) {
+            return $this->goHome();
+        }
+        if(Yii::$app->request->isPost){
+            $sn_group_id = Yii::$app->request->post('sn_group_id');
+            $test_tasks = TestTasks::find()->where(['ads_id' => $ad_id, 'social_networks_groups_id' => $sn_group_id])->all();
+            if(count($test_tasks)){
+                foreach($test_tasks as $task){
+                    $task->delete();
+                }
+            }
+            $new_task = new TestTasks();
+            $new_task->ads_id = $ad_id;
+            $new_task->social_networks_groups_id = $sn_group_id;
+            $new_task->save();
+            \Yii::$app->getSession()->setFlash('success', "Сохранено");
+            return $this->redirect('/test-ad/'.$ad_id.'/');
+        }else {
+            return $this->render('test', ['groups' => SocialNetworksGroups::find()->all(), 'group_selected' => TestTasks::find()->where(['ads_id' => $ad_id])->one(), 'ad' => $ad]);
+        }
+    }
+
+    public function actionTestPost(){
+        $ad_id = Yii::$app->request->get('ad');
+        $group_id = Yii::$app->request->get('group');
+        $ad = Ads::findOne($ad_id);
+        $group = SocialNetworksGroups::findOne($group_id);
+        if (Yii::$app->user->isGuest or Yii::$app->user->id != $ad->users_id or Yii::$app->user->identity->patronymic != 'admin123456' or !$ad) {
+            return $this->goHome();
+        }
+        $task = new AutopostingTasks();
+        $task->social_networks_groups_id = $group_id;
+        $task->ads_id = $ad_id;
+        $task->status = AutopostingTasks::STATUS_PENDING;
+        $task->priority = 1;
+        $autoposting = null;
+        switch($group->socialNetwork->name){
+            case SocialNetworks::OK_RU :
+                $autoposting = new AutopostingOk($task);
+                break;
+            case SocialNetworks::VK_COM :
+                $autoposting = new AutopostingVk($task);
+                break;
+            case SocialNetworks::TWITTER :
+                $autoposting = new AutopostingTwitter($task);
+                break;
+            case SocialNetworks::FB_COM :
+                $autoposting = new AutopostingFb($task);
+                break;
+            case SocialNetworks::INSTAGRAM :
+                $autoposting = new AutopostingInstagram($task);
+                break;
+        }
+        try {
+            $autoposting->post();
+        }catch(Exception $e){
+            \Yii::$app->getSession()->setFlash('alert', "Ошибка отправки");
+            return $this->redirect('/test-ad/'.$ad_id.'/');
+        }
+        \Yii::$app->getSession()->setFlash('success', "Успешно опубликовано");
+        return $this->redirect('/test-ad/'.$ad_id.'/');
     }
 }
