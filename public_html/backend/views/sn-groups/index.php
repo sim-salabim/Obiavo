@@ -119,8 +119,8 @@ if($sort and $dir){
                     method: "POST",
                     url: $(this).attr("href"),
                     success: function (data) {
-                        if(data.error){
-                            alert(data.error);
+                        if(data.message){
+                            alert(data.message);
                         }
                         $('.btn-test').removeAttr("disabled");
                     }

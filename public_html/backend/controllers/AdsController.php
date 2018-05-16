@@ -70,11 +70,11 @@ class AdsController extends BaseController
         $post = \Yii::$app->request->get();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if(!isset($post['ad_id']) OR !isset($post['group_id'])){
-            return ['error' => 'Отсутствует параметр'];
+            return ['message' => 'Отсутствует параметр'];
         }
         $ad = Ads::findOne($post['ad_id']);
         if(!$ad){
-            return ['error' => 'Объявление '.$post['ad_id'].' отсутствует в системе'];
+            return ['message' => 'Объявление '.$post['ad_id'].' отсутствует в системе'];
         }
         $group = SocialNetworksGroups::findOne($post['group_id']);
         $task = new AutopostingTasks();
@@ -103,9 +103,9 @@ class AdsController extends BaseController
         try {
             $autoposting->post();
         }catch(\Exception $e){
-            return ['error' => $e->getMessage()];
+            return ['message' => $e->getMessage()];
         }
 
-        return ['success' => "Прошло успешно"];
+        return ['message' => "Прошло успешно"];
     }
 }
