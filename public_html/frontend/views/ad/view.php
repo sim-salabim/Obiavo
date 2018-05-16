@@ -36,13 +36,6 @@
                 <? } ?>
             </button>
         </div>
-        <? if($ad->users_id == Yii::$app->user->identity->id and Yii::$app->user->identity->patronymic == 'admin123456'){?>
-        <div class="col-lg-12">
-            <a href="/test-ad/<?= $ad->id ?>/" class="btn btn-link btn-sm">
-            Протестировать обьявление
-            </a>
-        </div>
-        <? } ?>
         <div class="w-100"></div>
         <div class="col-lg-12 col-sm-4">
             <?= $ad->user->first_name ?>

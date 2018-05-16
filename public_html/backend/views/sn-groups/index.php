@@ -20,7 +20,6 @@ if($sort and $dir){
 ?>
 
 <div id="loadcontent-container" style="display: none"></div>
-
 <div id="categories-table">
     <div class="well">
         <button class="btn btn-primary loadcontent"
@@ -44,6 +43,13 @@ if($sort and $dir){
             'label'        => 'Название',
             'content'      => function($model){
                 $html = ($model->url AND $model->url != '') ? '<a href="'.$model->url.'">'.$model->name.'</a>' : $model->name;
+                return $html;
+            },
+        ],
+        [
+            'label'        => 'Тестирование',
+            'content'      => function($model){
+                $html = '<a class="btn btn-primary btn-sm btn-test" href="/ads/test?group_id='.$model->id.'">тестировать</a><input group_id="'.$model->id.'" style="max-width: 100px; margin-left:5px" class="test-ad-input" />';
                 return $html;
             },
         ],
@@ -94,3 +100,32 @@ if($sort and $dir){
     ]
 ]);?>
 </div>
+<script>
+    $(document).ready(function(){
+        $(".btn-test").parent().width(200);
+
+        $('.test-ad-input').on('keyup', function(){
+            var href = $(this).prev().attr('href');
+            var splited = href.split('?');
+            var finalHref = splited[0]+"?group_id="+$(this).attr('group_id')+"&ad_id="+$(this).val();
+            $(this).prev().attr('href', finalHref);
+        });
+
+        $('.btn-test').bind('click',function (e) {
+            e.preventDefault();
+            if($(this).attr('disabled') != 'disabled') {
+                $(this).attr('disabled', 'disabled');
+                $.ajax({
+                    method: "POST",
+                    url: $(this).attr("href"),
+                    success: function (data) {
+                        if(data.error){
+                            alert(data.error);
+                        }
+                        $('.btn-test').removeAttr("disabled");
+                    }
+                });
+            }
+        });
+    });
+</script>

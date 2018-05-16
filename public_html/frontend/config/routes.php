@@ -15,16 +15,7 @@ return [
     'POST /nastroiki/' => 'users/settings',
     'GET /moi-obiavleniya' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
-    [
-        'class' => 'frontend\rules\url\TestAdRule',
-        'pattern' => '/test-ad/<ad:([0-9a-zA-Z\-]+)>',
-        'route' => 'ad/test',
-    ],
-    [
-        'class' => 'frontend\rules\url\TestRule',
-        'pattern' => '/test-post/<ad:([0-9a-zA-Z\-]+)>/<group:([0-9a-zA-Z\-]+)>',
-        'route' => 'ad/test-post',
-    ],
+
     /**
      * Класс правила ГОРОД
      */
