@@ -19,7 +19,7 @@ use \frontend\helpers\LocationHelper;
 
         <?php } ?>
     <?php }else{ ?>
-        <div class="col-12 padding-bottom-10">
+        <div class="col-12 ">
             <span class="color-grey">
                 <? if($current_category->placements){?>
                     <? foreach($current_category->placements as $k => $placement){ ?>

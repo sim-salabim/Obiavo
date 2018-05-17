@@ -38,7 +38,11 @@ class LocationController extends BaseController
 
     public function actionVyborGoroda(){
 
-        $this->setPageTitle(__('_Location'));
+        $cms = \common\models\Cms::getByTechname('location');
+        $this->setPageTitle($cms->_text->seo_title);
+        Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
+        Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
         $regions = (new Query())
             ->select('*, regions.id as id')
             ->from('regions')

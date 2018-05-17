@@ -12,6 +12,7 @@ $current_action = isset($current_action) ? $current_action : null;
 $show_sn_widgets = isset($show_sn_widgets) ? $show_sn_widgets : true;
 $root_url = isset($root_url) ? $root_url : null;
 ?>
+<hr>
 <div class="row">
     <div class="col-lg-7 col-md-4 col-sm-12 text-align-left">
         <?= $title ?>
@@ -23,9 +24,6 @@ $root_url = isset($root_url) ? $root_url : null;
     <div class="col-lg-2 col-md-3 col-sm-12 text-align-right-grid">
         <?= $this->render('/partials/_grid_settings.php', []); ?>
     </div>
-</div>
-<hr>
-<div class="row">
     <? if($ads_search['count'] == 0){?>
         <div class="col-12">
             <?= $no_ads_title; ?>

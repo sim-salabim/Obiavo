@@ -77,7 +77,10 @@ class AuthController extends Controller
         }
 
         $model = new LoginForm();
-
+        $cms = \common\models\Cms::getByTechname('login');
+        Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
+        Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
         if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(),'');
@@ -94,7 +97,7 @@ class AuthController extends Controller
                 return $this->redirect('/login/');
             }
         } else {
-            return $this->render('login');
+            return $this->render('login', compact('cms'));
         }
     }
 
@@ -104,6 +107,10 @@ class AuthController extends Controller
             return $this->goHome();
         }
         $model = new RegistrForm();
+        $cms = \common\models\Cms::getByTechname('registration');
+        Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
+        Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
         if (Yii::$app->request->isPost){
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(),'');
@@ -128,7 +135,7 @@ class AuthController extends Controller
                 return $this->redirect('/registration/');
             }
         } else {
-            return $this->render('registration');
+            return $this->render('registration', compact('cms'));
         }
     }
 

@@ -54,10 +54,10 @@
             </div>
             <span class="navbar-text mx-2 text-dark"><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?
                 if(Yii::$app->location->city){
-                    echo Yii::$app->location->city->_text->name;
+                    echo __('City');//Yii::$app->location->city->_text->name;
                 }else{
                     if(Yii::$app->location->region){
-                        echo Yii::$app->location->region->_text->short_name;
+                        echo __('Region');//Yii::$app->location->region->_text->short_name;
                     }else{
                         echo 'Россия';
                     }

@@ -132,4 +132,5 @@ return [
     'Min length is ' => 'Min length is ',
     'Phone number must contain digits only' => 'Phone number must contain digits only',
     'Password recovery steps will be sent on your email' => 'Password recovery steps will be sent on your email',
+    "Region" => "Region",
 ];

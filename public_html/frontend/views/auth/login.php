@@ -1,5 +1,5 @@
 <h3><?php
-    $this->title = __('Authorization');
+    $this->title = $cms->_text->seo_title;
     $model = Yii::$app->session->getFlash('model');
     ?>
 </h3>

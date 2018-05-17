@@ -1,10 +1,9 @@
 <?php
 use kartik\select2\Select2;
 use common\models\City;
-
 $url = \yii\helpers\Url::toRoute('cities/search-cities-for-select');
 $selectCity = __('Select a city');
-$this->title = __('Registration');
+$this->title = $cms->_text->seo_title;
 $model = Yii::$app->session->getFlash('model');
 $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cities_id])->_text->name : '';
 ?>

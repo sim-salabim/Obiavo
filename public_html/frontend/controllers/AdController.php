@@ -42,8 +42,11 @@ class AdController extends BaseController
      * @return string|\yii\web\Response
      */
     public function actionNewAdd(){
-
-        $this->setPageTitle(__('Add ad'));
+        $cms = \common\models\Cms::getByTechname('new-ad');
+        Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
+        Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
+        $this->setPageTitle($cms->_text->seo_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL])
             ->withText(['languages_id' => Language::getDefault()->id])
