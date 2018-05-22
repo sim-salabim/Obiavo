@@ -11,7 +11,7 @@ foreach($active_sns as $sn){
 }
 ?>
 <? foreach($sn_blocks as $block){?>
-<div class="col-md-4">
+<div class="col-lg-4 col-md-4 col-sm-12" style="padding-bottom: 10px">
     <? if($block){?>
         <?= $block->code_sm ?>
     <? }?>

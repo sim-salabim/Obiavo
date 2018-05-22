@@ -24,6 +24,9 @@ $root_url = isset($root_url) ? $root_url : null;
     <div class="col-lg-2 col-md-3 col-sm-12 text-align-right-grid">
         <?= $this->render('/partials/_grid_settings.php', []); ?>
     </div>
+</div>
+<hr class="margin-top-0">
+<div class="row">
     <? if($ads_search['count'] == 0){?>
         <div class="col-12">
             <?= $no_ads_title; ?>
