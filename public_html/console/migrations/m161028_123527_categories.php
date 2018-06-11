@@ -16,7 +16,14 @@ class m161028_123527_categories extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'parent_id' => $this->integer()->unsigned()->null(),
             'techname' => $this->string()->notNull(),
+            'name' => $this->string()->notNull(),
             'active' => $this->boolean()->defaultValue(1),
+            'brand' => $this->boolean()->defaultValue(0),
+            'excel_id' => $this->integer()->null(),
+            'seo_id' => $this->integer()->null(),
+            'clean_harakterisitka' => $this->integer()->null(),
+            'href' => $this->boolean()->defaultValue(0),
+            'href_id' => $this->integer()->null(),
         ], $tableOptions);
 
         $this->createIndex('idx_c_parent_id', 'categories', 'parent_id');
