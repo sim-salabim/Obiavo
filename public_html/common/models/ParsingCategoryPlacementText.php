@@ -10,8 +10,8 @@ use common\models\Language;
  *
  * @property integer $id
  * @property integer $categories_id
+ * @property integer $placements_id
  * @property integer $languages_id
- * @property string $url
  * @property string $name
  * @property string $seo_h1
  * @property string $seo_h2
@@ -20,20 +20,19 @@ use common\models\Language;
  * @property string $seo_keywords
  * @property string $seo_text
  *
- * @property Languages $languages
- * @property Categories $categories
  */
-class CategoriesText extends \yii\db\ActiveRecord
+class ParsingCategoryPlacementText extends \yii\db\ActiveRecord
 {
     const SCENARIO_DEFAULT = 'default';
 
-    public function scenarios   ()
+    public function scenarios()
     {
         return [
             self::SCENARIO_DEFAULT => [
+                'category_placement_id',
                 'categories_id',
+                'placements_id',
                 'languages_id',
-                'url',
                 'name',
                 'seo_h1',
                 'seo_h2',
@@ -49,7 +48,7 @@ class CategoriesText extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'categories_text';
+        return 'parsing_categories_placement_text';
     }
 
     /**
@@ -58,11 +57,11 @@ class CategoriesText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['categories_id', 'name', 'url'], 'required'],
-            [['categories_id', 'languages_id'], 'integer'],
-            [['seo_h1','seo_h2','name', 'url', 'seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
+            [['category_placement_id'], 'required'],
+            [['category_placement_id', 'languages_id'], 'integer'],
+            [['seo_title', 'seo_h1','seo_h2','name', 'seo_keywords'], 'string', 'max' => 255],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
+
             ['languages_id','default','value' => Language::getDefault()->id]
         ];
     }
@@ -74,11 +73,10 @@ class CategoriesText extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'categories_id' => 'Categories ID',
+            'category_placement_id' => 'Categories/Placement ID',
             'languages_id' => 'Languages ID',
-            'url' => 'Url',
             'seo_title' => 'Seo Title',
-            'name' => 'Seo Name',
+            'seo' => 'Name',
             'seo_h1' => 'Seo H1',
             'seo_h2' => 'Seo H2',
             'seo_desc' => 'Seo Desc',
@@ -87,19 +85,5 @@ class CategoriesText extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLanguage()
-    {
-        return $this->hasOne(Language::className(), ['id' => 'languages_id']);
-    }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategories()
-    {
-        return $this->hasOne(Category::className(), ['id' => 'categories_id']);
-    }
 }

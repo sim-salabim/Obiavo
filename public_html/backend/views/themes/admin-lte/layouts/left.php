@@ -47,6 +47,7 @@ use yii\helpers\Url;
                     ['label' => 'Сообщества соцсетей', 'icon' => 'child', 'url' => ['/sn-groups']],
                     ['label' => 'Автопостинг', 'icon' => 'eye', 'url' => ['/autoposting-tasks']],
                     ['label' => 'Настройки', 'icon' => 'cog', 'url' => ['/settings']],
+                    ['label' => 'Парсинг', 'icon' => 'cog', 'url' => ['/parsing']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

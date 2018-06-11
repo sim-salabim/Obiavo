@@ -12,8 +12,16 @@ use common\models\scopes\CategoryQuery;
  * @property integer $id
  * @property integer $parent_id
  * @property string $techname
+ * @property string $name
  * @property integer $active
  * @property integer $social_networks_groups_main_id
+ * @property boolean $brand
+ * @property boolean $clean_harakterisitka
+ * @property boolean $href
+ * @property integer $excel_id
+ * @property integer $seo_id
+ * @property integer $href_id
+ *
  *
  * @property Ads[] $ads
  * @property Category $parent

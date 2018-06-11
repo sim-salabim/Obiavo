@@ -20,14 +20,12 @@ use common\models\Language;
  * @property string $seo_keywords
  * @property string $seo_text
  *
- * @property Languages $languages
- * @property Categories $categories
  */
-class CategoriesText extends \yii\db\ActiveRecord
+class ParsingCategoriesText extends \yii\db\ActiveRecord
 {
     const SCENARIO_DEFAULT = 'default';
 
-    public function scenarios   ()
+    public function scenarios()
     {
         return [
             self::SCENARIO_DEFAULT => [
@@ -49,7 +47,7 @@ class CategoriesText extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'categories_text';
+        return 'parsing_categories_text';
     }
 
     /**
@@ -87,19 +85,5 @@ class CategoriesText extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLanguage()
-    {
-        return $this->hasOne(Language::className(), ['id' => 'languages_id']);
-    }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategories()
-    {
-        return $this->hasOne(Category::className(), ['id' => 'categories_id']);
-    }
 }
