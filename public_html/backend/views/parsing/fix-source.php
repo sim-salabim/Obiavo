@@ -7,7 +7,7 @@ $this->title = 'Парсинг категорий';
 
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">Парсинг текстов категорий</h3>
+        <h3 class="box-title">Парсинг падежей категорий</h3>
 
         <div class="box-tools">
         </div>
@@ -25,25 +25,26 @@ $this->title = 'Парсинг категорий';
 <script>
     $(document).ready(function(){
         var limit = 50;
+        var offset = 0;
         var parsed = 0;
         var allAmount = $("#amount").text();
         $(".categories-parsing").bind("click", function(){
-            parse(limit, allAmount, parsed);
+            parse(offset, limit, allAmount, parsed);
         });
     });
 
-    function parse(limit, allAmount, parsed){
+    function parse(offset, limit, allAmount, parsed){
         $.ajax({
             dataType: "json",
             type : 'POST',
-            url: '<?= \yii\helpers\Url::toRoute('parsing/categories-parsing-live-tables') ?>',
-            data: {limit: limit, amount: allAmount, parsed: parsed},
+            url: '<?= \yii\helpers\Url::toRoute('parsing/fix-source') ?>',
+            data: {limit: limit, offset: offset, amount: allAmount, parsed: parsed},
             success: function(data) {
                 console.log(data);
                 if(data.parsed < allAmount){
                     $("#progress-amount").text(data.parsed);
                     $("#bar").attr("style", "width: "+data.persantage+"%");
-                    parse(limit, allAmount, data.parsed);
+                    parse(data.parsed, limit, allAmount, data.parsed);
                 }
             }
         });

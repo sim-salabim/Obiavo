@@ -41,7 +41,7 @@ class ParsingCategory extends \yii\db\ActiveRecord
             [['parent_id', 'active'], 'integer'],
             [['techname'], 'required'],
             [['techname'], 'string', 'max' => 255],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['parent_id' => 'id']],
+            //[['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 

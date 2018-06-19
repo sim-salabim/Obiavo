@@ -21,6 +21,12 @@
             </thead>
             <tbody>
             <tr>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/source"])?>">Парсинг исходников</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/fix-placements"])?>">Парсинг исходников placements</a></td>
+            </tr>
+            <tr>
                 <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories"])?>">Падежи категорий</a></td>
             </tr>
             <tr>
