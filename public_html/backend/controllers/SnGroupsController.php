@@ -44,9 +44,11 @@ class SnGroupsController extends BaseController
             $sn_group = SocialNetworksGroups::findOne($sn_group_id);
         } else {
             $dir = \Yii::$app->request->get('dir') ? \Yii::$app->request->get('dir') : 'DESC';
+            $sorting_field = \Yii::$app->request->get('sort') ? \Yii::$app->request->get('sort') : 'id';
+            $var = ($sorting_field == "id") ? 'social_networks_groups.id ' : 'social_networks_groups_main.name ';
             $sn_groups = SocialNetworksGroups::find()
                 ->leftJoin('social_networks_groups_main', 'social_networks_groups_main.id = social_networks_groups.social_networks_groups_main_id')
-                ->orderBy('social_networks_groups_main.name '.$dir)
+                ->orderBy($var.$dir)
                 ->all();
         }
 
