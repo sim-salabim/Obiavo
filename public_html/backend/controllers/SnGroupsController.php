@@ -39,20 +39,30 @@ class SnGroupsController extends BaseController
 
     public function actionIndex($sn_group_id = null){
         $sn_group = null;
-
+        $pages_amount = 1;
+        $current_page = 1;
+        $link = "";
         if ($sn_group_id){
             $sn_group = SocialNetworksGroups::findOne($sn_group_id);
         } else {
+            $current_page = \Yii::$app->request->get('page') ? \Yii::$app->request->get('page') : 1;
+            $limit = 20;
+            $offset = ($current_page - 1) * $limit;
             $dir = \Yii::$app->request->get('dir') ? \Yii::$app->request->get('dir') : 'DESC';
             $sorting_field = \Yii::$app->request->get('sort') ? \Yii::$app->request->get('sort') : 'id';
             $var = ($sorting_field == "id") ? 'social_networks_groups.id ' : 'social_networks_groups_main.name ';
+            $rows = SocialNetworksGroups::find()->count();
+            $pages_amount = ceil($rows/$limit);
             $sn_groups = SocialNetworksGroups::find()
                 ->leftJoin('social_networks_groups_main', 'social_networks_groups_main.id = social_networks_groups.social_networks_groups_main_id')
                 ->orderBy($var.$dir)
+                ->limit($limit)
+                ->offset($offset)
                 ->all();
+            $link = "?dir=".$dir."&sort=".$sorting_field."&";
         }
 
-        return $this->render('index',  compact('sn_group', 'sn_groups'));
+        return $this->render('index',  compact('sn_group', 'sn_groups', 'pages_amount', 'current_page', 'link'));
     }
 
     public function actionCreate(){

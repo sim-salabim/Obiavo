@@ -99,6 +99,17 @@ if($sort and $dir){
         ],
     ]
 ]);?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <?
+            $index = 1;
+            while($index <= $pages_amount){?>
+            <li class="page-item <? if($current_page == $index){?>disabled<? } ?>"><a class="page-link" href="<?= $link."page=".$index ?>"><?= $index ?></a></li>
+            <?
+            $index++;
+            } ?>
+        </ul>
+    </nav>
 </div>
 <script>
     $(document).ready(function(){
