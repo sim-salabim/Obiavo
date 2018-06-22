@@ -232,14 +232,14 @@ class ParsingController extends BaseController
                         $category_raw = new \common\models\CategoriesRaw();
                     }
                     $category_raw->categories_id = $cat->id;
-                    $category_raw->name = $cat->name;
+                    $category_raw->name = $parsingCatText->name;
                     if(!isset($xml->code)) {
                         $plural = null;
                         if(isset($xml->множественное)){
                             $plural = (array)$xml->множественное;
                         }
                         $xml = (array)$xml;
-                        $category_raw->name_ip = $cat->name;
+                        $category_raw->name_ip = $parsingCatText->name;
                         $category_raw->name_rp = isset($xml['Р']) ? $xml['Р'] : null;
                         $category_raw->name_dp = isset($xml['Д']) ? $xml['Д'] : null;
                         $category_raw->name_vp = isset($xml['В']) ? $xml['В'] : null;;
@@ -266,6 +266,7 @@ class ParsingController extends BaseController
 //                    $text = ParsingCategoriesText::find()->where(["categories_id"=>$cat->id])->one();
 //                    $category->_text->languages_id = $cat->languages_id;
                     }else{
+                        $category_raw->name_ip = $parsingCatText->name;
                         //TelegrammLoging::send("Пизда всему, код ошибки ".$xml->code." в слове: ".$parsingCatText->name." $xml->message");
                     }
                     $category_raw->save();

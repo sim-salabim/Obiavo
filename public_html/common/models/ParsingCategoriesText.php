@@ -56,12 +56,6 @@ class ParsingCategoriesText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['categories_id', 'name', 'url'], 'required'],
-            [['categories_id', 'languages_id'], 'integer'],
-            [['seo_h1','seo_h2','name', 'url', 'seo_title', 'seo_desc', 'seo_keywords'], 'string', 'max' => 255],
-            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
-            ['languages_id','default','value' => Language::getDefault()->id]
         ];
     }
 
