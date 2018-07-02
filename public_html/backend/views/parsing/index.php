@@ -21,19 +21,25 @@
             </thead>
             <tbody>
             <tr>
-                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/source"])?>">Парсинг исходников</a></td>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/source"])?>">Парсинг исходников 1</a></td>
             </tr>
             <tr>
-                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/fix-placements"])?>">Парсинг исходников placements</a></td>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories-live-tables"])?>">Категории 3</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/fix-placements"])?>">Парсинг исходников placements 2 </a></td>
+            </tr>
+            <tr>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/placement"])?>">Текст для типов обьявлений 4</a></td>
             </tr>
             <tr>
                 <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories"])?>">Падежи категорий</a></td>
             </tr>
             <tr>
-                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories-live-tables"])?>">Категории</a></td>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories-text"])?>">Teksty категорий</a></td>
             </tr>
             <tr>
-                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/placement"])?>">Текст для типов обьявлений</a></td>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories-placement-text"])?>">Teksty плайсментов</a></td>
             </tr>
             </tbody>
         </table>

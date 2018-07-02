@@ -74,7 +74,20 @@ class ParsingController extends BaseController
 
         return $this->render('index',compact('setting'));
     }
-
+    public function actionCategoriesText(){
+        $categories_amount = (new Query())
+            ->select('id')
+            ->from('parsing_categories_text')
+            ->count();
+        return $this->render('categories-text', ['categories_amount' => $categories_amount]);
+    }
+    public function actionCategoriesPlacementText(){
+        $categories_amount = (new Query())
+            ->select('id')
+            ->from('parsing_categories_placement_text')
+            ->count();
+        return $this->render('categories-placements-text', ['categories_amount' => $categories_amount]);
+    }
     public function actionCategories()
     {
         $categories_amount = (new Query())
@@ -124,18 +137,18 @@ class ParsingController extends BaseController
                     $p_rp = ($category_text_raw->name_p_rp) ? $category_text_raw->name_p_rp : $category_text_raw->name;
                     $p  = ($category_text_raw->name_p_ip) ? $category_text_raw->name_p_ip : $category_text_raw->name;
                     $seo_title = str_replace(["{key:name-vp-s}", "{key:name-rp-s}"], [$p_vp, $p_rp], $pl->seo_title);
-                    $parsed_placement->seo_title = $seo_title;
+                    $parsed_placement->seo_title = $pl->seo_title;
                     $vp = ($category_text_raw->name_vp) ? $category_text_raw->name_vp : $category_text_raw->name;
                     $seo_h1 = str_replace(["{key:name}", "{key:name-vp}", "{key:name-translit}"], [ $category_text_raw->name,$vp,TransliterationHelper::transliterate($category_text_raw->name)], $pl->seo_h1);
                     $parsed_placement->seo_h1 = $seo_h1;
                     $seo_h2 = str_replace(["{key:name}", "{key:name-rp-s}"], [ $category_text_raw->name,$p_rp], $pl->seo_h2);
-                    $parsed_placement->seo_h2 = $seo_h2;
+                    $parsed_placement->seo_h2 = $pl->seo_h2;
                     $parsed_placement->name = $pl->name;
                     $parsed_placement->seo_text = $pl->seo_text;
                     $seo_desc = str_replace(["{key:name-rp-s}","{key:name-rp-s}"],[$p_rp, $p],$pl->seo_desc);
-                    $parsed_placement->seo_desc = $seo_desc;
+                    $parsed_placement->seo_desc = $pl->seo_desc;
                     $keywords = str_replace(["{key:name-vp-s","{key:name-rp-s}","{key:name-translit}"], [$p_vp, $p_rp,TransliterationHelper::transliterate($category_text_raw->name)], $pl->seo_keywords);
-                    $parsed_placement->seo_keywords = $keywords;
+                    $parsed_placement->seo_keywords = $pl->seo_keywords;
                     $parsed_placement->save();
                     $parsed++;
                 }
@@ -160,40 +173,34 @@ class ParsingController extends BaseController
                 $parsed = $post['parsed'];
                 foreach($categories as $cat){
                     $cat_text = ParsingCategoriesText::find()->where(['categories_id' => $cat->id, 'languages_id' => 1])->one();
-                    $category = Category::find()->where(["id" => $cat->id]);
+                    //$category = Category::find()->where(["id" => $cat->id]);
                     $category_raw = CategoriesRaw::find()->where(['categories_id' => $cat->id])->one();
-                    if(!isset($category->id)){
+                    //if(!isset($category->id)){
                         $category = new Category();
-                    }
+                   // }
                     $category->id = $cat->id;
-                    $category->techname = $cat->name;
+                    $category->techname = $cat->techname;
                     $category->name = $cat->name;
                     $category->active = $cat->active;
                     $category->social_networks_groups_main_id = $cat->social_networks_groups_main_id;
-                    $category->brand = $cat->brand;
+                    $category->brand = ($cat->brand) ? $cat->brand : 0;
                     $category->excel_id = $cat->excel_id;
                     $category->seo_id = $cat->seo_id;
-                    $category->clean_harakterisitka = $cat->clean_harakterisitka;
-                    $category->href = $cat->href;
+                    $category->clean_harakterisitka = ($cat->clean_harakterisitka) ? $cat->clean_harakterisitka : 0;
+                    $category->href = ($cat->href) ? $cat->href : 0;
                     $category->href_id = $cat->href_id;
                     $category->parent_id = ($cat->parent_id == 0) ? null : $cat->parent_id;
                     $category->save();
-                    $category_text = CategoriesText::find()->where(['categories_id' => $category->id, "languages_id" => 1])->one();
-                    if(!$category_text){
-                        $category_text = new CategoriesText();
-                    }
+                    $category_text = new CategoriesText();
                     $category_text->categories_id = $category->id;
                     $category_text->languages_id = 1;
-                    $category_text->url = TransliterationHelper::transliterate($cat->name);
-                    $category_text->seo_h1 = str_replace(["{key:name}", "{key:name-translit}"], [$category_raw->name, TransliterationHelper::transliterate($cat->name)], $cat_text->seo_h1);
-                    $category_text->seo_title = str_replace("{key:name}", $category_raw->name, $cat_text->seo_title);
-                    $vp_s = ($category_raw->name_p_vp) ? $category_raw->name_p_vp : $category_raw->name;
-                    $category_text->seo_h2 = str_replace(["{key:name-vp-s}", "{key:name}"], [$vp_s, $category_raw->name], $cat_text->seo_h2);
+                    $category_text->url = $cat_text->url;
+                    $category_text->seo_h1 = $cat_text->seo_h1;
+                    $category_text->seo_title = $cat_text->seo_title;
+                    $category_text->seo_h2 = $cat_text->seo_h2;
                     $category_text->name = $category_raw->name;
-                    $pp_s = ($category_raw->name_p_pp) ? $category_raw->name_p_pp : $category_raw->name;
-                    $category_text->seo_desc = mb_strtolower(str_replace(["{key:name-pp-s}", "{key:name}"], [$pp_s, $category_raw->name], $cat_text->seo_desc));
-                    $name_s = ($category_raw->name_p_ip) ? $category_raw->name_p_ip : $category_raw->name_ip;
-                    $category_text->seo_keywords = mb_strtolower(str_replace(["{key:name}", "{key:name-vp-s}", "{key:name-s}", "{key:name-translit}"] ,[$category_raw->name, $vp_s, $name_s, TransliterationHelper::transliterate($category_raw->name)], $cat_text->seo_keywords));
+                    $category_text->seo_desc = $cat_text->seo_desc;
+                    $category_text->seo_keywords = $cat_text->seo_keywords;
                     $category_text->save();
                     $parsed++;
                 }
@@ -203,6 +210,138 @@ class ParsingController extends BaseController
 
             Yii::$app->response->statusCode = 200;
             return ["persantage" => $persentage, 'parsed' => $parsed];
+        }
+    }
+
+
+   private function replaceCategorySeo($name, $category_raw){
+        $result_array = [];
+        $search_array = [
+            '{key:name-vp-s}',
+            '{key:name-back}',
+            '{key:name-translit}',
+            '{key:name-back-url}',
+            '{key:name}',
+            '{key:name-vp}',
+            '{key:name-s}',
+            '{key:name-pp-s}',
+            '{key:name-rp-s}',
+            '{key:name-dp-s}',
+            '{key:name-back-s}',
+            '{key:name-pp-back-s}',
+            '{key:name-rp-back-s}',
+            '{key:name-vp-back-s}',
+            '{key:name-vp-back}',
+            '{key:name-back-back}',
+            '{key:name-back-back-s}',
+            '{key:name-pp-back-back-s}',
+            '{key:name-rp-back-back-s}',
+            '{key:name-back-back-url}',
+            '{key:name-vp-back-back-s}',
+            '{key:name-vp-back-back}',
+        ];
+       $category = ParsingCategory::find()->where(['id' => $category_raw->categories_id])->one();
+       if($category->parent_id) {
+           $parent_category = ParsingCategory::find()->where(['id' => $category->parent_id])->one();
+           $parent_raw = CategoriesRaw::find()->where(['categories_id' => $parent_category->id])->one();
+           $url_back = ParsingCategoriesText::find()->where(['categories_id' => $parent_category->id])->one()->url;
+           if($parent_category->parent_id){
+               $parent_parent_category = ParsingCategory::find()->where(['id' => $parent_category->parent_id])->one();
+               $parent_parent_raw = CategoriesRaw::find()->where(['categories_id' => $parent_parent_category->id])->one();
+               $url_back_back = ParsingCategoriesText::find()->where(['categories_id' => $parent_parent_category->id])->one()->url;
+           }
+       }
+       foreach($search_array as $search){
+           $result_array[$search] = '';
+           switch($search){
+               case '{key:name-vp-s}':
+                   $result_array[$search] = ($category_raw->name_vp) ? mb_strtolower($category_raw->name_vp) : mb_strtolower($category_raw->name_ip);
+                   break;
+               case '{key:name-back}':
+                   $result_array[$search] = (isset($parent_raw)) ? $parent_raw->name : '';
+                   break;
+               case '{key:name-translit}':
+                   if(!preg_match('/[^\\p{Common}\\p{Latin}]/u', $name[0])){
+                       $result_array[$search] = TransliterationHelper::transliterateToCyrillic($name);
+                   }else{
+                       $result_array[$search] = $category_raw->name;
+                   }
+                   break;
+               case '{key:name-back-url}':
+                   $result_array[$search] = (isset($url_back)) ? $url_back : '';
+                   break;
+               case '{key:name}':
+                   $result_array[$search] = $category_raw->name_ip;
+                   break;
+               case '{key:name-vp}':
+                   $result_array[$search] = ($category_raw->name_vp) ? $category_raw->name_vp : $category_raw->name_ip;
+                   break;
+               case '{key:name-s}':
+                   $result_array[$search] = mb_strtolower($category_raw->name_ip);
+                   break;
+               case '{key:name-pp-s}':
+                   $result_array[$search] = ($category_raw->name_pp_about) ? mb_strtolower($category_raw->name_pp_about) : mb_strtolower("о ".$category_raw->name_ip);
+                   break;
+               case '{key:name-rp-s}':
+                   $result_array[$search] = ($category_raw->name_rp) ? mb_strtolower($category_raw->name_rp) : mb_strtolower($category_raw->name_ip);
+                   break;
+               case '{key:name-dp-s}':
+                   $result_array[$search] = ($category_raw->name_dp) ? mb_strtolower($category_raw->name_dp) : mb_strtolower($category_raw->name_ip);
+                   break;
+               case '{key:name-back-s}':
+                   $result_array[$search] = (isset($parent_raw)) ? mb_strtolower($parent_raw->name) : '';
+                   break;
+               case '{key:name-pp-back-s}':
+                   $result_array[$search] = (isset($parent_raw) and $parent_raw->name_pp_about) ? mb_strtolower($parent_raw->name_pp_about) : '';
+                   break;
+               case '{key:name-rp-back-s}':
+                   $result_array[$search] = (isset($parent_raw) and $parent_raw->name_rp) ? mb_strtolower($parent_raw->name_rp) : '';
+                   break;
+               case '{key:name-vp-back-s}':
+                   $result_array[$search] = (isset($parent_raw) and $parent_raw->name_vp) ? mb_strtolower($parent_raw->name_vp) : '';
+                   break;
+               case '{key:name-vp-back}':
+                   $result_array[$search] = (isset($parent_raw) and $parent_raw->name_vp) ? $parent_raw->name_vp: '';
+                   break;
+               case '{key:name-back-back}':
+                   $result_array[$search] = (isset($parent_parent_raw)) ? $parent_parent_raw->name : '';
+                   break;
+               case '{key:name-back-back-s}':
+                   $result_array[$search] = (isset($parent_parent_raw)) ? mb_strtolower($parent_parent_raw->name) : '';
+                   break;
+               case '{key:name-pp-back-back-s}':
+                   $result_array[$search] = (isset($parent_parent_raw) and $parent_parent_raw->name_pp_about) ? mb_strtolower($parent_parent_raw->name_pp_about) : '';
+                   break;
+               case '{key:name-rp-back-back-s}':
+                   $result_array[$search] = (isset($parent_parent_raw) and $parent_parent_raw->name_rp) ? mb_strtolower($parent_parent_raw->name_rp) : '';
+                   break;
+               case '{key:name-back-back-url}':
+                   $result_array[$search] = (isset($url_back_back)) ? $url_back_back : "";
+                   break;
+               case '{key:name-vp-back-back-s}':
+                   $result_array[$search] = (isset($parent_parent_raw) and $parent_parent_raw->name_vp) ? mb_strtolower($parent_parent_raw->name_vp) : '';
+                   break;
+               case '{key:name-vp-back-back}':
+                   $result_array[$search] = (isset($parent_parent_raw) and $parent_parent_raw->name_vp) ? $parent_parent_raw->name_vp: '';
+                   break;
+           }
+
+       }
+       $replace_arr = [];
+       foreach($result_array as $res){
+           $replace_arr[] = $res;
+       }
+       return ['pattern'=>$search_array,'replace'=>$replace_arr ];
+    }
+
+    private function makeUrl($url, $idx = 0){
+        $search_url = $idx != 0 ? $url."-".$idx : $url;
+        $cat_url = ParsingCategoriesText::find()->where(['url' => $search_url])->one();
+        if($cat_url){
+            $idx++;
+            return $this->makeUrl($url, $idx);
+        }else{
+            return $search_url;
         }
     }
 
@@ -315,13 +454,13 @@ class ParsingController extends BaseController
                     $new_text->languages_id = 1;
                     $new_text->name = $category_name_arr['category_name'];
                     $seo_array = $this->makeSeoArray($c);
-                    $new_text->seo_h1 = $seo_array['H1'];
-                    $new_text->seo_h2 = $seo_array['H2'];
-                    $new_text->url = $seo_array['Url'];
-                    $new_text->seo_title = $seo_array['Title'];
-                    $new_text->seo_desc = $seo_array['Description'];
-                    $new_text->seo_keywords = $seo_array['Keywords'];
-                    $new_text->seo_text = $seo_array['TEXT'];
+                    $new_text->seo_h1 = $this->replaceCategorySeo($seo_array['H1'], $c);
+                    $new_text->seo_h2 = $this->replaceCategorySeo($seo_array['H2'], $c);
+                    $new_text->url = $this->replaceCategorySeo($seo_array['Url'], $c);
+                    $new_text->seo_title = $this->replaceCategorySeo($seo_array['Title'], $c);
+                    $new_text->seo_desc = $this->replaceCategorySeo($seo_array['Description'], $c);
+                    $new_text->seo_keywords = $this->replaceCategorySeo($seo_array['Keywords'], $c);
+                    $new_text->seo_text = $this->replaceCategorySeo($seo_array['TEXT'], $c);
                     $new_text->save();
                     $parsed++;
                 }
@@ -333,8 +472,79 @@ class ParsingController extends BaseController
             return ["persantage" => $persentage, 'parsed' => $parsed];
         }
     }
+//TODO запустить
+    public function actionCategoriesTextParsing(){
+        if(Yii::$app->request->isPost){
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $post = Yii::$app->request->post();
+            if(!isset($post['limit']) OR !isset($post['amount'])){
+                Yii::$app->response->statusCode = 500;
+                return ['error' => "Parameters missed", "post" => $post];
+            }else{
+                $categories = ParsingCategory::find()->offset($post['parsed'])->limit($post['limit'])->orderBy('id ASC')->all();
+                $parsed = $post['parsed'];
+                foreach($categories as $cat){
+                    $cat_text = ParsingCategoriesText::find()->where(['categories_id' => $cat->id, 'languages_id' => 1])->one();
 
-    public function actionFixPlacements(){
+                    $category_raw = CategoriesRaw::find()->where(['categories_id' => $cat->id])->one();
+                    $replace_array = $this->replaceCategorySeo($cat->techname, $category_raw);
+                    $url = TransliterationHelper::transliterate($category_raw->name, true, false);
+                    $final_url = $this->makeUrl($url);
+                    $cat_text->seo_h1 = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->seo_h1);
+                    $cat_text->seo_title = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->seo_title);
+                    $cat_text->seo_h2 = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->seo_h2);
+                    $cat_text->seo_desc = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->seo_desc);
+                    $cat_text->seo_keywords = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->seo_keywords);
+                    $cat_text->seo_text = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->seo_text);
+                    $replace_array['replace'][2] = $final_url;
+                    $replace_array['pattern'][] = '{key:name-url}';
+                    $replace_array['replace'][] = $final_url;
+                    $cat_text->url = str_replace($replace_array['pattern'], $replace_array['replace'], $cat_text->url);
+                    $cat_text->save();
+                    $parsed++;
+                }
+            }
+            $persantage = $parsed * 100/$post['amount'];
+            $persentage = floor($persantage);
+
+            Yii::$app->response->statusCode = 200;
+            return ["persantage" => $persentage, 'parsed' => $parsed];
+        }
+    }
+//TODO запустить 2
+    public function actionCategoriesPlacementsTextParsing(){
+        if(Yii::$app->request->isPost){
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $post = Yii::$app->request->post();
+            if(!isset($post['limit']) OR !isset($post['amount'])){
+                Yii::$app->response->statusCode = 500;
+                return ['error' => "Parameters missed", "post" => $post];
+            }else{
+                $placement_texts = ParsingCategoryPlacementText::find()->offset($post['parsed'])->limit($post['limit'])->orderBy('categories_id ASC')->all();
+                $parsed = $post['parsed'];
+                foreach($placement_texts as $pl_text){
+                    $category = ParsingCategory::find()->where(['id' => $pl_text->categories_id])->one();
+                    $category_raw = CategoriesRaw::find()->where(['categories_id' => $pl_text->categories_id])->one();
+                    $replace_array = $this->replaceCategorySeo($category->techname, $category_raw);
+                    $pl_text->seo_h1 = str_replace($replace_array['pattern'], $replace_array['replace'], $pl_text->seo_h1);
+                    $pl_text->seo_title = str_replace($replace_array['pattern'], $replace_array['replace'], $pl_text->seo_title);
+                    $pl_text->seo_h2 = str_replace($replace_array['pattern'], $replace_array['replace'], $pl_text->seo_h2);
+                    $pl_text->seo_desc = str_replace($replace_array['pattern'], $replace_array['replace'], $pl_text->seo_desc);
+                    $pl_text->seo_keywords = str_replace($replace_array['pattern'], $replace_array['replace'], $pl_text->seo_keywords);
+                    $pl_text->seo_text = str_replace($replace_array['pattern'], $replace_array['replace'], $pl_text->seo_text);
+                    $pl_text->save();
+                    $parsed++;
+                }
+            }
+            $persantage = $parsed * 100/$post['amount'];
+            $persentage = floor($persantage);
+
+            Yii::$app->response->statusCode = 200;
+            return ["persantage" => $persentage, 'parsed' => $parsed];
+        }
+    }
+
+    public function actionPlacements(){
         $categories_amount = (new Query())
             ->select('id')
             ->from('parsing_categories_raw')
@@ -393,7 +603,7 @@ class ParsingController extends BaseController
             ->select('id')
             ->from('parsing_categories_raw')
             ->count();
-        return $this->render('fix-source', ['categories_amount' => $categories_amount]);
+        return $this->render('source', ['categories_amount' => $categories_amount]);
     }
 
     private function getPlacementSeo(ParsingCategoryRaw $c){
