@@ -54,7 +54,7 @@ class CategoriesController extends BaseController
         $this->category = $category;
 
         $subCategories = $this->category->children;
-        $categoryPlacements = $this->category->placements;
+//        $categoryPlacements = $this->category->placements;
 
         if($action){
             $category_placement = CategoryPlacement::find()->where(['placements_id' => $action_id, 'categories_id' => $category->id])->one();
@@ -98,7 +98,7 @@ class CategoriesController extends BaseController
             'current_category'      => $this->category,
             'categories'    => $subCategories,
             'row_list'      => true,
-            'placements'    => $categoryPlacements,
+//            'placements'    => $categoryPlacements,
             'current_action'=> $action,
             'page'          => $page,
             'ads_search'    => $ads_list,
