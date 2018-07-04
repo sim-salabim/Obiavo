@@ -50,30 +50,6 @@ class ParsingCategoryRaw extends \yii\db\ActiveRecord
     {
         return [
             [['COL1', 'COL23'], 'integer'],
-            [[
-                'COL2',
-                'COL3',
-                'COL4',
-                'COL5',
-                'COL6',
-                'COL7',
-                'COL8',
-                'COL9',
-                'COL10',
-                'COL11',
-                'COL12',
-                'COL13',
-                'COL14',
-                'COL15',
-                'COL16',
-                'COL17',
-                'COL18',
-                'COL19',
-                'COL20',
-                'COL21',
-                'COL22',
-            ],
-                'string', 'max' => 255],
         ];
     }
 

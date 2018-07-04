@@ -565,26 +565,24 @@ class ParsingController extends BaseController
                 foreach($categories as $c){
                     $placements_arr = $this->getPlacementSeo($c);
                     $current_category = ParsingCategory::find()->where(['excel_id' => $c->COL23])->one();
-                    foreach($placements_arr as $pl_id => $ar) {
-                        if($ar) {
-                            $cpt = new ParsingCategoryPlacementText();
+                    foreach($placements_arr as $pl_id => $a) {
                             $cat_placement = new ParsingCategoryPlacement();
                             $cat_placement->categories_id = $current_category->id;
                             $cat_placement->placements_id = $pl_id;
                             $cat_placement->save();
+                            $cpt = new ParsingCategoryPlacementText();
                             $cpt->categories_id = $current_category->id;
                             $cpt->placements_id = $pl_id;
                             $cpt->category_placement_id = $cat_placement->id;
                             $cpt->languages_id = 1;
-                            $cpt->seo_title = $ar['Title']->COL6;
-                            $cpt->seo_h1 = $ar['H1']->COL6;
-                            $cpt->seo_h2 = $ar['H2']->COL6;
+                            $cpt->seo_title = $a['Title'];
+                            $cpt->seo_h1 = $a['H1'];
+                            $cpt->seo_h2 = $a['H2'];
                             $cpt->name = $c->COL11;
-                            $cpt->seo_text = $ar['TEXT']->COL6;
-                            $cpt->seo_desc = $ar['Description']->COL6;
-                            $cpt->seo_keywords = $ar['Keywords']->COL6;
+                            $cpt->seo_text = $a['TEXT'];
+                            $cpt->seo_desc = $a['Description'];
+                            $cpt->seo_keywords = $a['Keywords'];
                             $cpt->save();
-                        }
                     }
                     $parsed++;
                 }
@@ -607,34 +605,34 @@ class ParsingController extends BaseController
     }
 
     private function getPlacementSeo(ParsingCategoryRaw $c){
-        $seo_raws = ParsingSeoRaw::find()->where(['COL1'=>$c->COL1])->andFilterWhere(["in", "COL2", (new \yii\db\Query())->select('id')->from('parsing_placements')])->all();
+        $seo_raws = ParsingSeoRaw::find()->where(['COL1'=>$c->COL1])->all();
         $seo_arr = [
-            1 => null, 2 => null, 3 => null, 4 => null, 9 =>null, 10 => null, 11 => null, 12 =>null
+           // 1 => null, 2 => null, 3 => null, 4 => null, 9 =>null, 10 => null, 11 => null, 12 =>null
         ];
-        foreach ($seo_raws as $raw){
+        foreach ($seo_raws as $k => $raw){
             if($raw->COL2 == 2){
-                $seo_arr[2][$raw->COL4] = $raw;
+                $seo_arr[2][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 3){
-                $seo_arr[1][$raw->COL4] = $raw;
+                $seo_arr[1][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 4){
-                $seo_arr[9][$raw->COL4] = $raw;
+                $seo_arr[9][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 5){
-                $seo_arr[3][$raw->COL4] = $raw;
+                $seo_arr[3][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 6){
-                $seo_arr[4][$raw->COL4] = $raw;
+                $seo_arr[4][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 7){
-                $seo_arr[12][$raw->COL4] = $raw;
+                $seo_arr[12][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 8){
-                $seo_arr[10][$raw->COL4] = $raw;
+                $seo_arr[10][$raw->COL4] = $raw->COL6;
             }
             if($raw->COL2 == 9){
-                $seo_arr[11][$raw->COL4] = $raw;
+                $seo_arr[11][$raw->COL4] = $raw->COL6;
             }
         }
         return $seo_arr;

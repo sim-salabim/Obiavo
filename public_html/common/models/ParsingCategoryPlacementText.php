@@ -57,12 +57,6 @@ class ParsingCategoryPlacementText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_placement_id'], 'required'],
-            [['category_placement_id', 'languages_id'], 'integer'],
-            [['seo_title', 'seo_h1','seo_h2','name', 'seo_keywords'], 'string', 'max' => 255],
-            [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
-
-            ['languages_id','default','value' => Language::getDefault()->id]
         ];
     }
 
