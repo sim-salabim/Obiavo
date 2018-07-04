@@ -24,8 +24,8 @@ use \frontend\helpers\LocationHelper;
                 <? if($current_category->placements){?>
                     <? foreach($current_category->placements as $k => $placement){ ?>
                         <a class="text-secondary"
-                           href="/<?= LocationHelper::getDomainForUrl($current_category->url().$placement->url()) ?>">
-                            <?= $placement->_text->name?></a><? if(($k + 1) < count($current_category->placements) or count($categories)){?>,<? } ?>
+                           href="/<?= LocationHelper::getDomainForUrl($current_category->url().$placement['url']."/") ?>">
+                            <?= $placement['name']?></a><? if(($k + 1) < count($current_category->placements) or count($categories)){?>,<? } ?>
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>

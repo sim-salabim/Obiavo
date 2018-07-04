@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use common\models\scopes\CategoryQuery;
 
@@ -150,13 +151,14 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getPlacements()
     {
-        $tbCategoryPlacement = CategoryPlacement::tableName();
-
-        return Placement::find()
-                    ->joinWith('categoryPlacement')
-                    ->joinWith('placementsText')
-                    ->onCondition(['=',"`$tbCategoryPlacement`.`categories_id`", $this->id])
-                    ->all();
+        $placements = (new Query())
+            ->select('*')
+            ->from('placements')
+            ->leftJoin('categories_has_placements', 'placements.id = categories_has_placements.placements_id')
+            ->leftJoin('placements_text', 'placements.id = placements_text.placements_id')
+            ->where(['categories_has_placements.categories_id' => $this->id])
+            ->all();
+        return $placements ;
     }
 
     public function getAttributes(){
@@ -261,7 +263,7 @@ class Category extends \yii\db\ActiveRecord
             }
             if($has_kids){
                 $level++;
-                if($level > $limit){
+                if($level >= $limit){
                     return $result;
                 }else{
                     return Category::getAllChildren($categories_result, $result, $level);
