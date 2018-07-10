@@ -12,7 +12,9 @@ use \frontend\helpers\LocationHelper;
                     </h4>
 
                     <?php foreach ($category->children as $child) { ?>
+                        <? if($child->active){ ?>
                         <li class="lvl-2 ml-4" style="color: #777;"><a href="/<?= LocationHelper::getDomainForUrl($child->url())?>"><?= $child->_text->name?></a></li>
+                    <? } ?>
                     <?php } ?>
                 </ul>
             </div>
@@ -29,7 +31,9 @@ use \frontend\helpers\LocationHelper;
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>
-                    <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
+                    <? if($category->active){ ?>
+                        <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
+                    <? }?>
                 <? } ?>
             </span>
         </div>
