@@ -50,7 +50,9 @@ class CategoriesController extends BaseController
         }
 
         $category = Category::getByUrl($categoryUrl);
-
+        if(!$category->active){
+            throw new HttpException(404, 'Not Found');
+        }
         $this->category = $category;
 
         $subCategories = $this->category->children;
