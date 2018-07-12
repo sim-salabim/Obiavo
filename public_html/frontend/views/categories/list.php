@@ -7,9 +7,9 @@ use \frontend\helpers\LocationHelper;
         <?php foreach ($categories as $category) { ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <ul class="lvl-block" style="list-style: none;">
-                    <h4 class="lvl-1">
+                    <li class="lvl-1">
                         <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>
-                    </h4>
+                    </li>
 
                     <?php foreach ($category->children as $child) { ?>
                         <? if($child->active){ ?>

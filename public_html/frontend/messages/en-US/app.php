@@ -133,4 +133,6 @@ return [
     'Phone number must contain digits only' => 'Phone number must contain digits only',
     'Password recovery steps will be sent on your email' => 'Password recovery steps will be sent on your email',
     "Region" => "Region",
+    "No photo" => "no photo",
+    "photo" => "photo"
 ];

@@ -34,14 +34,15 @@ $root_url = isset($root_url) ? $root_url : null;
     <? }else{?>
         <? foreach($ads_search['items'] as $ad){?>
             <div class="col-lg-2 col-md-4 col-6">
-                <img class="img-fluid" src="<?= $ad->avatar(true) ?>">
+                <? $avatar = $ad->avatar(true); ?>
+                <img class="img-fluid" src="<?= $avatar ?>" alt="<? if(strpos($avatar, 'placeholder') !== false){ echo __('No photo'); }else{ echo __('photo')." ".$ad->title; }?>">
             </div>
             <div class="col-lg-10 col-md-8 col-6">
-                <span><strong><a href="/<?= $ad->url() ?>" ><?= $ad->title ?></a></strong></span></br>
-                <span><strong><?= $ad->price . " " . \common\models\Ads::PRICE_LABEL ?></strong></span></br>
-                <span><small class="ads-pre-text"><?= cutText($ad->text, 50) ?></small></span></br>
-                <span><small class="ads-pre-text"><?= $ad->placement->_text->name ?>, <?= $ad->category->_text->name ?>, <?= $ad->city->_text->name ?></small></span></br>
-                <span><small class="ads-pre-text"><?= $ad->getHumanDate() ?></small></span></br>
+                <span><strong><a href="/<?= $ad->url() ?>" ><?= $ad->title ?></a></strong></span><br/>
+                <span><strong><?= $ad->price . " " . \common\models\Ads::PRICE_LABEL ?></strong></span><br/>
+                <span><small class="ads-pre-text"><?= cutText($ad->text, 50) ?></small></span><br/>
+                <span><small class="ads-pre-text"><?= $ad->placement->_text->name ?>, <?= $ad->category->_text->name ?>, <?= $ad->city->_text->name ?></small></span><br/>
+                <span><small class="ads-pre-text"><?= $ad->getHumanDate() ?></small></span><br/>
             </div>
         <? } ?>
         <? if($library_search->limit < $ads_search['count']){?>

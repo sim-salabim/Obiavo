@@ -16,6 +16,7 @@ AppAsset::register($this);
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
     <head>
+        <meta charset="<?= Yii::$app->charset ?>">
         <? if(isset($this->params['canonical']) AND $this->params['canonical']){?>
             <link rel="canonical" href="<?= $this->params['canonical'] ?>">
         <? } ?>
@@ -31,7 +32,6 @@ AppAsset::register($this);
         <? if(isset($this->params['seo_keywords']) AND $this->params['seo_keywords']){?>
             <meta name="keywords" content="<?= $this->params['seo_keywords'] ?>">
         <? } ?>
-        <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::decode(strip_tags($this->title)) ?></title>
@@ -72,7 +72,7 @@ AppAsset::register($this);
                     <? } ?>
                     <? if(isset($this->params['seo_text'])){?>
                         <div class="col-12">
-                            <p class="lead"><?= $this->params['seo_text'] ?></p>
+                            <?= $this->params['seo_text'] ?>
                         </div>
                     <? } ?>
                 </div>

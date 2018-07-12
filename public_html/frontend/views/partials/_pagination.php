@@ -21,7 +21,7 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
 ?>
 <div class="col-lg-12">
 <hr>
-    <nav class=padding-top-10">
+    <nav class="padding-top-10">
         <ul class="pagination">
             <? if($library_search->page != 1){?>
             <li class="page-item ">

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <label class="col-xs-2 col-form-label">
     <?= $attribute['label'] ?>
     <? if(isset($attribute['label_desc']) AND $attribute['label_desc']){?>
-        </br><span class="label_desc">(<?= $attribute['label_desc'] ?>)</span>
+        <br/><span class="label_desc">(<?= $attribute['label_desc'] ?>)</span>
     <? } ?>
 </label>
 <div class="col-xs-10">

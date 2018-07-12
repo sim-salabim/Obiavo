@@ -80,7 +80,7 @@ class AutopostingVk {
         $api_request_get_server .= '&album_id='.$album_id.'&group_id='.$this->task->socialNetworksGroup->group_id;
         $api_request_get_server_response = json_decode(file_get_contents($api_request_get_server));
         if(isset($api_request_get_server_response->error)){
-            TelegrammLoging::send('<p>Ошибка получения сервера для загрузки фото для группы '.$this->task->socialNetworksGroup->group_id.'</p></br><code>'.$api_request_get_server_response->error->error_msg.'</code></br>'.$api_request_get_server);
+            TelegrammLoging::send('<p>Ошибка получения сервера для загрузки фото для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$api_request_get_server_response->error->error_msg.'</code><br/>'.$api_request_get_server);
             Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $api_request_get_server_response->error->error_msg, 'request' => $api_request_get_server, 'message' => 'Ошибка получения сервера для загрузки фото', 'details' => 'Произошла ошибка при получении сервера для загрузки фотографий для <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.getUploadServer">Документация по вызванному методу</a>']);
             return;
         }
@@ -118,7 +118,7 @@ class AutopostingVk {
                 $api_request_save_photos .= '&group_id='.$this->task->socialNetworksGroup->group_id.'&album_id='.$resp_body->aid.'&server='.$resp_body->server.'&hash='.$resp_body->hash.'&photos_list='.$resp_body->photos_list;
                 $api_save_photos_response = json_decode(file_get_contents($api_request_save_photos));
                 if(isset($api_save_photos_response->error)){
-                    TelegrammLoging::send('<p>Ошибка сохранения фото в альбоме для группы '.$this->task->socialNetworksGroup->group_id.'</p></br><code>'.$api_save_photos_response->errorr->error_msg.'</code></br>'.$api_request_save_photos);
+                    TelegrammLoging::send('<p>Ошибка сохранения фото в альбоме для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$api_save_photos_response->errorr->error_msg.'</code><br/>'.$api_request_save_photos);
                     Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $api_save_photos_response->error->error_msg, 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка сохранения фото в альбоме', 'details' => 'Произошла ошибка загрузки фотo в альбом <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.save">Документация по вызванному методу</a>']);
                 }else if(isset($api_save_photos_response->response)){
                     return $api_save_photos_response->response;
@@ -126,7 +126,7 @@ class AutopostingVk {
             }else{
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
-                TelegrammLoging::send('<p>Ошибка CURL запроса во время загрузки фотографий '.$this->task->socialNetworksGroup->group_id.'</p></br>'.$api_request_get_server_response->response->upload_url);
+                TelegrammLoging::send('<p>Ошибка CURL запроса во время загрузки фотографий '.$this->task->socialNetworksGroup->group_id.'</p><br/>'.$api_request_get_server_response->response->upload_url);
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => "Ошибка CURL запроса во время загрузки фотографий", 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка CURL запроса во время загрузки фотографий']);
             }
         }
@@ -146,7 +146,7 @@ class AutopostingVk {
         $get_albums_response = json_decode(file_get_contents($api_request_get_albums));
         if(!isset($get_albums_response->response->count)){
             if(isset($get_albums_response->error)){
-                TelegrammLoging::send('<p>Ошибка извлечения альбомов для группы '.$this->task->socialNetworksGroup->group_id.'</p></br><code>'.$get_albums_response->error->error_msg.'</code></br>'.$api_request_get_albums);
+                TelegrammLoging::send('<p>Ошибка извлечения альбомов для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$get_albums_response->error->error_msg.'</code><br/>'.$api_request_get_albums);
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $get_albums_response->error, 'request' => $api_request_get_albums, 'message' => 'Ошибка извлечения альбомов']);
             }
             return null;
@@ -159,7 +159,7 @@ class AutopostingVk {
             if(!isset($album_created_response->error)){
                 $album_id = $album_created_response->response->id;
             }else{
-                TelegrammLoging::send('<p>Ошибка создания альбома для группы '.$this->task->socialNetworksGroup->group_id.'</p></br><code>'.$album_created_response->error->error_msg.'</code></br>'.$api_request_create_album.'&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления"&upload_by_admins_only=1&comments_disabled=1&');
+                TelegrammLoging::send('<p>Ошибка создания альбома для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$album_created_response->error->error_msg.'</code><br/>'.$api_request_create_album.'&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления"&upload_by_admins_only=1&comments_disabled=1&');
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $album_created_response->error, 'request' => $api_request_create_album, 'message' => 'Ошибка создания альбома']);
                 return null;
             }

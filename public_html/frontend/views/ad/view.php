@@ -29,7 +29,7 @@
         <div class="col-lg-12 col-sm-8">
             <button class="btn btn-success my-1 width-100 show-number-button">
                 <? if(!$show_phone_number){?>
-                    <?= __('Show phone number') ?></br>
+                    <?= __('Show phone number') ?><br/>
                     <?= cutText($ad->user->phone_number, 3, false)."-**-***-***" ?>
                 <? }else if($show_phone_number AND $show_phone_number == 1){ ?>
                     <?= $ad->user->phone_number ?>
