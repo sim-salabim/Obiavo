@@ -134,5 +134,7 @@ return [
     'Password recovery steps will be sent on your email' => 'Password recovery steps will be sent on your email',
     "Region" => "Region",
     "No photo" => "no photo",
-    "photo" => "photo"
+    "photo" => "photo",
+    'Prv.' => 'Prev.',
+    'Nxt.' => 'Nxt.'
 ];

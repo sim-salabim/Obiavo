@@ -59,12 +59,15 @@ AppAsset::register($this);
                         echo $this->title;
                     } ?>
                 </h1>
+                <? if(!isset($this->params['no_hr']) OR (isset($this->params['no_hr']) AND !$this->params['no_hr'])){?>
+                    <div class="w-100"><hr></div>
+                <? } ?>
                 <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
                 <?= $this->render(
                     'content',
                     ['content' => $content]
                 ) ?>
-                <div class="container">
+                <div class="row">
                     <? if(isset($this->params['seo_h2']) AND $this->params['seo_h2'] != ''){?>
                         <div class="col-12">
                             <h2><?= $this->params['seo_h2'] ?></h2>

@@ -31,9 +31,7 @@ use \frontend\helpers\LocationHelper;
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>
-                    <? if($category->active){ ?>
                         <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
-                    <? }?>
                 <? } ?>
             </span>
         </div>

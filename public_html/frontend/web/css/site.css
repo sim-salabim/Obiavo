@@ -406,3 +406,20 @@ ul.bs-autocomplete-menu a {
 .lvl-1 a{
     font-size: 1.5rem !important;
 }
+.extra-margin-bottom{
+    margin-bottom: 22px !important;
+}
+.multidot{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.additional-links{
+    padding: 0rem 1rem !important;
+}
+.footer-clear{
+    height: 60px;
+}
+.footer-link{
+    color: #868e96 !important;
+    text-decoration: underline;
+}

@@ -27,27 +27,35 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
             <li class="page-item ">
                 <? $prev_href = ($library_search->page == 2) ? $link : "?".str_replace('{key:page}','page='.($library_search->page - 1),$nav_str) ?>
                 <a class="pagination-link" href="<?= $prev_href ?>">
-                    <span aria-hidden="true">&laquo; <?= __('Prev.') ?></span>
+                    <span aria-hidden="true"><?= __('Prv.') ?></span>
                 </a>
             </li>
+            <? } ?>
+            <? if($library_search->page > 3){?>
+                <li class="page-item"><span class="pagination-link multidot">...</span></li>
             <? } ?>
             <?
             $i = 1;
             while($i <= $pages_amount){?>
                 <li class="page-item ">
                     <? if($i != $library_search->page){?>
-                        <? $href = ($i == 1) ? $link : "?".str_replace('{key:page}','page='.$i,$nav_str) ?>
-                        <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
+                        <? if( $i > ($library_search->page - 3) AND $i < ($library_search->page + 3)){?>
+                            <? $href = ($i == 1) ? $link : "?".str_replace('{key:page}','page='.$i,$nav_str) ?>
+                            <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
+                        <? } ?>
                     <? }else{ ?>
                         <span class="pagination-link pagination-link-active"><?= $i ?></span>
                     <? } ?>
                 </li>
             <? ++$i;
             } ?>
+            <? if(($library_search->page + 3) <= $pages_amount){?>
+                <li class="page-item"><span class="pagination-link multidot">...</span></li>
+            <? } ?>
             <? if($library_search->page != $pages_amount){?>
             <li class="page-item ">
                 <a class="pagination-link" href="?<?= str_replace('{key:page}','page='.($library_search->page + 1),$nav_str) ?>">
-                    <span aria-hidden="true"><?= __('Next.') ?> &raquo;</span>
+                    <span aria-hidden="true"><?= __('Nxt.') ?></span>
                 </a>
             </li>
             <? } ?>

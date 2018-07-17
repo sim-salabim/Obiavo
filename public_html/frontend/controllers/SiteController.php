@@ -121,6 +121,7 @@ class SiteController extends BaseController
         Yii::$app->view->params['seo_h1'] = $this->seo_h1;
         Yii::$app->view->params['seo_h2'] = $this->seo_h2;
         Yii::$app->view->params['seo_text'] = $this->seo_text;
+        Yii::$app->view->params['no_hr'] = true;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
         return $this->render('index',  compact('categories','cities', 'seo_text'));
