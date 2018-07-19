@@ -423,3 +423,6 @@ ul.bs-autocomplete-menu a {
     color: #868e96 !important;
     text-decoration: underline;
 }
+.footer-height{
+    height: 41%;
+}

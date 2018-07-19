@@ -87,7 +87,9 @@ class CategoriesController extends BaseController
 
         $ads_list = Ads::getList($librarySearch);
         if($page > 1 AND !count($ads_list['items'])){
-            throw new HttpException(404, 'Not Found');
+            $page = ceil(($ads_list['count'] / $librarySearch->limit));
+            $librarySearch->page = $page;
+            $ads_list = Ads::getList($librarySearch);
         }
         $this->switchSeoKeys($ads_list);
         $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
