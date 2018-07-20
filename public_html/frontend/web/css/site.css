@@ -426,3 +426,20 @@ ul.bs-autocomplete-menu a {
 .footer-height{
     height: 41%;
 }
+@media(min-width:755px) {
+    .nonpadding-left-items-media{
+        padding-left: 0px !important;
+    }
+}
+.nonpadding-left-items{
+    padding-left: 0px !important;
+}
+.show-number-button {
+    white-space: unset !important;
+}
+.margin-top-0{
+
+}
+/*.nonpadding-right{*/
+    /*padding-right: 0px !important;*/
+/*}*/
