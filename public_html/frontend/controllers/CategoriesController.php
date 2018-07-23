@@ -55,7 +55,10 @@ class CategoriesController extends BaseController
         }
         $this->category = $category;
 
-        $subCategories = Category::find()->where(['parent_id' => $this->category->id, 'active' => 1])->all();
+        $subCategories = Category::find()
+            ->where(['parent_id' => $this->category->id, 'active' => 1])
+            ->orderBy('brand ASC, techname ASC')
+            ->all();
 //        $categoryPlacements = $this->category->placements;
 
         if($action){

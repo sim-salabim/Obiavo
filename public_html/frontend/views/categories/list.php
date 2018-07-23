@@ -1,5 +1,12 @@
 <?php
 use \frontend\helpers\LocationHelper;
+function sortingKids($a, $b){
+    if($a->brand != $b->brand){
+        return $a->brand > $b->brand;
+    }else{
+        return $a->techname > $b->techname;
+    }
+}
 ?>
 <div class="row">
     <? if(!isset($row_list) OR !$row_list){ ?>
@@ -10,8 +17,13 @@ use \frontend\helpers\LocationHelper;
                     <li class="lvl-1">
                         <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>
                     </li>
+                    <?
 
-                    <?php foreach ($category->children as $child) { ?>
+                    $children = $category->children;
+                    usort($children, "sortingKids");
+
+                    ?>
+                    <?php foreach ($children as $child) { ?>
                         <? if($child->active){ ?>
                         <li class="lvl-2 ml-4" style="color: #777;"><a href="/<?= LocationHelper::getDomainForUrl($child->url())?>"><?= $child->_text->name?></a></li>
                     <? } ?>
