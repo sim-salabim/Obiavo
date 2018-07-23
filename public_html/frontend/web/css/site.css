@@ -440,6 +440,10 @@ ul.bs-autocomplete-menu a {
 .margin-top-0{
 
 }
+.end-list-padding{
+    padding-bottom: 40px;
+    margin-top: 5px;
+}
 /*.nonpadding-right{*/
     /*padding-right: 0px !important;*/
 /*}*/

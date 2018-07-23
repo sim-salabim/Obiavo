@@ -54,7 +54,10 @@ $root_url = isset($root_url) ? $root_url : null;
                     'current_action' => $current_action,
                     'root_url'       => $root_url
                 ])?>
-        <? } ?>
+        <? }?>
+    <? } ?>
+    <? if($library_search->limit > $ads_search['count']){ ?>
+        <div class="col-lg-12"><hr class="end-list-padding"></div>
     <? } ?>
     <? if($show_sn_widgets){?>
         <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
