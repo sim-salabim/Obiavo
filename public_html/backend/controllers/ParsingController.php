@@ -7,6 +7,7 @@ use common\models\CategoriesText;
 use common\models\Category;
 use common\models\CategoryPlacement;
 use common\models\CategoryPlacementText;
+use common\models\H2CategoriesText;
 use common\models\libraries\TelegrammLoging;
 use common\models\ParsingCategoriesText;
 use common\models\ParsingCategory;
@@ -14,6 +15,7 @@ use common\models\ParsingCategoryPlacement;
 use common\models\ParsingCategoryPlacementText;
 use common\models\ParsingCategoryRaw;
 use common\models\ParsingSeoRaw;
+use common\models\PH2CategoriesText;
 use common\models\Settings;
 use frontend\helpers\TransliterationHelper;
 use Yii;
@@ -95,6 +97,14 @@ class ParsingController extends BaseController
             ->from('parsing_categories')
             ->count();
         return $this->render('categories', ['categories_amount' => $categories_amount]);
+    }
+    public function actionH()
+    {
+        $categories_amount = (new Query())
+            ->select('id')
+            ->from('parsing_categories_text')
+            ->count();
+        return $this->render('h', ['categories_amount' => $categories_amount]);
     }
 
     public function actionCategoriesLiveTables()
@@ -409,6 +419,32 @@ class ParsingController extends BaseController
                         //TelegrammLoging::send("Пизда всему, код ошибки ".$xml->code." в слове: ".$parsingCatText->name." $xml->message");
                     }
                     $category_raw->save();
+                    $parsed++;
+                }
+                $persantage = $parsed * 100/$post['amount'];
+                $persentage = floor($persantage);
+
+                Yii::$app->response->statusCode = 200;
+                return ["persantage" => $persentage, 'parsed' => $parsed];
+            }
+        }
+    }
+
+    public function actionHParsing()
+    {
+        if(Yii::$app->request->isPost){
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $post = Yii::$app->request->post();
+            if(!isset($post['limit']) OR !isset($post['amount'])){
+                Yii::$app->response->statusCode = 500;
+                return ['error' => "Parameters missed", "post" => $post];
+            }else{
+                $parsed = $post['parsed'];
+                $categories_text = ParsingCategoriesText::find()->offset($parsed)->limit($post['limit'])->orderBy('id ASC')->all();
+                foreach($categories_text as $text){
+                    $h2_broken = H2CategoriesText::find()->where(['id' => $text->id])->one();
+                    $h2_broken->seo_h2 = $text->seo_h2;
+                    $h2_broken->save();
                     $parsed++;
                 }
                 $persantage = $parsed * 100/$post['amount'];

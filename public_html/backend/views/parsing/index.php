@@ -41,6 +41,9 @@
             <tr>
                 <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/categories-placement-text"])?>">Teksty плайсментов</a></td>
             </tr>
+            <tr>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/h"])?>">H2</a></td>
+            </tr>
             </tbody>
         </table>
     </div>
