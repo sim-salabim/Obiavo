@@ -16,7 +16,11 @@ if (!empty($breadcrumbs)){
     }
 
     $this->params['breadcrumbs'][] = $currentBreadcrumb->techname;
-    $homeLink = ['label' => 'Категории', 'url' => '/categories'];
+    if(isset($order) AND $order){
+        $homeLink = ['label' => 'Основные категории', 'url' => '/categories/order'];
+    }else{
+        $homeLink = ['label' => 'Категории', 'url' => '/categories'];
+    }
 } else {
     $homeLink = 'Категории';
 }

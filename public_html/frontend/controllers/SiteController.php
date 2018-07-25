@@ -87,7 +87,7 @@ class SiteController extends BaseController
         }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
-                            ->orderBy('brand ASC, techname ASC')
+                            ->orderBy('order ASC, brand ASC, techname ASC')
                             ->withText()
                             ->withChildren()
                             ->orphan()

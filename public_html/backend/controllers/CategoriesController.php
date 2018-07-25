@@ -15,6 +15,8 @@ use yii\helpers\Url;
 
 class CategoriesController extends BaseController
 {
+
+    private $order_br_links = [];
     /**
      * @inheritdoc
      */
@@ -267,5 +269,41 @@ class CategoriesController extends BaseController
             $result[$category->id] = array('id' => $category->id, 'text' => $category->_text->name);
         }
         return $result;
+    }
+
+    public function actionOrder(){
+        $parent_id = Yii::$app->request->get('id');
+        $categories = Category::find()
+            ->where(['parent_id' => $parent_id])
+            ->orderBy('order ASC, brand ASC, techname ASC')
+            ->all();
+        $parent_cat = null;
+        $breadcrumbs = null;
+        if($parent_id){
+            $parent_cat = Category::find()->where(['id' => $parent_id])->one();
+        }
+
+        return $this->render('order',  compact('categories', 'parent_cat', 'parent_id'));
+    }
+
+    public function actionSaveOrder(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        foreach($post['category_order'] as $order => $id){
+            $category = Category::find()->where(['id' => $id])->one();
+            if($post['reset-order'] == 0){
+                $category->order = $order;
+            }else{
+                $category->order = 0;
+            }
+            $category->save();
+        }
+        $str = '';
+        if($post['parent_id']){
+            $str .= '?id='.$post['parent_id'];
+        }
+        \Yii::$app->getSession()->setFlash('message', 'Изменения успешно сохранены');
+        return $this->redirect(Url::toRoute("categories/order".$str));
     }
 }

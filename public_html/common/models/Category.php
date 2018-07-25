@@ -22,6 +22,7 @@ use common\models\scopes\CategoryQuery;
  * @property integer $excel_id
  * @property integer $seo_id
  * @property integer $href_id
+ * @property integer $order
  *
  * @property Ads[] $ads
  * @property Category $parent

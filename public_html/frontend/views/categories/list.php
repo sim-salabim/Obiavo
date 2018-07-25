@@ -1,10 +1,14 @@
 <?php
 use \frontend\helpers\LocationHelper;
 function sortingKids($a, $b){
-    if($a->brand != $b->brand){
-        return $a->brand > $b->brand;
+    if($a->order == $b->order) {
+        if ($a->brand != $b->brand) {
+            return $a->brand > $b->brand;
+        } else {
+            return $a->techname > $b->techname;
+        }
     }else{
-        return $a->techname > $b->techname;
+        return $a->order > $b->order;
     }
 }
 ?>
