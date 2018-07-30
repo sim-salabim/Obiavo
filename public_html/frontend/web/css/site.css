@@ -444,6 +444,36 @@ ul.bs-autocomplete-menu a {
     padding-bottom: 40px;
     margin-top: 5px;
 }
+.breadcrmb-item+.breadcrmb-item::after {
+    display: inline-block;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    color: #868e96;
+}
+.slash-content::after{
+    color: #868e96;
+    content: "/ " !important;
+}
+.slash-first::after{
+    color: #868e96;
+    content: " /" !important;
+}
+.crumb-right-padding{
+    padding-right: 10px;
+}
+.slash-first{
+    padding-right: .5rem;
+}
+.breadcrmb-item {
+    float: left;
+}
+.breadcrumb-item+.breadcrumb-item::before {
+    /*display: inline-block;*/
+    /*padding-right: .5rem;*/
+    /*padding-left: .5rem;*/
+    /*color: #868e96;*/
+    content: "";
+}
 /*.nonpadding-right{*/
     /*padding-right: 0px !important;*/
 /*}*/
