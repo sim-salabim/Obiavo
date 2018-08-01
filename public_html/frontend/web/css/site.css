@@ -467,6 +467,14 @@ ul.bs-autocomplete-menu a {
 .breadcrmb-item {
     float: left;
 }
+.no-padding-left{
+    padding-left: 0px !important;
+}
+.sub-title{
+    font-size: 20px;
+    padding-bottom: 20px;
+    color: #0a82a8;
+}
 .breadcrumb-item+.breadcrumb-item::before {
     /*display: inline-block;*/
     /*padding-right: .5rem;*/

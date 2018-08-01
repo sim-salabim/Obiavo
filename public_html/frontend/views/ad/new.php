@@ -1,9 +1,7 @@
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user) {?>
-    <hr>
-
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 sub-title">
             <?= __('_Contacts')?>
         </div>
         <div class="col-sm-12 col-md-6">
@@ -29,8 +27,7 @@
     </div>
     <hr>
 <? }else{?>
-        <hr>
-        <div class="col-md-12 alert alert-light" role="alert"><?= __('Please sign in first') ?></div>
+        <div class="col-md-12 alert alert-light no-padding-left" role="alert"><?= __('Please sign in first') ?></div>
         <form class="form-horizontal" method="post" id="login-form">
             <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
                    value="<?=Yii::$app->request->csrfToken?>"/>
@@ -85,7 +82,7 @@
 
     <? } ?>
 <div class="row padding-bottom-10">
-    <div class="col <? if(!$user){?>color-disabled<? } ?>">
+    <div class="col <? if(!$user){?>color-disabled<? } ?> sub-title">
         <?= __('Select category')?>
     </div>
 </div>
