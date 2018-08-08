@@ -115,6 +115,81 @@ class ParsingController extends BaseController
             ->count();
         return $this->render('categories-live-tables', ['categories_amount' => $categories_amount]);
     }
+    public function actionGruz()
+    {
+        $categories_amount = (new Query())
+            ->select('id')
+            ->from('categories')
+            ->where(['parent_id' => 9625])
+            ->andWhere('id > 9524')
+            ->count();
+        return $this->render('gruz', ['categories_amount' => $categories_amount]);
+    }
+
+    public function actionGruzParsing(){
+        if(Yii::$app->request->isPost) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $post = Yii::$app->request->post();
+            if(!isset($post['limit']) OR !isset($post['amount'])){
+                Yii::$app->response->statusCode = 500;
+                return ['error' => "Parameters missed", "post" => $post];
+            }else{
+                $parsed = $post['parsed'];
+                $categories = Category::find()->where(['parent_id' => 9625])
+                    ->andWhere('id > 9524')->all();
+                foreach($categories as $cat){
+                    $c = ParsingCategoryRaw::find()->where(['COL23' => $cat->excel_id])->one();
+                    $cat_text_raw = CategoriesRaw::find()->where(['categories_id' => $cat->id])->one();
+                    $seo_array = $this->makeSeoArray($c);
+                    //TODO
+                    $cat->_text->seo_h1 = $seo_array['H1'];
+                    $cat->_text->seo_h2 = $seo_array['H2'];
+                    $cat->_text->seo_title = $seo_array['Title'];
+                    $cat->_text->seo_desc = $seo_array['Description'];
+                    $cat->_text->seo_keywords = $seo_array['Keywords'];
+                    $cat->_text->seo_text = $seo_array['TEXT'];
+                    $cat->_text->url = $seo_array['Url'];
+                    $cat->_text->save();
+                    //ZAMena klu4ej
+                    $replace_array = $this->replaceCategorySeo($seo_array['H1'], $cat_text_raw);
+                    $url = TransliterationHelper::transliterate($cat_text_raw->name, true, false);
+                    $final_url = $this->makeUrl($url);
+                    $cat->_text->seo_h1 = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->seo_h1);
+                    $cat->_text->seo_h2 = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->seo_h2);
+                    $cat->_text->seo_title = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->seo_title);
+                    $cat->_text->seo_desc = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->seo_desc);
+                    $cat->_text->seo_keywords = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->seo_keywords);
+                    $cat->_text->seo_text = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->seo_text);
+                    $replace_array['replace'][2] = $final_url;
+                    $replace_array['pattern'][] = '{key:name-url}';
+                    $replace_array['replace'][] = $final_url;
+                    $cat->_text->url = str_replace($replace_array['pattern'], $replace_array['replace'], $cat->_text->url);
+                    $cat->_text->save();
+                    //todo placements
+                    $placement_seo = $this->getPlacementSeo($c);
+                    foreach ($placement_seo as $pl_id => $a){
+                        $cat_pl = CategoryPlacement::find()->where(['placements_id' => $pl_id, 'categories_id' => $cat->id])->one();
+                        $cat_pl->_text->seo_title = str_replace($replace_array['pattern'], $replace_array['replace'], $a['Title']);
+                        $cat_pl->_text->seo_h1 = str_replace($replace_array['pattern'], $replace_array['replace'], $a['H1']);
+                        $cat_pl->_text->seo_h2 = str_replace($replace_array['pattern'], $replace_array['replace'], $a['H2']);
+                        $cat_pl->_text->name = $c->COL11;
+                        $cat_pl->_text->seo_text = str_replace($replace_array['pattern'], $replace_array['replace'], $a['TEXT']);
+                        $cat_pl->_text->seo_desc = str_replace($replace_array['pattern'], $replace_array['replace'], $a['Description']);
+                        $cat_pl->_text->seo_keywords = str_replace($replace_array['pattern'], $replace_array['replace'], $a['Keywords']);
+                        $cat_pl->_text->save();
+                        //TODO replace keys
+
+                    }
+                    $parsed++;
+                }
+            }
+            $persantage = $parsed * 100/$post['amount'];
+            $persentage = floor($persantage);
+
+            Yii::$app->response->statusCode = 200;
+            return ["persantage" => $persentage, 'parsed' => $parsed];
+        }
+    }
 
     public function actionPlacement(){
         $placements_amount = (new Query())

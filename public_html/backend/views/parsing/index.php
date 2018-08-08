@@ -44,6 +44,9 @@
             <tr>
                 <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/h"])?>">H2</a></td>
             </tr>
+            <tr>
+                <td><a href="<?= \yii\helpers\Url::toRoute(["parsing/gruz"])?>">ФИксинг грузовиков</a></td>
+            </tr>
             </tbody>
         </table>
     </div>
