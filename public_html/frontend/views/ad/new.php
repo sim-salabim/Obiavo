@@ -123,59 +123,140 @@ if(isset($model) and $user){
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
-        <div class="form-group col-lg-2 col-sm-12 col-md-6">
-            <select name="categories_id" <? if(!$user){?> disabled<? } ?> id="category-select" class="form-control <?php if(Yii::$app->session->getFlash('categories_id_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
-                <option value="0"><?= __('Category') ?></option>
-                <? if($user){?>
-                    <? foreach ($categories as $category){?>
-                        <? $has_children = (count($category->children) > 0) ? 1 : 0; ?>
-                        <option value="<?= $category->id ?>" <? if((isset($model) AND ($model->categories_id AND $model->categories_id != 0)) AND $model->categories_id == $category->id){?>selected<? }?> has_children="<?= $has_children ?>"><?= $category->_text->name ?></option>
-                    <? } ?>
-                <? } ?>
-            </select>
-            <?php if(Yii::$app->session->getFlash('categories_id_error')){?>
-                <div class="invalid-feedback">
-                    <?= __('Required field')?>
-                </div>
-            <?php } ?>
-        </div>
-        <div class="form-group col-lg-2 col-sm-12 col-md-6">
-            <select
-                <? if(!$user){?> disabled<? } ?>
-                name="subcategory"
-                id="subcategory"
-                class="form-control <?php if(Yii::$app->session->getFlash('subcategory_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
-                <option value="0"><?= __('Subcategory') ?></option>
-                <? if($sub_categories and $user){
-                    foreach ($sub_categories as $sc){
-                        ?>
-                        <option value="<?= $sc->id ?>" <? if($selected_sub_category AND $sc->id == $selected_sub_category->id){?>selected<?}?>    <? if(count($sc->children)){?>has_children="1"<? }else{?> has_children="0"<? } ?>><?= $sc->_text->name ?></option>
-                      <? }} ?>
-            </select>
-            <?php if(Yii::$app->session->getFlash('subcategory_error')){?>
-                <div class="invalid-feedback">
-                    <?= __('Required field') ?>
-                </div>
-            <?php } ?>
-        </div>
-        <div class="form-group col-lg-2 col-sm-12 col-md-6" id="subsubdiv" <?php if(!$sub_sub_categories){?>style="display: none" <? } ?>>
-            <select
-                <? if(!$user){?> disabled<? } ?>
-                name="subsubcategory"
-                id="subsubcategory"
-                class="form-control <?php if(Yii::$app->session->getFlash('subsubcategory_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
-                <option value=""><?= __('Subcategory') ?></option>
-                <? if($sub_sub_categories and $user ){
-                    foreach ($sub_sub_categories as $ssc){
-                    ?>
-                    <option value="<?= $ssc->id ?>" <? if($selected_sub_sub_category AND $ssc->id == $selected_sub_sub_category->id){?>selected<?}?> ><?= $ssc->_text->name ?></option>
-                <? }} ?>
-            </select>
-            <?php if(Yii::$app->session->getFlash('subsubcategory_error')){?>
-                <div class="invalid-feedback">
-                    <?= __('Required field') ?>
-                </div>
-            <?php } ?>
+        <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
+            <input
+                class="form-control bs-autocomplete"
+                id="live-cat-search-select"
+                value=""
+                placeholder="<?= __('Select a category') ?>"
+                type="text"
+                data-hidden_field_id="hidden-category"
+                data-item_id="live-cat-search-select"
+                data-item_label="text"
+                autocomplete="off">
+            <input type="hidden" id="checkbox-tmp" value="0">
+            <input type="hidden" id="hidden-category" value="">
+            <script type="text/javascript">
+                $.widget("ui.autocomplete", $.ui.autocomplete, {
+
+                    _renderMenu: function(ul, items) {
+                        var that = this;
+                        ul.attr("class", "nav nav-pills nav-stacked  bs-autocomplete-menu list-group flex-wrap-none");
+                        $.each(items, function(index, item) {
+                            that._renderItemData(ul, item);
+                        });
+                    },
+
+                    _resizeMenu: function() {
+                        var ul = this.menu.element;
+                        ul.outerWidth(Math.min(
+                            ul.width("").outerWidth() + 1,
+                            this.element.outerWidth()
+                        ));
+                    }
+                });
+
+                (function() {
+                    $('.bs-autocomplete').each(function() {
+                        var _this = $(this),
+                            _data = _this.data(),
+                            _search_data = [],
+                            _hidden_field = $('#' + _data.hidden_field_id);
+
+
+                        _this.after('<div class="bs-autocomplete-feedback form-control-feedback"><div class="loader"><?= __('Search...') ?></div></div>')
+                            .parent('.form-group').addClass('has-feedback');
+
+                        var feedback_icon = _this.next('.bs-autocomplete-feedback');
+                        feedback_icon.hide();
+
+                        _this.autocomplete({
+                            minLength: 3,
+                            autoFocus: true,
+
+                            source: function(request, response) {
+                                _hidden_field.val('');
+                                $.ajax({
+                                    dataType: "json",
+                                    type : 'POST',
+                                    url: '<?= \yii\helpers\Url::toRoute('categories/search-categories-for-select') ?>',
+                                    data: {q: $('input#live-cat-search-select').val()},
+                                    success: function(data) {
+                                        _search_data = data
+                                        $('input.suggest-user').removeClass('ui-autocomplete-loading');
+                                        if(_search_data.length == 0){
+                                            _hidden_field.val('');
+                                        }
+                                        response(data);
+                                    }
+                                });
+                            },
+                            search: function() {
+                                feedback_icon.show();
+                                _hidden_field.val('');
+                            },
+                            response: function() {
+                                feedback_icon.hide();
+                            },
+                            focus: function(event, ui) {
+                                event.preventDefault();
+                            },
+                            select: function(event, ui) {
+                                $('#ui-id-1').show();
+                                var checkboxTmp = $("#checkbox-tmp").val();
+                                $("#hidden-category").val(0);
+                                if(checkboxTmp == 1){
+                                    $('#checkbox-select').append('<span id="checked-'+ui.item.id+'"><input type="hidden" name="ckecked-categories[]" value="'+ui.item.id+'">'+ui.item.text+' <i style="cursor: pointer" class="fa fa-times" aria-hidden="true" id="checked-close-'+ui.item.id+'" onclick="closeChecked('+ui.item.id+')"></i></span><br>');
+                                    var checkedAmount = $("span[id^=checked-]").length;
+                                    console.log(checkedAmount);
+                                    if(checkedAmount >= 3){
+                                        $('#ui-id-1').hide();
+                                    }
+                                }else{
+                                    event.preventDefault();
+                                    $('#live-cat-search-select').val(ui.item.text);
+                                    $("#hidden-category").val(ui.item.id)
+                                    $("span[id*='checked-']").remove();
+                                    $('#ui-id-1').hide();
+                                }
+                                $("#checkbox-tmp").val(0);
+                            },
+                            close: function( event, ui ) {
+                                $('#ui-id-1').show();
+                            }
+                        }).data('ui-autocomplete')._renderItem = function(ul, item) {
+                            return $('<li class="list-group-item" id="li-'+item.id+'"></li>')
+                                .data("item.autocomplete", item)
+                                .append('<input type="checkbox" id="checkbox-'+item.id+'" onclick="checkBox('+item.id+')" name="ckb"> <a id="a-cat-'+item.id+'" >' + item.text + '</a>')
+                                .appendTo(ul);
+                        };
+                    });
+                })();
+                function checkBox(id){
+                    var checked = $('#checkbox-'+id).prop( "checked" );
+                    if(checked){
+                        $("#checkbox-tmp").val(1);
+                    }else{
+                        $("#checkbox-tmp").val(0);
+                    }
+                }
+                function closeChecked(id){
+                    $("#checked-"+id).next().remove();
+                    $("#checked-"+id).remove();
+                }
+                $(document).ready(function(){
+                    $(window).on("click", function (event) {
+                        console.log(event.target.id.indexOf("a-cat-"));
+                        if(event.target.id.indexOf("a-cat-") != 0) {
+                            if (event.target.id.indexOf("checkbox-") == -1 ) {
+                                $("#hidden-category").val('');
+                                $("#live-cat-search-select").val('');
+                                $('#ui-id-1').hide();
+                            }
+                        }
+                    });
+                });
+            </script>
         </div>
         <div class="form-group col-lg-2 col-sm-12 col-md-6">
             <select
@@ -289,7 +370,7 @@ if(isset($model) and $user){
         </div>
         <? if($user){?>
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="file-uploader" >
-            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
+            <?  //$this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
         </div>
         <? }?>
     </div>
@@ -303,106 +384,4 @@ if(isset($model) and $user){
     </div>
 </form>
 </div>
-<script>
-    $(document).ready(function(){
 
-        $('#category-select').on('change', function(){
-            $('#subsubdiv').hide();
-            cleanSubSelect();
-            var category_id = $('#category-select :selected').val();
-            if(category_id != 0) {
-                getSubCategories(category_id, '#subcategory');
-                selectCategoryAction(category_id)
-            }
-        });
-        $('#subcategory').on('change', function(){
-            var sub_category_id = $('#subcategory :selected').val();
-            var has_children = $('#subcategory :selected').attr('has_children');
-            cleanSubSubSelect()
-            if(sub_category_id != 0 && has_children == 1){
-                $('#subsubdiv').show();
-                getSubCategories(sub_category_id, '#subsubcategory');
-            }else{
-                $('#subsubdiv').hide();
-                if($('#category-select :selected').val() != 0){
-                    selectCategoryAction($('#category-select :selected').val())
-                }
-            }
-
-            selectCategoryAction(sub_category_id);
-        });
-        $('#subsubcategory').on('change', function(){
-            var sub_sub_category_id = $('#subsubcategory :selected').val();
-            if(sub_sub_category_id != 0){
-                selectCategoryAction(sub_sub_category_id)
-            }else{
-                cleanActionSelect()
-                if($('#subcategory :selected').val() != 0){
-                    selectCategoryAction($('#subcategory :selected').val())
-                }else{
-                    if($('#category-select :selected').val() != 0){
-                        selectCategoryAction($('#category-select :selected').val())
-                    }
-                }
-            }
-        });
-
-        function cleanActionSelect(){
-            var action = '<?= __('Action'); ?>';
-            $('#action_select').html("<option value='0'>"+action+"</option>");
-            $('#subsubcategory option:first').attr('value', '');
-        }
-        function cleanSubSelect(){
-            var action = '<?= __('Subcategory'); ?>';
-            $('#s0ubcategory').html("<option value='0'>"+action+"</option>");
-            $('#subsubcategory option:first').attr('value', '');
-            cleanSubSubSelect();
-        }
-        function cleanSubSubSelect(){
-            var action = '<?= __('Subcategory'); ?>';
-            $('#subsubcategory').html("<option value='0'>"+action+"</option>");
-            $('#subsubcategory option:first').attr('value', '');
-            cleanActionSelect();
-        }
-
-        function selectCategoryAction(categoryId) {
-            $('#action_select').prop("disabled", true);
-            cleanActionSelect();
-            if(categoryId != 0) {
-                $.ajax({
-                    url: '/get-category-placement/',
-                    data: {category_id: categoryId},
-                    method: 'POST',
-                    success: function (data) {
-                        actions = JSON.parse(data);
-                        var stringToAppend = '<option value="0"><?= __('Action') ?></option>'
-                        actions.forEach(function (item) {
-                            stringToAppend += '<option value="' + item.id + '">' + item.name + '</option>';
-                            $('#action_select option').remove();
-                            $('#action_select').html(stringToAppend);
-                        });
-                        $('#action_select').prop("disabled", false);
-                    }
-                });
-            }
-        }
-
-        function getSubCategories(category_id, select_id){
-            $('#action_select').prop("disabled", true);
-            $.ajax({
-                url: '/get-sub-categories/',
-                data: {category_id: category_id},
-                method: 'POST',
-                success: function (data) {
-                    var subcats = JSON.parse(data);
-                    var stringToAppend = '<option value="0"><?= __('Subcategory') ?></option>'
-                    subcats.forEach(function (item, i) {
-                        stringToAppend += '<option value="' + item.id + '" has_children="' + item.has_children + '">' + item.name + '</option>';
-                    });
-                    $(select_id+' option').remove();
-                    $(select_id).html(stringToAppend);
-                }
-            });
-        }
-    })
-</script>

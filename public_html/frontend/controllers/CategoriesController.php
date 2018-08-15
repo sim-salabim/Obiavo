@@ -8,6 +8,7 @@ use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\PlacementsText;
 use Yii;
+use yii\db\Query;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
@@ -187,5 +188,43 @@ class CategoriesController extends BaseController
                 }
             }
         }
+    }
+
+    public function actionSearchCategoriesForSelect(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+
+        if(isset($post['q'])) {
+            $query = new Query();
+            $query->select([
+                'categories.id as id',
+                'categories.techname as name',
+                'categories.parent_id as parent_id',
+                'second_cat.parent_id as second_parent_id',
+                'second_cat.techname as second_name',
+                'third_cat.parent_id as third_parent_id',
+                'third_cat.techname as third_name',
+            ])->from('categories')
+                ->where("categories.techname LIKE '".$post['q']."%'")
+                ->andWhere('categories.parent_id IS NOT NULL')
+                ->andWhere('second_cat.parent_id IS NOT NULL')
+                ->join('LEFT OUTER JOIN',
+                    'categories as second_cat',
+                    'categories.parent_id = second_cat.id'
+                )
+                ->join('LEFT OUTER JOIN',
+                    'categories as third_cat',
+                    'second_cat.parent_id = third_cat.id'
+                );
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+        }
+        if(isset($data) and $data){
+            foreach($data as $row){
+                $out[] = array('id' => $row['id'], 'text' => $row["third_name"]." / ".$row["second_name"]." / ".$row['name'], "name" => $row['name']);
+            }
+        }
+        return $out;
     }
 }

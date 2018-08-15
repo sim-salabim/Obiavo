@@ -136,5 +136,6 @@ return [
     "No photo" => "no photo",
     "photo" => "photo",
     'Prv.' => 'Prev.',
-    'Nxt.' => 'Nxt.'
+    'Nxt.' => 'Nxt.',
+    'Select a category' => 'Select a category'
 ];

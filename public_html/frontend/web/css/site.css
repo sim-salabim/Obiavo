@@ -482,6 +482,9 @@ ul.bs-autocomplete-menu a {
     /*color: #868e96;*/
     content: "";
 }
+.flex-wrap-none{
+    flex-wrap: inherit !important;
+}
 /*.nonpadding-right{*/
     /*padding-right: 0px !important;*/
 /*}*/
