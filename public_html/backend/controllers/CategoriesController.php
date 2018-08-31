@@ -1,16 +1,14 @@
 <?php
 namespace backend\controllers;
 
+use common\helpers\JsonData;
+use common\models\Category;
 use common\models\CategoryPlacement;
 use common\models\CategoryPlacementText;
-use common\models\SocialNetworksGroups;
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\Category;
-use common\helpers\JsonData;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 
 class CategoriesController extends BaseController

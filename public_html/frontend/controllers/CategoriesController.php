@@ -227,4 +227,25 @@ class CategoriesController extends BaseController
         }
         return $out;
     }
+
+
+    public function actionGetRootCategories(){
+        $post = Yii::$app->request->get();
+        $id = ($post['key'] == "#") ? null : $post['key'];
+        $categories = Category::find()
+            ->where(['parent_id' => $id])
+            ->withText(['languages_id' => Language::getDefault()->id])
+            ->all();
+        $out = "[";
+        foreach($categories as $k => $row){
+            $kid = Category::find()->where(['parent_id' => $row['id']])->one();
+            $has_kids = $kid ? 'true' : 'false';
+            $out .= '{"key": "'.$row['id'].'","isLazy":'.$has_kids.',"title": "'.$row['techname'].'"}';
+            $next = $k + 1;
+            if(isset($categories[$next])){
+                $out .= ",";
+            }
+        }
+        return $out."]";
+    }
 }

@@ -11,12 +11,14 @@ class SiteAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/menu.css',
+        'css/ui.dynatree.css',
     ];
-//    public $js = [
+    public $js = [
+        'js/jquery.dynatree.js',
 //        'js/main.js',
 //        'js/init.js',
 //        'js/selectpicker.js',
-//    ];
+    ];
 
     public $jsOptions = [
         'position' => \yii\web\View::POS_HEAD

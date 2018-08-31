@@ -2,9 +2,8 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\db\Expression;
-use yii\web\Controller;
 use yii\db\Query as Query;
+use yii\web\Controller;
 
 
 class CitiesController extends Controller

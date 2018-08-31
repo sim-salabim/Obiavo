@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user) {?>
     <div class="row">
@@ -99,24 +101,6 @@ $model = Yii::$app->session->getFlash('model');
 $files = [];
 if(isset($model) and $user){
     $files = $model->files;
-    $selected_category_id = ($model->categories_id AND $model->categories_id != 0) ? $model->categories_id : null;
-    $selected_category = ($selected_category_id) ? \common\models\Category::findOne(['id' => $selected_category_id]) : null;
-    $sub_categories = ($selected_category) ? $selected_category->children : null;
-    $selected_sub_category = ($model->subcategory AND $model->subcategory != 0) ? \common\models\Category::findOne(['id' => $model->subcategory]) : null;
-    $sub_sub_categories = ($selected_sub_category AND $selected_sub_category->children AND $model->subcategory != 0) ? $selected_sub_category->children : null;
-    $selected_sub_sub_category = ($model->subsubcategory AND $model->subsubcategory != 0) ? \common\models\Category::findOne(['id' => $model->subsubcategory]) : null;
-    $selected_placement_id = ($model->placement_id AND $model->placement_id != 0) ? $model->placement_id : null;
-    if($selected_sub_sub_category AND $selected_sub_sub_category->id != 0){
-        $placements = $selected_sub_sub_category->placements;
-    }else{
-        if($selected_sub_category AND $selected_sub_category->id != 0){
-            $placements = $selected_sub_category->placements;
-        }else{
-            if($selected_category AND $selected_category->id != 0){
-                $placements = $selected_category->placements;
-            }
-        }
-    }
 }
 ?>
 <form id="new-ad-form" method="post" enctype="multipart/form-data" action="/publish-add/">
@@ -244,6 +228,11 @@ if(isset($model) and $user){
                     $("#checked-"+id).next().remove();
                     $("#checked-"+id).remove();
                 }
+                function closeCheckedAndTree(id){
+                    $("#checked-"+id).next().remove();
+                    $("#checked-"+id).remove();
+                    var node = $("#tree-container").dynatree('getTree').getNodeByKey(""+id+"").select(false);
+                }
                 $(document).ready(function(){
                     $(window).on("click", function (event) {
                         console.log(event.target.id.indexOf("a-cat-"));
@@ -257,6 +246,13 @@ if(isset($model) and $user){
                     });
                 });
             </script>
+        </div>
+        <div class="form-group col-lg-12 col-sm-12 col-md-12">
+            <button id="tree-category-select" class="form-control text-align-left" <? if(!$user){?> disabled<? } ?>>
+                <?= __('Category tree selection') ?>
+            </button>
+            <div class="form-control" id="tree-container" style="display:none">
+            </div>
         </div>
         <div class="form-group col-lg-2 col-sm-12 col-md-6">
             <select
@@ -370,7 +366,7 @@ if(isset($model) and $user){
         </div>
         <? if($user){?>
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="file-uploader" >
-            <?  //$this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
+            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
         </div>
         <? }?>
     </div>
@@ -384,4 +380,41 @@ if(isset($model) and $user){
     </div>
 </form>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#tree-category-select").on("click", function (event) {
+            event.preventDefault();
+            $("#tree-container").toggle();
+        });
+        $("#tree-container").dynatree({
+            checkbox: true,
+            children: [
+                <? foreach($categories as $cat){?>
+                {title: "<?= $cat->techname ?>", isFolder: true, isLazy: true, key: "<?= $cat->id ?>"},
+                <? } ?>
+            ],
+            onLazyRead: function(dtnode){
+                dtnode.appendAjax(
+                    {url: "<?= yii\helpers\Url::toRoute('/categories/get-root-categories/') ?>",
+                        dataType: "JSON",
+                        data: {
+                            key: dtnode.data.key,
+                            sleep: 1,
+                            mode: "branch"
+                        }
+                    });
+            },
+            title: "Lazy loading sample",
+            onSelect: function(flag, node){
+                if(flag){
+                    $('#checkbox-select').append('<span id="checked-'+node.data.key+'" class="js_tree_el"><input type="hidden" name="ckecked-categories[]" value="'+node.data.key+'" class="js_tree_el">'+node.data.title+' <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-'+node.data.key+'" onclick="closeCheckedAndTree('+node.data.key+')"></i></span><br class="js_tree_el">');
+                }else{
+                    $("#checked-"+node.data.key).next().remove();
+                    $("#checked-"+node.data.key).remove();
+                }
+            },
+            debugLevel: 0
+        });
+    });
+</script>
 
