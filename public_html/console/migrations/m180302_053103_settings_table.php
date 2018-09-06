@@ -20,7 +20,8 @@ class m180302_053103_settings_table extends Migration
             'fb_app_secret' => $this->string()->null(),
             'ok_token' => $this->string()->null(),
             'ok_public_key' => $this->string()->null(),
-            'ok_secret_key' => $this->string()->null()
+            'ok_secret_key' => $this->string()->null(),
+            'catetgories_limit' => $this->integer(10)->defaultValue(3)
             ], $tableOptions);
     }
 
