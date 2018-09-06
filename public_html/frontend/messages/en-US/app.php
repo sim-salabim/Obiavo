@@ -137,5 +137,7 @@ return [
     "photo" => "photo",
     'Prv.' => 'Prev.',
     'Nxt.' => 'Nxt.',
-    'Select a category' => 'Select a category'
+    'Select a category' => 'Select a category',
+    'Category tree selection' => 'Category tree selection',
+    'Categories limit:' => 'Categories limit:',
 ];

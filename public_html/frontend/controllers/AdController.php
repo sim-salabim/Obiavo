@@ -13,6 +13,8 @@ use common\models\libraries\AutopostingInstagram;
 use common\models\libraries\AutopostingOk;
 use common\models\libraries\AutopostingTwitter;
 use common\models\libraries\AutopostingVk;
+use common\models\Placement;
+use common\models\Settings;
 use common\models\SocialNetworks;
 use common\models\SocialNetworksGroups;
 use common\models\TestTasks;
@@ -55,9 +57,13 @@ class AdController extends BaseController
             ->withText(['languages_id' => Language::getDefault()->id])
            // ->where(['id' => '317'])// потом убрать, а пока для красоты
             ->all();
+        $limit = Settings::find()->one()->categories_limit;
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
+        $placements = Placement::find()->all();
         return $this->render('new', [
             'user' => $user,
+            'categories_limit' => $limit,
+            'placements' => $placements,
             'categories' => $categories,
             'cities' => $cities,
         ]);
@@ -84,7 +90,7 @@ class AdController extends BaseController
                 return $this->redirect('/podat-obiavlenie/');
             }else{
                 $model = $model->newAd();
-                AutopostingTasks::createTasks($model);
+//                AutopostingTasks::createTasks($model);
                 return $this->redirect("/$model->url/");
             }
         } else {

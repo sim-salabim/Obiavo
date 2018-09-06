@@ -139,5 +139,7 @@ return [
     "photo" => "фотография",
     'Prv.' => 'Пред.',
     'Select a category' => 'Выберите категорию',
-    'Nxt.' => 'След.'
+    'Nxt.' => 'След.',
+    'Category tree selection' => 'Дерево категорий',
+    'Categories limit:' => 'Лимит категорий:',
 ];

@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user) {?>
     <div class="row">
@@ -76,7 +74,6 @@
             <hr>
             <div class="form-group">
                 <button class="btn btn-success" data-input="#login-form"><?= __('Sign in') ?></button>
-
             </div>
 
         </form>
@@ -96,7 +93,6 @@ $selected_sub_category = null;
 $sub_sub_categories = null;
 $selected_sub_sub_category = null;
 $selected_placement_id = null;
-$placements = null;
 $model = Yii::$app->session->getFlash('model');
 $files = [];
 if(isset($model) and $user){
@@ -107,9 +103,10 @@ if(isset($model) and $user){
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
-        <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
+        <div class="form-group col-lg-12 col-sm-12 col-md-12" >
             <input
-                class="form-control bs-autocomplete"
+                <? if(!$user){?> disabled<? } ?>
+                class="form-control bs-autocomplete <? if(!$user){?> color-disabled<? } ?>"
                 id="live-cat-search-select"
                 value=""
                 placeholder="<?= __('Select a category') ?>"
@@ -121,6 +118,7 @@ if(isset($model) and $user){
             <input type="hidden" id="checkbox-tmp" value="0">
             <input type="hidden" id="hidden-category" value="">
             <script type="text/javascript">
+                var categoriesLimit = <?= $categories_limit ?>;
                 $.widget("ui.autocomplete", $.ui.autocomplete, {
 
                     _renderMenu: function(ul, items) {
@@ -186,36 +184,65 @@ if(isset($model) and $user){
                                 event.preventDefault();
                             },
                             select: function(event, ui) {
-                                $('#ui-id-1').show();
-                                var checkboxTmp = $("#checkbox-tmp").val();
-                                $("#hidden-category").val(0);
-                                if(checkboxTmp == 1){
-                                    $('#checkbox-select').append('<span id="checked-'+ui.item.id+'"><input type="hidden" name="ckecked-categories[]" value="'+ui.item.id+'">'+ui.item.text+' <i style="cursor: pointer" class="fa fa-times" aria-hidden="true" id="checked-close-'+ui.item.id+'" onclick="closeChecked('+ui.item.id+')"></i></span><br>');
-                                    var checkedAmount = $("span[id^=checked-]").length;
-                                    console.log(checkedAmount);
-                                    if(checkedAmount >= 3){
-                                        $('#ui-id-1').hide();
+                                var checkedAmount = $("span[id^=checked-]").length;
+                                var checkboxInputVal = $('#checkbox-'+ui.item.id+':checked');
+                                if(categoriesLimit > checkedAmount) {
+                                   // $('#ui-id-1').show();
+                                    var checkboxTmp = $("#checkbox-tmp").val();
+                                    $("#hidden-category").val(0);
+//                                    if (checkboxTmp == 1) {
+                                    var choosen = $("#checked-"+ui.item.id);
+                                    if(choosen.length == 0) {
+                                        $('#checkbox-select').append('<span id="checked-' + ui.item.id + '"><input type="hidden" name="categories[]" class="from-select-' + ui.item.id + '" value="' + ui.item.id + '">' + ui.item.text + ' <i style="cursor: pointer" class="fa fa-times" aria-hidden="true" id="checked-close-' + ui.item.id + '" onclick="closeChecked(' + ui.item.id + ')"></i></span><br>');
+                                        selectNode(ui.item.id);
+
+                                        if (categoriesLimit <= checkedAmount) {
+                                            $('#ui-id-1').hide();
+                                        }
+//                                    } else {
+//                                        event.preventDefault();
+//                                        $('#live-cat-search-select').val(ui.item.text);
+//                                        $("#hidden-category").val(ui.item.id)
+//                                        $("span[id*='checked-']").next().remove()
+//                                        $("span[id*='checked-']").remove();
+//                                        $('#ui-id-1').hide();
+//                                    }
+                                        $("#checkbox-tmp").val(0);
+                                    }else{
+                                        closeCheckedAndTree(ui.item.id);
                                     }
-                                }else{
-                                    event.preventDefault();
-                                    $('#live-cat-search-select').val(ui.item.text);
-                                    $("#hidden-category").val(ui.item.id)
-                                    $("span[id*='checked-']").remove();
-                                    $('#ui-id-1').hide();
+                                }else if(categoriesLimit <= checkedAmount && checkboxInputVal.length > 0){
+                                    alert("<?= __('Categories limit:') ?> " + categoriesLimit);
+                                    $("input[id^=checkbox-]").remove();
                                 }
-                                $("#checkbox-tmp").val(0);
                             },
                             close: function( event, ui ) {
                                 $('#ui-id-1').show();
                             }
                         }).data('ui-autocomplete')._renderItem = function(ul, item) {
+                            var checkedAmount = $("span[id^=checked-]").length;
+                            var string = "";
+                            if(categoriesLimit <= checkedAmount){
+                                string = item.text ;
+                            }else{
+                                var choosen = $("#checked-"+item.id);
+                                if(choosen.length > 0){
+                                    string  = '<input type="checkbox" checked id="checkbox-'+item.id+'" onclick="checkBox('+item.id+')" name="ckb"> <a id="a-cat-'+item.id+'" onclick="hideSearchContainer('+item.id+')">' + item.text + '</a>';
+                                }else{
+                                    string  = '<input type="checkbox" id="checkbox-'+item.id+'" onclick="checkBox('+item.id+')" name="ckb"> <a id="a-cat-'+item.id+'" onclick="hideSearchContainer('+item.id+')">' + item.text + '</a>';
+                                }
+                            }
                             return $('<li class="list-group-item" id="li-'+item.id+'"></li>')
                                 .data("item.autocomplete", item)
-                                .append('<input type="checkbox" id="checkbox-'+item.id+'" onclick="checkBox('+item.id+')" name="ckb"> <a id="a-cat-'+item.id+'" >' + item.text + '</a>')
+                                .append(string)
                                 .appendTo(ul);
                         };
                     });
                 })();
+                function hideSearchContainer(id){
+                    $("#checkbox-"+id).prop('checked');
+                    $("#ui-id-1").hide();
+                }
                 function checkBox(id){
                     var checked = $('#checkbox-'+id).prop( "checked" );
                     if(checked){
@@ -228,33 +255,123 @@ if(isset($model) and $user){
                     $("#checked-"+id).next().remove();
                     $("#checked-"+id).remove();
                 }
-                function closeCheckedAndTree(id){
-                    $("#checked-"+id).next().remove();
-                    $("#checked-"+id).remove();
-                    var node = $("#tree-container").dynatree('getTree').getNodeByKey(""+id+"").select(false);
-                }
                 $(document).ready(function(){
                     $(window).on("click", function (event) {
-                        console.log(event.target.id.indexOf("a-cat-"));
                         if(event.target.id.indexOf("a-cat-") != 0) {
                             if (event.target.id.indexOf("checkbox-") == -1 ) {
                                 $("#hidden-category").val('');
                                 $("#live-cat-search-select").val('');
                                 $('#ui-id-1').hide();
+//                                $('#tree-container').hide();
                             }
                         }
                     });
                 });
             </script>
         </div>
-        <div class="form-group col-lg-12 col-sm-12 col-md-12">
-            <button id="tree-category-select" class="form-control text-align-left" <? if(!$user){?> disabled<? } ?>>
+        <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
+            <button id="tree-category-select" class="form-control text-align-left <? if(!$user){?> color-disabled<? } ?>" <? if(!$user){?> disabled<? } ?>>
                 <?= __('Category tree selection') ?>
             </button>
             <div class="form-control" id="tree-container" style="display:none">
             </div>
         </div>
-        <div class="form-group col-lg-2 col-sm-12 col-md-6">
+        <script>
+            $(document).ready(function() {
+                $("#tree-category-select").on("click", function (event) {
+                    event.preventDefault();
+                    $("#tree-container").toggle();
+                });
+            });
+
+            $("#tree-container").dynatree({
+                checkbox: true,
+                children: [
+                    <? foreach($categories as $cat){?>
+                    {title: "<?= $cat->techname ?>", isFolder: true, isLazy: true, key: "<?= $cat->id ?>"},
+                    <? } ?>
+                ],
+                onLazyRead: function(dtnode){
+                    dtnode.appendAjax(
+                        {url: "<?= yii\helpers\Url::toRoute('/categories/get-root-categories/') ?>",
+                            dataType: "JSON",
+                            data: {
+                                key: dtnode.data.key,
+                                sleep: 1,
+                                mode: "branch"
+                            }
+                        });
+                },
+                onCreate: function(node, nodeSpan){
+                    var element = $("#checked-"+node.data.key);
+                    if(element.length >= 1){
+                        node.select(true);
+                    }
+                },
+                title: "Lazy loading sample",
+                onSelect: function(flag, node){
+                    if(flag){
+                        var element = $("#checked-"+node.data.key);
+                        if(element.length == 0) {
+                            var checkedAmount = $("span[id^=checked-]").length;
+                            if(categoriesLimit <= checkedAmount){
+                                alert("<?= __('Categories limit:') ?> "+categoriesLimit );
+                                node.select(false);
+                            }else {
+                                $('#checkbox-select').append('<span id="checked-' + node.data.key + '" class="js_tree_el"><input type="hidden" name="categories[]" value="' + node.data.key + '" class="js_tree_el">' + node.data.title + ' <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-' + node.data.key + '" onclick="closeCheckedAndTree(' + node.data.key + ')"></i></span><br class="js_tree_el">');
+                                removeParents(node);
+                                uncheckChildren(node);
+                            }
+                        }
+                    }else{
+                        $("#checked-"+node.data.key).next().remove();
+                        $("#checked-"+node.data.key).remove();
+                    }
+                },
+                debugLevel: 0
+            });
+
+            function uncheckChildren(node){
+                if(node.childList){
+                    node.childList.forEach(function(item, i, arr){
+                        if(item.bSelected){
+                            closeCheckedAndTree(item.data.key);
+                        }
+                        if(item.childList){
+                            uncheckChildren(item)
+                        }
+                    });
+                }
+            }
+            function removeParents(node){
+                if(node.parent && node.parent.data.title){
+                    closeCheckedAndTree(node.parent.data.key);
+                    if(node.parent.parent && node.parent.parent.data.title){
+                        removeParents(node.parent)
+                    }
+                }
+            }
+            function unselectNode(id){
+                var node = $("#tree-container").dynatree('getTree').getNodeByKey(""+id+"");
+                if(node){
+                    node.select(false);
+                }
+            }
+            function closeCheckedAndTree(id){
+                $("#checked-"+id).next().remove();
+                $("#checked-"+id).remove();
+                unselectNode(id);
+            }
+
+            function selectNode(id){
+                var node = $("#tree-container").dynatree('getTree').getNodeByKey(""+id+"");
+                if(node){
+                    node.select(true);
+                }
+            }
+
+        </script>
+        <div class="form-group col-lg-4 col-sm-12 col-md-6">
             <select
                 <? if(!$user){?> disabled<? } ?>
                 name="placement_id"
@@ -273,8 +390,7 @@ if(isset($model) and $user){
                 </div>
             <?php } ?>
         </div>
-        <div class="w-100"></div>
-        <div class="form-group col-lg-2 col-sm-12 col-md-6">
+        <div class="form-group col-lg-4 col-sm-12 col-md-6">
             <select
                 <? if(!$user){?> disabled<? } ?>
                 name="cities_id"
@@ -291,7 +407,7 @@ if(isset($model) and $user){
                 </div>
             <?php } ?>
         </div>
-        <div class="form-group col-lg-2 col-sm-12 col-md-6">
+        <div class="form-group col-lg-4 col-sm-12 col-md-6">
             <select
                 <? if(!$user){?> disabled<? } ?>
                 name="expiry_date"
@@ -316,9 +432,8 @@ if(isset($model) and $user){
                 </div>
             <?php } ?>
         </div>
-        <div class="w-100"></div>
     </div>
-    <hr>
+    <hr class="margin-top-0">
     <div class="row">
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
             <input
@@ -365,9 +480,9 @@ if(isset($model) and $user){
             <?php } ?>
         </div>
         <? if($user){?>
-        <div class="form-group col-lg-12 col-sm-12 col-md-12" id="file-uploader" >
-            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
+        <div class="form-group col-lg-12 col-sm-12 col-md-12 dropzone" id="file-uploader" >
         </div>
+            <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
         <? }?>
     </div>
     <hr>
@@ -380,41 +495,4 @@ if(isset($model) and $user){
     </div>
 </form>
 </div>
-<script>
-    $(document).ready(function() {
-        $("#tree-category-select").on("click", function (event) {
-            event.preventDefault();
-            $("#tree-container").toggle();
-        });
-        $("#tree-container").dynatree({
-            checkbox: true,
-            children: [
-                <? foreach($categories as $cat){?>
-                {title: "<?= $cat->techname ?>", isFolder: true, isLazy: true, key: "<?= $cat->id ?>"},
-                <? } ?>
-            ],
-            onLazyRead: function(dtnode){
-                dtnode.appendAjax(
-                    {url: "<?= yii\helpers\Url::toRoute('/categories/get-root-categories/') ?>",
-                        dataType: "JSON",
-                        data: {
-                            key: dtnode.data.key,
-                            sleep: 1,
-                            mode: "branch"
-                        }
-                    });
-            },
-            title: "Lazy loading sample",
-            onSelect: function(flag, node){
-                if(flag){
-                    $('#checkbox-select').append('<span id="checked-'+node.data.key+'" class="js_tree_el"><input type="hidden" name="ckecked-categories[]" value="'+node.data.key+'" class="js_tree_el">'+node.data.title+' <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-'+node.data.key+'" onclick="closeCheckedAndTree('+node.data.key+')"></i></span><br class="js_tree_el">');
-                }else{
-                    $("#checked-"+node.data.key).next().remove();
-                    $("#checked-"+node.data.key).remove();
-                }
-            },
-            debugLevel: 0
-        });
-    });
-</script>
 
