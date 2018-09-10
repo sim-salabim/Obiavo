@@ -142,4 +142,5 @@ return [
     'Nxt.' => 'След.',
     'Category tree selection' => 'Дерево категорий',
     'Categories limit:' => 'Лимит категорий:',
+    'Pick at least one category' => 'Выберите хотя бы одну категорию',
 ];

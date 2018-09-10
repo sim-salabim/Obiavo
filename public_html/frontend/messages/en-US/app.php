@@ -140,4 +140,5 @@ return [
     'Select a category' => 'Select a category',
     'Category tree selection' => 'Category tree selection',
     'Categories limit:' => 'Categories limit:',
+    'Pick at least one category' => 'Pick at least one category',
 ];
