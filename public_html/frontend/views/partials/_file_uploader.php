@@ -34,72 +34,32 @@ if(!empty($files)){?>
         dictFileTooBig: '<?=__('File is too big')?>',
         dictMaxFilesExceeded: '<?= __('You cannot upload anymore files')?>',
         init: function(){
+            this.on("removedfile", function(file) {
+                console.log("remove");
+                if(file.xhr.response){
+                    var data = JSON.parse(file.xhr.response);
+                    $('input[value='+data.id+']').remove();
+                    $.ajax({
+                        url: '/remove-file/',
+                        data: {id: data.id},
+                        method: 'POST'
+                    });
+                }
+            });
+            this.on("success", function(file, response) {
+                console.log('success');
+                if(response){
+                    var data = JSON.parse(response);
+                    $('.files_ids').first().clone().appendTo('#hidden-files-inputs');
+                    $('.files_ids').last().attr('name', 'files[]');
+                    $('.files_ids').last().val(data.id);
+                }
+            });
             <?= $js_files; ?>
         }
     });
-    dropzone.on('removedfile', function(file){
-        if(file.xhr.response){
-            var data = JSON.parse(file.xhr.response);
-            $('input[value='+data.id+']').remove();
-            $.ajax({
-                url: '/remove-file/',
-                data: {id: data.id},
-                method: 'POST'
-            });
-        }
-    });
-    dropzone.on('success', function(file, response){
-        if(response){
-            var data = JSON.parse(response);
-            $('.files_ids').first().clone().appendTo('#hidden-files-inputs');
-            $('.files_ids').last().attr('name', 'files[]');
-            $('.files_ids').last().val(data.id);
-        }
-    });
-</script>
-<!--<div id="hidden-files-inputs" style="display: none">-->
-<!--    <input type="hidden" class="files_ids">-->
 
-<!--</div>-->
-<?//=
-//\kato\DropZone::widget([
-//
-//    'options' => [
-//        'url' => '/files-upload/',
-//        'method' => 'POST',
-//        'addRemoveLinks' => true,
-//        'paramName' => 'file',
-//        'dictDefaultMessage' => __('Click or drop the file here.'),
-//        'dictRemoveFile' => __('Delete'),
-//        'dictCancelUpload' => __('Cancel download'),
-//        'dictCancelUploadConfirmation' => __('Are you sure?'),
-//        'dictFileTooBig' => __('File is too big'),
-//        'dictMaxFilesExceeded' => __('You cannot upload anymore files'),
-//        'init' => new \yii\web\JsExpression("function(){
-//           ".$js_files."
-//        }")
-//
-//    ],
-//    'clientEvents' => [
-//        'removedfile' => "function(file){
-//            if(file.xhr.response){
-//                var data = JSON.parse(file.xhr.response);
-//                $('input[value='+data.id+']').remove();
-//                $.ajax({
-//                    url: '/remove-file/',
-//                    data: {id: data.id},
-//                    method: 'POST'
-//                });
-//            }
-//        }",
-//        'success' => "function(file, response){
-//            if(response){
-//                var data = JSON.parse(response);
-//                $('.files_ids').first().clone().appendTo('#hidden-files-inputs');
-//                $('.files_ids').last().attr('name', 'files[]');
-//                $('.files_ids').last().val(data.id);
-//            }
-//        }"
-//    ],
-//]);
-//?>
+</script>
+<div id="hidden-files-inputs" style="display: none">
+    <input type="hidden" class="files_ids">
+</div>
