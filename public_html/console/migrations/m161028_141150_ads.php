@@ -16,6 +16,7 @@ class m161028_141150_ads extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'cities_id' => $this->integer()->unsigned()->notNull(),
             'users_id' => $this->integer()->unsigned()->notNull(),
+            'categories_id' => $this->integer()->unsigned()->notNull(),
             'title' => $this->string()->notNull(),
             'text' => $this->text()->notNull(),
             'price' => $this->integer(),
@@ -30,6 +31,9 @@ class m161028_141150_ads extends Migration
         $this->createIndex('idx_a_users_id', 'ads', 'users_id');
         $this->addForeignKey('fk_ads_user', 'ads', 'users_id', 'users', 'id', 'CASCADE', 'CASCADE');
 
+        $this->createIndex('idx_a_categories_id', 'ads', 'categories_id');
+        $this->addForeignKey('fk_ads_category', 'ads', 'categories_id', 'categories', 'id', 'CASCADE', 'CASCADE');
+
         $this->addCommentOnTable('ads', 'Таблица объявлений');
     }
 
@@ -39,6 +43,8 @@ class m161028_141150_ads extends Migration
         $this->dropIndex('idx_a_cities_id','ads');
         $this->dropForeignKey('fk_ads_user','ads');
         $this->dropIndex('idx_a_users_id','ads');
+        $this->dropForeignKey('fk_ads_category','ads');
+        $this->dropIndex('idx_a_categories_id','ads');
         $this->dropTable('ads');
     }
 

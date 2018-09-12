@@ -90,7 +90,7 @@ class AdController extends BaseController
                 return $this->redirect('/podat-obiavlenie/');
             }else{
                 $model = $model->newAd();
-//                AutopostingTasks::createTasks($model);
+                AutopostingTasks::createTasks($model);
                 return $this->redirect("/$model->url/");
             }
         } else {

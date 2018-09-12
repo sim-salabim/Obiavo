@@ -14,6 +14,7 @@ use frontend\helpers\TransliterationHelper;
  * @property integer $id
  * @property integer $cities_id
  * @property integer $users_id
+ * @property integer $categories_id
  * @property string $title
  * @property string $text
  * @property boolean $only_locally
@@ -25,7 +26,8 @@ use frontend\helpers\TransliterationHelper;
  *
 * @property City $city
 * @property User $user
-* @property Category[] $category
+* @property Category $category
+* @property Category[] $categories
 * @property Placement $placement
  * @property Files[] $files
  * @property AdsView[] $views
@@ -48,12 +50,13 @@ class Ads extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cities_id', 'users_id'], 'required'],
+            [['cities_id', 'users_id', 'categories_id'], 'required'],
             [['title', ], 'string', 'max' => 100],
             [['text', ], 'string', 'max' => 1000],
             [['only_locally'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
+            [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
             [['created_at'], 'default','value' => time()],
             [['updated_at'],'default', 'value' => time()]
         ];
@@ -67,6 +70,7 @@ class Ads extends \yii\db\ActiveRecord
         return [
             'cities_id' => 'City',
             'users_id' => 'User',
+            'categories_id' => 'Category',
             'title' => 'Title',
             'text' => 'Text',
             'price' => 'Price',
@@ -133,12 +137,18 @@ class Ads extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory()
+    public function getCategories()
     {
         return $this->hasMany(Category::className(), ['id' => 'categories_id'])
             ->viaTable('ads_has_categories', ['categories_id' => 'id'])->with('categoriesText');
     }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'categories_id'])->with('categoriesText');
+    }
     /** Генерирует уникальный для объявлений урл
      *
      * @param $str, строка на русском языке

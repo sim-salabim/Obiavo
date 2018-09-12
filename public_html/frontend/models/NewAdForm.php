@@ -52,6 +52,7 @@ class NewAdForm extends Model
         $adsModel->created_at = time();
         $adsModel->cities_id = $this->cities_id;
         $adsModel->users_id = \Yii::$app->user->identity->id;
+        $adsModel->categories_id = $this->categories[0];
         $adsModel->title = $this->title;
         $adsModel->text = $this->text;
         $adsModel->price = $this->price;
