@@ -139,15 +139,29 @@ $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cit
 
         </div>
     </div>
-
+    <!-- I agree-->
+    <div class="form-group validation-errors width-13 margin-bottom0">
+            <input
+                id="agreement"
+                name="agreement"
+                type="checkbox"
+                checked
+                class="form-control input-md <?php if(Yii::$app->session->getFlash('agreement_error')){?> is-invalid<?php }?>">
+    </div>
+    <?php if(Yii::$app->session->getFlash('agreement_error')){?>
+        <div class="invalid-feedback dispaly-block">
+            <?= Yii::$app->session->getFlash('agreement_error') ?>
+        </div>
+    <?php } ?>
+    <span><?= __('Signing up you\'re accepting') ?> <a  href="/polzovatelskoe-soglashenie/"><?= __('User agreement')?></a> <?= __('and agree with') ?> <a  href="/policy/"><?= __('Privacy policy') ?></a>.</span>
     <div class="form-group">
-        <a class="text-info"
+        <a
            href="<?= yii\helpers\Url::toRoute('/registration') ?>"
            style="margin-right: 20px;">
             <?= __('Registration') ?>
         </a>
 
-        <a class="text-info" href="<?= yii\helpers\Url::toRoute('/recovery') ?>"><?= __('Forgot your password?') ?></a>
+        <a href="<?= yii\helpers\Url::toRoute('/recovery') ?>"><?= __('Forgot your password?') ?></a>
     </div>
 
     <button class="btn btn-success senddata" data-input="#registr-form"><?= __('Sign up') ?></button>

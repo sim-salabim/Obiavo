@@ -142,4 +142,8 @@ return [
     'Categories limit:' => 'Categories limit:',
     'Pick at least one category' => 'Pick at least one category',
     'Join us in social networks' => 'Join us in social networks',
+    'Signing up you\'re accepting' => 'Signing up you\'re accepting',
+    'User agreement' => 'User agreement',
+    'and agree with' => 'and agree with',
+    'Privacy policy' => 'Privacy policy',
 ];

@@ -144,4 +144,8 @@ return [
     'Categories limit:' => 'Лимит категорий:',
     'Pick at least one category' => 'Выберите хотя бы одну категорию',
     'Join us in social networks' => 'Вступайте в наши группы',
+    'Signing up you\'re accepting' => 'Регистрируясь на сайте, вы принимаете',
+    'User agreement' => 'Пользовательское соглашение',
+    'and agree with' => 'и соглашаетесь с',
+    'Privacy policy' => 'Политикой конфиденциальности',
 ];

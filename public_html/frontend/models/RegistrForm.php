@@ -16,6 +16,7 @@ class RegistrForm extends Model
     public $last_name = '';
     public $cities_id;
     public $phone_number;
+    public $agreement;
     public $rememberMe = true;
     const PHONE_NUMBER_MIN_LENGTH = 8;
 
@@ -28,7 +29,7 @@ class RegistrForm extends Model
     public function rules()
     {
         return [
-            [['email', 'password','cities_id', 'first_name', 'last_name', 'cities_id', 'phone_number'], 'required', 'message' => __('Required field')],
+            [['email', 'agreement','password','cities_id', 'first_name', 'last_name', 'cities_id', 'phone_number'], 'required', 'message' => __('Required field')],
             ['email','email', 'message' => __('Incorrect email')],
             ['email','unique', 'targetClass' => \common\models\User::className(),
                                 'message' => __('User already exists')],

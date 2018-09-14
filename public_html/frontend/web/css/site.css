@@ -536,3 +536,12 @@ a:hover {
 .padding-top-30{
     padding-top:30px;
 }
+.width-13{
+    width: 13px;
+}
+.dispaly-block{
+    display: block !important;
+}
+.margin-bottom0{
+    margin-bottom: 0px;
+}
