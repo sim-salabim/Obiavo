@@ -38,7 +38,7 @@ h1 {
 }
 
 .a-like, .href, a {
-    color: #0a82a8;
+    color: #0091d9;
     cursor: pointer;
 }
 .navbar {
@@ -312,6 +312,9 @@ ul.bs-autocomplete-menu a {
 .ads-pre-text{
     color: #a9a7a7 !important;
 }
+.ads-pre-text-dark{
+    color: #514f4f !important;
+}
 .price-title{
     font-size: 30px;
     font-weight: bold;
@@ -424,11 +427,32 @@ ul.bs-autocomplete-menu a {
     text-decoration: underline;
 }
 .footer-height{
-    height: 41%;
+    height: 49%;
+}
+@media(max-width:570px) {
+    .footer-height{
+        height: 56%;
+    }
 }
 @media(min-width:755px) {
     .nonpadding-left-items-media{
         padding-left: 0px !important;
+    }
+}
+@media(max-width:755px) {
+    .margin-right-0{
+       margin-right: 0px !important;
+    }
+}
+
+@media(max-width:1199px) {
+    .publish-button{
+        font-size: 16px !important;
+    }
+}
+@media(max-width:988px) {
+    .publish-button{
+        font-size: 21px !important;
     }
 }
 .nonpadding-left-items{
@@ -491,3 +515,24 @@ ul.bs-autocomplete-menu a {
 /*.nonpadding-right{*/
     /*padding-right: 0px !important;*/
 /*}*/
+a:hover {
+    color: #ff1010 !important;
+    text-decoration: underline;
+}
+.image-div{
+    padding-top: 5px;
+}
+.price-p{
+    margin-top: 1rem;
+}
+.placeholder{
+    padding-bottom:10px;
+    padding-top: 10px;
+}
+.social-n-block{
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+.padding-top-30{
+    padding-top:30px;
+}

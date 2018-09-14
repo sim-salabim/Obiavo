@@ -141,4 +141,5 @@ return [
     'Category tree selection' => 'Category tree selection',
     'Categories limit:' => 'Categories limit:',
     'Pick at least one category' => 'Pick at least one category',
+    'Join us in social networks' => 'Join us in social networks',
 ];

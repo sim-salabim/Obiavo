@@ -67,11 +67,11 @@ AppAsset::register($this);
                     'content',
                     ['content' => $content]
                 ) ?>
-                <div class="row">
+                <div class="row padding-top-30">
                     <? if(isset($this->params['seo_h2']) AND $this->params['seo_h2'] != ''){?>
-                        <div class="col-12">
-                            <h2><?= $this->params['seo_h2'] ?></h2>
-                        </div>
+<!--                        <div class="col-12">-->
+<!--                            <h2>--><?// //$this->params['seo_h2'] ?><!--</h2>-->
+<!--                        </div>-->
                     <? } ?>
                     <? if(isset($this->params['seo_text'])){?>
                         <div class="col-12">

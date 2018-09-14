@@ -250,7 +250,7 @@ if(isset($model) and $user){
     <hr>
     <div class="row">
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
-            <button <? if(!$user){?> disabled<? } ?> class="btn btn-success senddata col-lg-2 col-md-6 col-sm-12 <? if(!$user){?>color-disabled-button<? } ?>" data-input="#new-ad-form">
+            <button <? if(!$user){?> disabled<? } ?> class="btn btn-success senddata col-lg-2 col-md-6 col-sm-12 <? if(!$user){?>color-disabled-button<? } ?> publish-button" data-input="#new-ad-form">
                 <?= __('Publish') ?>
             </button>
         </div>

@@ -12,7 +12,7 @@ function sortingKids($a, $b){
     }
 }
 ?>
-<div class="row">
+<div class="row margin-right-0">
     <? if(!isset($row_list) OR !$row_list){ ?>
 
         <?php foreach ($categories as $category) { ?>
