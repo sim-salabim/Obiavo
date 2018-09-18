@@ -419,6 +419,7 @@ ul.bs-autocomplete-menu a {
 }
 .additional-links{
     padding: 0rem 1rem !important;
+    padding-left: 0px !important;
 }
 .footer-clear{
     height: 60px;
@@ -524,7 +525,8 @@ a:hover {
     padding-top: 5px;
 }
 .price-p{
-    margin-top: 1rem;
+    margin-top: 0.6rem;
+    margin-bottom: 0.3rem;
 }
 .placeholder{
     padding-bottom:10px;
@@ -545,4 +547,11 @@ a:hover {
 }
 .margin-bottom0{
     margin-bottom: 0px;
+}
+.line-height-block{
+    line-height: 1.2;
+}
+.footer-menu{
+    padding-top: 50px;
+    padding-bottom: 20px;
 }
