@@ -146,4 +146,5 @@ return [
     'User agreement' => 'User agreement',
     'and agree with' => 'and agree with',
     'Privacy policy' => 'Privacy policy',
+    'Picked categories' => 'Picked categories',
 ];

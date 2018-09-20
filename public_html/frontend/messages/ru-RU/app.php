@@ -148,4 +148,5 @@ return [
     'User agreement' => 'Пользовательское соглашение',
     'and agree with' => 'и соглашаетесь с',
     'Privacy policy' => 'Политикой конфиденциальности',
+    'Picked categories' => 'Выбранные категории',
 ];

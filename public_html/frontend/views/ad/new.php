@@ -86,15 +86,10 @@
     </div>
 </div>
 <?
-$selected_category = null;
-$selected_category_id = null;
-$sub_categories = null;
-$selected_sub_category = null;
-$sub_sub_categories = null;
-$selected_sub_sub_category = null;
-$selected_placement_id = null;
+$selected_categories = [];
 $model = Yii::$app->session->getFlash('model');
 $files = [];
+$if_user_logged = ($user) ? 1 : 0;
 if(isset($model) and $user){
     $files = $model->files;
 }
@@ -103,24 +98,24 @@ if(isset($model) and $user){
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
     <div class="row">
-        <div class="form-group col-lg-12 col-sm-12 col-md-12" >
-            <input
-                <? if(!$user){?> disabled<? } ?>
-                class="form-control bs-autocomplete <? if(!$user){?> color-disabled<? } ?>  <?php if(Yii::$app->session->getFlash('categories_error')){?> is-invalid <? } ?>"
-                id="live-cat-search-select"
-                value=""
-                placeholder="<?= __('Select a category') ?>"
-                type="text"
-                data-hidden_field_id="hidden-category"
-                data-item_id="live-cat-search-select"
-                data-item_label="text"
-                autocomplete="off">
-            <input type="hidden" id="checkbox-tmp" value="0">
-            <input type="hidden" id="hidden-category" value="">
-           <?= $this->render('/scripts/search-autocomplete', ['categories_limit' => $categories_limit]); ?>
-        </div>
+<!--        <div class="form-group col-lg-12 col-sm-12 col-md-12" >-->
+<!--            <input-->
+<!--                --><?// if(!$user){?><!-- disabled--><?// } ?>
+<!--                class="form-control bs-autocomplete --><?// if(!$user){?><!-- color-disabled--><?// } ?><!--  --><?php //if(Yii::$app->session->getFlash('categories_error')){?><!-- is-invalid --><?// } ?><!--"-->
+<!--                id="live-cat-search-select"-->
+<!--                value=""-->
+<!--                placeholder="--><?//= __('Select a category') ?><!--"-->
+<!--                type="text"-->
+<!--                data-hidden_field_id="hidden-category"-->
+<!--                data-item_id="live-cat-search-select"-->
+<!--                data-item_label="text"-->
+<!--                autocomplete="off">-->
+<!--            <input type="hidden" id="checkbox-tmp" value="0">-->
+<!--            <input type="hidden" id="hidden-category" value="">-->
+<!--           --><?//= $this->render('/scripts/search-autocomplete', ['categories_limit' => $categories_limit]); ?>
+<!--        </div>-->
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
-            <button id="tree-category-select" class="form-control text-align-left <? if(!$user){?> color-disabled<? } ?>  <?php if(Yii::$app->session->getFlash('categories_error')){?> is-invalid <? } ?>" <? if(!$user){?> disabled<? } ?>>
+            <button id="tree-category-select" class="form-control text-align-left cursor-pointer <? if(!$user){?> color-disabled<? } ?>  <?php if(Yii::$app->session->getFlash('categories_error')){?> is-invalid <? } ?>" <? if(!$user){?> disabled<? } ?>>
                 <?= __('Category tree selection') ?>
             </button>
             <?php if(Yii::$app->session->getFlash('categories_error')){?>
@@ -131,7 +126,21 @@ if(isset($model) and $user){
             <div class="form-control" id="tree-container" style="display:none">
             </div>
         </div>
-        <?= $this->render('/scripts/tree-select', ['categories' => $categories]); ?>
+        </div>
+        <hr class="width-100">
+        <div class="col-12 sub-title padding-left0  <? if(!$user){?> color-disabled<? } ?>" ><?= __('Picked categories') ?></div>
+        <div id="category-append">
+            <? if($model and $model->categories){
+                foreach($model->categories as $cat_id){
+                    $selected_cat = \common\models\Category::find()->where(['id'=>$cat_id])->one();
+            ?>
+                    <span id="checked-<?= $selected_cat->id ?>" class="js_tree_el"><input type="hidden" name="categories[]" value="<?= $selected_cat->id ?>" class="js_tree_el"><?= $selected_cat->_text->name ?> <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-<?= $selected_cat->id ?>" onclick="closeCheckedAndTree(<?= $selected_cat->id ?>)"></i></span><br class="js_tree_el">
+            <? }} ?>
+        </div>
+        <hr class="width-100">
+        <?= $this->render('/scripts/tree-select', ['categories' => $categories, 'categories_limit' => $categories_limit, "if_user_logged" => $if_user_logged,
+         "selected_categories" => $selected_categories]); ?>
+    <div class="row">
         <div class="form-group col-lg-4 col-sm-12 col-md-6">
             <select
                 <? if(!$user){?> disabled<? } ?>
@@ -142,7 +151,7 @@ if(isset($model) and $user){
                 <? if($placements and $user){
                     foreach ($placements as $pl){
                         ?>
-                        <option value="<?= $pl->id ?>" <? if($pl->id == $selected_placement_id){?>selected<?}?> ><?= $pl->_text->name ?></option>
+                        <option value="<?= $pl->id ?>" <? if($model AND $pl->id == $model->placement_id){?>selected<?}?> ><?= $pl->_text->name ?></option>
                     <? }} ?>
             </select>
             <?php if(Yii::$app->session->getFlash('placement_id_error')){?>

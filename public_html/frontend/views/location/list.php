@@ -19,7 +19,7 @@ use yii\helpers\Url;
         <a href="<?= Url::toRoute(["/select-location/reset/"])?>"><?= __('Reset location') ?></a>
     </div>
     <?php foreach ($regions as $region) { ?>
-        <div class="col-lg-4 col-xs-2">
+        <div class="col-lg-4 col-md-6 col-xs-2">
             <ul class="lvl-block">
                 <li class="lvl-1">
                     <a href="<?= Url::toRoute(["select-location/".$region["domain"]."/"])?>"><?= $region['name']?></a>

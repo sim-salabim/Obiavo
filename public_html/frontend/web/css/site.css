@@ -59,7 +59,7 @@ h1 {
 
 .footer {
     height: 60px;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     border-top: 1px solid #ddd;
     padding-top: 20px;
 }
@@ -519,7 +519,7 @@ ul.bs-autocomplete-menu a {
 /*}*/
 a:hover {
     color: #ff1010 !important;
-    text-decoration: underline;
+    text-decoration: none !important;
 }
 .image-div{
     padding-top: 5px;
@@ -539,9 +539,6 @@ a:hover {
 .padding-top-30{
     padding-top:30px;
 }
-.width-13{
-    width: 13px;
-}
 .dispaly-block{
     display: block !important;
 }
@@ -554,4 +551,10 @@ a:hover {
 .footer-menu{
     padding-top: 50px;
     padding-bottom: 20px;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.padding-left0{
+    padding-left:0px;
 }

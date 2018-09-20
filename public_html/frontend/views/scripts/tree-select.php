@@ -1,8 +1,25 @@
 <script>
+var categoriesLimit = <?= $categories_limit ?>;
+var selected_cats = [];
+
+<? foreach($selected_categories as $selected_cat){ ?>
+    selected_cats[] = '<?= $selected_cat ?>';
+<? } ?>
+var ifUserLogged = <?= $if_user_logged ?>;
 $(document).ready(function() {
+    if(ifUserLogged) {
+        $("#tree-container").show();
+    }
     $("#tree-category-select").on("click", function (event) {
         event.preventDefault();
         $("#tree-container").toggle();
+    });
+    $(window).on("click", function (event) {
+        if(event.target.id.indexOf("a-cat-") != 0) {
+            if (event.target.id.indexOf("checkbox-") == -1 ) {
+//                                $('#tree-container').hide();
+            }
+        }
     });
 });
 
@@ -40,7 +57,7 @@ title: "Lazy loading sample",
                 alert("<?= __('Categories limit:') ?> "+categoriesLimit );
                 node.select(false);
             }else {
-                $('#checkbox-select').append('<span id="checked-' + node.data.key + '" class="js_tree_el"><input type="hidden" name="categories[]" value="' + node.data.key + '" class="js_tree_el">' + node.data.title + ' <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-' + node.data.key + '" onclick="closeCheckedAndTree(' + node.data.key + ')"></i></span><br class="js_tree_el">');
+                $('#category-append').append('<span id="checked-' + node.data.key + '" class="js_tree_el"><input type="hidden" name="categories[]" value="' + node.data.key + '" class="js_tree_el">' + node.data.title + ' <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-' + node.data.key + '" onclick="closeCheckedAndTree(' + node.data.key + ')"></i></span><br class="js_tree_el">');
                 removeParents(node);
                 uncheckChildren(node);
             }

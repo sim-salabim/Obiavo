@@ -1,4 +1,4 @@
-<footer class="footer bg-light footer-height">
+<footer class="footer  footer-height">
     <div class="container">
         <div class="row">
             <div class="col-12 footer-menu">
