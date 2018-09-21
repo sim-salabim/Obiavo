@@ -170,45 +170,54 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @param Ads $ad, экземпляр класса объявлений
      * @return array|bool|null|\yii\db\ActiveRecord
      */
-    public function getGroupForAutoposting(Ads $ad){
-        $group = null;
-        if ($ad->category->socialNetworkGroupsMain) {
-            if ($ad->city) {
-                $group = $this->getBlockByCityAndCategory($ad->category);
+    public function getGroupsForAutoposting(Ads $ad){
+        $categories[] = $ad->category;
+        foreach($ad->categories as $cat){
+            $categories[] = $cat;
+        }
+        $groups = [];
+        foreach($categories as $category) {
+            if ($category->socialNetworkGroupsMain) {
+                if ($ad->city) {
+                    $group = $this->getBlockByCityAndCategory($category);
+                    if (!$group) {
+                        $group = $this->getBlockByRegionAndCategory($category);
+                        if (!$group) {
+                            $group = $this->getBlockByCountryAndCategory($category);
+                        }
+                    }
+                }
                 if (!$group) {
-                    $group = $this->getBlockByRegionAndCategory($ad->category);
-                    if (!$group) {
-                        $group = $this->getBlockByCountryAndCategory($ad->category);
+                    if ($ad->city->region) {
+                        $group = $this->getBlockByRegionAndCategory($category);
+                        if (!$group) {
+                            $group = $this->getBlockByCountryAndCategory($category);
+                        }
                     }
                 }
-            }
-            if (!$group) {
-                if ($ad->city->region) {
-                    $group = $this->getBlockByRegionAndCategory($ad->category);
-                    if (!$group) {
-                        $group = $this->getBlockByCountryAndCategory($ad->category);
-                    }
+                if (!$group) {
+                    $group = $this->getBlockByCountryAndCategory($category);
+                }
+            } else {
+                if ($category->parent) {
+                    $gr = $this->getGroupsBlock($category->parent);
+                    $groups[$gr->id] = $gr;
+                    continue;
                 }
             }
-            if (!$group) {
-                $group = $this->getBlockByCountryAndCategory($ad->category);
+            if (!$group AND $category->socialNetworkGroupsMain) {
+                $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
+                if (!$group) {
+                    $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnIdFromDefault($this->id);
+                }
             }
-        } else {
-            if ($ad->category->parent) {
-                return $this->getGroupsBlock($ad->category->parent);
-            }
-        }
-        if (!$group AND $ad->category->socialNetworkGroupsMain) {
-            $group = $ad->category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
-            if (!$group) {
-                $group = $ad->category->socialNetworkGroupsMain->getDefaultGroupBySnIdFromDefault($this->id);
-            }
-        }
 
-        if(!$group){
-            $group = $this->default;
+            if (!$group) {
+                $group = $this->default;
+            }
+            $groups[$group->id] = $group;
         }
-        return $group;
+        return $groups;
     }
 
     /** Проверяет есть ли соцгруппы у полученой категории для города локации, если нет, то смотрит родительскую и тд

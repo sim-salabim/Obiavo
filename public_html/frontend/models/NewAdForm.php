@@ -65,11 +65,13 @@ class NewAdForm extends Model
         if(isset($_POST['files'])) {
             Files::linkFilesToModel($_POST['files'], $adsModel);
         }
-        foreach($this->categories as $cat){
-            $adCategory = new AdCategory();
-            $adCategory->ads_id = $adsModel->id;
-            $adCategory->categories_id = $cat;
-            $adCategory->save();
+        foreach($this->categories as $k => $cat){
+            if($k > 0) {
+                $adCategory = new AdCategory();
+                $adCategory->ads_id = $adsModel->id;
+                $adCategory->categories_id = $cat;
+                $adCategory->save();
+            }
         }
         Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel]);
         return $adsModel;

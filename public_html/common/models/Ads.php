@@ -140,7 +140,7 @@ class Ads extends \yii\db\ActiveRecord
     public function getCategories()
     {
         return $this->hasMany(Category::className(), ['id' => 'categories_id'])
-            ->viaTable('ads_has_categories', ['categories_id' => 'id'])->with('categoriesText');
+            ->viaTable('ads_has_categories', ['ads_id' => 'id']);
     }
     /**
      * @return \yii\db\ActiveQuery

@@ -86,11 +86,13 @@ class AutopostingTasks extends \yii\db\ActiveRecord
     static public function createTasks(Ads $ad){
         $networks = SocialNetworks::getNetworksForAutoposting();
         foreach($networks as $network){
-            $group = $network->getGroupForAutoposting($ad);
-            $task = new self();
-            $task->ads_id = $ad->id;
-            $task->social_networks_groups_id = $group->id;
-            $task->save();
+            $groups = $network->getGroupsForAutoposting($ad);
+            foreach($groups as $group) {
+                $task = new self();
+                $task->ads_id = $ad->id;
+                $task->social_networks_groups_id = $group->id;
+                $task->save();
+            }
         }
     }
 }
