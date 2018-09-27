@@ -106,7 +106,7 @@ class SiteController extends BaseController
             ->all();
         // достанем цмс страницу site-header чтоб установить сео элементы для главной страницы
         $cms_page = Cms::getByTechname('site-header');
-        //настройка сое вещей
+        //настройка сео вещей
         $this->seo_title = $cms_page->_text->seo_title;
         $this->seo_text = $cms_page->_text->seo_text;
         $this->seo_h1 = $cms_page->_text->seo_h1;

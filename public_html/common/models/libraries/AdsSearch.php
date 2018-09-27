@@ -5,7 +5,8 @@ class AdsSearch {
 
     public $params = [];
     public $user;
-    public $category;
+    public $categories = [];
+    public $main_category;
     public $action;
     public $location;
     public $consider_location;
@@ -19,7 +20,8 @@ class AdsSearch {
     function __construct(){
         $this->consider_location = true;
         $this->user = null;
-        $this->category = null;
+        $this->categories = [];
+        $this->main_category = null;
         $this->action = null;
         $this->limit = 10;
         $this->query = null;
@@ -106,17 +108,31 @@ class AdsSearch {
     }
 
     /**
-     * @param $category
+     * @param $categories
      */
-    function setCategory($category){
-        $this->category = $category;
+    function setCategories($categories){
+        $this->categories = $categories;
     }
 
     /**
      * @return int, category_id
      */
-    function getCategory(){
-        return $this->category;
+    function getCategories(){
+        return $this->categories;
+    }
+
+    /**
+     * @param $main_category
+     */
+    function setMainCategory($main_category){
+        $this->main_category = $main_category;
+    }
+
+    /**
+     * @return int, main_category
+     */
+    function getMainCategory(){
+        return $this->main_category;
     }
 
     /**

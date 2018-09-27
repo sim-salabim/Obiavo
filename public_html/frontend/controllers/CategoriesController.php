@@ -81,7 +81,7 @@ class CategoriesController extends BaseController
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         $librarySearch = new AdsSearch();
-        $librarySearch->setCategory($this->category->id);
+        $librarySearch->setMainCategory($this->category->id);
         $librarySearch->setAction($action_id);
         $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
         $librarySearch->setPage($page);

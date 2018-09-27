@@ -183,17 +183,31 @@ class Ads extends \yii\db\ActiveRecord
         $user_conditions = [];
         $like_conditions = [];
         $category_conditions = [];
+        $additional_category_conditions = [];
         $location_conditions = [];
         $expired_conditions = [];
         if($model->user) $user_conditions['users_id'] = $model->user->id;
-        if($model->category) {
-            $category = Category::findOne($model->category);
-            $kids_categories = $category->getAllChildren([$category]);
-            array_push($kids_categories, $category);
+        if($model->main_category) {
+            $category = Category::findOne($model->main_category);
+            $kids_categories = Category::getAllChildren([$category]);
             $cat_ids_arr = ArrayHelper::getColumn($kids_categories, 'id');
+            array_push($cat_ids_arr, $model->main_category);
             $category_conditions = [
-                'in', 'categories_id', $cat_ids_arr
+                'in', 'ads.categories_id', $cat_ids_arr
             ];
+            $ad_ids = (new \yii\db\Query())
+                ->select(['ads_id'])
+                ->from('ads_has_categories')
+                ->groupBy(['ads_id'])
+                ->where(["categories_id" => $cat_ids_arr])
+                ->all();
+            if($ad_ids){
+                $ad_ids_arr = [];
+                foreach($ad_ids as $i){
+                    $ad_ids_arr[] = $i['ads_id'];
+                }
+                $additional_category_conditions = ["id" => $ad_ids_arr];
+            }
         }
         if($model->action) $where_conditions['placements_id'] = $model->action;
         if(!$model->all) {
@@ -260,6 +274,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->andFilterWhere($user_conditions)
                 ->andFilterWhere($location_conditions)
                 ->andFilterWhere($category_conditions)
+                ->orFilterWhere($additional_category_conditions)
                 ->andFilterWhere($like_conditions)
                 ->orderBy($model->sorting)
                 ->offset(($model->page - 1)* $model->limit)

@@ -177,6 +177,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
         }
         $groups = [];
         foreach($categories as $category) {
+            $group = null;
             if ($category->socialNetworkGroupsMain) {
                 if ($ad->city) {
                     $group = $this->getBlockByCityAndCategory($category);
