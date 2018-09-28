@@ -206,7 +206,7 @@ class Ads extends \yii\db\ActiveRecord
                 foreach($ad_ids as $i){
                     $ad_ids_arr[] = $i['ads_id'];
                 }
-                $additional_category_conditions = ["id" => $ad_ids_arr];
+                $additional_category_conditions = ["ads.id" => $ad_ids_arr];
             }
         }
         if($model->action) $where_conditions['placements_id'] = $model->action;
@@ -287,6 +287,7 @@ class Ads extends \yii\db\ActiveRecord
             ->andFilterWhere($expired_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
+            ->orFilterWhere($additional_category_conditions)
             ->andFilterWhere($like_conditions)
             ->orderBy($model->sorting)
             ->count();
@@ -298,6 +299,7 @@ class Ads extends \yii\db\ActiveRecord
             ->andFilterWhere($expired_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
+            ->orFilterWhere($additional_category_conditions)
             ->andFilterWhere($like_conditions)
             ->orderBy($model->sorting)
             ->one();
