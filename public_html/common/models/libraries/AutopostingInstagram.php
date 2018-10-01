@@ -37,6 +37,7 @@ class AutopostingInstagram {
                 echo 'Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.', ID здачи: '.$this->task->id.' '.$e->getMessage();
                 TelegrammLoging::send('Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.', ID здачи: '.$this->task->id.' '.$e->getMessage());
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Instagram", 'api-error', ['message' =>$e->getMessage()]);
+                \Yii::warning('АI P ошибка авторизации инстаграм, задача '.$this->task->id, "DEBUG");
                 exit(0);
             }
             list($width, $height) = getimagesize($photoFilename);
@@ -78,6 +79,7 @@ class AutopostingInstagram {
                 $this->task->save();
                 TelegrammLoging::send('Ошибка публикации в Instagramm  ID сообщества: '.$this->task->socialNetworksGroup->id.' '.$e->getMessage());
                 Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Instagram", 'api-error', ['message' =>$e->getMessage()]);
+                \Yii::warning('АI P ошибка загрузки фото в инстаграм, задача '.$this->task->id.' ошибка '.$e->getMessage(), "DEBUG");
                 exit(0);
             }
             $this->task->status = AutopostingTasks::STATUS_POSTED;
@@ -85,6 +87,7 @@ class AutopostingInstagram {
         }else{
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
+            \Yii::warning('АI P Успешная публикация инстаграм'.$this->task->id, "DEBUG");
         }
     }
 }

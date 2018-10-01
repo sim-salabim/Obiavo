@@ -77,17 +77,21 @@ class AutopostingOk {
         $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params), true);
 //Если парсер не смог открыть нашу ссылку (иногда он это делает со второй попытки), то отправляем ещё раз
         if (isset($result['error_code']) && $result['error_code'] == 5000) {
+            \Yii::warning('АO P Ошибка открытия ссылки парсером, идем на 2-ю попытку, задача '.$this->task->id, "DEBUG");
             $result = $this->getUrl("https://api.ok.ru/fb.do", "POST", $params);
             if (isset($result['error_code']) && $result['error_code'] == 5000){
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
+                \Yii::warning('АO P Ошибка открытия ссылки парсером со второй попытки, задача '.$this->task->id, "DEBUG");
             }else{
                 $this->task->status = AutopostingTasks::STATUS_POSTED;
                 $this->task->save();
+                \Yii::warning('АO P Открытие ссылки парсером со второй попытки, задача '.$this->task->id, "DEBUG");
             }
         }else{
             $this->task->status = AutopostingTasks::STATUS_POSTED;
             $this->task->save();
+            \Yii::warning('АO P Открытие ссылки парсером со первой попытки, задача '.$this->task->id, "DEBUG");
         }
     }
 

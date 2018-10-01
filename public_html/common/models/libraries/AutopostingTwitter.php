@@ -25,12 +25,14 @@ class AutopostingTwitter {
         $media_ids = '';
         $media_amount = 0;
         // зальем файлы если такие есть и подхотят по требованиям
+        \Yii::warning("АT P Найдено файлов ".count($task_files)." для задачи ".$this->task->id.", обьявления ".$this->task->ad->id, "DEBUG");
         foreach($task_files as $file){
             if($media_amount < self::FILES_LIMIT AND filesize (\Yii::$app->params['uploadPath']."/".$file->hash) < self::FILE_SIZE_LIMIT){
                 try {
                     $media = $connection->upload("media/upload", array('media' => \Yii::$app->params['uploadPath'] . "/" . $file->hash));
                 }catch(Exception $e){
                     TelegrammLoging::send('Ошибка размещения медиафайлов в Twitter  ID сообщества: '.$this->task->socialNetworksGroup->id);
+                    \Yii::warning("АT P Ошибка размещения медиафайлов в Twitter  ID сообщества: ".$this->task->socialNetworksGroup->id, "DEBUG");
                     unset($media);
                 }
                 if(isset($media) AND !isset($media->errors)) {
@@ -50,9 +52,11 @@ class AutopostingTwitter {
             Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Twitter", 'api-error', ['message' =>$statuses->errors[0]->message]);
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
+            \Yii::warning('АT P Ошибка публикации в Twitter  ID сообщества: '.$this->task->socialNetworksGroup->id.' '.$statuses->errors[0]->message, "DEBUG");
         }else{
             $this->task->status = AutopostingTasks::STATUS_POSTED;
             $this->task->save();
+            \Yii::warning('АT P Задача '.$this->task->id.' выполнена успешно', "DEBUG");
         }
     }
 }

@@ -56,6 +56,7 @@ class AutopostingFb {
         if($response != 200){
             TelegrammLoging::send('Ошибка публикации на странице Facebook '.$this->task->socialNetworksGroup->group_id.' https://graph.facebook.com/'.$this->group_id.'/feed access_token => '.$this->token);
             Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Facebook", 'api-error', [ 'request' => $this->task->socialNetworksGroup->group_id.' https://graph.facebook.com/'.$this->group_id.'/feed access_token => '.$this->token.', message =>'.$postfields['message'].', link => '.$postfields['link'], 'message' => 'Ошибка публикации на странице Facebook']);
+            \Yii::warning('АF P Ошибка публикации на странице Facebook, задача '.$this->task->id, "DEBUG");
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
         }else{
@@ -64,6 +65,7 @@ class AutopostingFb {
             }
             $this->task->status = AutopostingTasks::STATUS_POSTED;
             $this->task->save();
+            \Yii::warning('АF P Усчешная публикация, задача '.$this->task->id, "DEBUG");
         }
     }
 }
