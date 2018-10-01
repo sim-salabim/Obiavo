@@ -171,12 +171,17 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @return array|bool|null|\yii\db\ActiveRecord
      */
     public function getGroupForAutoposting(Ads $ad){
+        $location = \Yii::$app->location;
         $group = null;
         if ($ad->category->socialNetworkGroupsMain) {
             if ($ad->city) {
-                $group = $this->getBlockByCityAndCategory($ad->category);
+                if($location->city) {
+                    $group = $this->getBlockByCityAndCategory($ad->category);
+                }
                 if (!$group) {
-                    $group = $this->getBlockByRegionAndCategory($ad->category);
+                    if($location->region) {
+                        $group = $this->getBlockByRegionAndCategory($ad->category);
+                    }
                     if (!$group) {
                         $group = $this->getBlockByCountryAndCategory($ad->category);
                     }
@@ -184,7 +189,9 @@ class SocialNetworks extends \yii\db\ActiveRecord
             }
             if (!$group) {
                 if ($ad->city->region) {
-                    $group = $this->getBlockByRegionAndCategory($ad->category);
+                    if($location->region) {
+                        $group = $this->getBlockByRegionAndCategory($ad->category);
+                    }
                     if (!$group) {
                         $group = $this->getBlockByCountryAndCategory($ad->category);
                     }
