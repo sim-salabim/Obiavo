@@ -47,14 +47,23 @@ class AutopostingTasksController extends BaseController
 
     public function actionIndex($task_id = null){
         $task = null;
-
+        $pages_amount = 1;
+        $current_page = 1;
         if ($task_id){
             $task = AutopostingTasks::findOne($task_id);
         } else {
-            $tasks = AutopostingTasks::find()->orderBy('priority DESC, created_at ASC')->all();
+            $current_page = \Yii::$app->request->get('page') ? \Yii::$app->request->get('page') : 1;
+            $limit = 20;
+            $offset = ($current_page - 1) * $limit;
+            $rows = AutopostingTasks::find()->count();
+            $pages_amount = ceil($rows/$limit);
+            $tasks = AutopostingTasks::find()->orderBy('priority DESC, created_at ASC')
+                ->limit($limit)
+                ->offset($offset)
+                ->all();
         }
 
-        return $this->render('index',  compact('task', 'tasks'));
+        return $this->render('index',  compact('task', 'tasks',  'pages_amount', 'current_page'));
     }
 
     public function actionCreate(){
