@@ -61,11 +61,12 @@ class AutopostingFb {
             $this->task->save();
         }else{
             if($this->fb_email) {
+                \Yii::warning('АF P Маил отчет id'.$this->group_id.'@groups.facebook.com об успешной публикации задачи '.$this->task->id, "DEBUG");
                 Mailer::send("id$this->group_id@groups.facebook.com", $this->task->ad->title, 'fb-publication', ['ad' => $this->task->ad], ['name' => 'Obiavo.ru', 'email' => 'df200587@mail.ru']);
             }
             $this->task->status = AutopostingTasks::STATUS_POSTED;
             $this->task->save();
-            \Yii::warning('АF P Усчешная публикация, задача '.$this->task->id, "DEBUG");
+            \Yii::warning('АF P Успешная публикация, задача '.$this->task->id, "DEBUG");
         }
     }
 }
