@@ -24,20 +24,20 @@ class AdCategory extends \yii\db\ActiveRecord
         return 'ads_has_categories';
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => \backend\behaviors\SaveRelation::className(),
-                'relations' => ['categoriesText']
-            ],
-            [
-                'class' => \frontend\behaviors\Multilanguage::className(),
-                'relationName' => 'categoriesText',
-                'relationClassName' => CategoriesText::className(),
-            ],
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            [
+//                'class' => \backend\behaviors\SaveRelation::className(),
+//                'relations' => ['categoriesText']
+//            ],
+//            [
+//                'class' => \frontend\behaviors\Multilanguage::className(),
+//                'relationName' => 'categoriesText',
+//                'relationClassName' => CategoriesText::className(),
+//            ],
+//        ];
+//    }
 
     /**
      * @inheritdoc

@@ -187,28 +187,6 @@ class Ads extends \yii\db\ActiveRecord
         $location_conditions = [];
         $expired_conditions = [];
         if($model->user) $user_conditions['users_id'] = $model->user->id;
-        if($model->main_category) {
-            $category = Category::findOne($model->main_category);
-            $kids_categories = Category::getAllChildren([$category]);
-            $cat_ids_arr = ArrayHelper::getColumn($kids_categories, 'id');
-            array_push($cat_ids_arr, $model->main_category);
-            $category_conditions = [
-                'in', 'ads.categories_id', $cat_ids_arr
-            ];
-            $ad_ids = (new \yii\db\Query())
-                ->select(['ads_id'])
-                ->from('ads_has_categories')
-                ->groupBy(['ads_id'])
-                ->where(["categories_id" => $cat_ids_arr])
-                ->all();
-            if($ad_ids){
-                $ad_ids_arr = [];
-                foreach($ad_ids as $i){
-                    $ad_ids_arr[] = $i['ads_id'];
-                }
-                $additional_category_conditions = ["ads.id" => $ad_ids_arr];
-            }
-        }
         if($model->action) $where_conditions['placements_id'] = $model->action;
         if(!$model->all) {
             if ($model->expired) {
@@ -266,6 +244,53 @@ class Ads extends \yii\db\ActiveRecord
                 $location_conditions = ['cities_id' => 0];
             }
         }
+        if($model->main_category) {
+            $category = Category::findOne($model->main_category);
+            $kids_categories = Category::getAllChildren([$category]);
+            $cat_ids_arr = ArrayHelper::getColumn($kids_categories, 'id');
+            array_push($cat_ids_arr, $model->main_category);
+            $category_conditions = [
+                'in', 'ads.categories_id', $cat_ids_arr
+            ];
+            $add_where_condition = [];
+            if(!empty($where_conditions)){
+                $add_where_condition = [$where_conditions[0],"ads.".$where_conditions[1],$where_conditions[2]];
+            }
+            $add_expired_conditions = [];
+            if(!empty($expired_conditions)){
+                $add_expired_conditions = [$expired_conditions[0], "ads.".$expired_conditions[1],$expired_conditions[2]];
+            }
+            $add_user_conditions = [];
+            if(!empty($user_conditions)){
+                $add_user_conditions = [$user_conditions[0], "ads.".$user_conditions[1], $user_conditions[2]];
+            }
+            $add_location_conditions = [];
+            if(!empty($location_conditions)){
+                $add_location_conditions = [$location_conditions[0], "ads.".$location_conditions[1], $location_conditions[2]];
+            }
+            $add_like_conditions = [];
+            if(!empty($like_conditions)){
+                $add_like_conditions = [$like_conditions[0], "ads.".$like_conditions[1], $like_conditions[2]];
+            }
+            $add_ids = AdCategory::find()
+                ->select('ads.*, ads_has_categories.ads_id, ads_has_categories.categories_id')
+                ->leftJoin("ads", "ads.id = ads_has_categories.ads_id")
+                ->groupBy(['ads_has_categories.ads_id'])
+                ->where(["ads_has_categories.categories_id" => $cat_ids_arr])
+                ->andFilterWhere($add_where_condition)
+                ->andFilterWhere($add_expired_conditions)
+                ->andFilterWhere($add_user_conditions)
+                ->andFilterWhere($add_location_conditions)
+                ->andFilterWhere($add_like_conditions)
+                ->all();
+            if($add_ids){
+                $ad_ids_arr = [];
+                foreach($add_ids as $c){
+                    $ad_ids_arr[] = $c->ads_id;
+                }
+                $additional_category_conditions = ["ads.id" => $ad_ids_arr];
+            }
+        }
         $ads = [];
         if($ads_list) {
             $ads = Ads::find()
@@ -274,8 +299,8 @@ class Ads extends \yii\db\ActiveRecord
                 ->andFilterWhere($user_conditions)
                 ->andFilterWhere($location_conditions)
                 ->andFilterWhere($category_conditions)
-                ->orFilterWhere($additional_category_conditions)
                 ->andFilterWhere($like_conditions)
+                ->orFilterWhere($additional_category_conditions)
                 ->orderBy($model->sorting)
                 ->offset(($model->page - 1)* $model->limit)
                 ->limit($model->limit)
