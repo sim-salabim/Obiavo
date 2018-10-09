@@ -149,4 +149,10 @@ return [
     'and agree with' => 'и соглашаетесь с',
     'Privacy policy' => 'Политикой конфиденциальности',
     'Picked categories' => 'Выбранные категории',
+    'Pick a category. The category firstly picked wil be the main one for the ad.' => 'Выберите хотя бы одну категорию. Категория выбранная первой будет основной категорией данного объявления.',
+    'You can pick free only' => 'Бесплатно можно выбрать',
+    'Get details about posting ads?' => 'Подробнее изучить Как подать объявление?',
+    'pick_one_category' => 'категорию',
+    'pick_two_category' => 'категории',
+    'pick_more_category' => 'категорий',
 ];

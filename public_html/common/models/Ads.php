@@ -275,7 +275,7 @@ class Ads extends \yii\db\ActiveRecord
             $add_ids = AdCategory::find()
                 ->select('ads.*, ads_has_categories.ads_id, ads_has_categories.categories_id')
                 ->leftJoin("ads", "ads.id = ads_has_categories.ads_id")
-                ->groupBy(['ads_has_categories.ads_id'])
+               // ->groupBy(['ads_has_categories.ads_id'])
                 ->where(["ads_has_categories.categories_id" => $cat_ids_arr])
                 ->andFilterWhere($add_where_condition)
                 ->andFilterWhere($add_expired_conditions)

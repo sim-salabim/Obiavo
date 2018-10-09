@@ -53,6 +53,9 @@ title: "Lazy loading sample",
         var element = $("#checked-"+node.data.key);
         if(element.length == 0) {
             var checkedAmount = $("span[id^=checked-]").length;
+            if(checkedAmount == 0){
+                $("#category-append").text("");
+            }
             if(categoriesLimit <= checkedAmount){
                 alert("<?= __('Categories limit:') ?> "+categoriesLimit );
                 node.select(false);
@@ -65,11 +68,18 @@ title: "Lazy loading sample",
     }else{
         $("#checked-"+node.data.key).next().remove();
         $("#checked-"+node.data.key).remove();
+        appendDefaultText();
     }
 },
 debugLevel: 0
 });
-
+function appendDefaultText(){
+    var checkedAmount = $("span[id^=checked-]").length;
+    console.log(checkedAmount);
+    if(checkedAmount == 0){
+        $("#category-append").append("<?= __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")])?> <a href='/help-obiavlenya/'><?=__("Get details about posting ads?")?></a>");
+    }
+}
 function uncheckChildren(node){
     if(node.childList){
         node.childList.forEach(function(item, i, arr){
@@ -92,7 +102,7 @@ function removeParents(node){
 }
 function unselectNode(id){
     var node = $("#tree-container").dynatree('getTree').getNodeByKey(""+id+"");
-    if(node){
+    if(node) {
         node.select(false);
     }
 }

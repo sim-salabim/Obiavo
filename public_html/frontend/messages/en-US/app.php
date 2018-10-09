@@ -147,4 +147,10 @@ return [
     'and agree with' => 'and agree with',
     'Privacy policy' => 'Privacy policy',
     'Picked categories' => 'Picked categories',
+    'Pick a category. The category firstly picked wil be the main one for the ad.' => 'Pick a category. The category firstly picked wil be the main one for the ad.',
+    'You can pick free only' => 'You can pick free only',
+    'Get details about posting ads?' => 'Get details about posting ads?',
+    'pick_one_category' => 'category',
+    'pick_two_category' => 'categories',
+    'pick_more_category' => 'categories',
 ];

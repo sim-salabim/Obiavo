@@ -135,7 +135,9 @@ if(isset($model) and $user){
                     $selected_cat = \common\models\Category::find()->where(['id'=>$cat_id])->one();
             ?>
                     <span id="checked-<?= $selected_cat->id ?>" class="js_tree_el"><input type="hidden" name="categories[]" value="<?= $selected_cat->id ?>" class="js_tree_el"><?= $selected_cat->_text->name ?> <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-<?= $selected_cat->id ?>" onclick="closeCheckedAndTree(<?= $selected_cat->id ?>)"></i></span><br class="js_tree_el">
-            <? }} ?>
+            <? }}else{
+                echo __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")]).". <a href='/help-obiavlenya/'>".__("Get details about posting ads?")."</a>";
+            } ?>
         </div>
         <hr class="width-100">
         <?= $this->render('/scripts/tree-select', ['categories' => $categories, 'categories_limit' => $categories_limit, "if_user_logged" => $if_user_logged,
