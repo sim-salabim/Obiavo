@@ -240,7 +240,7 @@ class CategoriesController extends BaseController
         foreach($categories as $k => $row){
             $kid = Category::find()->where(['parent_id' => $row['id']])->one();
             $has_kids = $kid ? 'true' : 'false';
-            $out .= '{"key": "'.$row['id'].'","isLazy":'.$has_kids.',"title": "'.$row['techname'].'"}';
+            $out .= '{"key": "'.$row['id'].'","isLazy":'.$has_kids.',"isFolder":'.$has_kids.',"title": "'.$row['techname'].'"}';
             $next = $k + 1;
             if(isset($categories[$next])){
                 $out .= ",";

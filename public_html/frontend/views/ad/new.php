@@ -143,7 +143,7 @@ if(isset($model) and $user){
         <?= $this->render('/scripts/tree-select', ['categories' => $categories, 'categories_limit' => $categories_limit, "if_user_logged" => $if_user_logged,
          "selected_categories" => $selected_categories]); ?>
     <div class="row">
-        <div class="form-group col-lg-4 col-sm-12 col-md-6">
+        <div class="form-group col-lg-12 col-sm-12 col-md-12">
             <select
                 <? if(!$user){?> disabled<? } ?>
                 name="placement_id"
@@ -162,7 +162,7 @@ if(isset($model) and $user){
                 </div>
             <?php } ?>
         </div>
-        <div class="form-group col-lg-4 col-sm-12 col-md-6">
+        <div class="form-group col-lg-12 col-sm-12 col-md-12">
             <select
                 <? if(!$user){?> disabled<? } ?>
                 name="cities_id"
@@ -179,8 +179,9 @@ if(isset($model) and $user){
                 </div>
             <?php } ?>
         </div>
-        <div class="form-group col-lg-4 col-sm-12 col-md-6">
+        <div class="form-group col-lg-12 col-sm-12 col-md-12">
             <select
+                disabled
                 <? if(!$user){?> disabled<? } ?>
                 name="expiry_date"
                 class="form-control <?php if(Yii::$app->session->getFlash('expiry_date_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>">
@@ -195,7 +196,7 @@ if(isset($model) and $user){
                 <option value="604800" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 604800){?>selected<? }?>><?= __('One week') ?></option>
                 <option value="1209600" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 1209600){?>selected<? }?>><?= __('Two weeks') ?></option>
                 <option value="1814400" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 1814400){?>selected<? }?>><?= __('Three weeks') ?></option>
-                <option value="2419200" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 2419200){?>selected<? }?>><?= __('One month') ?></option>
+                <option value="2419200" <? if((isset($model) AND $model->expiry_date) AND $model->expiry_date == 2419200){?>selected<? }?>selected><?= __('One month') ?></option>
                 <? } ?>
             </select>
             <?php if(Yii::$app->session->getFlash('expiry_date_error')){?>
@@ -228,6 +229,7 @@ if(isset($model) and $user){
                 <? if(!$user){?> disabled<? } ?>
                 class="form-control <?php if(Yii::$app->session->getFlash('text_error')){?> is-invalid<?php }?> <? if(!$user){?>color-disabled<? } ?>"
                 rows="10"
+                placeholder="<?= __('Write your ad\'s text') ?>"
                 name="text"><? if($user AND isset($model) AND $model->text){?><?= $model->text ?><? }?></textarea>
             <?php if(Yii::$app->session->getFlash('text_error')){?>
                 <div class="invalid-feedback">

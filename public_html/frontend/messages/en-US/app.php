@@ -153,4 +153,5 @@ return [
     'pick_one_category' => 'category',
     'pick_two_category' => 'categories',
     'pick_more_category' => 'categories',
+    'Write your ad\'s text' => 'Write your ad\'s text',
 ];

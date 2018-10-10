@@ -8,20 +8,12 @@ use common\models\Category;
 use common\models\City;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
-use common\models\libraries\AutopostingFb;
-use common\models\libraries\AutopostingInstagram;
-use common\models\libraries\AutopostingOk;
-use common\models\libraries\AutopostingTwitter;
-use common\models\libraries\AutopostingVk;
 use common\models\Placement;
 use common\models\Settings;
-use common\models\SocialNetworks;
-use common\models\SocialNetworksGroups;
-use common\models\TestTasks;
 use frontend\models\LoginForm;
 use frontend\models\NewAdForm;
 use Yii;
-use yii\base\Exception;
+use yii\helpers\Url;
 use yii\web\HttpException;
 
 class AdController extends BaseController
@@ -106,6 +98,7 @@ class AdController extends BaseController
         if(($ad->only_locally AND ($ad->city->domain != $city)) OR (!$ad->only_locally AND $city)) throw new HttpException(404, 'Not Found');
         $ad_title = $ad->title." - ".__('ads in')." ".$ad->city->_text->name_rp." ".__('on the site')." ".ucfirst(Yii::$app->location->country->domain);
         $this->setPageTitle($ad_title);
+        Yii::$app->view->params['canonical'] = Url::home(true) . $ad_url . "/";
         $breadcrumbs = $ad->getBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['seo_h1'] = $ad->title;
