@@ -19,7 +19,7 @@ function sortingKids($a, $b){
             <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <ul class="lvl-block" style="list-style: none;">
                     <li class="lvl-1">
-                        <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>
+                        <a class="text-secondary hover-red" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>
                     </li>
                     <?
 
@@ -41,13 +41,13 @@ function sortingKids($a, $b){
             <span class="color-grey">
                 <? if($current_category->placements){?>
                     <? foreach($current_category->placements as $k => $placement){ ?>
-                        <a class="text-secondary"
+                        <a class="text-secondary hover-red"
                            href="/<?= LocationHelper::getDomainForUrl($current_category->url().$placement['url']."/") ?>">
                             <?= $placement['name']?></a><? if(($k + 1) < count($current_category->placements) or count($categories)){?>,<? } ?>
                     <? } ?>
                 <? } ?>
                 <? foreach($categories as $key =>  $category){ ?>
-                        <a class="text-secondary" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
+                        <a class="text-secondary hover-red" href="/<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><? if(isset($categories[++$key])){?>,<? } ?>
                 <? } ?>
             </span>
         </div>

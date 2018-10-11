@@ -1,6 +1,9 @@
 :root {
     --disabled-color: #E6E6E6;
 }
+:root{
+    --hover-red-color:  #db3727;
+}
 html,
 body {
     height: 100%;
@@ -517,10 +520,6 @@ ul.bs-autocomplete-menu a {
 /*.nonpadding-right{*/
     /*padding-right: 0px !important;*/
 /*}*/
-a:hover {
-    color: #ff1010 !important;
-    text-decoration: none !important;
-}
 .image-div{
     padding-top: 5px;
 }
@@ -550,7 +549,6 @@ a:hover {
 }
 .footer-menu{
     padding-top: 50px;
-    padding-bottom: 20px;
 }
 .cursor-pointer{
     cursor: pointer;
@@ -572,4 +570,19 @@ ul.dynatree-container{
 }
 .navbar-brand{
     padding-top: 0.3180rem !important;
+}
+a:hover {
+    color: var(--hover-red-color) !important;
+    text-decoration: none !important;
+}
+a.hover-red:hover {
+    color: var(--hover-red-color) !important;
+    text-decoration: none !important;
+}
+.flex-ul{
+    display: flex;
+}
+.li-item{
+    flex-basis: auto;
+    flex-grow: 1;
 }
