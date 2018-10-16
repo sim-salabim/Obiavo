@@ -29,7 +29,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<city:([0-9a-zA-Z\-]+)>',
+        'pattern' => '/<city:([0-9a-zA-Z\-]+)>/<category:([0-9a-zA-Z\-]+)>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],
@@ -38,7 +38,7 @@ return [
      */
     [
         'class' => 'frontend\rules\url\LocationCategoryUrlRule',
-        'pattern' => '/<category:([0-9a-zA-Z\-]+)>/<placement:\w+>/<city:([0-9a-zA-Z\-]+)>',
+        'pattern' => '/<city:([0-9a-zA-Z\-]+)>/<category:([0-9a-zA-Z\-]+)>/<placement:\w+>',
         'route' => 'categories/index',
         'defaults' => ['city' => null],
     ],

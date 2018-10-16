@@ -1,8 +1,6 @@
 <?php
 namespace frontend\helpers;
 
-use Yii;
-
 class LocationHelper {
 
     /** Преобразует строку урла в соответствии с выбранной локацией
@@ -13,9 +11,15 @@ class LocationHelper {
         if(isset($_COOKIE['city']) AND $_COOKIE['city']){
             $domain = $_COOKIE['city']."/";
         }else{
-            if(isset($_COOKIE['region']) AND $_COOKIE['region']) $domain = $_COOKIE['region']."/";
+            if(isset($_COOKIE['region']) AND $_COOKIE['region']) $domain = $_COOKIE['region'];
         }
-        return $url . $domain;
+        if($url != "/"){
+            return "/".$domain . $url;
+        }else{
+
+            return "/".$domain;
+        }
+
     }
 
     /**

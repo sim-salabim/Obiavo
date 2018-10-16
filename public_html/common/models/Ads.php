@@ -187,7 +187,9 @@ class Ads extends \yii\db\ActiveRecord
         $location_conditions = [];
         $expired_conditions = [];
         if($model->user) $user_conditions['users_id'] = $model->user->id;
-        if($model->action) $where_conditions['placements_id'] = $model->action;
+        if($model->action){
+            $where_conditions = ['=', 'placements_id', $model->action];
+        }
         if(!$model->all) {
             if ($model->expired) {
                 $expired_conditions = [

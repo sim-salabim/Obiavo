@@ -4,11 +4,9 @@ namespace frontend\rules\url;
 use common\models\Language;
 use common\models\Region;
 use yii;
-use yii\web\UrlRuleInterface;
-use yii\base\Object;
-use yii\web\UrlRule;
-use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
+use yii\web\UrlRule;
+use yii\web\UrlRuleInterface;
 
 class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
 {
@@ -46,7 +44,7 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
         }
 
         list($route, $params) = $result;
-
+//        print_r($result);exit;
         if (isset($params['placement']) && !$this->isValidPlacement($params)) {
             return false;
         }

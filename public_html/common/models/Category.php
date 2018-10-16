@@ -278,17 +278,6 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     *
-     * Сохраняем новый пункт и Добавляем запись в связанную таблицу генераций
-     *
-     *
-     * $model->populateRelation('relationName', $relateModel);
-     *  - добавит связанную модель к модели ($model) в массив связей данной модели, которые можно получить $model->getRelationRecords()
-     */
-//    public function saveAndSetRelateForCategoryGenerated($categoryGenerateModel){
-//    }
-
-    /**
      * @return string
      */
     public function url(){
@@ -304,7 +293,7 @@ class Category extends \yii\db\ActiveRecord
         $breadcrumbs = [];
 
         while ($parent) {
-            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => '/'.$parent->_text->url."/"];
+            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $parent->_text->url."/"];
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
