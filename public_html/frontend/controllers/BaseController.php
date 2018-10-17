@@ -14,6 +14,7 @@ class BaseController extends \yii\web\Controller {
     protected $seo_text;
     protected $seo_desc;
     protected $seo_keywords;
+    protected $location_domain;
 
     /**
      * @param null $title
@@ -69,6 +70,10 @@ class BaseController extends \yii\web\Controller {
         Yii::$app->view->params['seo_desc'] = $seo_desc;
         Yii::$app->view->params['seo_keywords'] = $seo_keywords;
         Yii::$app->view->params['canonical'] = $canonical;
+    }
+
+    public function setUrlForLogo($location_domain){
+        Yii::$app->view->params['location_domain'] = "/".$location_domain."/";
     }
 
     /**
@@ -135,10 +140,13 @@ class BaseController extends \yii\web\Controller {
     /**
      * @param array $array[label => '', link =>'']
      * @param bool $show_last_one
+     * @param string $location_domain
      * @return array
      */
-    public function setBreadcrumbs($array = [], $show_last_one = false){
-        $breadcrumbs = [['label' => __('Home page'), 'link' => URL::to(Yii::$app->homeUrl)]];
+    public function setBreadcrumbs($array = [], $show_last_one = false, $location_domain = null){
+        $home_link = $location_domain ? $location_domain."/" : URL::to(Yii::$app->homeUrl);
+        $use_cookie = $location_domain ? false : true;
+        $breadcrumbs = [['label' => __('Home page'), 'link' => $home_link, 'use_cookie' => $use_cookie]];
         if(!empty($array)){
             foreach($array as $item){
                 $breadcrumbs[] = $item;

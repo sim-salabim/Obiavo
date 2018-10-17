@@ -100,7 +100,8 @@ class AdController extends BaseController
         $this->setPageTitle($ad_title);
         Yii::$app->view->params['canonical'] = Url::home(true) . $ad_url . "/";
         $breadcrumbs = $ad->getBreadcrumbs();
-        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
+        $this->setUrlForLogo($ad->city->domain);
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, false, $ad->city->domain);
         Yii::$app->view->params['seo_h1'] = $ad->title;
         Yii::$app->view->params['seo_desc'] = $ad->text;
         AdsView::eraseView($ad->id, Yii::$app->user->id);

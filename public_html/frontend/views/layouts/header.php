@@ -19,7 +19,7 @@
                 </li>
                 <li>
                     <img src="/logo.png" width="30" class="logo-img">
-                    <a class="navbar-brand mx-2 root-url" href="<?= \frontend\helpers\LocationHelper::getDomainForUrl('/') ?>">Obiavo.ru</a>
+                    <a class="navbar-brand mx-2 root-url" href="<?= $location_domain ?>">Obiavo.ru</a>
                 </li>
             </ul>
             <div class="dropdown show d-md-none d-lg-none">

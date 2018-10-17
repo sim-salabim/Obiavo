@@ -24,7 +24,7 @@ class CmsController extends BaseController
 
         $cms_page = Cms::find()->leftJoin('cms_text', '`cms_text`.`cms_id` = `cms`.`id`')->where(['cms_text.url' => $cms_url])->one();
         $this->setPageTitle($cms_page->_text->seo_title);
-        $breadcrumbs = [['label' => $cms_page->_text->seo_title, 'link' => $cms_page->_text->url]];
+        $breadcrumbs = [['label' => $cms_page->_text->seo_title, 'link' => $cms_page->_text->url, 'use_cookie' => true]];
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         Yii::$app->view->params['seo_h1'] = $cms_page->_text->seo_h1;
         Yii::$app->view->params['seo_desc'] = $cms_page->_text->seo_desc;

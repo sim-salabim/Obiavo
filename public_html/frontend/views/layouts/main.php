@@ -47,8 +47,10 @@ AppAsset::register($this);
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
     <?php $this->beginBody() ?>
-
-    <?= $this->render('header'); ?>
+    <? if(!isset($this->params['location_domain'])){
+        $this->params['location_domain'] = "/";
+    }?>
+    <?= $this->render('header', ['location_domain' => $this->params['location_domain']]); ?>
     <div id="wrapper">
         <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff;">
             <div class="container">

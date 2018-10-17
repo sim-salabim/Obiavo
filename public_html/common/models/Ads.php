@@ -373,9 +373,9 @@ class Ads extends \yii\db\ActiveRecord
     function getBreadcrumbs(){
         $parent = $this->category;
         $breadcrumbs = [];
-        $breadcrumbs[] = ['label' => $this->title, 'link' => $this->url];
+        $breadcrumbs[] = ['label' => $this->title, 'link' => $this->city->domain."/".$this->url, 'use_cookie' => false  ];
         while ($parent) {
-            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => '/'.$parent->_text->url."/"];
+            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $this->city->domain.'/'.$parent->_text->url."/", 'use_cookie' => false];
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
