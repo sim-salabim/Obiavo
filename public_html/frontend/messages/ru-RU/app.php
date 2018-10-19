@@ -156,4 +156,9 @@ return [
     'pick_two_category' => 'категории',
     'pick_more_category' => 'категорий',
     'Write your ad\'s text' => 'Введите текст объявления',
+    'Active to' => 'Активно до',
+    'Inactive since' => 'Неактивно с',
+    'Raise' => 'Поднять объявление',
+    'Repost' => 'Разместить заново',
+    'Inactivate ad' => 'Снять с публикации',
 ];

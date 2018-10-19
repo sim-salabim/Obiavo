@@ -19,7 +19,6 @@ use yii\web\HttpException;
 class AdController extends BaseController
 {
     public $params;
-
     /**
      * @inheritdoc
      */
@@ -150,5 +149,19 @@ class AdController extends BaseController
         }else{
             return $this->redirect('/podat-obiavlenie/');
         }
+    }
+
+    public function actionRaise(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $max_order = Ads::find()->max('extra_order');
+        $ad = Ads::find()->where(['id'=>$post['id']])->one();
+        if(!$ad OR (time() - $ad->updated_at) < 86400){
+            return "error";
+        }
+        $ad->extra_order = ++$max_order;
+        $ad->updated_at = time();
+        $ad->save();
+        return $ad->id;
     }
 }

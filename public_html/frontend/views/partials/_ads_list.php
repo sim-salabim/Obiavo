@@ -44,6 +44,31 @@ $root_url = isset($root_url) ? $root_url : null;
                 <div class="line-height-block">
                     <span><small class="ads-pre-text"><?= $ad->placement->_text->name ?>, <?= $ad->category->_text->name ?>, <?= $ad->city->_text->name ?></small></span><br/>
                     <span><small class="ads-pre-text"><?= $ad->getHumanDate() ?></small></span><br/>
+                    <?
+                    $user = Yii::$app->user->identity;
+                    ?>
+                    <? if ($ad->created_at < $ad->expiry_date) { ?>
+                        <span>
+                            <small class="date_string">
+                                <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
+                                <? if($user and $user->id == $ad->user->id) { ?>
+                                    <? if((time() - $ad->updated_at) > 86400){ ?>
+                                        <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
+                                    <? } ?>
+                                    <a onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
+                                <? }?>
+                            </small>
+                        </span>
+                        <br/>
+                    <? } else { ?>
+                        <span>
+                            <small class="date_string">
+                                <?= __("Inactive since") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
+                                <a><?= __('Repost') ?></a>
+                            </small>
+                        </span>
+                        <br/>
+                    <? } ?>
                 </div>
             </div>
             <div class="col-12 placeholder"></div>
@@ -66,3 +91,21 @@ $root_url = isset($root_url) ? $root_url : null;
         <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
     <? } ?>
 </div>
+<script>
+    function raiseAd(id){
+        $.ajax({
+            dataType: "json",
+            type : 'POST',
+            url: '<?= \yii\helpers\Url::toRoute('/ad/raise/') ?>',
+            data: {id: id},
+            success: function(data) {
+                if(data != "error"){
+                    $("#raise"+id).remove();
+                }
+            }
+        });
+    }
+    function inactivateAd(id){
+        alert(id);
+    }
+</script>

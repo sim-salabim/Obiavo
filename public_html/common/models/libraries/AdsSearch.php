@@ -20,6 +20,7 @@ class AdsSearch {
     function __construct(){
         $this->consider_location = true;
         $this->user = null;
+        $this->active = 1;
         $this->categories = [];
         $this->main_category = null;
         $this->action = null;
@@ -34,7 +35,7 @@ class AdsSearch {
             'city' => \Yii::$app->location->city
         ];
         $this->sorting =
-            'created_at DESC, title ASC';
+            'extra_order DESC, updated_at DESC, created_at DESC, title ASC';
     }
 
     /**
@@ -77,6 +78,19 @@ class AdsSearch {
      */
     function getLocation(){
         return $this->location;
+    }
+    /**
+     * @param $active
+     */
+    function setActive($active){
+        $this->active = $active;
+    }
+
+    /**
+     * @return array
+     */
+    function getActive(){
+        return $this->active;
     }
 
     /**

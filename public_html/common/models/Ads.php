@@ -18,6 +18,8 @@ use frontend\helpers\TransliterationHelper;
  * @property string $title
  * @property string $text
  * @property boolean $only_locally
+ * @property boolean $active
+ * @property int $extra_order
  * @property int $price
  * @property int $prlacements_id
  * @property int $created_at
@@ -36,6 +38,9 @@ use frontend\helpers\TransliterationHelper;
 class Ads extends \yii\db\ActiveRecord
 {
     const PRICE_LABEL = 'руб';
+    const DATE_TYPE_CREATION = 'created_at';
+    const DATE_TYPE_UPDATING = 'updating_at';
+    const DATE_TYPE_EXPIRATION = 'expiry_date';
     /**
      * @inheritdoc
      */
@@ -51,9 +56,10 @@ class Ads extends \yii\db\ActiveRecord
     {
         return [
             [['cities_id', 'users_id', 'categories_id'], 'required'],
+            [['extra_order', ], 'integer'],
             [['title', ], 'string', 'max' => 100],
             [['text', ], 'string', 'max' => 1000],
-            [['only_locally'], 'integer', 'max' => 1],
+            [['only_locally', 'active'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
@@ -355,8 +361,20 @@ class Ads extends \yii\db\ActiveRecord
     /** Возвращает строку с human date
      * @return string
      */
-    public function getHumanDate(){
-        $ad_day_number = date('z', $this->created_at);
+    public function getHumanDate($date_type = self::DATE_TYPE_CREATION){
+        $date = null;
+        switch($date_type){
+            case self::DATE_TYPE_UPDATING :
+                $date = $this->updated_at;
+                break;
+            case self::DATE_TYPE_EXPIRATION :
+                $date = $this->expiry_date;
+                break;
+            default:
+                $date = $this->created_at;
+                break;
+        }
+        $ad_day_number = date('z', $date);
         $today_number = date('z', time());
         $daystr = '';
         if($ad_day_number == $today_number){
@@ -364,9 +382,9 @@ class Ads extends \yii\db\ActiveRecord
         }else if($today_number == (1 + $ad_day_number)){
             $daystr .= __('Yesterday');
         }else{
-            $daystr .= date('d:m:y', $this->created_at);
+            $daystr .= date('d:m:y', $date);
         }
-        $daystr .= ' '.date('H:i', $this->created_at);
+        $daystr .= ' '.date('H:i', $date);
         return $daystr;
     }
 

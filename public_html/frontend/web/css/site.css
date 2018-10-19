@@ -4,6 +4,9 @@
 :root{
     --hover-red-color:  #db3727;
 }
+:root{
+    --link-color:  #0091d9;
+}
 html,
 body {
     height: 100%;
@@ -585,4 +588,7 @@ a.hover-red:hover {
 .li-item{
     flex-basis: auto;
     flex-grow: 1;
+}
+.date_string{
+    color: var(--link-color);
 }

@@ -154,4 +154,9 @@ return [
     'pick_two_category' => 'categories',
     'pick_more_category' => 'categories',
     'Write your ad\'s text' => 'Write your ad\'s text',
+    'Active to' => 'Active to',
+    'Inactive since' => 'Inactive since',
+    'Raise' => 'Raise',
+    'Repost' => 'Repost',
+    'Inactivate ad' => 'Inactivate ad',
 ];
