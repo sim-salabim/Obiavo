@@ -55,7 +55,9 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <? if((time() - $ad->updated_at) > 86400){ ?>
                                         <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                     <? } ?>
-                                    <a onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
+                                    <? if($ad->active){ ?>
+                                        <a id="active<? $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
+                                    <? }?>
                                 <? }?>
                             </small>
                         </span>
@@ -100,12 +102,27 @@ $root_url = isset($root_url) ? $root_url : null;
             data: {id: id},
             success: function(data) {
                 if(data != "error"){
-                    $("#raise"+id).remove();
+                    $("#raise"+id).text("Обьявление поднято");
+                    setTimeout(
+                        function()
+                        {
+                            $("#raise"+id).remove();
+                        }, 3000);
                 }
             }
         });
     }
     function inactivateAd(id){
-        alert(id);
+        $.ajax({
+            dataType: "json",
+            type : 'POST',
+            url: '<?= \yii\helpers\Url::toRoute('/ad/deactivate/') ?>',
+            data: {id: id},
+            success: function(data) {
+                if(data != "error"){
+                    $("#active"+id).text("Обьявление снято с публикации");
+                }
+            }
+        });
     }
 </script>

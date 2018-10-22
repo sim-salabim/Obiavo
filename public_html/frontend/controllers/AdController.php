@@ -42,6 +42,7 @@ class AdController extends BaseController
         $this->setPageTitle($cms->_text->seo_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL])
+            ->orderBy('order ASC, brand ASC, techname ASC')
             ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
         $cities = City::find()
@@ -106,7 +107,7 @@ class AdController extends BaseController
         AdsView::eraseView($ad->id, Yii::$app->user->id);
         return $this->render('view', [
             'ad'   => $ad,
-            'show_phone_number' => (Yii::$app->request->get('show_phone_number')) ? Yii::$app->request->get('show_phone_number') : null,
+            'show_phone_number' => (Yii::$app->request->get('show_phone_number') AND time() < $ad->expiry_date) ? Yii::$app->request->get('show_phone_number') : null,
             'user' => Yii::$app->user->identity,
         ]);
     }
@@ -160,6 +161,20 @@ class AdController extends BaseController
             return "error";
         }
         $ad->extra_order = ++$max_order;
+        $ad->updated_at = time();
+        $ad->save();
+        return $ad->id;
+    }
+
+    public function actionDeactivate(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $max_order = Ads::find()->max('extra_order');
+        $ad = Ads::find()->where(['id'=>$post['id']])->one();
+        if(!$ad){
+            return "error";
+        }
+        $ad->active = 0;
         $ad->updated_at = time();
         $ad->save();
         return $ad->id;

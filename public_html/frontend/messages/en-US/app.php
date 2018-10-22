@@ -159,4 +159,6 @@ return [
     'Raise' => 'Raise',
     'Repost' => 'Repost',
     'Inactivate ad' => 'Inactivate ad',
+    'Ad is inactive since' => 'Ad is inactive since',
+    'All ads contacts are blocked.' => 'All ads\'s contacts are blocked.',
 ];

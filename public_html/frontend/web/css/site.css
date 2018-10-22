@@ -358,6 +358,9 @@ ul.bs-autocomplete-menu a {
     border-color: var(--disabled-color)  !important;
     background-color: #FFFFFF !important;
 }
+.color-disabled:hover{
+    color: var(--disabled-color) !important;
+}
 .color-disabled-button{
     color: #FFFFFF !important;
     background-color: var(--disabled-color) !important;
@@ -566,10 +569,10 @@ ul.dynatree-container{
     border: 2px solid rgba(183, 183, 183, 0.3) !important;
 }
 .logo-img{
-    margin-bottom: 4.5px;
+    margin-bottom: 5px;
 }
 .root-url{
-    margin-left: 0px !important;
+    margin-left: 2px !important;
 }
 .navbar-brand{
     padding-top: 0.3180rem !important;

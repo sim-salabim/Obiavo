@@ -129,14 +129,16 @@ if(isset($model) and $user){
         </div>
         <hr class="width-100">
         <div class="col-12 sub-title padding-left0  <? if(!$user){?> color-disabled<? } ?>" ><?= __('Picked categories') ?></div>
-        <div id="category-append">
+        <div id="category-append" class="<? if(!$user){?> color-disabled<? } ?>" >
             <? if($model and $model->categories){
                 foreach($model->categories as $cat_id){
                     $selected_cat = \common\models\Category::find()->where(['id'=>$cat_id])->one();
             ?>
                     <span id="checked-<?= $selected_cat->id ?>" class="js_tree_el"><input type="hidden" name="categories[]" value="<?= $selected_cat->id ?>" class="js_tree_el"><?= $selected_cat->_text->name ?> <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-<?= $selected_cat->id ?>" onclick="closeCheckedAndTree(<?= $selected_cat->id ?>)"></i></span><br class="js_tree_el">
             <? }}else{
-                echo __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")]).". <a href='/help-obiavlenya/'>".__("Get details about posting ads?")."</a>";
+                $class = '';
+                if(!$user){ $class = "color-disabled";}
+                echo __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")]).". <a href='/help-obiavlenya/' class='{$class}'>".__("Get details about posting ads?")."</a>";
             } ?>
         </div>
         <hr class="width-100">

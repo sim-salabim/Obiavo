@@ -11,14 +11,14 @@
 
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <ul class="navbar-nav mr-auto mt-lg-0">
                 <li>
                     <a class="nav-link" href="javascript:openNav()" id="navbarDropdownMenuLink">
                         <span class="navbar-toggler-icon"></span>
                     </a>
                 </li>
                 <li>
-                    <img src="/logo.png" width="30" class="logo-img">
+                    <img src="/logo.png" width="27" class="logo-img">
                     <a class="navbar-brand mx-2 root-url" href="<?= $location_domain ?>">Obiavo.ru</a>
                 </li>
             </ul>

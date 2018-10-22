@@ -23,6 +23,9 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 nonpadding-left-items-media">
+        <? if(time() >= $ad->expiry_date){?>
+            <p><?= __('Ad is inactive since')." ".$ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION).". ".__("All ads contacts are blocked.") ?></p>
+        <? } ?>
         <div class="price-title">
             <?= $ad->price . " ". __('rub') ?>
         </div>
