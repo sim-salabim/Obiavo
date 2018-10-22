@@ -49,18 +49,26 @@ $root_url = isset($root_url) ? $root_url : null;
                     ?>
                     <? if ($ad->created_at < $ad->expiry_date) { ?>
                         <span>
-                            <small class="date_string">
-                                <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
-                                <? if($user and $user->id == $ad->user->id) { ?>
+                            <? if(time() < $ad->expiry_date and $ad->active){ ?>
+                                <small id="small<?= $ad->id ?>" class="date_string">
+                                    <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
+                                </small>
+                            <? } ?>
+                            <? if($user and $user->id == $ad->user->id) { ?>
+                                <? if(!$ad->active OR time() > $ad->expiry_date ){ ?>
+                                    <small class="date_string">
+                                        <a id="repost<?= $ad->id ?>" onclick="repostAd(<?= $ad->id ?>)"><?= __('Repost the ad') ?></a>
+                                    </small>
+                                <? } ?>
+                                <small class="date_string">
                                     <? if((time() - $ad->updated_at) > 86400){ ?>
                                         <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                     <? } ?>
-                                    <? if($ad->active){ ?>
-                                        <a id="active<? $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
+                                    <? if($ad->active AND time() < $ad->expiry_date){ ?>
+                                        <a id="active<?= $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
                                     <? }?>
-                                <? }?>
-                            </small>
-                        </span>
+                                </small>
+                            <? }?>
                         <br/>
                     <? } else { ?>
                         <span>
@@ -102,7 +110,7 @@ $root_url = isset($root_url) ? $root_url : null;
             data: {id: id},
             success: function(data) {
                 if(data != "error"){
-                    $("#raise"+id).text("Обьявление поднято");
+                    $("#raise"+id).text("<?= __('Ad has been raised') ?>");
                     setTimeout(
                         function()
                         {
@@ -120,7 +128,28 @@ $root_url = isset($root_url) ? $root_url : null;
             data: {id: id},
             success: function(data) {
                 if(data != "error"){
-                    $("#active"+id).text("Обьявление снято с публикации");
+                    $("#active"+id).text("<?= __('Ad is inactive') ?>");
+                    $("#small"+id).remove();
+                    $("#raise"+id).remove();
+                }
+            }
+        });
+    }
+
+    function repostAd(id){
+        $.ajax({
+            dataType: "json",
+            type : 'POST',
+            url: '<?= \yii\helpers\Url::toRoute('/ad/repost/') ?>',
+            data: {id: id},
+            success: function(data) {
+                if(data != "error"){
+                    $("#repost"+id).text("<?= __('Ad has been reposted') ?>");
+                    setTimeout(
+                        function()
+                        {
+                            $("#repost"+id).text("<?=__("Active to")?> "+data);
+                        }, 3000);
                 }
             }
         });

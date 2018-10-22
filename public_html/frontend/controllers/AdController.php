@@ -169,7 +169,6 @@ class AdController extends BaseController
     public function actionDeactivate(){
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $max_order = Ads::find()->max('extra_order');
         $ad = Ads::find()->where(['id'=>$post['id']])->one();
         if(!$ad){
             return "error";
@@ -178,5 +177,19 @@ class AdController extends BaseController
         $ad->updated_at = time();
         $ad->save();
         return $ad->id;
+    }
+
+    public function actionRepost(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $ad = Ads::find()->where(['id'=>$post['id']])->one();
+        if(!$ad){
+            return "error";
+        }
+        $ad->active = 1;
+        $ad->updated_at = time();
+        $ad->expiry_date = time() + 2592000;
+        $ad->save();
+        return $ad->getHumanDate(Ads::DATE_TYPE_EXPIRATION);
     }
 }

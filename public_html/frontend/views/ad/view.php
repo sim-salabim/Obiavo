@@ -7,9 +7,13 @@
                 <? if(count($ad->files)){ ?>
                     <? foreach($ad->files as $key => $image){ ?>
                         <div class="carousel-item <? if($key == 0){ ?> active<? } ?>">
-                            <img class="d-block img-fluid" src="<?= $image->getImage(false)?>" alt="First slide">
+                            <img class="d-block img-fluid" src="<?= $image->getImage(false)?>">
                         </div>
                     <? } ?>
+                <? }else{ ?>
+                    <div class="carousel-item active">
+                        <img class="d-block img-fluid" src="<?= $ad->avatar(false)?>">
+                    </div>
                 <? } ?>
             </div>
             <a class="carousel-control-prev" href="#<?= $id ?>" role="button" data-slide="prev">

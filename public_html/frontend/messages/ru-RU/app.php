@@ -163,4 +163,8 @@ return [
     'Inactivate ad' => 'Снять с публикации',
     'Ad is inactive since' => 'Объявление неактивно с',
     'All ads contacts are blocked.' => 'Все контакты данного объявления заблокированы.',
+    'Ad is inactive' => 'Объявление неактивно',
+    'Ad has been raised' => 'Обьявление поднято',
+    'Repost the ad' => 'Опубликовать заново',
+    'Ad has been reposted' => 'Объявление опубликовано',
 ];

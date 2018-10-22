@@ -161,4 +161,8 @@ return [
     'Inactivate ad' => 'Inactivate ad',
     'Ad is inactive since' => 'Ad is inactive since',
     'All ads contacts are blocked.' => 'All ads\'s contacts are blocked.',
+    'Ad is inactive' => 'Ad is inactive',
+    'Ad has been raised' => 'Ad has been raised',
+    'Repost the ad' => 'Repost the ad',
+    'Ad has been reposted' => 'Ad has been reposted',
 ];
