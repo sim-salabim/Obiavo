@@ -34,7 +34,7 @@ class NewAdForm extends Model
             [[
                 'categories',
                 'placement_id',
-                'expiry_date',
+//                'expiry_date', // временно закоменчено
                 'title',
                 'text',
                 'price',

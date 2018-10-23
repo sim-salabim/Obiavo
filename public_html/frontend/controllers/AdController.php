@@ -70,6 +70,8 @@ class AdController extends BaseController
         }
         $model = new NewAdForm();
         if (Yii::$app->request->isPost){
+            // если инпут со сроком действия задизейблен, то сделаем +месяц
+            $_POST['expiry_date'] = !isset($_POST['expiry_date']) ? 2592000 : $_POST['expiry_date'];
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(), '');
             $model->cities_id = Yii::$app->user->identity->cities_id;// пока ид города оставим захардкоженным
