@@ -90,6 +90,7 @@ class AdController extends BaseController
         } else {
             return $this->render('podat-obiavlenie');
         }
+
     }
 
     public function actionView(){
