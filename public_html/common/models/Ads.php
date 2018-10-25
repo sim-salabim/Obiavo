@@ -19,7 +19,6 @@ use frontend\helpers\TransliterationHelper;
  * @property string $text
  * @property boolean $only_locally
  * @property boolean $active
- * @property int $extra_order
  * @property int $price
  * @property int $prlacements_id
  * @property int $created_at
@@ -56,7 +55,6 @@ class Ads extends \yii\db\ActiveRecord
     {
         return [
             [['cities_id', 'users_id', 'categories_id'], 'required'],
-            [['extra_order', ], 'integer'],
             [['title', ], 'string', 'max' => 100],
             [['text', ], 'string', 'max' => 1000],
             [['only_locally', 'active'], 'integer', 'max' => 1],

@@ -35,7 +35,7 @@ class AdsSearch {
             'city' => \Yii::$app->location->city
         ];
         $this->sorting =
-            'extra_order DESC, updated_at DESC, created_at DESC, title ASC';
+            'updated_at DESC, created_at DESC, title ASC';
     }
 
     /**
