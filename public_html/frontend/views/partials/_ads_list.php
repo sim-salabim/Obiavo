@@ -61,7 +61,7 @@ $root_url = isset($root_url) ? $root_url : null;
                                     </small>
                                 <? } ?>
                                 <small class="date_string">
-                                    <? if((time() - $ad->updated_at) > 1 and $ad->active and time() < $ad->expiry_date){ ?>
+                                    <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date){ ?>
                                         <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                     <? } ?>
                                     <? if($ad->active AND time() < $ad->expiry_date){ ?>
