@@ -37,6 +37,7 @@ phpunit.phar
 /node_modules
 
 backend/config/smtp.php
+frontend/config/params.php
 frontend/web/dist/
 frontend/web/files/
 !frontend/web/files/placeholder.png
