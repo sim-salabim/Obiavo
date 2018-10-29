@@ -29,7 +29,14 @@ class AutopostingFb {
         $this->token = (!$this->task->socialNetworksGroup->token) ? $settings->fb_token : $this->task->socialNetworksGroup->token;
 
         $oauth2Fb = new OAuth2Client(new FacebookApp($this->app_id, $this->app_secret), new FacebookClient());
-        $longLivedToken = $oauth2Fb->getLongLivedAccessToken($this->token);
+        try {
+            $longLivedToken = $oauth2Fb->getLongLivedAccessToken($this->token);
+        }catch(\Exception $e){
+            \Yii::warning('АF P Ошибка публикации на странице Facebook', "DEBUG");
+            TelegrammLoging::send('Ошибка Авторизации в API Facebook. '.$e->getMessage());
+            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Facebook", 'api-error', [ 'request' => 'authorization', 'message' => $e->getMessage()]);
+
+        }
         $this->token = $longLivedToken->getValue();
         $this->task->socialNetworksGroup->token = $longLivedToken->getValue();
         $this->task->socialNetworksGroup->save();
