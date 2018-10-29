@@ -67,13 +67,7 @@ class AutopostingOk {
             "attachment"=>'{"media":[
             {
                         "type": "text",
-                        "text": "'.$this->task->ad->title.'"
-                    },
-                    {
-                      "type": "link",
-                      "url": "'.$link.'",
-                      "description": "'.$this->task->ad->text.'",
-                      "title": "'.$this->task->ad->price.' руб"
+                        "text": "'.$this->task->ad->title.'\nЦена: '.$this->task->ad->price.'\n\n'.$this->task->ad->text.'"
                     }
                     ]}',
             "format"=>"json"
