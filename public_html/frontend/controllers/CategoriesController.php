@@ -83,6 +83,7 @@ class CategoriesController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setMainCategory($this->category->id);
         $librarySearch->setAction($action_id);
+        $librarySearch->setActive(true);
         $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
         $librarySearch->setPage($page);
         if($sort AND $direction) {
@@ -234,6 +235,7 @@ class CategoriesController extends BaseController
         $id = ($post['key'] == "#") ? null : $post['key'];
         $categories = Category::find()
             ->where(['parent_id' => $id])
+            ->orderBy('order ASC, brand ASC, techname ASC')
             ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
         $out = "[";

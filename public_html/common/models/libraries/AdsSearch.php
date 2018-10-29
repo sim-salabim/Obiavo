@@ -20,7 +20,7 @@ class AdsSearch {
     function __construct(){
         $this->consider_location = true;
         $this->user = null;
-        $this->active = 1;
+        $this->active = null;
         $this->categories = [];
         $this->main_category = null;
         $this->action = null;

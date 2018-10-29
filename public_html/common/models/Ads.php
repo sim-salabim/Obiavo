@@ -190,9 +190,17 @@ class Ads extends \yii\db\ActiveRecord
         $additional_category_conditions = [];
         $location_conditions = [];
         $expired_conditions = [];
+        $active_conditions = [];
         if($model->user) $user_conditions['users_id'] = $model->user->id;
         if($model->action){
             $where_conditions = ['=', 'placements_id', $model->action];
+        }
+        if($model->active != null){
+            if($model->active == false){
+                $active_conditions = ['=', 'active', 0];
+            }else{
+                $active_conditions = ['=', 'active', 1];
+            }
         }
         if(!$model->all) {
             if ($model->expired) {
@@ -284,6 +292,7 @@ class Ads extends \yii\db\ActiveRecord
                // ->groupBy(['ads_has_categories.ads_id'])
                 ->where(["ads_has_categories.categories_id" => $cat_ids_arr])
                 ->andFilterWhere($add_where_condition)
+                ->andFilterWhere($active_conditions)
                 ->andFilterWhere($add_expired_conditions)
                 ->andFilterWhere($add_user_conditions)
                 ->andFilterWhere($add_location_conditions)
@@ -303,6 +312,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->where($where_conditions)
                 ->andFilterWhere($expired_conditions)
                 ->andFilterWhere($user_conditions)
+                ->andFilterWhere($active_conditions)
                 ->andFilterWhere($location_conditions)
                 ->andFilterWhere($category_conditions)
                 ->andFilterWhere($like_conditions)
@@ -316,6 +326,7 @@ class Ads extends \yii\db\ActiveRecord
             ->where($where_conditions)
             ->andFilterWhere($user_conditions)
             ->andFilterWhere($expired_conditions)
+            ->andFilterWhere($active_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
             ->orFilterWhere($additional_category_conditions)
@@ -327,6 +338,7 @@ class Ads extends \yii\db\ActiveRecord
             ->from('ads')
             ->where($where_conditions)
             ->andFilterWhere($user_conditions)
+            ->andFilterWhere($active_conditions)
             ->andFilterWhere($expired_conditions)
             ->andFilterWhere($location_conditions)
             ->andFilterWhere($category_conditions)
@@ -342,6 +354,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->select('id')
                 ->from('ads')
                 ->andFilterWhere($user_conditions)
+                ->andFilterWhere($active_conditions)
                 ->andFilterWhere($views_expired_conditions)
                 ->andFilterWhere($location_conditions)
                 ->andFilterWhere($category_conditions)
