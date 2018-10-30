@@ -49,7 +49,7 @@ $root_url = isset($root_url) ? $root_url : null;
                     ?>
                     <? if ($ad->created_at < $ad->expiry_date) { ?>
                         <span>
-                            <? if(time() < $ad->expiry_date and $ad->active){ ?>
+                            <? if(time() < $ad->expiry_date and $ad->active and ($user and $user->id == $ad->user->id)){ ?>
                                 <small id="small<?= $ad->id ?>" class="date_string">
                                     <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
                                 </small>

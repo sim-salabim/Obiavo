@@ -4,9 +4,11 @@ namespace frontend\controllers;
 use common\models\Ads;
 use common\models\Category;
 use common\models\CategoryPlacement;
+use common\models\City;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\PlacementsText;
+use frontend\helpers\LocationHelper;
 use Yii;
 use yii\db\Query;
 use yii\helpers\Url;
@@ -36,8 +38,18 @@ class CategoriesController extends BaseController
 
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
-        $this->canonical = Url::home(true) . $categoryUrl . "/";
+        $city = Yii::$app->request->get('city') ?: null;
         $action = Yii::$app->request->get('placement');
+        if($city != LocationHelper::getCurrentDomain()){
+            $domain = City::setCookieLocation($city);
+            $redirect_str = $domain ? $domain : "";
+            $redirect_str .= "/".$categoryUrl."/";
+            return $this->redirect(Url::toRoute($redirect_str));
+        }
+        if($city){
+            $this->setUrlForLogo($city);
+        }
+        $this->canonical = Url::home(true) . $categoryUrl . "/";
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');
         $this->checkGetParams();
@@ -46,7 +58,7 @@ class CategoriesController extends BaseController
             $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
             $this->canonical .= $action . '/';
         }
-        if(Yii::$app->request->get('city')){
+        if($city){
             $this->canonical .=  Yii::$app->request->get('city'). '/';
         }
 
