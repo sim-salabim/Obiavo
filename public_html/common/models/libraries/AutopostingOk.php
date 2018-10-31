@@ -57,17 +57,18 @@ class AutopostingOk {
 //            $images_str = rtrim($images_str, ",");
 //            $images_str .= ']}';
 //        }
+        $link = "https://".$this->task->ad->city->region->country->domain.'/'.$this->task->ad->url();
+        $link = "https://via.placeholder.com/728x600.png";//TODO убрать когда obiavo будет не запаролен
         $params = array(
             "application_key"=>$this->public_key,
             "method"=>"mediatopic.post",
             "gid" => $this->group->group_id,
             "type"=>"GROUP_THEME",
             "attachment"=>'{"media":[
-                     {
-                      "type": "link",
-                      "url": "https://onliner.by"
-                    },
-                    {"type": "text","text": "'.$this->task->ad->title.'"}
+            {
+                        "type": "text",
+                        "text": "'.$this->task->ad->title.'\nЦена: '.$this->task->ad->price.'\n\n'.$this->task->ad->text.'"
+                    }
                     ]}',
             "format"=>"json"
         );

@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\City;
 use common\models\CityOrder;
 use common\models\Cms;
 use common\models\Country;
@@ -83,7 +84,8 @@ class SiteController extends BaseController
     {
         $url = str_replace('/','',Yii::$app->getRequest()->getUrl());
         if($url != LocationHelper::getCurrentDomain()){
-            return $this->redirect(Url::toRoute('/'.LocationHelper::getCurrentDomain()));
+            $domain = City::setCookieLocation($url);
+            return $this->redirect(Url::toRoute("/$domain/"));
         }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])

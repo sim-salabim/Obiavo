@@ -27,19 +27,22 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 nonpadding-left-items-media">
-        <? if(time() >= $ad->expiry_date){?>
+        <? if(time() >= $ad->expiry_date or !$ad->active){?>
             <p><?= __('Ad is inactive since')." ".$ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION).". ".__("All ads contacts are blocked.") ?></p>
         <? } ?>
         <div class="price-title">
             <?= $ad->price . " ". __('rub') ?>
         </div>
         <div >
-            <button class="btn btn-success my-1 width-100 show-number-button">
+            <button class="btn btn-success my-1 width-100 <? if(time() < $ad->expiry_date and $ad->active){?>show-number-button<? } ?>" >
                 <? if(!$show_phone_number){?>
                     <?= __('Show phone number') ?><br/>
                     <?= cutText($ad->user->phone_number, 3, false)."-**-***-***" ?>
-                <? }else if($show_phone_number AND $show_phone_number == 1){ ?>
+                <? }else if(($show_phone_number AND $show_phone_number == 1) and (time() < $ad->expiry_date and $ad->active)){ ?>
                     <?= $ad->user->phone_number ?>
+                <? }else{ ?>
+                    <?= __('Show phone number') ?><br/>
+                    <?= cutText($ad->user->phone_number, 3, false)."-**-***-***" ?>
                 <? } ?>
             </button>
         </div>

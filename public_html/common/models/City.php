@@ -180,4 +180,41 @@ class City extends \yii\db\ActiveRecord
 
         return $data;
     }
+
+    public static function setCookieLocation($domain = null){
+        if(!$domain){
+            setcookie("country", null, null, '/');
+            setcookie("region", null, null, '/');
+            setcookie("city", null, null, '/');
+        }else{
+            $location = Region::find()->where(['domain' => $domain])->withText()->one();
+            $location_domains = [
+                'country' => null,
+                'region'  => null,
+                'city'    => null,
+            ];
+            if (!$location) {
+                $location = City::find()->where(['domain' => $domain])->withText()->one();
+                if (!$location) {
+                    throw new HttpException(404, 'Not Found');
+                }
+                $location_domains['city'] = $domain;
+                $location_domains['region'] = $location->region->domain;
+                $location_domains['country'] = $location->region->country->domain;
+                Yii::$app->location->city = $location;
+                Yii::$app->location->region = $location->region;
+                Yii::$app->location->country = $location->region->country;
+            }else{
+                $location_domains['city'] = null;
+                $location_domains['region'] = $location->domain;
+                $location_domains['country'] = $location->country->domain;
+                Yii::$app->location->region = $location;
+                Yii::$app->location->country = $location->country;
+            }
+            setcookie("country", $location_domains['country'], null, '/');
+            setcookie("region", $location_domains['region'], null, '/');
+            setcookie("city", $location_domains['city'], null, '/');
+        }
+        return $domain;
+    }
 }

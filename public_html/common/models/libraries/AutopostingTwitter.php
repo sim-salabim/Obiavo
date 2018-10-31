@@ -45,8 +45,8 @@ class AutopostingTwitter {
                 }
             }
         }
-
-        $statuses = $connection->post("statuses/update", array("status" => $this->task->ad->title, 'media_ids' => $media_ids));
+        $message = \Yii::$app->params['rootUrl'].$this->task->ad->url()." \n".$this->task->ad->title."\nЦена: ".$this->task->ad->price."\n\n".$this->task->ad->text;
+        $statuses = $connection->post("statuses/update", array("status" => $message, 'media_ids' => $media_ids));
         if($connection->getLastHttpCode() != 200){
             TelegrammLoging::send('Ошибка публикации в Twitter  ID сообщества: '.$this->task->socialNetworksGroup->id.' '.$statuses->errors[0]->message);
             Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Twitter", 'api-error', ['message' =>$statuses->errors[0]->message]);

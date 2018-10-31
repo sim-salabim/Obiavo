@@ -49,7 +49,7 @@ $root_url = isset($root_url) ? $root_url : null;
                     ?>
                     <? if ($ad->created_at < $ad->expiry_date) { ?>
                         <span>
-                            <? if(time() < $ad->expiry_date and $ad->active){ ?>
+                            <? if(time() < $ad->expiry_date and $ad->active and ($user and $user->id == $ad->user->id)){ ?>
                                 <small id="small<?= $ad->id ?>" class="date_string">
                                     <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
                                 </small>
@@ -61,7 +61,7 @@ $root_url = isset($root_url) ? $root_url : null;
                                     </small>
                                 <? } ?>
                                 <small class="date_string">
-                                    <? if((time() - $ad->updated_at) > 1 and $ad->active and time() < $ad->expiry_date){ ?>
+                                    <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date){ ?>
                                         <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                     <? } ?>
                                     <? if($ad->active AND time() < $ad->expiry_date){ ?>
