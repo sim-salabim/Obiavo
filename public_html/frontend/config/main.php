@@ -12,6 +12,11 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'cache' => [
+            'class' => 'yii\caching\ApcCache',
+            'keyPrefix' => 'obiavo',
+            'useApcu' => true,
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

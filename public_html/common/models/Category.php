@@ -248,7 +248,7 @@ class Category extends \yii\db\ActiveRecord
      * @param array $result, массив уже извлеченных категорий
      * @return array
      */
-    public static function getAllChildren($categories = [], $result = [], $level = 1, $limit = 3){
+    public static function getAllChildren($categories = [], $result = [], $level = 1, $limit = 4){
         $parentIds = ArrayHelper::getColumn($categories, 'id');
         $categories_result = Category::find()
             ->where(['IN','parent_id',$parentIds])
@@ -257,7 +257,7 @@ class Category extends \yii\db\ActiveRecord
         if(count($categories_result)) {
             $has_kids = false;
             foreach ($categories_result as $row) {
-                array_push($result, $row);
+                array_push($result, $row->id);
                 if($row->children){
                     $has_kids = true;
                 }

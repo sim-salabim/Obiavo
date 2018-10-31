@@ -12,6 +12,11 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'console\controllers',
     'components' => [
+        'cache' => [
+            'class' => 'yii\caching\ApcCache',
+            'keyPrefix' => 'obiavo',
+            'useApcu' => true,
+        ],
         'log' => [
             'targets' => [
                 [
