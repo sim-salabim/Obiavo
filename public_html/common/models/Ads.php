@@ -262,7 +262,7 @@ class Ads extends \yii\db\ActiveRecord
             $category = Category::findOne($model->main_category);
             // так как категории статичны загоним дочерние категории, принадлежащие $model->main_category, в кэш и зададим время действия
             // кэша 80 дней
-            $cat_ids_arr = Yii::$app->cache->getOrSet($category->id, function () use ($category) {
+            $cat_ids_arr = Yii::$app->cache->getOrSet($model->main_category, function () use ($category) {
                 return Category::getAllChildren([$category]);
             }, 3000000);
             array_push($cat_ids_arr, $model->main_category);
@@ -319,7 +319,7 @@ class Ads extends \yii\db\ActiveRecord
                         }
                         return $ad_ids_arr;
                     }
-            }, 300);
+            }, 600);
             if(!empty($ad_ids_arr)){
                 $additional_category_conditions = ["ads.id" => $ad_ids_arr];
             }
@@ -361,9 +361,8 @@ class Ads extends \yii\db\ActiveRecord
                     ->andFilterWhere($category_conditions)
                     ->orFilterWhere($additional_category_conditions)
                     ->andFilterWhere($like_conditions)
-                    //->orderBy($model->sorting)
                     ->count();
-        }, 300);
+        }, 86400);
         // загоним подсчет минимальной и максимальной цены текущей выборки в кэш на 5 минут
         $price_range = Yii::$app->cache->getOrSet($model->main_category."-price-range",
             function () use (
@@ -387,9 +386,8 @@ class Ads extends \yii\db\ActiveRecord
                     ->andFilterWhere($category_conditions)
                     ->orFilterWhere($additional_category_conditions)
                     ->andFilterWhere($like_conditions)
-                    //->orderBy($model->sorting)
                     ->one();
-            }, 300);
+            }, 86400);
 
         $views_expired_conditions = ['>', 'expiry_date', time()];
         // загоним подсчет просмотров текущей выборки в кэш на 5 минут
@@ -417,17 +415,16 @@ class Ads extends \yii\db\ActiveRecord
                             ->andFilterWhere($location_conditions)
                             ->andFilterWhere($category_conditions)
                             ->andFilterWhere($like_conditions)
-                          //  ->orderBy($model->sorting)
                     ])
                     ->count();
-            }, 300);
+            }, 86400);
         $finished_ads = Yii::$app->cache->getOrSet($model->main_category."-expired",
             function (){
                 return (new \yii\db\Query())
                     ->from('ads')
                     ->andFilterWhere(['<', 'expiry_date', time()])
                     ->count();
-            }, 300);
+            }, 86400);
         return ['items' => $ads, 'count' => $count, 'price_range' => $price_range, 'views_amount' => $views_amount, 'finished_deals' => $finished_ads];
     }
 
