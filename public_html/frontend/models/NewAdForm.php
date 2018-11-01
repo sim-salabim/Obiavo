@@ -73,7 +73,6 @@ class NewAdForm extends Model
                 $adCategory->save();
             }
         }
-        Yii::$app->cache->flush();
         Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel]);
         return $adsModel;
     }
