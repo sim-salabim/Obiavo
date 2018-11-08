@@ -290,17 +290,7 @@ class Ads extends \yii\db\ActiveRecord
                 $add_like_conditions = [$like_conditions[0], "ads.".$like_conditions[1], $like_conditions[2]];
             }
             $ad_ids_arr = [];
-            $ad_ids_arr = Yii::$app->cache->getOrSet(implode("-", $cat_ids_arr),
-                function () use (
-                    $cat_ids_arr,
-                    $add_where_condition,
-                    $active_conditions,
-                    $add_expired_conditions,
-                    $add_user_conditions,
-                    $add_location_conditions,
-                    $add_like_conditions
-                ) {
-                    $add_ids = AdCategory::find()
+            $add_ids = AdCategory::find()
                         ->select('ads.*, ads_has_categories.ads_id, ads_has_categories.categories_id')
                         ->leftJoin("ads", "ads.id = ads_has_categories.ads_id")
                         // ->groupBy(['ads_has_categories.ads_id'])
@@ -317,9 +307,7 @@ class Ads extends \yii\db\ActiveRecord
                         foreach($add_ids as $c){
                             $ad_ids_arr[] = $c->ads_id;
                         }
-                        return $ad_ids_arr;
                     }
-            }, 600);
             if(!empty($ad_ids_arr)){
                 $additional_category_conditions = ["ads.id" => $ad_ids_arr];
             }
@@ -341,18 +329,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->all();
         }
         // загоним подсчет обьявлений текущей выборки в кэш на 5 минут
-        $count = Yii::$app->cache->getOrSet($model->main_category."-count",
-            function () use (
-                $where_conditions,
-                $user_conditions,
-                $expired_conditions,
-                $active_conditions,
-                $location_conditions,
-                $category_conditions,
-                $additional_category_conditions,
-                $like_conditions
-            ) {
-                return Ads::find()
+        $count =  Ads::find()
                     ->where($where_conditions)
                     ->andFilterWhere($user_conditions)
                     ->andFilterWhere($expired_conditions)
@@ -362,20 +339,8 @@ class Ads extends \yii\db\ActiveRecord
                     ->orFilterWhere($additional_category_conditions)
                     ->andFilterWhere($like_conditions)
                     ->count();
-        }, 86400);
         // загоним подсчет минимальной и максимальной цены текущей выборки в кэш на 5 минут
-        $price_range = Yii::$app->cache->getOrSet($model->main_category."-price-range",
-            function () use (
-                $where_conditions,
-                $user_conditions,
-                $expired_conditions,
-                $active_conditions,
-                $location_conditions,
-                $category_conditions,
-                $additional_category_conditions,
-                $like_conditions
-            ) {
-                return (new \yii\db\Query())
+        $price_range =  (new \yii\db\Query())
                     ->select('MAX(price) as max, MIN(price) as min')
                     ->from('ads')
                     ->where($where_conditions)
@@ -387,23 +352,10 @@ class Ads extends \yii\db\ActiveRecord
                     ->orFilterWhere($additional_category_conditions)
                     ->andFilterWhere($like_conditions)
                     ->one();
-            }, 86400);
 
         $views_expired_conditions = ['>', 'expiry_date', time()];
         // загоним подсчет просмотров текущей выборки в кэш на 5 минут
-        $views_amount = Yii::$app->cache->getOrSet($model->main_category."-views",
-            function () use (
-                $where_conditions,
-                $user_conditions,
-                $expired_conditions,
-                $active_conditions,
-                $location_conditions,
-                $category_conditions,
-                $additional_category_conditions,
-                $like_conditions,
-                $views_expired_conditions
-            ) {
-                return (new \yii\db\Query())
+        $views_amount =  (new \yii\db\Query())
                     ->from('ads_views')
                     ->where(['in', 'ads_id',
                         (new \yii\db\Query())
@@ -417,14 +369,10 @@ class Ads extends \yii\db\ActiveRecord
                             ->andFilterWhere($like_conditions)
                     ])
                     ->count();
-            }, 86400);
-        $finished_ads = Yii::$app->cache->getOrSet($model->main_category."-expired",
-            function (){
-                return (new \yii\db\Query())
+        $finished_ads = (new \yii\db\Query())
                     ->from('ads')
                     ->andFilterWhere(['<', 'expiry_date', time()])
                     ->count();
-            }, 86400);
         return ['items' => $ads, 'count' => $count, 'price_range' => $price_range, 'views_amount' => $views_amount, 'finished_deals' => $finished_ads];
     }
 
