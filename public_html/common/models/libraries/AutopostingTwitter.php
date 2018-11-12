@@ -10,6 +10,7 @@ class AutopostingTwitter {
 
     const FILES_LIMIT = 4;
     const FILE_SIZE_LIMIT = 5000000;
+    const MAX_TWEET_LENGTH = 280;
 
     private $task;
     private $group;
@@ -45,7 +46,10 @@ class AutopostingTwitter {
                 }
             }
         }
-        $message = \Yii::$app->params['rootUrl'].$this->task->ad->url()." \n".$this->task->ad->title."\nЦена: ".$this->task->ad->price."\n\n".$this->task->ad->text;
+        $message = \Yii::$app->params['rootUrl'].$this->task->ad->url()." \n".$this->task->ad->title."\nЦена: ".$this->task->ad->price;
+        if(mb_strlen($message) > self::MAX_TWEET_LENGTH){
+            $message = substr($message, 0, self::MAX_TWEET_LENGTH - 3)."...";
+        }
         $statuses = $connection->post("statuses/update", array("status" => $message, 'media_ids' => $media_ids));
         if($connection->getLastHttpCode() != 200){
             TelegrammLoging::send('Ошибка публикации в Twitter  ID сообщества: '.$this->task->socialNetworksGroup->id.' '.$statuses->errors[0]->message);
