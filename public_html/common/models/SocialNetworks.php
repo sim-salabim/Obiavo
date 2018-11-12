@@ -131,20 +131,10 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 if ($location->city) {
                     $group = $this->getBlockByCityAndCategory($category);
                     if (!$group) {
-                        $group = $this->getBlockByRegionAndCategory($category);
-                        if (!$group) {
-                            $group = $this->getBlockByCountryAndCategory($category);
+                        if($category->parent){
+                            return $this->getGroupsBlock($category->parent);
                         }
                     }
-                } else if (!$location->city and $location->region) {
-                    if ($location->region) {
-                        $group = $this->getBlockByRegionAndCategory($category);
-                        if (!$group) {
-                            $group = $this->getBlockByCountryAndCategory($category);
-                        }
-                    }
-                } else if (!$location->city and !$location->region and $location->country) {
-                    $group = $this->getBlockByCountryAndCategory($category);
                 }
             } else {
                 if ($category->parent) {
@@ -171,39 +161,16 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @return array|bool|null|\yii\db\ActiveRecord
      */
     public function getGroupForAutoposting(Ads $ad){
-        $location = \Yii::$app->location;
-        $group = null;
-        if ($ad->category->socialNetworkGroupsMain) {
-            if ($ad->city) {
-                if($location->city) {
-                    $group = $this->getBlockByCityAndCategory($ad->category);
-                }
-                if (!$group) {
-                    if($location->region) {
-                        $group = $this->getBlockByRegionAndCategory($ad->category);
-                    }
-                    if (!$group) {
-                        $group = $this->getBlockByCountryAndCategory($ad->category);
-                    }
-                }
-            }
-            if (!$group) {
-                if ($ad->city->region) {
-                    if($location->region) {
-                        $group = $this->getBlockByRegionAndCategory($ad->category);
-                    }
-                    if (!$group) {
-                        $group = $this->getBlockByCountryAndCategory($ad->category);
-                    }
-                }
-            }
-            if (!$group) {
-                $group = $this->getBlockByCountryAndCategory($ad->category);
-            }
-        } else {
-            if ($ad->category->parent) {
-                return $this->getGroupsBlock($ad->category->parent);
-            }
+        $group = $this->getAdGroup($ad);
+        if(!$group){
+            $group = SocialNetworksGroups::find()
+                ->where([
+                    "cities_id" => $ad->city->id,
+                    "social_networks_id" => $this->id,
+                    "social_networks_groups_main_id" =>
+                        (new \yii\db\Query())->select('id')->from('social_networks_groups_main')->where(['as_default' => 1])
+                    ])->one();
+
         }
         if (!$group AND $ad->category->socialNetworkGroupsMain) {
             $group = $ad->category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
@@ -240,6 +207,50 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 ])
                 ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups.social_networks_groups_main_id')
                 ->one();
+        }
+        return $group;
+    }
+
+    /**
+     *      Находим соц сообщество соцсети $this для обьявления $ad
+     * @param Ads $ad
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function getAdGroup(Ads $ad){
+        $main_group = $ad->category->socialNetworkGroupsMain;
+        $group = null;
+        $city = City::find()->where(['id'=>$ad->city->id])->one();
+        if($main_group and $city) {
+            $group = $this->getGroup($city, $ad->category);
+        }
+        return $group;
+    }
+
+    /**
+     *      Находим сообщество соцсети $this по городу $city и категории $category
+     *  функция рекурсивная, если не находит для предоставленной категории, то ищет для ее родительской,
+     *  если не находит ни у одной родительской, то возвращает
+     * @param City $city
+     * @param Category $category
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function getGroup(City $city, Category $category){
+        $group = SocialNetworksGroups::find()
+            ->select('social_networks_groups.*')
+            ->where([
+                'social_networks_groups.cities_id' => $city->id,
+                'social_networks_groups.regions_id' => $city->region->id,
+                'social_networks_groups.countries_id' => $city->region->country->id,
+                'social_networks_groups.social_networks_id' => $this->id,
+                'social_networks_groups_main_categories.categories_id' => $category->id
+            ])
+            ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups.social_networks_groups_main_id')
+            ->one();
+        if(!$group){
+            $group = null;
+            if($category->parent){
+                return $this->getGroup($city, $category->parent);
+            }
         }
         return $group;
     }
