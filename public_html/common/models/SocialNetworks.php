@@ -131,26 +131,19 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 if ($location->city) {
                     $group = $this->getBlockByCityAndCategory($category);
                     if (!$group) {
-                        $group = $this->getBlockByRegionAndCategory($category);
-                        if (!$group) {
-                            $group = $this->getBlockByCountryAndCategory($category);
+                        if($category->parent){
+                            return $this->getGroupsBlock($category->parent);
                         }
                     }
-                } else if (!$location->city and $location->region) {
-                    if ($location->region) {
-                        $group = $this->getBlockByRegionAndCategory($category);
-                        if (!$group) {
-                            $group = $this->getBlockByCountryAndCategory($category);
-                        }
-                    }
-                } else if (!$location->city and !$location->region and $location->country) {
-                    $group = $this->getBlockByCountryAndCategory($category);
+                } else{
+                    //TODO get default for country
                 }
             } else {
                 if ($category->parent) {
                     return $this->getGroupsBlock($category->parent);
                 }
             }
+            //TODO get default for country
             if (!$group AND $category->socialNetworkGroupsMain) {
                 $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
                 if (!$group) {
@@ -178,7 +171,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
                     "cities_id" => $ad->city->id,
                     "social_networks_id" => $this->id,
                     "social_networks_groups_main_id" =>
-                        (new \yii\db\Query())->select('id')->from('social_networks_groups_main')->where(['as_default' => 1])->id
+                        (new \yii\db\Query())->select('id')->from('social_networks_groups_main')->where(['as_default' => 1])
                     ])->one();
 
         }
