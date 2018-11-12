@@ -135,15 +135,12 @@ class SocialNetworks extends \yii\db\ActiveRecord
                             return $this->getGroupsBlock($category->parent);
                         }
                     }
-                } else{
-                    //TODO get default for country
                 }
             } else {
                 if ($category->parent) {
                     return $this->getGroupsBlock($category->parent);
                 }
             }
-            //TODO get default for country
             if (!$group AND $category->socialNetworkGroupsMain) {
                 $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
                 if (!$group) {
