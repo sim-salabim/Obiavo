@@ -141,6 +141,15 @@ class SocialNetworks extends \yii\db\ActiveRecord
                     return $this->getGroupsBlock($category->parent);
                 }
             }
+            if(!$group and $location->city){
+                $group = SocialNetworksGroups::find()
+                    ->where([
+                        "cities_id" => $location->city->id,
+                        "social_networks_id" => $this->id,
+                        "social_networks_groups_main_id" =>
+                            (new \yii\db\Query())->select('id')->from('social_networks_groups_main')->where(['as_default' => 1])
+                    ])->one();
+            }
             if (!$group AND $category->socialNetworkGroupsMain) {
                 $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnId($this->id);
                 if (!$group) {
