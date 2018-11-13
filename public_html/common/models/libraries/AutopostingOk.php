@@ -59,6 +59,10 @@ class AutopostingOk {
 //        }
         $link = "https://".$this->task->ad->city->region->country->domain.'/'.$this->task->ad->url();
         $link = "https://via.placeholder.com/728x600.png";//TODO убрать когда obiavo будет не запаролен
+        $post_title = str_replace(["\"","'","-", "/","+","=","*","^","@","!","%","$"],"",$this->task->ad->title);
+        $post_text = str_replace(["\"","'","-", "/","+","=","*","^","@","!","%","$"],"",$this->task->ad->text);
+        $post_title = str_replace("\n"," ",$post_title);
+        $post_text = str_replace("\n"," ",$post_text);
         $params = array(
             "application_key"=>$this->public_key,
             "method"=>"mediatopic.post",
@@ -67,7 +71,7 @@ class AutopostingOk {
             "attachment"=>'{"media":[
             {
                         "type": "text",
-                        "text": "'.$this->task->ad->title.'\nЦена: '.$this->task->ad->price.'\n\n'.$this->task->ad->text.'"
+                        "text": "'.$post_title.'\nЦена: '.$this->task->ad->price.'\n\n'.$post_text.'"
                     }
                     ]}',
             "format"=>"json"
@@ -77,11 +81,12 @@ class AutopostingOk {
         $params["sig"]=$sig;
         $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params), true);
 //Если парсер не смог открыть нашу ссылку (иногда он это делает со второй попытки), то отправляем ещё раз
-        if (isset($result['error_code']) && $result['error_code'] == 5000) {
+        print_r($result);exit;
+        if (isset($result['error_code'])) {
             \Yii::warning('АO P Ошибка открытия ссылки парсером, идем на 2-ю попытку, задача '.$this->task->id, "DEBUG");
             sleep(5);
             $result = $this->getUrl("https://api.ok.ru/fb.do", "POST", $params);
-            if (isset($result['error_code']) && $result['error_code'] == 5000){
+            if (isset($result['error_code'])){
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
                 \Yii::warning('АO P Ошибка открытия ссылки парсером со второй попытки, задача '.$this->task->id, "DEBUG");
