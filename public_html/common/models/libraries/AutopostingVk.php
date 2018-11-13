@@ -53,17 +53,14 @@ class AutopostingVk {
                 }
             }
             $message = file_get_contents(\Yii::getAlias('@common').'/views/vk-post.php');
-            $message = str_replace(['{key:url}', '{key:title}', '{key:price}', '{key:text}', '{key:price-text}'], [\Yii::$app->params['rootUrl'].$this->task->ad->url(), $this->task->ad->title, $this->task->ad->price, $this->task->ad->text, "Цена"], $message);
+            $post_text = $this->task->ad->text;
+            if(mb_strlen($post_text) > 500){
+                $post_text  = mb_substr($post_text, 0, 497)."...";
+            }
+            $message = str_replace(['{key:url}', '{key:title}', '{key:price}', '{key:text}', '{key:price-text}'], [\Yii::$app->params['rootUrl'].$this->task->ad->url(), $this->task->ad->title, $this->task->ad->price, $post_text, "Цена"], $message);
             $api_request_str = str_replace('{endpoint:key}', self::ENDPOINT_WALL_POST, $this->api_url);
             $api_request_str .= '&from_group=1&owner_id=-' . $this->task->socialNetworksGroup->group_id . '&message=' . urlencode($message) . '&' . $attachements;
-            //$result = json_decode(file_get_contents($api_request_str));
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => $api_request_str,
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-            ));
-            $result = json_decode(curl_exec($curl));
+            $result = json_decode(file_get_contents($api_request_str));
             if (isset($result->error)) {
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
