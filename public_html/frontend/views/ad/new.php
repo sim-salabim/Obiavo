@@ -130,7 +130,7 @@ if(isset($model) and $user){
         <hr class="width-100">
         <div class="col-12 sub-title padding-left0  <? if(!$user){?> color-disabled<? } ?>" ><?= __('Picked categories') ?></div>
         <div id="category-append" class="<? if(!$user){?> color-disabled<? } ?>" >
-            <? if($model and $model->categories){
+            <? if(isset($model) and $model and (isset($model->categories) and $model->categories)){
                 foreach($model->categories as $cat_id){
                     $selected_cat = \common\models\Category::find()->where(['id'=>$cat_id])->one();
             ?>
@@ -155,7 +155,7 @@ if(isset($model) and $user){
                 <? if($placements and $user){
                     foreach ($placements as $pl){
                         ?>
-                        <option value="<?= $pl->id ?>" <? if($model AND $pl->id == $model->placement_id){?>selected<?}?> ><?= $pl->_text->name ?></option>
+                        <option value="<?= $pl->id ?>" <? if(isset($model) and $model AND $pl->id == $model->placement_id){?>selected<?}?> ><?= $pl->_text->name ?></option>
                     <? }} ?>
             </select>
             <?php if(Yii::$app->session->getFlash('placement_id_error')){?>
