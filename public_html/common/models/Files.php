@@ -157,10 +157,10 @@ class Files extends \yii\db\ActiveRecord
 
     /**
      * @param $files_arr, $_POST['files']
-     * @param $model, сохраненный обьект, имеючий связь через промежуточную таблицу
+     * @param $model, сохраненный обьект, имеющий связь через промежуточную таблицу
      */
     public static function linkFilesToModel($files_arr, $model){
-        if(isset($files_arr) AND !empty(isset($files_arr))){
+        if(isset($files_arr) AND !empty($files_arr)){
             $files = Files::find()->where(['in', 'id', $files_arr])->all();
             if(count($files)){
                 foreach ($files as $file){
