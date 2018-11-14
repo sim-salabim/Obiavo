@@ -165,4 +165,6 @@ return [
     'Ad has been raised' => 'Ad has been raised',
     'Repost the ad' => 'Repost the ad',
     'Ad has been reposted' => 'Ad has been reposted',
+    'Fields must not be more than 1000 chars long' => 'Fields must not be more than 1000 chars long',
+    'Fields must not be more than 100 chars long' => 'Fields must not be more than 100 chars long',
 ];

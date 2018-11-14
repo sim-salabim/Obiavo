@@ -39,6 +39,8 @@ class NewAdForm extends Model
                 'text',
                 'price',
                 'cities_id'], 'required', 'message' => __('Required field')],
+            [['text'], 'string', 'max' => 1000, 'tooLong' => __("Fields must not be more than 1000 chars long")],
+            [['title'], 'string', 'max' => 100, 'tooLong' => __("Fields must not be more than 100 chars long")],
             [[
                 'placement_id',
                 'expiry_date',
@@ -46,7 +48,20 @@ class NewAdForm extends Model
             [['expiry_date','price'], 'integer', 'message' => __('Incorrect format')],
         ];
     }
-
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'cities_id' => 'City',
+            'users_id' => 'User',
+            'categories_id' => 'Category',
+            'title' => 'Заголовок',
+            'text' => 'Описание',
+            'price' => 'Price',
+        ];
+    }
     public function newAd(){
         $adsModel = new Ads();
         $adsModel->created_at = time();

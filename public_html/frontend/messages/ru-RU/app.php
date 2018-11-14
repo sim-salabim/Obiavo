@@ -167,4 +167,6 @@ return [
     'Ad has been raised' => 'Обьявление поднято',
     'Repost the ad' => 'Опубликовать заново',
     'Ad has been reposted' => 'Объявление опубликовано',
+    'Fields must not be more than 1000 chars long' => 'Поле должно содержать не более 1000 символов',
+    'Fields must not be more than 100 chars long' => 'Поле должно содержать не более 100 символов',
 ];

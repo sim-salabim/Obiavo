@@ -75,8 +75,8 @@ class Ads extends \yii\db\ActiveRecord
             'cities_id' => 'City',
             'users_id' => 'User',
             'categories_id' => 'Category',
-            'title' => 'Title',
-            'text' => 'Text',
+            'title' => 'Заголовок',
+            'text' => 'Описание',
             'price' => 'Price',
         ];
     }
