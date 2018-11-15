@@ -2,6 +2,7 @@
 namespace common\models;
 
 use Yii;
+
 /**
  * Class SocialNetworks
  * @package common\models
@@ -170,7 +171,7 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @return array|bool|null|\yii\db\ActiveRecord
      */
     public function getGroupForAutoposting(Ads $ad){
-        $group = $this->getAdGroup($ad);
+        $group = $this->getAdGroup($ad, $ad->category);
         if(!$group){
             $group = SocialNetworksGroups::find()
                 ->where([
@@ -225,12 +226,16 @@ class SocialNetworks extends \yii\db\ActiveRecord
      * @param Ads $ad
      * @return array|null|\yii\db\ActiveRecord
      */
-    public function getAdGroup(Ads $ad){
-        $main_group = $ad->category->socialNetworkGroupsMain;
+    public function getAdGroup(Ads $ad, Category $category){
+        if(!$category->socialNetworkGroupsMain){
+            if($category->parent){
+                return $this->getAdGroup($ad, $category->parent);
+            }
+        }
         $group = null;
         $city = City::find()->where(['id'=>$ad->city->id])->one();
-        if($main_group and $city) {
-            $group = $this->getGroup($city, $ad->category);
+        if($category->socialNetworkGroupsMain and $city) {
+            $group = $this->getGroup($city, $category);
         }
         return $group;
     }
