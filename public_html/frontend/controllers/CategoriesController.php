@@ -49,7 +49,11 @@ class CategoriesController extends BaseController
         if($city){
             $this->setUrlForLogo($city);
         }
-        $this->canonical = Url::home(true) . $categoryUrl . "/";
+        $city_canonical = '';
+        if($city){
+            $city_canonical =  Yii::$app->request->get('city'). '/';
+        }
+        $this->canonical = Url::home(true) . $city_canonical .$categoryUrl . "/";
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');
         $this->checkGetParams();
@@ -57,9 +61,6 @@ class CategoriesController extends BaseController
         if($action){
             $action_id = PlacementsText::findOne(['url' => $action])->placements_id;
             $this->canonical .= $action . '/';
-        }
-        if($city){
-            $this->canonical .=  Yii::$app->request->get('city'). '/';
         }
 
         $category = Category::getByUrl($categoryUrl);
