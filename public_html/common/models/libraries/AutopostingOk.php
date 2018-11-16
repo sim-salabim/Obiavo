@@ -61,6 +61,8 @@ class AutopostingOk {
         $link = "https://via.placeholder.com/728x600.png";//TODO убрать когда obiavo будет не запаролен
         $post_title = str_replace("\n",'\n',$this->task->ad->title);
         $post_text = str_replace("\n",'\n',$this->task->ad->text);
+        $post_title = str_replace(["\""],['"'],$post_title);
+        $post_text = str_replace(["'"],['\''],$post_text);
         $params = array(
             "application_key"=>$this->public_key,
             "method"=>"mediatopic.post",
