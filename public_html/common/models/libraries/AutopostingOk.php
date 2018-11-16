@@ -59,10 +59,8 @@ class AutopostingOk {
 //        }
         $link = "https://".$this->task->ad->city->region->country->domain.'/'.$this->task->ad->url();
         $link = "https://via.placeholder.com/728x600.png";//TODO убрать когда obiavo будет не запаролен
-        $post_title = str_replace("\n",'\n',$this->task->ad->title);
-        $post_text = str_replace("\n",'\n',$this->task->ad->text);
-        $post_title = str_replace(["\""],['"'],$post_title);
-        $post_text = str_replace(["'"],['\''],$post_text);
+        $post_title = str_replace(["\n","\t","\v", "\r","\b","\f"],['\n','\t','\v','\r','\b','\b'],$this->task->ad->title);
+        $post_text = str_replace(["\n","\t","\v","\r","\b","\f"],['\n','\t','\v','\r','\b','\b'],$this->task->ad->text);
         $params = array(
             "application_key"=>$this->public_key,
             "method"=>"mediatopic.post",
