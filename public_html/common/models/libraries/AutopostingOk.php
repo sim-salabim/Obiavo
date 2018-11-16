@@ -82,7 +82,7 @@ class AutopostingOk {
         if (isset($result['error_code'])) {
             \Yii::warning('АO P Ошибка открытия ссылки парсером, идем на 2-ю попытку, задача '.$this->task->id, "DEBUG");
             sleep(5);
-            $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params));
+            $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params), true);
             if (isset($result['error_code'])){
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
