@@ -58,7 +58,7 @@
             <?= date('h:i', $ad->created_at)." ".date('d/m/Y', $ad->created_at) ?>
         </div>
     </div>
-    <div class="w-100"><hr></div>
+    <div class="col-12"><hr></div>
     <div class="col-12">
         <?= $ad->text ?>
     </div>
