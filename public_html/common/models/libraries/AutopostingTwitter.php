@@ -53,10 +53,9 @@ class AutopostingTwitter {
         $statuses = $connection->post("statuses/update", array("status" => $message, 'media_ids' => $media_ids));
         if($connection->getLastHttpCode() != 200){
             TelegrammLoging::send('Ошибка публикации в Twitter  ID сообщества: '.$this->task->socialNetworksGroup->id.' '.$statuses->errors[0]->message);
-            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Twitter", 'api-error', ['message' =>$statuses->errors[0]->message]);
             $this->task->status = AutopostingTasks::STATUS_FAILED;
             $this->task->save();
-            \Yii::warning('АT P Ошибка публикации в Twitter  ID сообщества: '.$this->task->socialNetworksGroup->id.' '.$statuses->errors[0]->message, "DEBUG");
+            Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API Twitter", 'api-error', ['message' =>$statuses->errors[0]->message]);
         }else{
             $this->task->status = AutopostingTasks::STATUS_POSTED;
             $this->task->save();
