@@ -21,6 +21,7 @@ class m161028_134921_users extends Migration
             'last_name' => $this->string()->notNull(),
             'patronymic' => $this->string()->notNull(),
             'sex' => "ENUM('0','1','2') NOT NULL DEFAULT '0'",
+            'is_admin' => $this->boolean()->defaultValue(false),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

@@ -19,6 +19,7 @@ use yii\web\IdentityInterface;
  * @property string $patronymic
  * @property string $phone_number
  * @property string $sex
+ * @property boolean $is_admin
  * @property integer $created_at
  * @property integer $updated_at
  *
