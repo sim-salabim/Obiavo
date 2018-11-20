@@ -16,6 +16,7 @@ AppAsset::register($this);
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
     <head>
+        <link rel="icon" href="<?php echo Yii::$app->request->baseUrl; ?>/favicon.ico" type="image/x-icon" />
         <meta charset="<?= Yii::$app->charset ?>">
         <? if(isset($this->params['canonical']) AND $this->params['canonical']){?>
             <link rel="canonical" href="<?= $this->params['canonical'] ?>">
