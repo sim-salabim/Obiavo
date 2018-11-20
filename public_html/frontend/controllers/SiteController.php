@@ -84,8 +84,7 @@ class SiteController extends BaseController
     {
         $url = str_replace('/','',Yii::$app->getRequest()->getUrl());
         if($url != LocationHelper::getCurrentDomain()){
-            $domain = City::setCookieLocation($url);
-            return $this->redirect(Url::toRoute("/$domain/"));
+            City::setCookieLocation($url);
         }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
@@ -94,7 +93,6 @@ class SiteController extends BaseController
                             ->withChildren()
                             ->orphan()
                             ->all();
-        Yii::$app->location->country;
         $country_id = Country::find()->select('id')->where(['domain' => Yii::$app->location->country])->one()->id;
         $regions_ids = Region::find()->where(['countries_id' => $country_id])->asArray()->all();
         $regions_arr = [];
