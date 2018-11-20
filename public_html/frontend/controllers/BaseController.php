@@ -159,4 +159,25 @@ class BaseController extends \yii\web\Controller {
     public function beforeAction(){
         return $this->setPageTitle();
     }
+
+    /**Возвращает текущий домен
+     * @return string
+     */
+    public function getDomain(){
+        $base_url = Yii::$app->request->getHostInfo();
+        $domain = ".ru";
+        if(strpos($base_url, 'obiavo.by') !== false){
+            $domain = ".by";
+        }
+        if(strpos($base_url, 'obiavo.uz') !== false){
+            $domain = ".uz";
+        }
+        if(strpos($base_url, 'obiavo.kz') !== false){
+            $domain = ".kz";
+        }
+        if(strpos($base_url, 'obiavo.su') !== false){
+            $domain = ".su";
+        }
+        return $domain;
+    }
 }
