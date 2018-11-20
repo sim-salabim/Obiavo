@@ -79,13 +79,14 @@ class LocationController extends BaseController
                 Yii::$app->location->region = $location;
                 Yii::$app->location->country = $location->country;
             }
-            setcookie("country", $this->location_domains['country'], null, '/');
-            setcookie("region", $this->location_domains['region'], null, '/');
-            setcookie("city", $this->location_domains['city'], null, '/');
+
+            $_COOKIE["city"] = $this->location_domains['city'];
+            $_COOKIE["region"] = $this->location_domains['region'];
+            $_COOKIE["country"] = $this->location_domains['country'];
         }else{
-            setcookie("country", $this->location_domains['country'], null, '/');
-            setcookie("region", $this->location_domains['region'], null, '/');
-            setcookie("city", $this->location_domains['city'], null, '/');
+            $_COOKIE["city"] = $this->location_domains['city'];
+            $_COOKIE["region"] = $this->location_domains['region'];
+            $_COOKIE["country"] = $this->location_domains['country'];
             return $this->redirect(Url::toRoute("/"));
         }
 

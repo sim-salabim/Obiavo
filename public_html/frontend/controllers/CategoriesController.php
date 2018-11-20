@@ -41,10 +41,7 @@ class CategoriesController extends BaseController
         $city = Yii::$app->request->get('city') ?: null;
         $action = Yii::$app->request->get('placement');
         if($city != LocationHelper::getCurrentDomain()){
-            $domain = City::setCookieLocation($city);
-            $redirect_str = $domain ? $domain : "";
-            $redirect_str .= "/".$categoryUrl."/";
-            return $this->redirect(Url::toRoute($redirect_str));
+            City::setCookieLocation($city);
         }
         if($city){
             $this->setUrlForLogo($city);

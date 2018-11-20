@@ -12,7 +12,7 @@ class LocationHelper {
             if (isset($_COOKIE['city']) AND $_COOKIE['city']) {
                 $domain = $_COOKIE['city'] . "/";
             } else {
-                if (isset($_COOKIE['region']) AND $_COOKIE['region']) $domain = $_COOKIE['region'];
+                if (isset($_COOKIE['region']) AND $_COOKIE['region']) $domain = $_COOKIE['region']. "/";
             }
         }
         if($url != "/"){

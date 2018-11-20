@@ -86,6 +86,14 @@ class SiteController extends BaseController
         if($url != LocationHelper::getCurrentDomain()){
             City::setCookieLocation($url);
         }
+        $region = isset($_COOKIE['region']) ? $_COOKIE['region'] : null;
+        $city = isset($_COOKIE['city']) ? $_COOKIE['city'] : null;
+        if($region){
+            $this->setUrlForLogo($region);
+        }
+        if($city){
+            $this->setUrlForLogo($city);
+        }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
                             ->orderBy('order ASC, brand ASC, techname ASC')
@@ -93,6 +101,7 @@ class SiteController extends BaseController
                             ->withChildren()
                             ->orphan()
                             ->all();
+        Yii::$app->location->country;
         $country_id = Country::find()->select('id')->where(['domain' => Yii::$app->location->country])->one()->id;
         $regions_ids = Region::find()->where(['countries_id' => $country_id])->asArray()->all();
         $regions_arr = [];

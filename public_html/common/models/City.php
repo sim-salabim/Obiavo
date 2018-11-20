@@ -183,9 +183,9 @@ class City extends \yii\db\ActiveRecord
 
     public static function setCookieLocation($domain = null){
         if(!$domain){
-            setcookie("country", null, null, '/');
-            setcookie("region", null, null, '/');
-            setcookie("city", null, null, '/');
+            $_COOKIE["city"] = null;
+            $_COOKIE["region"] = null;
+            $_COOKIE["country"] = null;
         }else{
             $location = Region::find()->where(['domain' => $domain])->withText()->one();
             $location_domains = [
@@ -211,9 +211,9 @@ class City extends \yii\db\ActiveRecord
                 Yii::$app->location->region = $location;
                 Yii::$app->location->country = $location->country;
             }
-            setcookie("country", $location_domains['country'], null, '/');
-            setcookie("region", $location_domains['region'], null, '/');
-            setcookie("city", $location_domains['city'], null, '/');
+            $_COOKIE["city"] = $location_domains['city'];
+            $_COOKIE["region"] = $location_domains['region'];
+            $_COOKIE["country"] = $location_domains['country'];
         }
         return $domain;
     }
