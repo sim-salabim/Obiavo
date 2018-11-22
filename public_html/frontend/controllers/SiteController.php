@@ -101,8 +101,7 @@ class SiteController extends BaseController
                             ->withChildren()
                             ->orphan()
                             ->all();
-        Yii::$app->location->country;
-        $country_id = Country::find()->select('id')->where(['domain' => Yii::$app->location->country])->one()->id;
+        $country_id = Country::find()->select('id')->where(['domain' => Yii::$app->location->country->domain])->one()->id;
         $regions_ids = Region::find()->where(['countries_id' => $country_id])->asArray()->all();
         $regions_arr = [];
         foreach($regions_ids as $id){

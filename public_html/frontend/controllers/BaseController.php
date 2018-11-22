@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Country;
 use common\models\libraries\AdsSearch;
 use Yii;
 use frontend\helpers\TextHelper;
@@ -15,6 +16,7 @@ class BaseController extends \yii\web\Controller {
     protected $seo_desc;
     protected $seo_keywords;
     protected $location_domain;
+    protected $country;
 
     /**
      * @param null $title
@@ -160,24 +162,4 @@ class BaseController extends \yii\web\Controller {
         return $this->setPageTitle();
     }
 
-    /**Возвращает текущий домен
-     * @return string
-     */
-    public function getDomain(){
-        $base_url = Yii::$app->request->getHostInfo();
-        $domain = ".ru";
-        if(strpos($base_url, 'obiavo.by') !== false){
-            $domain = ".by";
-        }
-        if(strpos($base_url, 'obiavo.uz') !== false){
-            $domain = ".uz";
-        }
-        if(strpos($base_url, 'obiavo.kz') !== false){
-            $domain = ".kz";
-        }
-        if(strpos($base_url, 'obiavo.su') !== false){
-            $domain = ".su";
-        }
-        return $domain;
-    }
 }

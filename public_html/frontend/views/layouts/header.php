@@ -61,7 +61,7 @@
                     if(Yii::$app->location->region){
                         echo __('Region');//Yii::$app->location->region->_text->short_name;
                     }else{
-                        echo 'Россия';
+                        echo Yii::$app->location->country->_text->name;
                     }
                 }
 

@@ -39,15 +39,6 @@ class Location extends Component {
 
     public function init(){
         parent::init();
-        if(!$this->_country) {
-            if(!isset($_COOKIE['country'])) {
-                $country = Country::find()->current()->one();
-                setcookie("country", $country->domain, null, '/');
-            }else{
-                $country = Country::find()->where(['domain' => $_COOKIE['country']])->one();
-            }
-            $this->_country = $country ? $country : Country::find()->one();
-        }
         if(isset($_COOKIE['region'])){
             $region = Region::find()->where(['domain' => $_COOKIE['region']])->one();
             $this->_region = ($region) ? $region : null;
@@ -62,7 +53,17 @@ class Location extends Component {
                 $this->_region = $this->_city->region;
             }
         }
-
+        if(!$this->_country) {
+            if(!isset($_COOKIE['country'])) {
+                $country = Country::find()->where(['domain' => $this->getCurrentDomain()])->one();
+                setcookie("country", $country->domain, null, '/');
+            }else{
+                $country = Country::find()->where(['domain' => $this->getCurrentDomain()])->one();
+            }
+            $this->_country = $country ? $country : Country::find()->one();
+        }else if($this->_country->domain != $_COOKIE['country']){
+            $this->_country = Country::find()->where(['domain'=>$this->getCurrentDomain()])->one();
+        }
 //        $lang = $this->country->language;
 //        $this->language = $lang ? $lang : Language::find()->isDefault()->one();
     }
@@ -150,5 +151,26 @@ class Location extends Component {
         }else{
             return null;
         }
+    }
+
+    /**Возвращает текущий домен
+     * @return string
+     */
+    public function getCurrentDomain(){
+        $base_url = Yii::$app->request->getHostInfo();
+        $domain = "obiavo.by";
+        if(strpos($base_url, 'obiavo.by') !== false){
+            $domain = "obiavo.by";
+        }
+        if(strpos($base_url, 'obiavo.uz') !== false){
+            $domain = "obiavo.uz";
+        }
+        if(strpos($base_url, 'obiavo.kz') !== false){
+            $domain = "obiavo.kz";
+        }
+        if(strpos($base_url, 'obiavo.su') !== false){
+            $domain = "obiavo.su";
+        }
+        return $domain;
     }
 }
