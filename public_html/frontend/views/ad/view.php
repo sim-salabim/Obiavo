@@ -60,7 +60,7 @@
     </div>
     <div class="col-12"><hr></div>
     <div class="col-12">
-        <?= $ad->text ?>
+        <pre class="text_font"><?= $ad->text ?></pre>
     </div>
 </div>
 <script>
