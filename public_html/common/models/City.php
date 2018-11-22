@@ -12,7 +12,6 @@ use common\models\scopes\CityQuery;
  * @property integer $regions_id
  * @property string $domain
  * @property integer $active
- * @property integer $show_on_site
  * @property string $meta_google
  * @property string $meta_yandex
  * @property string $longitude
@@ -43,7 +42,7 @@ class City extends \yii\db\ActiveRecord
         return [
             [['regions_id', 'domain'], 'required'],
             [['regions_id', 'active'], 'integer'],
-            [['show_on_site', 'active'], 'integer', 'max' => 1],
+            [['active'], 'integer', 'max' => 1],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
             [['regions_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::className(), 'targetAttribute' => ['regions_id' => 'id']],
@@ -60,7 +59,6 @@ class City extends \yii\db\ActiveRecord
             'regions_id' => 'Regions ID',
             'domain' => 'Domain',
             'active' => 'Active',
-            'show_on_site' => 'Show on main page',
             'meta_google' => 'Meta Google',
             'meta_yandex' => 'Meta Yandex',
             'longitude' => 'Долгота',
@@ -165,9 +163,6 @@ class City extends \yii\db\ActiveRecord
                     ]
                 ];
         };
-
-        $url = $url ? $url : \Yii::$app->request->url;
-
         $data = [];
 
         if (!is_array($cities)){
