@@ -55,7 +55,7 @@
                 </button>
             </div>
             <span class="navbar-text mx-2 text-dark"><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?
-                if(Yii::$app->location->city){
+                if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
                     echo __('City');//Yii::$app->location->city->_text->name;
                 }else{
                     if(Yii::$app->location->region){
