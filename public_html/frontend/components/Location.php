@@ -158,7 +158,7 @@ class Location extends Component {
      */
     public function getCurrentDomain(){
         $base_url = Yii::$app->request->getHostInfo();
-        $domain = "obiavo.by";
+        $domain = "obiavo.ru";
         if(strpos($base_url, 'obiavo.by') !== false){
             $domain = "obiavo.by";
         }
