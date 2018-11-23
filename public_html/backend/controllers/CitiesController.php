@@ -105,12 +105,16 @@ class CitiesController extends BaseController
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $query = $post['query'];
-        $country_id = (isset($post['country_id'])) ? $post['country_id'] : 1;// захардкодим пока так
+        $where_condition = [];
+        if(isset($post['region_id']) and $post['region_id'] != ""){
+            $where_condition = ['regions_id' => $post['region_id']];
+        }
         $cities = City::find()
             ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
             ->where("cities_text.name LIKE '".$query."%'")
-            ->andFilterWhere(['in', 'cities.regions_id',
-                (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])
+            ->andWhere($where_condition)
+//            ->andFilterWhere(['in', 'cities.regions_id',
+//                (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])
             ->all();
         $result = [];
         foreach($cities as $city){

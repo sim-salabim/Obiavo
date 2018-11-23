@@ -5,12 +5,17 @@
  *      current_value - [id => , title => ], текущее значение
  *      name - название инпута (name="name");
  *      model - класс модели;
+ *      previous_input[id - ид инпута значение которого будет использоватся jquery для ajax-запроса; query_name - название параметра, которое будет использоваться при ajax-запросе]
  *      type - Form::SEARCH_AUTOCOMPLETE;
  *      url - урл для ajax поиска;
  *      input_id - id, который присвоиться инпуту, если не предоставлен, то притсваивается 'input-.uniqid()'
  *      placeholder;
  */
 $id = (isset($attribute['input_id'])) ? $attribute['input_id'] : 'input-'.uniqid();
+$prev_input_id = null;
+$additional_query = null;
+$prev_input_id = (isset($attribute['previous_input'])) ? $attribute['previous_input']['id'] : null;
+$additional_query = (isset($attribute['previous_input'])) ? $attribute['previous_input']['query_name'] : null;
 $model_name = $attribute['model_name'];
 $visible_value = ($attribute['current_value']['title']) ? $attribute['current_value']['title'] : null;
 $hidden_value = ($attribute['current_value']['id']) ? $attribute['current_value']['id'] : null;
@@ -83,11 +88,15 @@ $placeholder = (isset($attribute['placeholder'])) ? $attribute['placeholder'] : 
 
                 source: function(request, response) {
                     _hidden_field.val('');
+                    var params = {query: $('#'+'<?= $id ?>').val()};
+                    <? if($additional_query){ ?>
+                        params['<?= $additional_query ?>'] = $('#<?= $prev_input_id ?>').val();
+                    <? } ?>
                     $.ajax({
                         dataType: "json",
                         type : 'POST',
                         url: '<?= \yii\helpers\Url::toRoute($attribute['url']) ?>',
-                        data: {query: $('#'+'<?= $id ?>').val()},
+                        data: params,
                         success: function(data) {
                             _search_data = data;
                             $('input.suggest-user').removeClass('ui-autocomplete-loading');
