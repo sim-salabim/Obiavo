@@ -137,6 +137,14 @@ class SocialNetworks extends \yii\db\ActiveRecord
                         }
                     }
                 }
+                if ($location->country) {
+                    $group = $this->getBlockByCountryAndCategory($category);
+                    if (!$group) {
+                        if($category->parent){
+                            return $this->getGroupsBlock($category->parent);
+                        }
+                    }
+                }
             } else {
                 if ($category->parent) {
                     return $this->getGroupsBlock($category->parent);
