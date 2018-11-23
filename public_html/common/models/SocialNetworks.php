@@ -245,6 +245,30 @@ class SocialNetworks extends \yii\db\ActiveRecord
         if($category->socialNetworkGroupsMain and $city) {
             $group = $this->getGroup($city, $category);
         }
+        if($category->socialNetworkGroupsMain and $city->region->country and !$group){
+            $group = $this->getGroupByCountry($city->region->country, $category);
+        }
+        return $group;
+    }
+
+    public function getGroupByCountry(Country $country, Category $category){
+        $group = SocialNetworksGroups::find()
+            ->select('social_networks_groups.*')
+            ->where([
+                'social_networks_groups.cities_id' => null,
+                'social_networks_groups.regions_id' => null,
+                'social_networks_groups.countries_id' => $country->id,
+                'social_networks_groups.social_networks_id' => $this->id,
+                'social_networks_groups_main_categories.categories_id' => $category->id
+            ])
+            ->leftJoin('social_networks_groups_main_categories', 'social_networks_groups_main_categories.main_group_id = social_networks_groups.social_networks_groups_main_id')
+            ->one();
+        if(!$group){
+            $group = null;
+            if($category->parent){
+                return $this->getGroupByCountry($country, $category->parent);
+            }
+        }
         return $group;
     }
 
