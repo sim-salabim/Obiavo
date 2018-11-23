@@ -16,16 +16,16 @@ use yii\helpers\Url;
         <hr>
     </div>
     <div class="col-lg-12 col-xs-12 reset-location">
-        <a href="<?= Url::toRoute(["/select-location/reset/"])?>"><?= __('Reset location') ?></a>
+        <a href="<?= Url::toRoute(["/"])?>"><?= __('Reset location') ?></a>
     </div>
     <?php foreach ($regions as $region) { ?>
         <div class="col-lg-4 col-md-6 col-xs-2">
             <ul class="lvl-block">
                 <li class="lvl-1">
-                    <a href="<?= Url::toRoute(["select-location/".$region["domain"]."/"])?>"><?= $region['name']?></a>
+                    <a href="<?= Url::toRoute(["/".$region["domain"]."/"])?>"><?= $region['name']?></a>
                 </li>
                 <?php foreach (\common\models\Region::getCitiesByRegionId($region['id']) as $city) { ?>
-                    <li class="lvl-2 ml-4 city-list"><a href="<?= Url::toRoute(["select-location/".$city['domain']."/"])?>"><?= $city['name']?></a></li>
+                    <li class="lvl-2 ml-4 city-list"><a href="<?= Url::toRoute(["/".$city['domain']."/"])?>"><?= $city['name']?></a></li>
                 <?php } ?>
             </ul>
         </div>
