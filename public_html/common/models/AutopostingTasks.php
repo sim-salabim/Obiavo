@@ -87,10 +87,12 @@ class AutopostingTasks extends \yii\db\ActiveRecord
         $networks = SocialNetworks::getNetworksForAutoposting();
         foreach($networks as $network){
             $group = $network->getGroupForAutoposting($ad);
-            $task = new self();
-            $task->ads_id = $ad->id;
-            $task->social_networks_groups_id = $group->id;
-            $task->save();
+            if($group->countries_id == \Yii::$app->location->country->id) {
+                $task = new self();
+                $task->ads_id = $ad->id;
+                $task->social_networks_groups_id = $group->id;
+                $task->save();
+            }
         }
     }
 }

@@ -127,13 +127,15 @@ class SocialNetworksGroupsMain extends \yii\db\ActiveRecord
      * @return array|bool|null|\yii\db\ActiveRecord
      */
     function getDefaultGroupBySnIdFromDefault($sn_id){
+        $country = \Yii::$app->location->country;
         $group = SocialNetworksGroups::find()
             ->where([
                 'social_networks_groups.social_networks_id' => $sn_id,
-                'social_networks_groups_main.as_default' => 1
+                'social_networks_groups.countries_id' => $country->id,
+                'social_networks_groups.regions_id' => null,
+                'social_networks_groups.cities_id' => null,
+                'social_networks_groups.social_networks_groups_main_id' =>  (new \yii\db\Query())->select('id')->from('social_networks_groups_main')->where(['as_default' => 1])
             ])
-            ->leftJoin('social_networks_groups_main_groups', 'social_networks_groups.id = social_networks_groups_main_groups.group_id')
-            ->leftJoin('social_networks_groups_main', 'social_networks_groups_main_groups.main_group_id = social_networks_groups_main.id')
             ->one();
         return $group ? $group : false;
     }
