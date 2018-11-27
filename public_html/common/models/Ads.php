@@ -29,6 +29,7 @@ use frontend\helpers\TransliterationHelper;
 * @property User $user
 * @property Category $category
 * @property Category[] $categories
+* @property Category[] $availableCategories
 * @property Placement $placement
  * @property Files[] $files
  * @property AdsView[] $views
@@ -109,6 +110,15 @@ class Ads extends \yii\db\ActiveRecord
      */
     public function getViews(){
         return $this->hasMany(AdsView::className(), ['id' => 'users_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAvailableCategories()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'categories_id'])
+            ->viaTable('categories_has_ads', ['ads_id' => 'id']);
     }
 
     /**
