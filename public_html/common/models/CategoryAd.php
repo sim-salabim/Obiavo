@@ -5,7 +5,7 @@ namespace common\models;
 use common\models\scopes\CategoryQuery;
 
 /**
- * This is the model class for table "category_has_ad".
+ * This is the model class for table "categories_has_ads".
  *
  * @property integer $id
  * @property integer $categories_id
@@ -23,7 +23,7 @@ class CategoryAd extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'category_has_ad';
+        return 'categories_has_ads';
     }
 
     /**
