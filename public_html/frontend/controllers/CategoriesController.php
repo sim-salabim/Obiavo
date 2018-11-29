@@ -244,7 +244,7 @@ class CategoriesController extends BaseController
         $post = Yii::$app->request->get();
         $id = ($post['key'] == "#") ? null : $post['key'];
         $categories = Category::find()
-            ->where(['parent_id' => $id])
+            ->where(['parent_id' => $id, 'active' => 1])
             ->orderBy('order ASC, brand ASC, techname ASC')
             ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
