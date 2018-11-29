@@ -41,7 +41,7 @@ class AdController extends BaseController
         Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
         $this->setPageTitle($cms->_text->seo_title);
         $categories = Category::find()
-            ->where(['parent_id' => NULL])
+            ->where(['parent_id' => NULL, 'active'=>1])
             ->orderBy('order ASC, brand ASC, techname ASC')
             ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
