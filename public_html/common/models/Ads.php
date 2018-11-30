@@ -29,6 +29,7 @@ use frontend\helpers\TransliterationHelper;
 * @property User $user
 * @property Category $category
 * @property Category[] $categories
+* @property Category[] $availableCategories
 * @property Placement $placement
  * @property Files[] $files
  * @property AdsView[] $views
@@ -109,6 +110,15 @@ class Ads extends \yii\db\ActiveRecord
      */
     public function getViews(){
         return $this->hasMany(AdsView::className(), ['id' => 'users_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAvailableCategories()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'categories_id'])
+            ->viaTable('categories_has_ads', ['ads_id' => 'id']);
     }
 
     /**
@@ -259,16 +269,16 @@ class Ads extends \yii\db\ActiveRecord
             }
         }
         if($model->main_category) {
-            $category = Category::findOne($model->main_category);
-            // так как категории статичны загоним дочерние категории, принадлежащие $model->main_category, в кэш и зададим время действия
-            // кэша 80 дней
-            $cat_ids_arr = Yii::$app->cache->getOrSet($model->main_category, function () use ($category) {
-                return Category::getAllChildren([$category]);
-            }, 3000000);
-            array_push($cat_ids_arr, $model->main_category);
-            $category_conditions = [
-                'in', 'ads.categories_id', $cat_ids_arr
-            ];
+//            $category = Category::findOne($model->main_category);
+//            // так как категории статичны загоним дочерние категории, принадлежащие $model->main_category, в кэш и зададим время действия
+//            // кэша 80 дней
+//            $cat_ids_arr = Yii::$app->cache->getOrSet($model->main_category, function () use ($category) {
+//                return Category::getAllChildren([$category]);
+//            }, 3000000);
+//            array_push($cat_ids_arr, $model->main_category);
+//            $category_conditions = [
+//                'in', 'ads.categories_id', $cat_ids_arr
+//            ];
             $add_where_condition = [];
             if(!empty($where_conditions)){
                 $add_where_condition = [$where_conditions[0],"ads.".$where_conditions[1],$where_conditions[2]];
@@ -290,11 +300,11 @@ class Ads extends \yii\db\ActiveRecord
                 $add_like_conditions = [$like_conditions[0], "ads.".$like_conditions[1], $like_conditions[2]];
             }
             $ad_ids_arr = [];
-            $add_ids = AdCategory::find()
-                        ->select('ads.*, ads_has_categories.ads_id, ads_has_categories.categories_id')
-                        ->leftJoin("ads", "ads.id = ads_has_categories.ads_id")
+            $add_ids = CategoryAd::find()
+                        ->select('ads.*, categories_has_ads.ads_id, categories_has_ads.categories_id')
+                        ->leftJoin("ads", "ads.id = categories_has_ads.ads_id")
                         // ->groupBy(['ads_has_categories.ads_id'])
-                        ->where(["ads_has_categories.categories_id" => $cat_ids_arr])
+                        ->where(["categories_has_ads.categories_id" => $model->main_category])
                         ->andFilterWhere($add_where_condition)
                         ->andFilterWhere($active_conditions)
                         ->andFilterWhere($add_expired_conditions)
@@ -315,14 +325,14 @@ class Ads extends \yii\db\ActiveRecord
         $ads = [];
         if($ads_list) {
             $ads = Ads::find()
-                ->where($where_conditions)
+                ->where($additional_category_conditions)
                 ->andFilterWhere($expired_conditions)
                 ->andFilterWhere($user_conditions)
                 ->andFilterWhere($active_conditions)
                 ->andFilterWhere($location_conditions)
                 ->andFilterWhere($category_conditions)
                 ->andFilterWhere($like_conditions)
-                ->orFilterWhere($additional_category_conditions)
+//                ->orFilterWhere($additional_category_conditions)
                 ->orderBy($model->sorting)
                 ->offset(($model->page - 1)* $model->limit)
                 ->limit($model->limit)
@@ -330,26 +340,26 @@ class Ads extends \yii\db\ActiveRecord
         }
         // загоним подсчет обьявлений текущей выборки в кэш на 5 минут
         $count =  Ads::find()
-                    ->where($where_conditions)
+                    ->where($additional_category_conditions)
                     ->andFilterWhere($user_conditions)
                     ->andFilterWhere($expired_conditions)
                     ->andFilterWhere($active_conditions)
                     ->andFilterWhere($location_conditions)
                     ->andFilterWhere($category_conditions)
-                    ->orFilterWhere($additional_category_conditions)
+//                    ->orFilterWhere($additional_category_conditions)
                     ->andFilterWhere($like_conditions)
                     ->count();
         // загоним подсчет минимальной и максимальной цены текущей выборки в кэш на 5 минут
         $price_range =  (new \yii\db\Query())
                     ->select('MAX(price) as max, MIN(price) as min')
                     ->from('ads')
-                    ->where($where_conditions)
+                    ->where($additional_category_conditions)
                     ->andFilterWhere($user_conditions)
                     ->andFilterWhere($active_conditions)
                     ->andFilterWhere($expired_conditions)
                     ->andFilterWhere($location_conditions)
                     ->andFilterWhere($category_conditions)
-                    ->orFilterWhere($additional_category_conditions)
+//                    ->orFilterWhere($additional_category_conditions)
                     ->andFilterWhere($like_conditions)
                     ->one();
 

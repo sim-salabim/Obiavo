@@ -29,6 +29,7 @@ use common\models\scopes\CategoryQuery;
  * @property Category[] $children
  * @property Placement $placements
  * @property Category[] $categories
+ * @property Ads[] $availableAds
  * @property CategoryAttribute[] $categoriesAttributes
  * @property SocialNetworksGroups[] $socialNetworkGroups
  * @property SocialNetworksGroupsMain $socialNetworkGroupsMain
@@ -99,6 +100,15 @@ class Category extends \yii\db\ActiveRecord
     public function getAds()
     {
         return $this->hasMany(Ads::className(), ['categories_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAvailableAds()
+    {
+        return $this->hasOne(Ads::className(), ['id' => 'ads_id'])
+            ->viaTable('categories_has_ads', ['categories_id' => 'id']);
     }
 
     /**
@@ -297,6 +307,21 @@ class Category extends \yii\db\ActiveRecord
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
+    }
+
+    /**
+     * Найти всех родителей категории  в том числе и текущую
+     */
+    public function getAllParents()
+    {
+        $parent = $this;
+        $parents = [];
+        $parents[] = $parent;
+        while ($parent) {
+            $parent = $parent->getParent()->one();
+            $parents[] = $parent;
+        }
+        return $parents;
     }
 
     /**

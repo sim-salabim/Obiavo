@@ -5,7 +5,7 @@ namespace common\models;
 use common\models\scopes\CategoryQuery;
 
 /**
- * This is the model class for table "ads_has_cateogries".
+ * This is the model class for table "categories_has_ads".
  *
  * @property integer $id
  * @property integer $categories_id
@@ -13,15 +13,17 @@ use common\models\scopes\CategoryQuery;
  *
  * @property Placement $ad
  * @property Category $category
+ * * @property Placement[] $ads
+ * @property Category[] $categories
  */
-class AdCategory extends \yii\db\ActiveRecord
+class CategoryAd extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ads_has_categories';
+        return 'categories_has_ads';
     }
 
     /**

@@ -3,6 +3,8 @@ namespace frontend\models;
 
 use common\models\AdCategory;
 use common\models\Ads;
+use common\models\Category;
+use common\models\CategoryAd;
 use common\models\Placement;
 use frontend\helpers\TransliterationHelper;
 use Yii;
@@ -80,13 +82,25 @@ class NewAdForm extends Model
         if(isset($_POST['files'])) {
             Files::linkFilesToModel($_POST['files'], $adsModel);
         }
+        $parents_arr = [];
         foreach($this->categories as $k => $cat){
+            $category_model = Category::find()->where(['id'=>$cat])->one();
+            $parents = $category_model->getAllParents();
+            foreach($parents as $parent){
+                $parents_arr[$parent['id']] = $parent;
+            }
             if($k > 0) {
                 $adCategory = new AdCategory();
                 $adCategory->ads_id = $adsModel->id;
                 $adCategory->categories_id = $cat;
                 $adCategory->save();
             }
+        }
+        foreach($parents_arr as $id => $parent){
+            $category_ad = new CategoryAd();
+            $category_ad->categories_id = $id;
+            $category_ad->ads_id = $adsModel->id;
+            $category_ad->save();
         }
         Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel]);
         return $adsModel;
