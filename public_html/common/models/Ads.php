@@ -273,6 +273,10 @@ class Ads extends \yii\db\ActiveRecord
             if(!empty($expired_conditions)){
                 $add_expired_conditions = [$expired_conditions[0], "ads.".$expired_conditions[1],$expired_conditions[2]];
             }
+            $add_active_conditions = [];
+            if(!empty($active_conditions)){
+                $add_active_conditions = [$active_conditions[0], "ads.".$active_conditions[1], $active_conditions[2]];
+            }
             $add_user_conditions = [];
             if(!empty($user_conditions)){
                 $add_user_conditions = [$user_conditions[0], "ads.".$user_conditions[1], $user_conditions[2]];
@@ -290,7 +294,7 @@ class Ads extends \yii\db\ActiveRecord
                         ->select('ads.*, categories_has_ads.ads_id, categories_has_ads.categories_id')
                         ->leftJoin("ads", "ads.id = categories_has_ads.ads_id")
                         ->where(["categories_has_ads.categories_id" => $model->main_category])
-                        ->andFilterWhere($active_conditions)
+                        ->andFilterWhere($add_active_conditions)
                         ->andFilterWhere($where_conditions)
                         ->andFilterWhere($add_expired_conditions)
                         ->andFilterWhere($add_user_conditions)
@@ -314,10 +318,13 @@ class Ads extends \yii\db\ActiveRecord
                 ->limit($model->limit)
                 ->all();
         }
-        // загоним подсчет обьявлений текущей выборки в кэш на 5 минут
-        $count =  Ads::find()
-                    ->where($additional_category_conditions)
-                    ->count();
+
+        $count = Ads::find()
+            ->where($additional_category_conditions)
+            ->andWhere(['active' => 1])
+            ->andWhere(['>', 'expiry_date', time()])
+            ->count();
+
         // загоним подсчет минимальной и максимальной цены текущей выборки в кэш на 5 минут
         $price_range =  (new \yii\db\Query())
                     ->select('MAX(price) as max, MIN(price) as min')
