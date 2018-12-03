@@ -283,6 +283,7 @@ ul.bs-autocomplete-menu a {
     }
 }
 .city-list{
+    padding-bottom: 10px;
     list-style-type: none !important;
 }
 .city-list a{
