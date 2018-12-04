@@ -19,7 +19,7 @@ use yii\db\Query;
  * @property string $latitude
  *
  * @property City[] $cities
- * @property Country $countries
+ * @property Country $country
  * @property RegionText[] $regionsTexts
  * @property SocialNetworksGroups $socialNetworksGroups
  */

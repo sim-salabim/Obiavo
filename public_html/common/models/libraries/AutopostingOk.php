@@ -57,20 +57,23 @@ class AutopostingOk {
 //            $images_str = rtrim($images_str, ",");
 //            $images_str .= ']}';
 //        }
-        $link = "https://".$this->task->ad->city->region->country->domain.'/'.$this->task->ad->url();
-        $link = "https://via.placeholder.com/728x600.png";//TODO убрать когда obiavo будет не запаролен
+        $domain = $this->task->ad->city->region->country->domain;
+        $link = "https://".$domain."/".$this->task->ad->url();
+//        $link = "https://via.placeholder.com/728x600.png";//TODO убрать когда obiavo будет не запаролен
         $post_title = str_replace(["\n","\t","\v", "\r","\b","\f"],['\n','\t','\v','\r','\b','\b'],$this->task->ad->title);
         $post_text = str_replace(["\n","\t","\v","\r","\b","\f"],['\n','\t','\v','\r','\b','\b'],$this->task->ad->text);
+
         $params = array(
             "application_key"=>$this->public_key,
             "method"=>"mediatopic.post",
             "gid" => $this->group->group_id,
             "type"=>"GROUP_THEME",
             "attachment"=>'{"media":[
-            {
-                        "type": "text",
-                        "text": "'.$post_title.'\nЦена: '.$this->task->ad->price.'\n\n'.$post_text.'"
-                    }
+             {
+                  "type": "link",
+                  "title": "'.$post_title.' \nЦена: '.$this->task->ad->price.'",
+                  "url": "'.$link.'"
+                }
                     ]}',
             "format"=>"json"
         );
