@@ -14,7 +14,7 @@ $items = [
             'panel-title' => 'Основныe данные',
             'attributes' => [
                   ['name' => 'code','type' => Form::INPUT_TEXT,'label' => 'Домен','model'=>$language],
-                  ['name' => 'active','type' => Form::INPUT_CHECKBOX_INACTIVE,'label'=>'активность','model' => $language],
+                  ['name' => 'active','type' => Form::INPUT_CHECKBOX,'label'=>'активность','model' => $language, 'model_name' => 'Language'],
                   ['name' => 'techname','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$language],
             ]
         ],

@@ -1,5 +1,5 @@
 <div class="row">
     <div class="col-12">
-        <?= $page->_text->seo_text ?>
+        <?= $page->seo_text ?>
     </div>
 </div>
