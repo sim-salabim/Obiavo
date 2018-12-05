@@ -49,7 +49,9 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
             return false;
         }
 
-        if (! $this->isValidCategory($params)) return false;
+        if (! $this->isValidCategory($params)){
+            return false;
+        }
 
         if ($params['city'] && !$this->isValidLocation($params)){
             return false;
@@ -74,7 +76,6 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
 
     private function isValidCategory($params){
         $categoryName = ArrayHelper::getValue($params, 'category', false);
-
         $category = \common\models\Category::find()
                             ->searchUrlByLanguage($categoryName)
                             ->one();

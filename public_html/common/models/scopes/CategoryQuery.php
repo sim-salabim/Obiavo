@@ -1,6 +1,7 @@
 <?php
 namespace common\models\scopes;
 
+use common\models\Language;
 use yii\db\ActiveQuery;
 
 class CategoryQuery extends ActiveQuery {
@@ -41,8 +42,8 @@ class CategoryQuery extends ActiveQuery {
 
     public function searchUrlByLanguage($categoryUrl){
         return
-            $this->joinWith(['categoriesText' => function(\yii\db\ActiveQuery $query){
-                $query->andWhere(['categories_text.languages_id' => \Yii::$app->location->language->id]);
+            $this->joinWith(['categoriesText' => function (\yii\db\ActiveQuery $query){
+                $query->andWhere(['categories_text.languages_id' => Language::find()->where(["is_default" => 1])->one()->id]);
             }])
             ->andWhere(['categories_text.url' => $categoryUrl]);
     }
