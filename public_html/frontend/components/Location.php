@@ -153,12 +153,13 @@ class Location extends Component {
         }
     }
 
-    /**Возвращает текущий домен
+    /**
+     * Возвращает текущий домен
      * @return string
      */
     public static function getCurrentDomain(){
         $base_url = Yii::$app->request->getHostInfo();
-        $domain = "obiavo.ru";
+        $domain = "obiavo.ru"; // сменой домена вот в этом месте меняется локация на локальном проекте, но на сервере должно быть всегда .ru
         if(strpos($base_url, 'obiavo.by') !== false){
             $domain = "obiavo.by";
         }

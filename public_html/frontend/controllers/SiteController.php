@@ -123,6 +123,7 @@ class SiteController extends BaseController
         $this->seo_keywords = $cms_page->_text->seo_keywords;
         $librarySearch = new AdsSearch();
         $librarySearch->setActive(true);
+        $librarySearch->setConsiderLocation(true);
         $ads_model = new Ads();
         $ads_list = $ads_model->getList($librarySearch, false);
         $this->switchSeoKeys($ads_list);
