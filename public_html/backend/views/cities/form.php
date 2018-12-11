@@ -11,6 +11,7 @@ $items = [
             'attributes' => [
                   ['name' => 'domain','type' => Form::INPUT_TEXT,'label' => 'Домен','model'=>$city],
                   ['name' => 'active','type' => Form::INPUT_CHECKBOX,'label'=>'Активность','model' => $city, 'model_name' => 'City'],
+                ['name' => 'sitemap','type' => Form::INPUT_CHECKBOX,'label'=>'Использовать в sitemap','model' => $city, 'model_name' => 'City'],
                   ['name' => 'longitude','type' => Form::INPUT_TEXT,'label'=>'Долгота','model' => $city, 'model_name' => 'Longitude'],
                   ['name' => 'latitude','type' => Form::INPUT_TEXT,'label'=>'Широта','model' => $city, 'model_name' => 'Latitude'],
             ]
