@@ -84,7 +84,8 @@ class SiteController extends BaseController
     {
         $url = str_replace('/','',Yii::$app->getRequest()->getUrl());
         if($url != LocationHelper::getCurrentDomain()){
-            City::setCookieLocation($url);
+            $splited = explode("?", $url);
+            City::setCookieLocation($splited[0]);
         }
         $region = isset($_COOKIE['region']) ? $_COOKIE['region'] : null;
         $city = isset($_COOKIE['city']) ? $_COOKIE['city'] : null;
