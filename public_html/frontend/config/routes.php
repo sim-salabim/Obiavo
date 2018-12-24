@@ -1,6 +1,11 @@
 <?php
 return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
+    [
+        'pattern'=>'sitemap',
+        'route'=>'sitemap/index',
+        'suffix'=>'.xml'
+    ],
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
     'GET /vybor-goroda' => 'location/vybor-goroda',
     'GET /podat-obiavlenie' => 'ad/new-add/',

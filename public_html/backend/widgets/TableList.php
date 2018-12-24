@@ -169,6 +169,9 @@ class TableList extends Widget{
                 case 'update-seo-attached':
                     $contentBut .= $this->render('opt-update-seo-attached-button', compact('model'));
                     break;
+                case 'run':
+                    $contentBut .= $this->render('opt-run-button', compact('model'));
+                    break;
             }
         }
 

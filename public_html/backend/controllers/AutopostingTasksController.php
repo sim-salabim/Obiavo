@@ -116,7 +116,4 @@ class AutopostingTasksController extends BaseController
         ]);
     }
 
-    public function actionHandleTask(){
-
-    }
 }

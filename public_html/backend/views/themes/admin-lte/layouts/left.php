@@ -47,6 +47,7 @@ use yii\helpers\Url;
                     ['label' => 'Основные группы соцсетей', 'icon' => 'object-group', 'url' => ['/sn-main-groups']],
                     ['label' => 'Сообщества соцсетей', 'icon' => 'child', 'url' => ['/sn-groups']],
                     ['label' => 'Автопостинг', 'icon' => 'eye', 'url' => ['/autoposting-tasks']],
+                    ['label' => 'Sitemap', 'icon' => 'map-o', 'url' => ['/sitemap']],
                     ['label' => 'Настройки', 'icon' => 'cog', 'url' => ['/settings']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
