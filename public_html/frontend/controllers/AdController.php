@@ -98,6 +98,7 @@ class AdController extends BaseController
         //TODO проверка есть ли домен
         $ad = Ads::find()->where(['url' => $ad_url])->one();
         if(($ad->only_locally AND ($ad->city->domain != $city)) OR (!$ad->only_locally AND $city)) throw new HttpException(404, 'Not Found');
+        if($ad->city->region->country->id != Yii::$app->location->country->id) throw new HttpException(404, 'Not Found');
         $ad_title = $ad->title." - ".__('ads in')." ".$ad->city->_text->name_rp." ".__('on the site')." ".ucfirst(Yii::$app->location->country->domain);
         $this->setPageTitle($ad_title);
         Yii::$app->view->params['canonical'] = Url::home(true) . $ad_url . "/";
