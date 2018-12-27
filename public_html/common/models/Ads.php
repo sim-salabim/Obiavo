@@ -326,7 +326,6 @@ class Ads extends \yii\db\ActiveRecord
             ->andWhere(['>', 'expiry_date', time()])
             ->count();
 
-        // загоним подсчет минимальной и максимальной цены текущей выборки в кэш на 5 минут
         $price_range =  (new \yii\db\Query())
             ->select('MAX(price) as max, MIN(price) as min')
             ->from('ads')
@@ -335,7 +334,6 @@ class Ads extends \yii\db\ActiveRecord
             ->one();
 
         $views_expired_conditions = ['>', 'expiry_date', time()];
-        // загоним подсчет просмотров текущей выборки в кэш на 5 минут
         $views_amount =  (new \yii\db\Query())
                     ->from('ads_views')
                     ->where(['in', 'ads_id',

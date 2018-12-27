@@ -38,12 +38,14 @@ class SitemapCronController extends Controller
     }
 
     private function handleTask(){
-        for($i = 1;$i <= 5; $i++){
+        $ii = 0;
+        for($i = 1;$i <= 150; $i++){
             $sm = new SitemapIndex();
-            if($i < 3){
-                $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".xml";
+            if($i <= 8) {
+                $sm->link = "https://" . $this->task->country->domain . "/sitemap" . $i . ".xml";
             }else{
-                $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".pl.xml";
+                $sm->link = "https://" . $this->task->country->domain . "/sitemap" . $i . ".catpl_".$ii.".xml";
+                $ii++;
             }
             $sm->tasks_id = $this->task->id;
             $sm->countries_id = $this->task->countries_id;
@@ -54,35 +56,22 @@ class SitemapCronController extends Controller
                 ])->andWhere(['sitemap'=>1])->all();
 
         for($idx = 0; $idx <= count($cities) - 1; $idx++){
-            $sm = new SitemapIndex();
-            $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id."_0.xml";
-            $sm->tasks_id = $this->task->id;
-            $sm->countries_id = $this->task->countries_id;
-            $sm->save();
-            $i++;
-            $sm = new SitemapIndex();
-            $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id."_1.xml";
-            $sm->tasks_id = $this->task->id;
-            $sm->countries_id = $this->task->countries_id;
-            $sm->save();
-            $i++;
-            $sm = new SitemapIndex();
-            $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id.".pl_0.xml";
-            $sm->tasks_id = $this->task->id;
-            $sm->countries_id = $this->task->countries_id;
-            $sm->save();
-            $i++;
-            $sm = new SitemapIndex();
-            $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id.".pl_1.xml";
-            $sm->tasks_id = $this->task->id;
-            $sm->countries_id = $this->task->countries_id;
-            $sm->save();
-            $i++;
-            $sm = new SitemapIndex();
-            $sm->link = "http://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id.".pl_2.xml";
-            $sm->tasks_id = $this->task->id;
-            $sm->countries_id = $this->task->countries_id;
-            $sm->save();
+            for($z = 0; $z <= 8; $z++){
+                $sm = new SitemapIndex();
+                $sm->link = "https://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id."_".$z.".xml";
+                $sm->tasks_id = $this->task->id;
+                $sm->countries_id = $this->task->countries_id;
+                $sm->save();
+                $i++;
+            }
+            for($r = 0; $r <= 142; $r++){
+                $sm = new SitemapIndex();
+                $sm->link = "https://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id.".pl_".$r.".xml";
+                $sm->tasks_id = $this->task->id;
+                $sm->countries_id = $this->task->countries_id;
+                $sm->save();
+                $i++;
+            }
         }
         $this->task->status = SitemapTasks::FINISHED_STATUS;
         $this->task->save();
