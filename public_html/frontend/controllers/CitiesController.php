@@ -39,7 +39,7 @@ class CitiesController extends Controller
             ])->from('cities')
                 ->where("cities_text.name LIKE '".$post['q']."%'")
                 ->andWhere(['countries.domain' => Yii::$app->location->country])
-                ->andWhere(['cities_text.languages_id' => Yii::$app->location->country->languages_id])
+//                ->andWhere(['cities_text.languages_id' => Yii::$app->location->country->languages_id])
                 ->join('LEFT OUTER JOIN',
                     'cities_text',
                     'cities_text.cities_id = cities.id'
