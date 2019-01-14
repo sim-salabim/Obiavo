@@ -81,7 +81,10 @@ class SitemapController extends BaseController
             function () use (
                 $offset
             ) {
-                return CategoryPlacement::find()->limit(1000)->offset($offset)->all();
+                return CategoryPlacement::find()
+                    ->leftJoin('categories', 'categories.id = categories_has_placements.categories_id')
+                    ->where(['categories.active' => 1])
+                    ->limit(1000)->offset($offset)->all();
             }, 8640000);
         return $this->renderPartial('placement-city', compact('links', 'city_domain', 'current_domain'));
     }
@@ -100,7 +103,10 @@ class SitemapController extends BaseController
             function () use (
                 $offset
             ) {
-            return CategoryPlacement::find()->limit(1000)->offset($offset)->all();
+                return CategoryPlacement::find()
+                    ->leftJoin('categories', 'categories.id = categories_has_placements.categories_id')
+                    ->where(['categories.active' => 1])
+                    ->limit(1000)->offset($offset)->all();
             }, 8640000);
         return $this->renderPartial('placement', compact('links', 'current_domain'));
     }

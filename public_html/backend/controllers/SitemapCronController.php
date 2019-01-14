@@ -39,7 +39,7 @@ class SitemapCronController extends Controller
 
     private function handleTask(){
         $ii = 0;
-        for($i = 1;$i <= 150; $i++){
+        for($i = 1;$i <= 148; $i++){
             $sm = new SitemapIndex();
             if($i <= 8) {
                 $sm->link = "https://" . $this->task->country->domain . "/sitemap" . $i . ".xml";
@@ -56,7 +56,7 @@ class SitemapCronController extends Controller
                 ])->andWhere(['sitemap'=>1])->all();
 
         for($idx = 0; $idx <= count($cities) - 1; $idx++){
-            for($z = 0; $z <= 8; $z++){
+            for($z = 0; $z <= 7; $z++){
                 $sm = new SitemapIndex();
                 $sm->link = "https://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id."_".$z.".xml";
                 $sm->tasks_id = $this->task->id;
@@ -64,7 +64,7 @@ class SitemapCronController extends Controller
                 $sm->save();
                 $i++;
             }
-            for($r = 0; $r <= 142; $r++){
+            for($r = 0; $r <= 139; $r++){
                 $sm = new SitemapIndex();
                 $sm->link = "https://".$this->task->country->domain."/sitemap".$i.".city_".$cities[$idx]->id.".pl_".$r.".xml";
                 $sm->tasks_id = $this->task->id;

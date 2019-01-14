@@ -27,12 +27,6 @@ class m181212_062335_sitemap_tables extends Migration
             'created_at' => $this->timestamp()->notNull(),
         ], $tableOptions);
 
-        $this->createTable('sitemap_links', [
-            'id' => $this->primaryKey()->unsigned(),
-            'sitemap_index_id' => $this->integer()->unsigned()->notNull(),
-            'link' => $this->string()->notNull(),
-            'created_at' => $this->timestamp()->notNull(),
-            ]);
 
         $this->createIndex('idx_st_c_id', 'sitemap_tasks', 'countries_id');
         $this->addForeignKey('fk_st_countries', 'sitemap_tasks', 'countries_id', 'countries', 'id');

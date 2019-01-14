@@ -5,6 +5,7 @@ class AdsSearch {
 
     public $params = [];
     public $user;
+    public $active;
     public $categories = [];
     public $main_category;
     public $action;
