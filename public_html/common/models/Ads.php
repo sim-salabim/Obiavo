@@ -219,7 +219,7 @@ class Ads extends \yii\db\ActiveRecord
                 ];
             } else {
                 $expired_conditions = [
-                    '>', 'expiry_dates', time()
+                    '>', 'expiry_date', time()
                 ];
             }
         }
