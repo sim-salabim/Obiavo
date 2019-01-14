@@ -157,6 +157,10 @@ class Category extends \yii\db\ActiveRecord
 //                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
     }
 
+    public function getAllCategoryChildren(){
+        return Category::find()->where(['parent_id'=>$this->id])->all();
+    }
+
     /**
      * Типы объявлений у категорий (купить, продать, аренда)
      */
@@ -180,7 +184,7 @@ class Category extends \yii\db\ActiveRecord
     public function setPlacements($placementsIds) {
         $existing_ids = [];
         foreach($this->placements as $epl){
-            $existing_ids[] = $epl->id;
+            $existing_ids[] = $epl['placements_id'];
         }
         $rows_to_insert = [];
         $ids_to_remove = [];

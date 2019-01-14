@@ -100,7 +100,7 @@ class CategoriesController extends BaseController
         if ($id){
             $category = Category::findOne($id);
         } else {
-            $category = new Category;
+            $category = new Category();
             $category->parent_id = $parentID;
         }
 
@@ -123,6 +123,12 @@ class CategoriesController extends BaseController
                 ->createCommand()
                 ->insert('social_networks_groups_main_categories', ['categories_id' => $category->id, 'main_group_id' => $post['Category']['social_networks_groups_main_id']])
                 ->execute();
+        }
+
+        if($category->active == 0){
+            $this->inactiveCategoryRecursive($category);
+        }else{
+            $this->activateCategoryRecursive($category);
         }
 
         return $this->sendJsonData([
@@ -226,6 +232,7 @@ class CategoriesController extends BaseController
         $categories = Category::find()
             ->leftJoin('categories_text', 'categories_text.categories_id = categories.id')
             ->where("categories_text.name LIKE '".$query."%'")
+            ->andWhere(['categories.active'=> 1])
             ->all();
         $result = [];
         foreach($categories as $category){
@@ -303,5 +310,48 @@ class CategoriesController extends BaseController
         }
         \Yii::$app->getSession()->setFlash('message', 'Изменения успешно сохранены');
         return $this->redirect(Url::toRoute("categories/order".$str));
+    }
+
+    public function actionInactiveChildCategories(){
+        $inactive_cats = Category::find()->where(['active' => 0])->all();
+        foreach($inactive_cats as $cat){
+            $this->inactiveCategoryRecursive($cat);
+        }
+    }
+
+    /**
+     * Принимает неактивную категорию
+     * @param Category $cat
+     */
+    private function inactiveCategoryRecursive(Category $cat){
+        $children = $cat->getAllCategoryChildren();
+        if(count($children) and $cat->active == 0){
+            foreach($children as $kid){
+                if($kid->active != 0){
+                    $kid->active = 0;
+                    $kid->save();
+                }
+                $this->inactiveCategoryRecursive($kid);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Принимает активную категорию
+     * @param Category $cat
+     */
+    private function activateCategoryRecursive(Category $cat){
+        $children = $cat->getAllCategoryChildren();
+        if(count($children) and $cat->active == 1){
+            foreach($children as $kid){
+                if($kid->active != 1){
+                    $kid->active = 1;
+                    $kid->save();
+                }
+                $this->activateCategoryRecursive($kid);
+            }
+        }
+        return true;
     }
 }
