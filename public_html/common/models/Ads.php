@@ -201,7 +201,7 @@ class Ads extends \yii\db\ActiveRecord
         $location_conditions = [];
         $expired_conditions = [];
         $active_conditions = [];
-        if($model->user) $user_conditions['users_id'] = $model->user->id;
+        if($model->user) $user_conditions  = ["=", "ads.users_id", $model->user->id];
         if($model->action){
             $where_conditions = ['=', 'ads.placements_id', $model->action];
         }
@@ -219,7 +219,7 @@ class Ads extends \yii\db\ActiveRecord
                 ];
             } else {
                 $expired_conditions = [
-                    '>', 'expiry_date', time()
+                    '>', 'expiry_dates', time()
                 ];
             }
         }
@@ -313,6 +313,8 @@ class Ads extends \yii\db\ActiveRecord
         if($ads_list) {
             $ads = Ads::find()
                 ->where($additional_category_conditions)
+                ->andWhere($user_conditions)
+                ->andWhere($expired_conditions)
                 ->orderBy($model->sorting)
                 ->offset(($model->page - 1)* $model->limit)
                 ->limit($model->limit)
@@ -322,8 +324,9 @@ class Ads extends \yii\db\ActiveRecord
         $count = Ads::find()
             ->where($additional_category_conditions)
             ->andWhere($location_conditions)
-            ->andWhere(['active' => 1])
-            ->andWhere(['>', 'expiry_date', time()])
+            ->andWhere($user_conditions)
+            ->andWhere($active_conditions)
+            ->andWhere($expired_conditions)
             ->count();
 
         $price_range =  (new \yii\db\Query())
