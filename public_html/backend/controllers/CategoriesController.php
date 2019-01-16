@@ -125,12 +125,6 @@ class CategoriesController extends BaseController
                 ->execute();
         }
 
-        if($category->active == 0){
-            $this->inactiveCategoryRecursive($category);
-        }else{
-            $this->activateCategoryRecursive($category);
-        }
-
         return $this->sendJsonData([
                 JsonData::SUCCESSMESSAGE => "\"{$category->techname}\" успешно сохранено",
                 JsonData::REFRESHPAGE => '',
@@ -313,9 +307,60 @@ class CategoriesController extends BaseController
     }
 
     public function actionInactiveChildCategories(){
-        $inactive_cats = Category::find()->where(['active' => 0])->all();
-        foreach($inactive_cats as $cat){
-            $this->inactiveCategoryRecursive($cat);
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $root_category_condition = ['parent_id' => null];
+        if($post['root_category'] != ''){
+            $root_category_condition = ['=', 'parent_id', $post['root_category']];
+        }
+        $root_category = Category::find()
+            ->where($root_category_condition)
+            ->limit(1)
+            ->offset($post['offset'])
+            ->all();
+        if(count($root_category)){
+            try {
+                if($root_category[0]->active == 1){
+                    $root_category[0]->active = 0;
+                    $root_category[0]->save();
+                }
+                $this->inactiveCategoryRecursive($root_category[0]);
+            }catch(\Exception $e){
+                return ['message'=>$e->getMessage()];
+            }
+            $offset = $post['offset'] + 1;
+            return ['message'=>$offset];
+        }else{
+            return ['message'=>"finish"];
+        }
+    }
+
+    public function actionActiveChildCategories(){
+        $post = Yii::$app->request->post();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $root_category_condition = ['parent_id' => null];
+        if($post['root_category'] != ''){
+            $root_category_condition = ['=', 'parent_id', $post['root_category']];
+        }
+        $root_category = Category::find()
+            ->where($root_category_condition)
+            ->limit(1)
+            ->offset($post['offset'])
+            ->all();
+        if(count($root_category)){
+            try {
+                if($root_category[0]->active == 0){
+                    $root_category[0]->active = 1;
+                    $root_category[0]->save();
+                }
+                $this->activateCategoryRecursive($root_category[0]);
+            }catch(\Exception $e){
+                return ['message'=>$e->getMessage()];
+            }
+            $offset = $post['offset'] + 1;
+            return ['message'=>$offset];
+        }else{
+            return ['message'=>"finish"];
         }
     }
 
@@ -325,14 +370,16 @@ class CategoriesController extends BaseController
      */
     private function inactiveCategoryRecursive(Category $cat){
         $children = $cat->getAllCategoryChildren();
-        if(count($children) and $cat->active == 0){
+        if(count($children)){
             foreach($children as $kid){
                 if($kid->active != 0){
                     $kid->active = 0;
                     $kid->save();
                 }
                 $this->inactiveCategoryRecursive($kid);
+                $kid = null;
             }
+            $children = null;
         }
         return true;
     }
@@ -343,14 +390,16 @@ class CategoriesController extends BaseController
      */
     private function activateCategoryRecursive(Category $cat){
         $children = $cat->getAllCategoryChildren();
-        if(count($children) and $cat->active == 1){
+        if(count($children)){
             foreach($children as $kid){
                 if($kid->active != 1){
                     $kid->active = 1;
                     $kid->save();
                 }
                 $this->activateCategoryRecursive($kid);
+                $kid = null;
             }
+            $children = null;
         }
         return true;
     }

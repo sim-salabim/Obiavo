@@ -18,6 +18,8 @@ $this->title = 'Категории';
             <i class="fa fa-fw -square -circle fa-plus-square"></i>
             Создать новый пункт
         </button>
+        <button class="btn btn-primary" id="deactivate-cats">Деактивировать категориии</button>
+        <button class="btn btn-primary" id="activate-cats">Aктивировать категориии</button>
     </div>
 
     <?= $this->render('breadcrumbs', ['category' => $categoryParent]);?>
@@ -71,3 +73,66 @@ $this->title = 'Категории';
 ]);?>
 
 </div>
+<?
+$parent_category_id = $categoryParent->id ?: null;
+?>
+<script>
+    $(document).ready(function(){
+        $("#deactivate-cats").on("click", function(){
+            alert("Вы действительно хотите деактивировать все категории на данной странице рекурсивно?");
+            $("#deactivate-cats").text("Ожидание...");
+            deactivate(0);
+        });
+
+        $("#activate-cats").on("click", function(){
+            alert("Вы действительно хотите активировать все категории на данной странице рекурсивно?");
+            $("#activate-cats").text("Ожидание...");
+            activate(0);
+        });
+    });
+    function deactivate(offset){
+        var rootCategory = '<?= $parent_category_id ?>';
+        $.ajax({
+            dataType: "json",
+            type : 'POST',
+            url: '<?= \yii\helpers\Url::toRoute('categories/inactive-child-categories') ?>',
+            data: {offset: offset, root_category: rootCategory},
+            success: function(data) {
+                console.log(data.message);
+                if(data.message === 'error'){
+                    alert("Возникла ошибка");
+                    location.reload();
+                }
+                if(data.message === 'finish'){
+                    $("#deactivate-cats").text("Деактивировать категории");
+                    alert('завершено');
+                    location.reload();
+                }
+                deactivate(data.message);
+            }
+        });
+    }
+
+    function activate(offset){
+        var rootCategory = '<?= $parent_category_id ?>';
+        $.ajax({
+            dataType: "json",
+            type : 'POST',
+            url: '<?= \yii\helpers\Url::toRoute('categories/active-child-categories') ?>',
+            data: {offset: offset, root_category: rootCategory},
+            success: function(data) {
+                console.log(data.message);
+                if(data.message === 'error'){
+                    alert("Возникла ошибка");
+                    location.reload();
+                }
+                if(data.message === 'finish'){
+                    $("#activate-cats").text("Активировать категории");
+                    alert('завершено');
+                    location.reload();
+                }
+                activate(data.message);
+            }
+        });
+    }
+</script>
