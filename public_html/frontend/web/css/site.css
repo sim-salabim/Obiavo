@@ -605,3 +605,6 @@ div pre.text_font{
     word-wrap: break-word;
     font-size: 100%;
 }
+div.padding-top-7{
+    padding-top: 7px;
+}

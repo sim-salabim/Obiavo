@@ -13,7 +13,7 @@ $show_sn_widgets = isset($show_sn_widgets) ? $show_sn_widgets : true;
 $root_url = isset($root_url) ? $root_url : null;
 ?>
 <!--<hr class="extra-margin-bottom45">-->
-<div class="row">
+<div class="row padding-top-7">
     <div class="col-lg-9 col-md-6 col-sm-12 text-align-left">
         <? $title ?>
     </div>
