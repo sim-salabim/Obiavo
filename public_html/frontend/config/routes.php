@@ -100,5 +100,10 @@ return [
         'pattern'=>'sitemap<index:([0-9]+)>',
         'route'=>'sitemap/idx',
         'suffix'=>'.xml'
+    ],
+    [
+        'pattern'=>'robots',
+        'route'=>'robotstxt/index',
+        'suffix'=>'.txt'
     ]
 ];
