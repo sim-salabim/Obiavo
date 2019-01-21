@@ -56,7 +56,7 @@
                     <i class="fa fa-search"></i>
                 </button>
             </div>
-            <span class="navbar-text mx-2 text-dark"><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?
+            <span class="navbar-text mx-2 text-dark"><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>" rel="nofollow"><?
                 if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
                     echo __('City');//Yii::$app->location->city->_text->name;
                 }else{
@@ -78,10 +78,10 @@
 <div  id="mySidenav">
     <ul class=" sidebar sidenav navbar-nav mr-auto">
         <?php if (Yii::$app->user->isGuest) { ?>
-            <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>"><?= __('Login') ?></a></li>
-            <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?>"><?= __('Registration') ?></a></li>
+            <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>" rel="nofollow"><?= __('Login') ?></a></li>
+            <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?> "rel="nofollow"><?= __('Registration') ?></a></li>
         <?php } ?>
-        <li><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>"><?= __('_Location') ?></a></li>
+        <li><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>" rel="nofollow"><?= __('_Location') ?></a></li>
         <?php if (!Yii::$app->user->isGuest) { ?>
             <li>
                 <a href="<?= yii\helpers\Url::toRoute('/im') ?>">
