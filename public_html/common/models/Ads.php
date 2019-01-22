@@ -268,27 +268,28 @@ class Ads extends \yii\db\ActiveRecord
                 $location_conditions = ['cities_id' => 0];
             }
         }
+        $add_expired_conditions = [];
+        if(!empty($expired_conditions)){
+            $add_expired_conditions = [$expired_conditions[0], "ads.".$expired_conditions[1],$expired_conditions[2]];
+        }
+        $add_active_conditions = [];
+        if(!empty($active_conditions)){
+            $add_active_conditions = [$active_conditions[0], "ads.".$active_conditions[1], $active_conditions[2]];
+        }
+        $add_user_conditions = [];
+        if(!empty($user_conditions)){
+            $add_user_conditions = [$user_conditions[0], "ads.".$user_conditions[1], $user_conditions[2]];
+        }
+        $add_location_conditions = [];
+        if(!empty($location_conditions)){
+            $add_location_conditions = [$location_conditions[0], "ads.".$location_conditions[1], $location_conditions[2]];
+        }
+        $add_like_conditions = [];
+        if(!empty($like_conditions)){
+            $add_like_conditions = [$like_conditions[0], "ads.".$like_conditions[1], $like_conditions[2]];
+        }
         if($model->main_category) {
-            $add_expired_conditions = [];
-            if(!empty($expired_conditions)){
-                $add_expired_conditions = [$expired_conditions[0], "ads.".$expired_conditions[1],$expired_conditions[2]];
-            }
-            $add_active_conditions = [];
-            if(!empty($active_conditions)){
-                $add_active_conditions = [$active_conditions[0], "ads.".$active_conditions[1], $active_conditions[2]];
-            }
-            $add_user_conditions = [];
-            if(!empty($user_conditions)){
-                $add_user_conditions = [$user_conditions[0], "ads.".$user_conditions[1], $user_conditions[2]];
-            }
-            $add_location_conditions = [];
-            if(!empty($location_conditions)){
-                $add_location_conditions = [$location_conditions[0], "ads.".$location_conditions[1], $location_conditions[2]];
-            }
-            $add_like_conditions = [];
-            if(!empty($like_conditions)){
-                $add_like_conditions = [$like_conditions[0], "ads.".$like_conditions[1], $like_conditions[2]];
-            }
+
             $ad_ids_arr = [];
             $add_ids = CategoryAd::find()
                         ->select('ads.*, categories_has_ads.ads_id, categories_has_ads.categories_id')
@@ -315,6 +316,7 @@ class Ads extends \yii\db\ActiveRecord
                 ->where($additional_category_conditions)
                 ->andWhere($user_conditions)
                 ->andWhere($expired_conditions)
+                ->andWhere($add_like_conditions)
                 ->orderBy($model->sorting)
                 ->offset(($model->page - 1)* $model->limit)
                 ->limit($model->limit)
@@ -326,7 +328,8 @@ class Ads extends \yii\db\ActiveRecord
             ->andWhere($location_conditions)
             ->andWhere($user_conditions)
             ->andWhere($active_conditions)
-            ->andWhere($expired_conditions)
+            ->andWhere($add_expired_conditions)
+            ->andWhere($add_like_conditions)
             ->count();
 
         $price_range =  (new \yii\db\Query())
