@@ -317,6 +317,8 @@ class Ads extends \yii\db\ActiveRecord
                 ->andWhere($user_conditions)
                 ->andWhere($expired_conditions)
                 ->andWhere($add_like_conditions)
+                ->andWhere($add_location_conditions)
+                ->andWhere($add_active_conditions)
                 ->orderBy($model->sorting)
                 ->offset(($model->page - 1)* $model->limit)
                 ->limit($model->limit)
@@ -329,7 +331,9 @@ class Ads extends \yii\db\ActiveRecord
             ->andWhere($user_conditions)
             ->andWhere($active_conditions)
             ->andWhere($add_expired_conditions)
+            ->andWhere($add_active_conditions)
             ->andWhere($add_like_conditions)
+            ->andWhere($add_location_conditions)
             ->count();
 
         $price_range =  (new \yii\db\Query())

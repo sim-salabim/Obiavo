@@ -127,6 +127,7 @@ class AdController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setQuery($query);
         $librarySearch->setPage($page);
+        $librarySearch->setActive(true);
         if($sort AND $direction) {
             $librarySearch->setSorting($sort." ".$direction);
         }
