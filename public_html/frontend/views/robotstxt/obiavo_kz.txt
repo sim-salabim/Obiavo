@@ -1,5 +1,4 @@
-<pre style="word-wrap: break-word; white-space: pre-wrap;">User-agent: *
+User-agent: *
 Allow: /
 Host: https://obiavo.kz
 Sitemap: https://obiavo.kz/sitemap.xml
-</pre>
