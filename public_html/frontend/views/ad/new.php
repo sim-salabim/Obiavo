@@ -1,3 +1,4 @@
+<? require_once 'dynatree_script.php'?>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user) {?>
     <div class="row">

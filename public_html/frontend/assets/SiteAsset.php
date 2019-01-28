@@ -14,7 +14,7 @@ class SiteAsset extends AssetBundle
         'css/ui.dynatree.css',
     ];
     public $js = [
-        'js/jquery.dynatree.js',
+        //'js/jquery.dynatree.js',
 //        'js/main.js',
 //        'js/init.js',
 //        'js/selectpicker.js',
