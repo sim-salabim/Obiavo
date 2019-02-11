@@ -45,10 +45,6 @@ class AdController extends BaseController
             ->orderBy('order ASC, brand ASC, techname ASC')
             ->withText(['languages_id' => Language::getDefault()->id])
             ->all();
-        $cities = City::find()
-            ->withText(['languages_id' => Language::getDefault()->id])
-           // ->where(['id' => '317'])// потом убрать, а пока для красоты
-            ->all();
         $limit = Settings::find()->one()->categories_limit;
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
         $placements = Placement::find()->all();
@@ -57,7 +53,6 @@ class AdController extends BaseController
             'categories_limit' => $limit,
             'placements' => $placements,
             'categories' => $categories,
-            'cities' => $cities,
         ]);
     }
 
@@ -65,27 +60,30 @@ class AdController extends BaseController
      * @return string|\yii\web\Response
      */
     public function actionAdd(){
-        if (Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
         $model = new NewAdForm();
         if (Yii::$app->request->isPost){
             // если инпут со сроком действия задизейблен, то сделаем +месяц
             $_POST['expiry_date'] = !isset($_POST['expiry_date']) ? 2592000 : $_POST['expiry_date'];
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(), '');
-            $model->cities_id = Yii::$app->user->identity->cities_id;// пока ид города оставим захардкоженным
+
+            if(Yii::$app->user->identity){
+                $model->cities_id = Yii::$app->user->identity->cities_id;
+            }
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $return = [];
             if(!$model->validate()) {
                 $errors = $model->getErrors();
-                foreach($errors as $key => $item){
-                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
-                }
-                \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('/podat-obiavlenie/');
+                $return['message'] = NewAdForm::MESSAGE_FAILED;
+                $return['errors'] = (array)$errors;
+                $return['model'] = (array)$model;
+                return $return;
             }else{
+                $return['message'] = NewAdForm::MESSAGE_SUCCESS;
                 $model = $model->newAd();
+                $return['url'] = "$model->url";
                 AutopostingTasks::createTasks($model);
-                return $this->redirect("/$model->url/");
+                return $return;
             }
         } else {
             return $this->render('podat-obiavlenie');

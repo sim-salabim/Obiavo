@@ -167,4 +167,9 @@ return [
     'Ad has been reposted' => 'Ad has been reposted',
     'Fields must not be more than 1000 chars long' => 'Fields must not be more than 1000 chars long',
     'Fields must not be more than 100 chars long' => 'Fields must not be more than 100 chars long',
+    'User with this email already exists' => "User with this email already exists",
+    'Too short value' => "Too short value",
+    'Add applied' => "Add applied",
+    'Contact info' => "Contact info",
+    'Pick time range' => "Pick time range",
 ];

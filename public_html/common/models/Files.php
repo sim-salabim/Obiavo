@@ -38,7 +38,7 @@ class Files extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'files_exts_id', 'users_id', 'hash'], 'required'],
+            [['name', 'files_exts_id', 'hash'], 'required'],
         ];
     }
 

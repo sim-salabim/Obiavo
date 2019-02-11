@@ -608,3 +608,6 @@ div pre.text_font{
 div.padding-top-7{
     padding-top: 7px;
 }
+button.is_invalid{
+    border-color: #dc3545 !important;
+}

@@ -15,6 +15,7 @@ return [
     'POST /nastroiki/' => 'users/settings',
     'GET /moi-obiavleniya' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
+    'POST /apply-add/' => 'ad/add',
 
     /**
      * Класс правила ГОРОД

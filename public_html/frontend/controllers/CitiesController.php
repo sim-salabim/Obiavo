@@ -57,7 +57,7 @@ class CitiesController extends Controller
         }
         if(isset($data) and $data){
             foreach($data as $row){
-                $out[] = array('id' => $row['id'], 'text' => $row['text'], 'domain' => $row['domain']);
+                $out[$row['text']] = array('id' => $row['id'], 'text' => $row['text'], 'domain' => $row['domain']);
             }
         }
         return $out;

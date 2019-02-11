@@ -151,7 +151,7 @@ return [
     'Picked categories' => 'Выбранные категории',
     'Pick a category. The category firstly picked wil be the main one for the ad.' => 'Выберите хотя бы одну категорию. Категория выбранная первой будет основной категорией данного объявления.',
     'You can pick free only' => 'Бесплатно можно выбрать',
-    'Get details about posting ads?' => 'Подробнее изучить Как подать объявление?',
+    'Get details about posting ads?' => 'Подробнее изучить, как подать объявление?',
     'pick_one_category' => 'категорию',
     'pick_two_category' => 'категории',
     'pick_more_category' => 'категорий',
@@ -169,4 +169,9 @@ return [
     'Ad has been reposted' => 'Объявление опубликовано',
     'Fields must not be more than 1000 chars long' => 'Поле должно содержать не более 1000 символов',
     'Fields must not be more than 100 chars long' => 'Поле должно содержать не более 100 символов',
+    'User with this email already exists' => "Пользователь с таким емайлом уже зарегистрирован",
+    'Too short value' => "Слишком короткое занчение",
+    'Add applied' => "Ваше объявление подано",
+    'Contact info' => "Контактная информация",
+    'Pick time range' => "Выбрать период публикации",
 ];

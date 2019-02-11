@@ -41,6 +41,13 @@ class Ads extends \yii\db\ActiveRecord
     const DATE_TYPE_CREATION = 'created_at';
     const DATE_TYPE_UPDATING = 'updating_at';
     const DATE_TYPE_EXPIRATION = 'expiry_date';
+    const DATE_RANGE_ONE_MONTH = 'one_month';
+    const DATE_RANGE_THREE_MONTHS= 'three_months';
+    const DATE_RANGE_SIX_MONTHS = 'six_months';
+    const DATE_RANGE_ONE_YEAR = 'one_year';
+    const DATE_RANGE_TWO_YEARS = 'two_years';
+    const DATE_RANGE_THREE_YEARS = 'three_years';
+    const DATE_RANGE_UNLIMITED = 'unlimited';
     /**
      * @inheritdoc
      */
