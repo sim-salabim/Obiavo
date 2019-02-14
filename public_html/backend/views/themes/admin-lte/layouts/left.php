@@ -49,6 +49,7 @@ use yii\helpers\Url;
                     ['label' => 'Автопостинг', 'icon' => 'eye', 'url' => ['/autoposting-tasks']],
                     ['label' => 'Sitemap', 'icon' => 'map-o', 'url' => ['/sitemap']],
                     ['label' => 'Настройки', 'icon' => 'cog', 'url' => ['/settings']],
+                    ['label' => 'SEO подачи', 'icon' => 'eye', 'url' => ['/application-seo']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
