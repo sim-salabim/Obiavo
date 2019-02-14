@@ -19,7 +19,7 @@ use yii\helpers\Html;
 
 <?= TableList::widget([
     'title' => 'Страны',
-    'data'  => $countries,
+    'data'  => $pages,
     'columns' => [
         [
             'attribute'    => 'id',

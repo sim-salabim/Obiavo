@@ -34,9 +34,9 @@ class ApplicationSeoController extends BaseController
     }
 
     public function actionIndex(){
-        $countries = AddApplication::find()->withText()->all();
+        $pages = AddApplication::find()->withText()->all();
 
-        return $this->render('index',  compact('countries'));
+        return $this->render('index',  compact('pages'));
     }
 
     public function actionCreate(){
@@ -61,30 +61,30 @@ class ApplicationSeoController extends BaseController
         $post = Yii::$app->request->post();
 
         if ($id){
-            $country = AddApplication::findOne($id);
+            $page = AddApplication::findOne($id);
         } else {
-            $country = new AddApplication();
+            $page = new AddApplication();
         }
 
-        if (!$country->saveWithRelation($post)){
+        if (!$page->saveWithRelation($post)){
 
             return $this->sendJsonData([
-                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $country->getErrors(),
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $page->getErrors(),
             ]);
         }
 
         return $this->sendJsonData([
-            JsonData::SUCCESSMESSAGE => "\"{$country->_text->url}\" успешно сохранено",
+            JsonData::SUCCESSMESSAGE => "\"{$page->_text->url}\" успешно сохранено",
             JsonData::REFRESHPAGE => '',
         ]);
     }
 
     public function actionDelete($id){
 
-        $country = AddApplication::findOne($id);
-        $text = $country->_text;
+        $page = AddApplication::findOne($id);
+        $text = $page->_text;
 
-        $country->delete();
+        $page->delete();
 
         return $this->sendJsonData([
             JsonData::SUCCESSMESSAGE => "Страна \"{$text->url}\" успешно удалена",
