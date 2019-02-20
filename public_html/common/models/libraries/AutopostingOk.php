@@ -84,7 +84,7 @@ class AutopostingOk {
 //Если парсер не смог открыть нашу ссылку (иногда он это делает со второй попытки), то отправляем ещё раз
         if (isset($result['error_code'])) {
             \Yii::warning('АO P Ошибка открытия ссылки парсером, идем на 2-ю попытку, задача '.$this->task->id, "DEBUG");
-            TelegrammLoging::send('АO P Ошибка открытия ссылки парсером, идем на 2-ю попытку, задача '.$this->task->id. ' обьявление: '.$this->task->ad->id." group:".$this->group->id. "params :".json_encode($params));
+            TelegrammLoging::send('АO P Ошибка открытия ссылки парсером, идем на 2-ю попытку, задача '.$this->task->id. ' обьявление: '.$this->task->ad->id." group:".$this->group->id. " stacktrace: ".json_encode($result)."params :".json_encode($params));
             sleep(5);
             $result = json_decode($this->getUrl("https://api.ok.ru/fb.do", "POST", $params), true);
             if (isset($result['error_code'])){
