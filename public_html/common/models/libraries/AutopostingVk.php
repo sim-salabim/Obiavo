@@ -124,7 +124,7 @@ class AutopostingVk {
             if(!$errno AND $info['http_code'] == 200)
             {
                 $api_request_save_photos = str_replace('{endpoint:key}', self::ENDPOINT_PHOTOS_SAVE, $this->api_url);
-                $api_request_save_photos .= '&group_id='.$this->task->socialNetworksGroup->group_id.'&album_id='.$resp_body->aid.'&server='.$resp_body->server.'&hash='.$resp_body->hash.'&photos_list='.$resp_body->photos_list;
+                $api_request_save_photos = $api_request_save_photos.'&group_id='.$this->task->socialNetworksGroup->group_id.'&album_id='.$resp_body->aid.'&server='.$resp_body->server.'&hash='.$resp_body->hash.'&photos_list='.$resp_body->photos_list;
                 $api_save_photos_response = json_decode(file_get_contents($api_request_save_photos));
                 if(isset($api_save_photos_response->error)){
                     TelegrammLoging::send('<p>Ошибка сохранения фото в альбоме для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code></code><br/>'.$api_request_save_photos);
