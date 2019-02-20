@@ -25,8 +25,8 @@ class m190212_061113_add_application_table extends Migration
             'seo_h1' => $this->string()->notNull(),
             'seo_h2' => $this->string()->notNull(),
             'seo_title' => $this->string(),
-            'seo_text' => $this->string(),
-            'seo_desc' => $this->string(),
+            'seo_text' => $this->text(),
+            'seo_desc' => $this->text(),
             'seo_keywords' => $this->string(),
         ], $tableOptions);
 
