@@ -127,9 +127,8 @@ class AutopostingVk {
                 $api_request_save_photos .= '&group_id='.$this->task->socialNetworksGroup->group_id.'&album_id='.$resp_body->aid.'&server='.$resp_body->server.'&hash='.$resp_body->hash.'&photos_list='.$resp_body->photos_list;
                 $api_save_photos_response = json_decode(file_get_contents($api_request_save_photos));
                 if(isset($api_save_photos_response->error)){
-                    TelegrammLoging::send('<p>Ошибка сохранения фото в альбоме для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$api_save_photos_response->errorr->error_msg.'</code><br/>'.$api_request_save_photos);
+                    TelegrammLoging::send('<p>Ошибка сохранения фото в альбоме для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code></code><br/>'.$api_request_save_photos);
                     \Yii::warning("АVK UP Ошибка сохранения фото в альбоме ", "DEBUG");
-                    Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $api_save_photos_response->error->error_msg, 'request' => $api_request_get_server_response->response->upload_url, 'message' => 'Ошибка сохранения фото в альбоме', 'details' => 'Произошла ошибка загрузки фотo в альбом <a href="'.$this->task->socialNetworksGroup->url.'">сообщества</a>. <a href="https://vk.com/dev/photos.save">Документация по вызванному методу</a>']);
                 }else if(isset($api_save_photos_response->response)){
                     return $api_save_photos_response->response;
                 }
