@@ -58,7 +58,8 @@ class AutopostingVk {
             if(mb_strlen($post_text) > 500){
                 $post_text  = mb_substr($post_text, 0, 497)."...";
             }
-            $message = str_replace(['{key:url}', '{key:title}', '{key:price}', '{key:text}', '{key:price-text}'], [\Yii::$app->params['rootUrl'].$this->task->ad->url(), $this->task->ad->title, $this->task->ad->price, $post_text, "Цена"], $message);
+            $ad_url = "https://".$this->task->ad->city->region->country->domain."/".$this->task->ad->url();
+            $message = str_replace(['{key:url}', '{key:title}', '{key:price}', '{key:text}', '{key:price-text}'], [$ad_url, $this->task->ad->title, $this->task->ad->price, $post_text, "Цена"], $message);
             $api_request_str = str_replace('{endpoint:key}', self::ENDPOINT_WALL_POST, $this->api_url);
             $api_request_str .= '&from_group=1&owner_id=-' . $this->task->socialNetworksGroup->group_id . '&message=' . urlencode($message) . '&' . $attachements;
             $result = json_decode(file_get_contents($api_request_str));
