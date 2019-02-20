@@ -20,17 +20,21 @@ class Mailer {
         if($from){
             $from_arr = [$from['email']  => $from['name']];
         }
-        $mailer = Yii::$app
+        $result = Yii::$app
             ->mailer
-            ->compose(
-                ['html' => $template],
-                $arr
-            )
-            ->setFrom($from_arr)
-            ->setTo($send_to)
-            ->setSubject($subject);
-
-        $result = $mailer->send();
+//            ->compose(
+//                ['html' => $template],
+//                $arr
+//            )
+//            ->setFrom($from_arr)
+//            ->setTo($send_to)
+//            ->setSubject($subject)
+                ->compose()
+            ->setTo('aliaks.asm@gmail.com')
+            ->setFrom(['asmaliaks@gmial.com'=>'test'])
+            ->setSubject('test sub')
+            ->setTextBody('text body')
+            ->send();
         TelegrammLoging::send("Mailer send result: ".$result);
     }
 }
