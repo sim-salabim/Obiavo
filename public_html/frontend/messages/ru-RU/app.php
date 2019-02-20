@@ -151,6 +151,7 @@ return [
     'Pick at least one category' => 'Выберите хотя бы одну категорию',
     'Join us in social networks' => 'Вступайте в наши группы',
     'Signing up you\'re accepting' => 'Регистрируясь на сайте, вы принимаете',
+    'Publishing you\'re accepting' => 'Публикуя объявление, вы принимаете',
     'User agreement' => 'Пользовательское соглашение',
     'and agree with' => 'и соглашаетесь с',
     'Privacy policy' => 'Политикой конфиденциальности',
@@ -180,4 +181,5 @@ return [
     'Add applied' => "Ваше объявление подано",
     'Contact info' => "Контактная информация",
     'Pick time range' => "Выбрать период публикации",
+    'No categories picked'=>'Не выбрана ни одна категория',
 ];

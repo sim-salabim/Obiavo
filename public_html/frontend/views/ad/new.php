@@ -132,11 +132,7 @@ $selectCity = __('Select a city');
         <hr>
 
     <? } ?>
-<div class="row padding-bottom-10">
-    <div id="sub-title" class="col sub-title">
-        <?= __('Select category')?>
-    </div>
-</div>
+
 <?
 $selected_categories = [];
 $model = Yii::$app->session->getFlash('model');
@@ -167,21 +163,27 @@ if(isset($model) and $user){
 <!--           --><?//= $this->render('/scripts/search-autocomplete', ['categories_limit' => $categories_limit]); ?>
 <!--        </div>-->
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
+            <div class="row">
+                <div id="sub-title" class="col sub-title padding-bottom-0">
+                    <?= __('Select category')?>
+                </div>
+            </div>
                 <?
 
-                echo __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")]).". <a href='/help-obiavlenya/' id='help-obiavlenia' >".__("Get details about posting ads?")."</a>";
+                echo __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")]).". <a href='/help-obiavlenya/' id='help-obiavlenia' target='_blank' >".__("Get details about posting ads?")."</a>";
              ?>
-            <button id="tree-category-select" class="form-control text-align-left cursor-pointer  <?php if(Yii::$app->session->getFlash('categories_error')){?> is-invalid <? } ?>" >
+            <button id="tree-category-select" class="form-control text-align-left cursor-pointer margin-top-15 <?php if(Yii::$app->session->getFlash('categories_error')){?> is-invalid <? } ?>" >
                 <?= __('Category tree selection') ?>
             </button>
                 <div class="invalid-feedback" id="categories_error"></div>
-            <div class="form-control" id="tree-container" style="display:none">
+            <div class="form-control" id="tree-container" style="">
             </div>
         </div>
         </div>
         <hr class="width-100">
         <div class="col-12 sub-title padding-left0  " id="picked-cats-div" ><?= __('Picked categories') ?></div>
-        <div id="category-append"  >
+        <div id="category-append">
+            <p id="no-cats-picked"><?= __('No categories picked') ?></p>
         </div>
         <hr class="width-100">
         <?= $this->render('/scripts/tree-select', ['categories' => $categories, 'categories_limit' => $categories_limit, "if_user_logged" => $if_user_logged,
@@ -201,7 +203,7 @@ if(isset($model) and $user){
             </select>
             <div class="invalid-feedback" id="placement_id_error"></div>
         </div>
-        <div class="form-group col-lg-12 col-sm-12 col-md-12">
+        <div class="form-group col-lg-12 col-sm-12 col-md-12 margin-bottom0">
             <? if($user){?>
                 <select
                     name="cities_id"
@@ -289,6 +291,14 @@ if(isset($model) and $user){
         </div>
         <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
     </div>
+    <div class="form-group validation-errors">
+        <label id="agreement-label">
+            <input
+                    id="agreement"
+                    name="agreement"
+                    type="checkbox"> <?= __('Publishing you\'re accepting') ?> <a id="agreement-link" href="/polzovatelskoe-soglashenie/" target="_blank"><?= __('User agreement')?></a> <?= __('and agree with') ?> <a id="policy-link" href="/policy/" target="_blank"><?= __('Privacy policy') ?></a>.</label>
+    </div>
+        <div class="invalid-feedback dispaly-block" id="agreement_error"></div>
     <hr>
     <div class="row">
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
@@ -306,6 +316,8 @@ if(isset($model) and $user){
     $(document).ready(function(){
         $('#publication-button').bind('click', function(e){
             e.preventDefault();
+            $("[id*='_error']").text('');
+            $(".is-invalid").removeClass('is-invalid');
             //TODO написать экшен, который будет сразу валидировать и сохранять если все ОК
             var user = false;
             <? if($user) {?>
@@ -316,6 +328,10 @@ if(isset($model) and $user){
                 data.email = $('#email').val();
                 data.name = $('#name').val();
                 data.phone = $('#phone').val();
+            }
+            data.agreement = null;
+            if($('#agreement').is(":checked")){
+                data.agreement = 1;
             }
             data.categories = [];
             $('input[name*=categories]').each(function( index ) {
@@ -337,7 +353,6 @@ if(isset($model) and $user){
                 url: "/apply-add/",
                 data: data,
                 success:function(data){
-                    console.log(data);
                     // если все огонь
                     if(data.message == '<?= \frontend\models\NewAdForm::MESSAGE_SUCCESS?>'){
                         window.location.replace(window.location.origin+"/"+data.url+"/");
@@ -364,6 +379,7 @@ if(isset($model) and $user){
         });
 
         $('#nav-main-tab').bind('click', function(){
+            $('#tree-container').show();
             $('#sub-title').removeClass('color-disabled');
             $('#tree-category-select').removeClass('color-disabled');
             $('#tree-category-select').prop("disabled", false);
@@ -390,11 +406,16 @@ if(isset($model) and $user){
             $('#help-obiavlenia').removeClass('color-disabled');
             $('#placement_id').removeClass('color-disabled');
             $('#live-search-select').removeClass('color-disabled');
+            $('#agreement-label').removeClass('color-disabled');
             $('#publication-button').prop("disabled", false);
+            $('#agreement').prop("disabled", false);
+            $('#agreement-link').removeClass('color-disabled');
+            $('#policy-link').removeClass('color-disabled');
             $('#dropzone-container').show();
             $('#file-uploader').show();
         });
         $('#nav-login-tab').bind('click', function(){
+            $('#tree-container').hide();
             $('#sub-title').addClass('color-disabled');
             $('#tree-category-select').addClass('color-disabled');
             $('#tree-category-select').prop("disabled", true);
@@ -421,7 +442,11 @@ if(isset($model) and $user){
             $('#help-obiavlenia').addClass('color-disabled');
             $('#placement_id').addClass('color-disabled');
             $('#live-search-select').addClass('color-disabled');
+            $('#agreement-label').addClass('color-disabled');
             $('#publication-button').prop("disabled", true);
+            $('#agreement').prop("disabled", true);
+            $('#agreement-link').addClass('color-disabled');
+            $('#policy-link').addClass('color-disabled');
             $('#dropzone-container').hide();
             $('#file-uploader').hide();
         });

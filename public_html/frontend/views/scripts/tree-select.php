@@ -77,7 +77,7 @@ function appendDefaultText(){
     var checkedAmount = $("span[id^=checked-]").length;
     console.log(checkedAmount);
     if(checkedAmount == 0){
-        $("#category-append").append("<?= __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")])?> <a href='/help-obiavlenya/'><?=__("Get details about posting ads?")?></a>");
+        $("#category-append").append("<?= __('No categories picked'); ?>");
     }
 }
 function uncheckChildren(node){

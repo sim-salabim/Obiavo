@@ -29,6 +29,7 @@ class NewAdForm extends Model
     public $title;
     public $text;
     public $price;
+    public $agreement;
     public $files = [];
     public $categories = [];
     const MESSAGE_FAILED = 'failed';
@@ -47,6 +48,7 @@ class NewAdForm extends Model
 //                'expiry_date', // временно закоменчено
                 'title',
                 'text',
+                'agreement',
                 'price',
                 'cities_id'], 'required', 'message' => __('Required field')],
             [['text'], 'string', 'max' => 1000, 'tooLong' => __("Fields must not be more than 1000 chars long")],
@@ -54,6 +56,7 @@ class NewAdForm extends Model
             [['cities_id'], 'integer', 'integerOnly' => true, 'min' => 1, 'tooSmall' => __('Required field')],
             [['placement_id'], 'integer', 'integerOnly' => true, 'min' => 1, 'tooSmall' => __('Required field')],
             [['expiry_date'], 'integer', 'integerOnly' => true, 'min' => 1],
+            [['agreement'], 'integer', 'integerOnly' => true, 'max' => 1],
             [['expiry_date','price'], 'integer', 'message' => __('Incorrect format')],
             ['email','email', 'message' => __('Incorrect email')],
             ['email', "validateEmail" ],
@@ -76,6 +79,7 @@ class NewAdForm extends Model
             'email' => 'Email',
             'phone' => 'Phone',
             'name' => 'name',
+            'agreement' => 'agreement',
         ];
     }
 

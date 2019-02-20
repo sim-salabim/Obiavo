@@ -611,3 +611,9 @@ div.padding-top-7{
 button.is_invalid{
     border-color: #dc3545 !important;
 }
+.padding-bottom-0{
+    padding-bottom: 0px !important;
+}
+.margin-top-15{
+    margin-top: 15px;
+}
