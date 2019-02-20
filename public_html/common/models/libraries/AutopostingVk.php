@@ -15,6 +15,7 @@ class AutopostingVk {
     const ENDPOINT_CREATE_ALBUM = 'photos.createAlbum';
     const ENDPOINT_PHOTOS_SAVE = 'photos.save';
     const ENDPOINT_PHOTOS_UPLOAD_SERVER = 'photos.getUploadServer';
+    const VK_PHOTOS_LIMIT_PER_ALBUM = 9950;
 
     private $access_token;
     private $api_url;
@@ -151,33 +152,58 @@ class AutopostingVk {
      * @return null|int
      */
     private function createAlbumIfNotExists(){
-        $api_request_get_albums = str_replace('{endpoint:key}', self::ENDPOINT_GET_ALBUMS, $this->api_url);
-        $api_request_get_albums .= '&owner_id=-'.$this->task->socialNetworksGroup->group_id;
-        $get_albums_response = json_decode(file_get_contents($api_request_get_albums));
-        if(!isset($get_albums_response->response->count)){
-            if(isset($get_albums_response->error)){
-                TelegrammLoging::send('<p>Ошибка извлечения альбомов для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$get_albums_response->error->error_msg.'</code><br/>'.$api_request_get_albums);
-                \Yii::warning("АVK CAINE Ошибка извлечения альбомов ".$get_albums_response->error, "DEBUG");
-                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $get_albums_response->error, 'request' => $api_request_get_albums, 'message' => 'Ошибка извлечения альбомов']);
-            }
+        $get_albums_response = $this->getAllAlbums();
+        if(!$get_albums_response){
             return null;
         }
         $album_id = null;
         if($get_albums_response->response->count == 0){
-            $api_request_create_album = str_replace('{endpoint:key}', self::ENDPOINT_CREATE_ALBUM, $this->api_url);
-            $api_request_create_album .= '&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления"&upload_by_admins_only=1&comments_disabled=1&';
-            $album_created_response = json_decode(file_get_contents($api_request_create_album.'&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления"&upload_by_admins_only=1&comments_disabled=1&'));
-            if(!isset($album_created_response->error)){
+            $album_created_response = $this->createAlbum();
+            if($album_created_response){
                 $album_id = $album_created_response->response->id;
-            }else{
-                TelegrammLoging::send('<p>Ошибка создания альбома для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$album_created_response->error->error_msg.'</code><br/>'.$api_request_create_album.'&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления"&upload_by_admins_only=1&comments_disabled=1&');
-                \Yii::warning("АVK CAINE Ошибка создания альбома ".$album_created_response->error, "DEBUG");
-                Mailer::send(\Yii::$app->params['debugEmail'], "Ошибка API VK.COM", 'api-error', ['error' => $album_created_response->error, 'request' => $api_request_create_album, 'message' => 'Ошибка создания альбома']);
-                return null;
             }
         }else{
-            $album_id = $get_albums_response->response->items[0];
+            foreach($get_albums_response->response->items as $item){
+                if($item->size < self::VK_PHOTOS_LIMIT_PER_ALBUM){
+                    return $item->id;
+                }
+            }
+            //если мы уже дожли сюда, то нужно создавать новый альбом
+            $create_album_response = $this->createAlbum();
+            if($create_album_response) {
+                $album_id = $create_album_response->response->id;
+            }
         }
         return $album_id;
+    }
+
+    /** Возвращаем все альбомы сообщества, если что-то не так - null
+     * @return mixed|null
+     */
+    private function getAllAlbums(){
+        $api_request_get_albums = str_replace('{endpoint:key}', self::ENDPOINT_GET_ALBUMS, $this->api_url);
+        $api_request_get_albums .= '&owner_id=-'.$this->task->socialNetworksGroup->group_id;
+        $response = json_decode(file_get_contents($api_request_get_albums));
+        if(isset($response->error)){
+            TelegrammLoging::send('<p>AVK GAA Ошибка извлечения альбомов для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$response->error->error_msg.'</code><br/>'.$api_request_get_albums);
+            \Yii::warning("АVK GAA Ошибка извлечения альбомов ".$response->error, "DEBUG");
+            return null;
+        }
+        return $response;
+    }
+
+    /** Создаем новый альбом в сообществе, если что-то идет не так - возвращаем null
+     * @return mixed|null
+     */
+    private function createAlbum(){
+        $api_request_create_album = str_replace('{endpoint:key}', self::ENDPOINT_CREATE_ALBUM, $this->api_url);
+        $api_request_create_album .= '&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления '.time().'"&upload_by_admins_only=1&comments_disabled=1&';
+        $response = json_decode(file_get_contents($api_request_create_album));
+        if(isset($response->error)){
+            TelegrammLoging::send('<p>АVK CA Ошибка создания альбома для группы '.$this->task->socialNetworksGroup->group_id.'</p><br/><code>'.$response->error->error_msg.'</code><br/>&group_id='.$this->task->socialNetworksGroup->group_id.'&title="Объявления"&upload_by_admins_only=1&comments_disabled=1&');
+            \Yii::warning("АVK CA Ошибка создания альбома ".$response->error, "DEBUG");
+            return null;
+        }
+        return $response;
     }
 }
