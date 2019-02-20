@@ -41,9 +41,9 @@ class AutopostingVk {
             $attachements = '';
             \Yii::warning("АVK P Найдено файлов ".count($this->task->ad->files)." для задачи ".$this->task->id.", обьявления ".$this->task->ad->id, "DEBUG");
             if (count($this->task->ad->files)) {
-                $album = $this->createAlbumIfNotExists();
+                $album_id = $this->createAlbumIfNotExists();
                 $photos_uploaded = [];
-                if ($album) $photos_uploaded = $this->uploadPhotos($album->id);
+                if ($album_id) $photos_uploaded = $this->uploadPhotos($album_id);
                 if (!empty($photos_uploaded)) {
                     $attachements .= 'attachments=';
                     foreach ($photos_uploaded as $i => $photo) {
