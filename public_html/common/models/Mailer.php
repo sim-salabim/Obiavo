@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use common\models\libraries\TelegrammLoging;
 use Yii;
 
 class Mailer {
@@ -29,6 +30,7 @@ class Mailer {
             ->setTo($send_to)
             ->setSubject($subject);
 
-        $mailer->send();
+        $result = $mailer->send();
+        TelegrammLoging::send("Mailer send result: ".$result);
     }
 }
