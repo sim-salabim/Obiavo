@@ -59,7 +59,6 @@ class NewAdForm extends Model
             [['agreement'], 'integer', 'integerOnly' => true, 'max' => 1],
             [['expiry_date','price'], 'integer', 'message' => __('Incorrect format')],
             ['email','email', 'message' => __('Incorrect email')],
-            ['email', "validateEmail" ],
             ['name', "validateName" ],
             ['phone', "validatePhone" ],
         ];
@@ -97,21 +96,7 @@ class NewAdForm extends Model
             }
         }
     }
-    /**
-     * @param $attribute
-     * @param $params
-     */
-    public function validateEmail($attribute, $params){
-        if(isset($this->email)) {
-            if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-                $this->addError($attribute, __('Incorrect format'));
-            }
-            $user = User::find()->where(['email'=>$this->email])->one();
-            if(isset($user->id)){
-                $this->addError($attribute, __("User with this email already exists"));
-            }
-        }
-    }
+
 
     public function validateName($attribute, $params){
         if(isset($this->name)){
@@ -122,17 +107,22 @@ class NewAdForm extends Model
     }
     public function newAd(){
         if(!isset(\Yii::$app->user->identity)){
-            $user = new User();
-            $user->cities_id = $this->cities_id;
-            $user->email = $this->email;
-            $name_arr = explode(" ",$this->name);
-            $user->first_name = $name_arr[0];
-            $user->last_name = (isset($name_arr[1])) ? $name_arr[1] : null;
-            $user->phone_number = $this->phone;
-            $password = generateRandomString();
-            $user->setPassword($password);
-            $user->save();
-            $user_id =$user->id;
+            $user = User::find()->where(['email' => $this->email])->one();
+            if($user){
+                $user_id = $user->id;
+            }else {
+                $user = new User();
+                $user->cities_id = $this->cities_id;
+                $user->email = $this->email;
+                $name_arr = explode(" ", $this->name);
+                $user->first_name = $name_arr[0];
+                $user->last_name = (isset($name_arr[1])) ? $name_arr[1] : null;
+                $user->phone_number = $this->phone;
+                $password = generateRandomString();
+                $user->setPassword($password);
+                $user->save();
+                $user_id = $user->id;
+            }
         }else{
             $user_id = \Yii::$app->user->identity->id;
         }
@@ -202,7 +192,9 @@ class NewAdForm extends Model
             $category_ad->save();
         }
         if(!isset(\Yii::$app->user->identity)){
-            Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url'=>"https://".Location::getCurrentDomain()."/".$adsModel->url(), "pass"=>$password,"fast"=>true]);
+            if(isset($password)) {
+                Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);
+            }
         }else {
             Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
         }
