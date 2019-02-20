@@ -91,11 +91,12 @@ class AutopostingOk {
                 $this->task->status = AutopostingTasks::STATUS_FAILED;
                 $this->task->save();
                 \Yii::warning('АO P Ошибка открытия ссылки парсером со второй попытки, задача '.$this->task->id, "DEBUG");
-                TelegrammLoging::send('АO P Открытие ссылки парсером со второй попытки, задача '.$this->task->id. ' обьявление: '.$this->task->ad->id." group:".$this->group->id);
+                TelegrammLoging::send('АO P Ошибка открытия ссылки парсером со второй попытки, задача '.$this->task->id. ' обьявление: '.$this->task->ad->id." group:".$this->group->id." stacktrace: ".json_encode($result));
             }else{
                 $this->task->status = AutopostingTasks::STATUS_POSTED;
                 $this->task->save();
                 \Yii::warning('АO P Открытие ссылки парсером со второй попытки, задача '.$this->task->id, "DEBUG");
+                TelegrammLoging::send('АO P Открытие ссылки парсером со второй попытки, задача '.$this->task->id. ' обьявление: '.$this->task->ad->id." group:".$this->group->id." stacktrace: ".json_encode($result));
             }
         }else{
             $this->task->status = AutopostingTasks::STATUS_POSTED;
