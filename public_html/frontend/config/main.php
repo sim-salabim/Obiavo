@@ -20,6 +20,18 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $smtp['host'],
+                'username' => $smtp['username'],
+                'password' => $smtp['password'],
+                'port' => $smtp['port'],
+                'encryption' => $smtp['encryption'],
+            ]
+        ],
         'user' => [
             'class' => 'common\models\WebUser',
             'identityClass' => 'common\models\User',
