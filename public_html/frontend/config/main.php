@@ -8,6 +8,7 @@ $params = array_merge(
 $smtp = require(__DIR__ . '/../../backend/config/smtp.php');
 return [
     'id' => 'app-frontend',
+    'name' => 'Obiavo',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',

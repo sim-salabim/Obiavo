@@ -2,7 +2,7 @@
     <br>
         Здравствуйте, вы опубликовали объявление:</br>
 
-        Ваше объявление: <a href="https://<?= \frontend\components\Location::getCurrentDomain()."/".$add->url ?>"><?= $add->title ?></a></br>
+        Ваше объявление: <a href="https://<?= \frontend\components\Location::getCurrentDomain()."/".$add->url ?>/"><?= $add->title ?></a></br>
 
         Для того чтобы редактировать, поднимать или снимать с публикации ваши объявления пройдите по ссылке предварительно пройдя авторизацию с вашим электронным адресом и паролем:</br>
 
@@ -18,7 +18,7 @@
         Ваш email: <?= $user->email ?></br>
         Ваш пароль: <?= $pass ?></br>
 
-        Ваше объявление: <a href="https://<?= \frontend\components\Location::getCurrentDomain()."/".$add->url ?>"><?= $add->title ?></a></br>
+        Ваше объявление: <a href="https://<?= \frontend\components\Location::getCurrentDomain()."/".$add->url ?>/"><?= $add->title ?></a></br>
 
         Для того чтобы редактировать, поднимать или снимать с публикации ваши объявления пройдите по ссылке предварительно пройдя авторизацию с вашим электронным адресом и паролем:</br>
 
