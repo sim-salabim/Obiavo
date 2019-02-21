@@ -5,7 +5,7 @@ $params = array_merge(
     require(__DIR__ . '/params.php'),
     require(__DIR__ . '/params-local.php')
 );
-
+$smtp = require(__DIR__ . '/../../backend/config/smtp.php');
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
@@ -19,6 +19,18 @@ return [
         ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $smtp['host'],
+                'username' => $smtp['username'],
+                'password' => $smtp['password'],
+                'port' => $smtp['port'],
+                'encryption' => $smtp['encryption'],
+            ]
         ],
         'user' => [
             'class' => 'common\models\WebUser',
