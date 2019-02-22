@@ -20,7 +20,7 @@ class Mailer {
 
         switch(Location::getCurrentDomain()){
             case "obiavo.ru" :
-                $from_arr = ['robot@obiavo.ru' => Yii::$app->name];
+                $from_arr = ['robot@obiavo.site' => Yii::$app->name];
                 break;
             case "obiavo.by" :
                 $from_arr = ['robot@obiavo.by' => Yii::$app->name];
