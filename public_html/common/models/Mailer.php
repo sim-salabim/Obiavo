@@ -2,6 +2,7 @@
 namespace common\models;
 
 use common\models\libraries\TelegrammLoging;
+use Exception;
 use Yii;
 
 class Mailer {
@@ -20,16 +21,20 @@ class Mailer {
         if($from){
             $from_arr = [$from['email']  => $from['name']];
         }
-        $result = Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => $template],
-                $arr
-            )
-            ->setFrom($from_arr)
-            ->setTo($send_to)
-            ->setSubject($subject)
-            ->send();
+        try {
+            $result = Yii::$app
+                ->mailer
+                ->compose(
+                    ['html' => $template],
+                    $arr
+                )
+                ->setFrom($from_arr)
+                ->setTo($send_to)
+                ->setSubject($subject)
+                ->send();
+        }catch(Exception $e){
+            TelegrammLoging::send("Mailer send exception: ".$e->getMessage());
+        }
         TelegrammLoging::send("Mailer send result: ".$result);
     }
 }
