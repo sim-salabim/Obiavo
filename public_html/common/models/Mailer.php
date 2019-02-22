@@ -5,6 +5,7 @@ use common\models\libraries\TelegrammLoging;
 use Exception;
 use frontend\components\Location;
 use Yii;
+use yii\helpers\Url;
 
 class Mailer {
 
@@ -17,7 +18,7 @@ class Mailer {
      * @param $attachement, array <File>
      */
     public static function send($send_to, $subject, $template, $arr, $from = null){
-        $url = Yii::$app->urlManager->baseUrl;
+        $url = Url::base(true);
         TelegrammLoging::send("Url: ".$url);
         switch(Location::getCurrentDomain()){
             case "obiavo.ru" :
