@@ -20,7 +20,7 @@ class Mailer {
 
         switch(Location::getCurrentDomain()){
             case "obiavo.ru" :
-                $from_arr = ['robot@obiavo.site' => Yii::$app->name];
+                $from_arr = ['robot@obiavo.ru' => Yii::$app->name];
                 break;
             case "obiavo.by" :
                 $from_arr = ['robot@obiavo.by' => Yii::$app->name];
@@ -41,7 +41,7 @@ class Mailer {
         }
         TelegrammLoging::send("From arr: ".json_encode($from_arr));
         try {
-            $result = Yii::$app
+            Yii::$app
                 ->mailer
                 ->compose(
                     ['html' => $template],
@@ -54,6 +54,5 @@ class Mailer {
         }catch(Exception $e){
             TelegrammLoging::send("Mailer send exception: ".$e->getMessage());
         }
-        TelegrammLoging::send("Mailer send result: ".$result);
     }
 }
