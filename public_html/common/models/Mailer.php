@@ -17,7 +17,7 @@ class Mailer {
      * @param $attachement, array <File>
      */
     public static function send($send_to, $subject, $template, $arr, $from = null){
-        $url = Yii::$app->request->url;
+        $url = Yii::$app->urlManager->baseUrl;
         TelegrammLoging::send("Url: ".$url);
         switch(Location::getCurrentDomain()){
             case "obiavo.ru" :
