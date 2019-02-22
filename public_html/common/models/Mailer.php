@@ -18,9 +18,11 @@ class Mailer {
     public static function send($send_to, $subject, $template, $arr, $from = null){
 
         $from_arr = [Yii::$app->params['commonAdminEmail'] => Yii::$app->name];
+
         if($from){
             $from_arr = [$from['email']  => $from['name']];
         }
+        TelegrammLoging::send("From arr: ".json_encode($from_arr));
         try {
             $result = Yii::$app
                 ->mailer
