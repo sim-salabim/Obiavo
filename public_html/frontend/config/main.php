@@ -5,7 +5,7 @@ $params = array_merge(
     require(__DIR__ . '/params.php'),
     require(__DIR__ . '/params-local.php')
 );
-
+$smtp = require(__DIR__ . '/../../backend/config/smtp.php');
 return [
     'id' => 'app-frontend',
     'name' => 'Obiavo',
