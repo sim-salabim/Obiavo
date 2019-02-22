@@ -17,12 +17,11 @@ class Mailer {
      * @param $from, ассоциативный массив ['email' => 'example@mail.ru', 'name' => 'example_name']
      * @param $attachement, array <File>
      */
-    public static function send($send_to, $subject, $template, $arr, $from = null){
+    public static function send($send_to, $subject, $template, $arr){
         $url = Url::base(true);
-        TelegrammLoging::send("Url: ".$url);
         switch(Location::getCurrentDomain()){
             case "obiavo.ru" :
-                $from_arr = ['robot@obiavo.site' => Yii::$app->name];
+                $from_arr = ['robot@obiavo.ru' => Yii::$app->name];
                 break;
             case "obiavo.by" :
                 $from_arr = ['robot@obiavo.by' => Yii::$app->name];
@@ -37,9 +36,9 @@ class Mailer {
                 $from_arr = ['robot@obiavo.su' => Yii::$app->name];
                 break;
         }
-
-        if($from){
-            $from_arr = [$from['email']  => $from['name']];
+        // если мы на тестовом серваке, то отпрвитель должен быть robot@obiavo.site
+        if($url == "http://obiavo.site"){
+            $from_arr = ['robot@obiavo.site' => Yii::$app->name];
         }
         TelegrammLoging::send("From arr: ".json_encode($from_arr));
         try {
