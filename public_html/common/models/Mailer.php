@@ -3,6 +3,7 @@ namespace common\models;
 
 use common\models\libraries\TelegrammLoging;
 use Exception;
+use frontend\components\Location;
 use Yii;
 
 class Mailer {
@@ -17,7 +18,23 @@ class Mailer {
      */
     public static function send($send_to, $subject, $template, $arr, $from = null){
 
-        $from_arr = [Yii::$app->params['commonAdminEmail'] => Yii::$app->name];
+        switch(Location::getCurrentDomain()){
+            case "obiavo.ru" :
+                $from_arr = ['robot@obiavo.ru' => Yii::$app->name];
+                break;
+            case "obiavo.by" :
+                $from_arr = ['robot@obiavo.by' => Yii::$app->name];
+                break;
+            case "obiavo.kz" :
+                $from_arr = ['robot@obiavo.kz' => Yii::$app->name];
+                break;
+            case "obiavo.uz" :
+                $from_arr = ['robot@obiavo.uz' => Yii::$app->name];
+                break;
+            case "obiavo.su" :
+                $from_arr = ['robot@obiavo.su' => Yii::$app->name];
+                break;
+        }
 
         if($from){
             $from_arr = [$from['email']  => $from['name']];
