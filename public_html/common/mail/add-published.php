@@ -1,5 +1,5 @@
 <? if(!$fast){?>
-    <br>
+    <p>
         Здравствуйте, вы опубликовали объявление:</br>
 
         Ваше объявление: <a href="https://<?= \frontend\components\Location::getCurrentDomain()."/".$add->url ?>/"><?= $add->title ?></a></br>
@@ -12,7 +12,7 @@
     https://<?= \frontend\components\Location::getCurrentDomain() ?>
     </p>
 <? }else{ ?>
-    <br>
+    <p>
         Добро пожаловать на сайт бесплатных объявлений.</br>
 
         Ваш email: <?= $user->email ?></br>

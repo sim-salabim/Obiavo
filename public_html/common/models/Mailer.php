@@ -40,20 +40,16 @@ class Mailer {
         if($url == "http://obiavo.site"){
             $from_arr = ['robot@obiavo.site' => Yii::$app->name];
         }
-        TelegrammLoging::send("From arr: ".json_encode($from_arr));
-        try {
-            Yii::$app
-                ->mailer
-                ->compose(
-                    ['html' => $template],
-                    $arr
-                )
-                ->setFrom($from_arr)
-                ->setTo($send_to)
-                ->setSubject($subject)
-                ->send();
-        }catch(Exception $e){
-            TelegrammLoging::send("Mailer send exception: ".$e->getMessage());
-        }
+        Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => $template],
+                $arr
+            )
+            ->setFrom($from_arr)
+            ->setTo($send_to)
+            ->setSubject($subject)
+            ->send();
+
     }
 }
