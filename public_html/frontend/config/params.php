@@ -1,6 +1,6 @@
 <?php
 return [
-    'commonAdminEmail' => 'mail@obiavo.ru',
+    'commonAdminEmail' => 'robot@obiavo.site',
     'technicalSupportEmail' => 'webmaster@obiavo.ru',
     'mainDomain' => 'obiavo.ru',
     'rootUrl' => 'https://obiavo.ru/',
