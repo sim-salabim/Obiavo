@@ -3,6 +3,8 @@
 </p>
 <p>
     Для восстановления пароля пройдите по ссылке ниже:
+</p>
+<p>
     <a href="/reset?key=<?= $token ?>"><?= "https://".\frontend\components\Location::getCurrentDomain()."/reset?key=".$token ?></a>
 </p>
 <p>
