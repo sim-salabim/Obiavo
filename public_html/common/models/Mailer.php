@@ -35,6 +35,9 @@ class Mailer {
             case "obiavo.su" :
                 $from_arr = ['robot@obiavo.su' => Yii::$app->name];
                 break;
+            case "obiavo.com" :
+                $from_arr = ['robot@obiavo.com' => Yii::$app->name];
+                break;
         }
         // если мы на тестовом серваке, то отпрвитель должен быть robot@obiavo.site
         if($url == "http://obiavo.site"){
