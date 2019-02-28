@@ -1,7 +1,9 @@
 <?php
 namespace common\models;
 
+use frontend\components\Location;
 use Yii;
+use yii\helpers\Url;S
 
 class Mailer {
 
