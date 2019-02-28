@@ -3,7 +3,7 @@ namespace common\models;
 
 use frontend\components\Location;
 use Yii;
-use yii\helpers\Url;S
+use yii\helpers\Url;
 
 class Mailer {
 
