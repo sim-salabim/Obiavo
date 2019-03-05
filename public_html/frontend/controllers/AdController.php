@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
 use common\models\AutopostingTasks;
@@ -19,6 +20,7 @@ use yii\web\HttpException;
 class AdController extends BaseController
 {
     public $params;
+    private static $default_link = 'podat-obiavlenie';
     /**
      * @inheritdoc
      */
@@ -35,11 +37,33 @@ class AdController extends BaseController
      * @return string|\yii\web\Response
      */
     public function actionNewAdd(){
-        $cms = \common\models\Cms::getByTechname('new-ad');
-        Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
-        Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
-        Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
-        $this->setPageTitle($cms->_text->seo_title);
+        $url = Yii::$app->request->get('url');
+        if($url == self::$default_link and !Yii::$app->request->get('city')) {
+            $cms = \common\models\Cms::getByTechname('new-ad');
+            $page_title = $cms->_text->seo_title;
+            Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
+            Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
+            Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
+        }elseif ($url == self::$default_link and Yii::$app->request->get('city')){
+            $cms = \common\models\Cms::getByTechname('new-ad');
+            $page_title = $cms->_text->seo_title;
+            Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
+            Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
+            Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
+        }elseif($url != self::$default_link and Yii::$app->request->get('city')){
+            $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
+            $page_title = $text->seo_title;
+            Yii::$app->view->params['seo_h1'] = $text->seo_h1;
+            Yii::$app->view->params['seo_desc'] = $text->seo_desc;
+            Yii::$app->view->params['seo_keywords'] = $text->seo_keywords;
+        }elseif($url != self::$default_link and !Yii::$app->request->get('city')){
+            $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
+            $page_title = $text->seo_title;
+            Yii::$app->view->params['seo_h1'] = $text->seo_h1;
+            Yii::$app->view->params['seo_desc'] = $text->seo_desc;
+            Yii::$app->view->params['seo_keywords'] = $text->seo_keywords;
+        }
+        $this->setPageTitle($page_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
             ->orderBy('order ASC, brand ASC, techname ASC')
