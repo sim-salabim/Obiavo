@@ -617,3 +617,9 @@ button.is_invalid{
 .margin-top-15{
     margin-top: 15px;
 }
+.new-add-btn{
+    color: white !important;
+}
+.new-add-btn:hover{
+    color: white !important;
+}

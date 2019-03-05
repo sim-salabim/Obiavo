@@ -69,9 +69,9 @@
 
                 ?></a></span>
 
-            <button type="button" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn">+ <?= __('Post an add') ?></button>
+            <a href="/podat-obiavlenie/" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn">+ <?= __('Post an add') ?></a>
 
-            <button type="button" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn">+ </button>
+            <a href="/podat-obiavlenie/" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn">+ </a>
         </div>
     </nav>
 </header>
