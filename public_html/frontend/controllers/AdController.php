@@ -11,6 +11,7 @@ use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\Placement;
 use common\models\Settings;
+use frontend\components\Location;
 use frontend\models\LoginForm;
 use frontend\models\NewAdForm;
 use Yii;
@@ -38,31 +39,21 @@ class AdController extends BaseController
      */
     public function actionNewAdd(){
         $url = Yii::$app->request->get('url');
-        if($url == self::$default_link and !Yii::$app->request->get('city')) {
-            $cms = \common\models\Cms::getByTechname('new-ad');
-            $page_title = $cms->_text->seo_title;
-            Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
-            Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
-            Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
-        }elseif ($url == self::$default_link and Yii::$app->request->get('city')){
-            $cms = \common\models\Cms::getByTechname('new-ad');
-            $page_title = $cms->_text->seo_title;
-            Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
-            Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
-            Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
-        }elseif($url != self::$default_link and Yii::$app->request->get('city')){
-            $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
-            $page_title = $text->seo_title;
-            Yii::$app->view->params['seo_h1'] = $text->seo_h1;
-            Yii::$app->view->params['seo_desc'] = $text->seo_desc;
-            Yii::$app->view->params['seo_keywords'] = $text->seo_keywords;
-        }elseif($url != self::$default_link and !Yii::$app->request->get('city')){
-            $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
-            $page_title = $text->seo_title;
-            Yii::$app->view->params['seo_h1'] = $text->seo_h1;
-            Yii::$app->view->params['seo_desc'] = $text->seo_desc;
-            Yii::$app->view->params['seo_keywords'] = $text->seo_keywords;
+        $city_name_rp = "";
+        if(Yii::$app->request->get('city')){
+            $city = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+            $city_name_rp = __('in')." ".$city->_text->name_rp;
         }
+        $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
+        $current_domain = Location::getCurrentDomain();
+        $page_title = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_title);
+        $seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_h1);
+        $seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_desc);
+        $seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_keywords);
+
+        Yii::$app->view->params['seo_h1'] = $seo_h1;
+        Yii::$app->view->params['seo_desc'] = $seo_desc;
+        Yii::$app->view->params['seo_keywords'] = $seo_keywords;
         $this->setPageTitle($page_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
