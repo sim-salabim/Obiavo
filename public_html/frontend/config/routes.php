@@ -3,7 +3,7 @@ return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
     'GET /vybor-goroda' => 'location/vybor-goroda',
-    'GET /podat-obiavlenie' => 'ad/new-add/',
+  //  'GET /podat-obiavlenie' => 'ad/new-add/',
     'POST /podat-obiavlenie' => 'ad/new-add-login/',
     'POST /get-sub-categories' => 'categories/get-sub-categories',
     'POST /get-category-placement' => 'categories/get-category-placement',
@@ -71,6 +71,15 @@ return [
         'class' => 'frontend\rules\url\CmsUrlRule',
         'pattern' => '/<cmsUrl:([0-9a-zA-Z\-]+)>',
         'route' => 'cms/view',
+    ],
+    /**
+     * Класс правила подачи обьявления
+     */
+    [
+        'class' => 'frontend\rules\url\NewAddCityUrlRule',
+        'pattern' => '/<city:([0-9a-zA-Z\-]+)>/<url:([0-9a-zA-Z\-]+)>',
+        'route' => 'ad/new-add',
+        'defaults' => ['city' => null],
     ],
     [
         'pattern'=>'sitemap-show',
