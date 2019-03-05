@@ -50,10 +50,12 @@ class AdController extends BaseController
         $seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_h1);
         $seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_desc);
         $seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_keywords);
+        $seo_text = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_text);
 
         Yii::$app->view->params['seo_h1'] = $seo_h1;
         Yii::$app->view->params['seo_desc'] = $seo_desc;
         Yii::$app->view->params['seo_keywords'] = $seo_keywords;
+        Yii::$app->view->params['seo_text'] = $seo_text;
         $this->setPageTitle($page_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
