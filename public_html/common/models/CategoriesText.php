@@ -19,6 +19,7 @@ use common\models\Language;
  * @property string $seo_desc
  * @property string $seo_keywords
  * @property string $seo_text
+ * @property string $apply_url
  *
  * @property Languages $languages
  * @property Categories $categories
@@ -40,7 +41,8 @@ class CategoriesText extends \yii\db\ActiveRecord
                 'seo_title',
                 'seo_desc',
                 'seo_keywords',
-                'seo_text'
+                'seo_text',
+                'apply_url'
             ],
         ];
     }
@@ -60,7 +62,7 @@ class CategoriesText extends \yii\db\ActiveRecord
         return [
             [['categories_id', 'name', 'url'], 'required'],
             [['categories_id', 'languages_id'], 'integer'],
-            [['seo_h1','seo_h2','name', 'url', 'seo_title'], 'string', 'max' => 255],
+            [['seo_h1','seo_h2','name', 'url', 'seo_title', 'apply_url'], 'string', 'max' => 255],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
             ['languages_id','default','value' => Language::getDefault()->id]
@@ -79,6 +81,7 @@ class CategoriesText extends \yii\db\ActiveRecord
             'url' => 'Url',
             'seo_title' => 'Seo Title',
             'name' => 'Seo Name',
+            'apply_url' => 'Application Url',
             'seo_h1' => 'Seo H1',
             'seo_h2' => 'Seo H2',
             'seo_desc' => 'Seo Desc',

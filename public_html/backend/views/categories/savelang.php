@@ -10,6 +10,7 @@ $items = [
             'panel-title' => 'Текстовые данные - {language}',
             'attributes' => [
                 ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL','model'=>$category->_text],
+                ['name' => 'apply_url','type' => Form::INPUT_TEXT,'label' => 'URL Подачи','model'=>$category->_text],
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название (для меню на внешке)','model'=>$category->_text],
                 ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'Заголовок','model'=>$category->_text],
                 ['name' => 'seo_h1','type' => Form::INPUT_TEXT,'label' => 'H1','model'=>$category->_text],

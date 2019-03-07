@@ -20,11 +20,16 @@ class m161126_233728_categories_text_table_create extends Migration
             'seo_h1' => $this->string()->notNull(),
             'seo_h2' => $this->string()->notNull(),
             'name' => $this->string()->notNull(),
+            'apply_url' => $this->string()->null(),
             'seo_title' => $this->string(),
             'seo_text' => $this->string(),
             'seo_desc' => $this->string(),
             'seo_keywords' => $this->string(),
         ], $tableOptions);
+
+        $this->createIndex('idx_ct_url', 'categories_text', 'url');
+        $this->createIndex('idx_ct_apply_url', 'categories_text', 'apply_url');
+        $this->createIndex('idx_ct_name', 'categories_text', 'name');
 
         $this->createIndex('idx_ct_categories_id', 'categories_text', 'categories_id');
         $this->addForeignKey('fk_categories_text_categories', 'categories_text', 'categories_id', 'categories', 'id', 'CASCADE', 'CASCADE');
