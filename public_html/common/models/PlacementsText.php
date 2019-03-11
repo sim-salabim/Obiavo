@@ -11,6 +11,7 @@ use Yii;
  * @property integer $languages_id
  * @property integer $placements_id
  * @property string $name
+ * @property string $application_url
  *
  * @property Placements $placements
  * @property Languages $languages
@@ -33,7 +34,7 @@ class PlacementsText extends \yii\db\ActiveRecord
         return [
             [['placements_id', 'name', 'url'], 'required'],
             [['placements_id'], 'integer'],
-            [['name', 'url'], 'string', 'max' => 255],
+            [['name', 'url', "application_url"], 'string', 'max' => 255],
             [['placements_id'], 'exist', 'skipOnError' => true, 'targetClass' => Placement::className(), 'targetAttribute' => ['placements_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['languages_id'],'default', 'value' => Language::getDefault()->id],
@@ -51,6 +52,7 @@ class PlacementsText extends \yii\db\ActiveRecord
             'placements_id' => 'Placements ID',
             'name' => 'Название',
             'url' => 'SEO Url',
+            'application_url' => 'Application Url',
         ];
     }
 
