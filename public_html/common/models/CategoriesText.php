@@ -12,6 +12,7 @@ use common\models\Language;
  * @property integer $categories_id
  * @property integer $languages_id
  * @property string $url
+ * @property string $application_url
  * @property string $name
  * @property string $seo_h1
  * @property string $seo_h2
@@ -19,7 +20,6 @@ use common\models\Language;
  * @property string $seo_desc
  * @property string $seo_keywords
  * @property string $seo_text
- * @property string $apply_url
  *
  * @property Languages $languages
  * @property Categories $categories
@@ -35,14 +35,14 @@ class CategoriesText extends \yii\db\ActiveRecord
                 'categories_id',
                 'languages_id',
                 'url',
+                'application_url',
                 'name',
                 'seo_h1',
                 'seo_h2',
                 'seo_title',
                 'seo_desc',
                 'seo_keywords',
-                'seo_text',
-                'apply_url'
+                'seo_text'
             ],
         ];
     }
@@ -62,7 +62,7 @@ class CategoriesText extends \yii\db\ActiveRecord
         return [
             [['categories_id', 'name', 'url'], 'required'],
             [['categories_id', 'languages_id'], 'integer'],
-            [['seo_h1','seo_h2','name', 'url', 'seo_title', 'apply_url'], 'string', 'max' => 255],
+            [['seo_h1','seo_h2','name', 'url', 'seo_title', 'application_url'], 'string', 'max' => 255],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
             ['languages_id','default','value' => Language::getDefault()->id]
@@ -79,9 +79,9 @@ class CategoriesText extends \yii\db\ActiveRecord
             'categories_id' => 'Categories ID',
             'languages_id' => 'Languages ID',
             'url' => 'Url',
+            'application_url' => 'Application URL',
             'seo_title' => 'Seo Title',
             'name' => 'Seo Name',
-            'apply_url' => 'Application Url',
             'seo_h1' => 'Seo H1',
             'seo_h2' => 'Seo H2',
             'seo_desc' => 'Seo Desc',

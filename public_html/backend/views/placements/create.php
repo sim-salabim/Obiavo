@@ -9,6 +9,7 @@ $items = [
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$placement->_text],
                 ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'Seo URL','model'=>$placement->_text],
+                ['name' => 'application_url','type' => Form::INPUT_TEXT,'label' => 'URL подачи','model'=>$placement->_text],
             ]
         ]
     ],

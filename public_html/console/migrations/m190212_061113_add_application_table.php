@@ -28,6 +28,8 @@ class m190212_061113_add_application_table extends Migration
             'seo_text' => $this->text(),
             'seo_desc' => $this->text(),
             'seo_keywords' => $this->string(),
+            'category_default' => $this->boolean()->defaultValue(false),
+            'placements_default' => $this->boolean()->defaultValue(false),
         ], $tableOptions);
 
         $this->createIndex('idx_aat_add_application_id', 'add_application_text', 'add_application_id');
