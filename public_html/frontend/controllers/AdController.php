@@ -5,11 +5,13 @@ use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
 use common\models\AutopostingTasks;
+use common\models\CategoriesText;
 use common\models\Category;
 use common\models\City;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\Placement;
+use common\models\PlacementsText;
 use common\models\Settings;
 use frontend\components\Location;
 use frontend\models\LoginForm;
@@ -45,7 +47,18 @@ class AdController extends BaseController
         }
         $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
         if(!$text){
-            $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK])->one();
+            $url_part = str_replace(Ads::DEFAULT_LINK."-","",$url );
+            if($url_part != $url){
+                $pl_app_url = PlacementsText::find()->where(['application_url' => $url_part])->one();
+                if($pl_app_url){
+                    $text = AddApplicationText::find()->where(['placements_default' => 1])->one();
+                }else{
+                    $text = CategoriesText::find()->where(['application_url' => $url_part])->one();
+                }
+            }
+            if(!$text) {
+                $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK])->one();
+            }
         }
         $current_domain = Location::getCurrentDomain();
         $page_title = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_title);

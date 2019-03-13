@@ -14,7 +14,9 @@ class m190212_061113_add_application_table extends Migration
 
         $this->createTable('add_application', [
             'id' => $this->primaryKey()->unsigned(),
-            'active' => $this->boolean()->defaultValue(1)
+            'active' => $this->boolean()->defaultValue(1),
+            'category_default' => $this->boolean()->defaultValue(0),
+            'placements_default' => $this->boolean()->defaultValue(0),
         ], $tableOptions);
 
         $this->createTable('add_application_text', [
@@ -32,6 +34,8 @@ class m190212_061113_add_application_table extends Migration
             'placements_default' => $this->boolean()->defaultValue(false),
         ], $tableOptions);
 
+        $this->createIndex('idx_aat_category_default', 'add_application_text', 'category_default');
+        $this->createIndex('idx_aat_placements_default', 'add_application_text', 'placements_default');
         $this->createIndex('idx_aat_add_application_id', 'add_application_text', 'add_application_id');
         $this->addForeignKey('fk_aat_add_application_id', 'add_application_text', 'add_application_id', 'add_application', 'id', 'CASCADE', 'CASCADE');
         $this->createIndex('idx_aat_languages_id', 'add_application_text', 'languages_id');
