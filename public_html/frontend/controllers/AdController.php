@@ -21,7 +21,6 @@ use yii\web\HttpException;
 class AdController extends BaseController
 {
     public $params;
-    private static $default_link = 'podat-obiavlenie';
     /**
      * @inheritdoc
      */
@@ -45,6 +44,9 @@ class AdController extends BaseController
             $city_name_rp = __('in')." ".$city->_text->name_rp;
         }
         $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
+        if(!$text){
+            $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK])->one();
+        }
         $current_domain = Location::getCurrentDomain();
         $page_title = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_title);
         $seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_h1);

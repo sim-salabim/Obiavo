@@ -21,6 +21,7 @@ class m161229_233637_create_table_placements_text extends Migration
             'application_url' => $this->string()->notNull(),
         ], $tableOptions);
 
+        $this->createIndex('idx_pt_url', 'placements_text', 'url');
         $this->createIndex('idx_pt_application_url', 'placements_text', 'application_url');
         $this->createIndex('idx_pt_parent_id', 'placements_text', 'languages_id');
         $this->addForeignKey('fk_placements_id_text', 'placements_text', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');

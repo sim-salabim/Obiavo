@@ -20,7 +20,7 @@ use frontend\helpers\TransliterationHelper;
  * @property boolean $only_locally
  * @property boolean $active
  * @property int $price
- * @property int $prlacements_id
+ * @property int $placements_id
  * @property int $created_at
  * @property int $updated_at
  * @property int $expiry_date
@@ -48,6 +48,7 @@ class Ads extends \yii\db\ActiveRecord
     const DATE_RANGE_TWO_YEARS = 'two_years';
     const DATE_RANGE_THREE_YEARS = 'three_years';
     const DATE_RANGE_UNLIMITED = 'unlimited';
+    const DEFAULT_LINK = 'podat-obiavlenie';
     /**
      * @inheritdoc
      */
@@ -411,5 +412,36 @@ class Ads extends \yii\db\ActiveRecord
             $parent = $parent->getParent()->one();
         }
         return array_reverse($breadcrumbs);
+    }
+
+    static function generateApplicationUrl(){
+        $city = Yii::$app->request->get('city');
+        $category = Yii::$app->request->get('category');
+        $placement = Yii::$app->request->get('placement');
+        $application_url = self::DEFAULT_LINK;
+        if($placement){
+            $placement_found = PlacementsText::find()->where(['url' => $placement])->one();
+            if($placement_found and $placement_found->application_url and $placement_found->application_url != ""){
+                $application_url .= "-".$placement_found->application_url;
+            }
+        }else{
+            if($category){
+                $category_found = CategoriesText::find()->where(['url'=>$category])->one();
+                if($category_found and $category_found->application_url and $category_found->application_url != ""){
+                    $application_url .= "-".$category_found->application_url;
+                }
+            }
+        }
+        $city_found = null;
+        if($city){
+            $city_found = City::find()->where(['domain' => $city])->one();
+            if(!$city_found){
+                $city_found = Region::find()->where(['domain' => $city])->one();
+            }
+        }
+        if($city_found and $city_found->_text->application_url and $city_found->_text->application_url != ''){
+            $application_url .= "-".$city_found->_text->application_url;
+        }
+        return $application_url."/";
     }
 }

@@ -69,7 +69,7 @@
 
                 ?></a></span>
 
-            <a href="/podat-obiavlenie/" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn">+ <?= __('Post an add') ?></a>
+            <a href="<?= yii\helpers\Url::toRoute(\common\models\Ads::generateApplicationUrl()) ?>" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn">+ <?= __('Post an add') ?></a>
 
             <a href="/podat-obiavlenie/" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn">+ </a>
         </div>

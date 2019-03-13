@@ -14,7 +14,7 @@ class m190212_061113_add_application_table extends Migration
 
         $this->createTable('add_application', [
             'id' => $this->primaryKey()->unsigned(),
-            'active' => $this->boolean()->defaultValue(1),
+            'active' => $this->boolean()->defaultValue(1)
         ], $tableOptions);
 
         $this->createTable('add_application_text', [

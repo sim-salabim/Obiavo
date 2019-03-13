@@ -9,6 +9,8 @@ use common\models\scopes\AddApplicationQuery;
  *
  * @property integer $id
  * @property integer $active
+ * @property integer $category_default
+ * @property integer $placements_default
  */
 class AddApplication extends \yii\db\ActiveRecord
 {
@@ -21,6 +23,8 @@ class AddApplication extends \yii\db\ActiveRecord
         return [
             self::SCENARIO_DEFAULT => [
                 'active',
+                'category_default',
+                'placements_default'
             ],
         ];
     }
@@ -58,7 +62,8 @@ class AddApplication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['active','default','value' => self::STATUS_ACTIVE]
+            ['active','default','value' => self::STATUS_ACTIVE],
+            [['placements_default', 'category_default'], 'integer', 'max' => 1, 'min' => 0]
         ];
     }
 
@@ -70,6 +75,8 @@ class AddApplication extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'active' => 'Active',
+            'placements_default' => 'Дефолтное для категории',
+            'category_default' => 'Дефолтное для типов',
         ];
     }
     /**

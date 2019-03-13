@@ -11,6 +11,7 @@ use Yii;
  * @property integer $cities_id
  * @property integer $languages_id
  * @property string $name
+ * @property string $application_url
  * @property string $name_rp
  * @property string $name_pp
  *
@@ -35,7 +36,7 @@ class CityText extends \yii\db\ActiveRecord
         return [
             [['cities_id', 'name'], 'required'],
             [['cities_id', 'languages_id'], 'integer'],
-            [['name', 'name_rp', 'name_pp'], 'string', 'max' => 255],
+            [['name', 'name_rp', 'name_pp', 'application_url'], 'string', 'max' => 255],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['languages_id'],'default', 'value' => Language::getDefault()->id],
@@ -52,6 +53,7 @@ class CityText extends \yii\db\ActiveRecord
             'cities_id' => 'Cities ID',
             'languages_id' => 'Languages ID',
             'name' => 'Name',
+            'application_url' => 'Url подачи',
             'name_rp' => 'Name Rp',
             'name_pp' => 'Name Pp',
         ];

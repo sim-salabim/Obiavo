@@ -44,9 +44,7 @@ class AddApplicationText extends \yii\db\ActiveRecord
                 'seo_h1',
                 'seo_h2',
                 'seo_desc',
-                'seo_keywords',
-                'category_default',
-                'placements_default'
+                'seo_keywords'
             ],
         ];
     }
@@ -59,7 +57,6 @@ class AddApplicationText extends \yii\db\ActiveRecord
             [['add_application_id', 'seo_title', 'seo_text', 'url'], 'required'],
             [['add_application_id', 'languages_id'], 'integer'],
             [['seo_title'], 'string', 'max' => 255],
-            [['placements_default', 'category_default'], 'integer', 'max' => 1, 'min' => 0],
             [['add_application_id'], 'exist', 'skipOnError' => true, 'targetClass' => AddApplication::className(), 'targetAttribute' => ['add_application_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['languages_id'],'default', 'value' => Language::getDefault()->id],

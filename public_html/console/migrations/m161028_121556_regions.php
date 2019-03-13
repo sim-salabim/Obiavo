@@ -25,6 +25,7 @@ class m161028_121556_regions extends Migration
             'latitude' => $this->string(100)->null()
         ], $tableOptions);
 
+        $this->createIndex('idx_r_domain', 'regions', 'domain');
         $this->createIndex('idx_r_countries_id', 'regions', 'countries_id');
         $this->addForeignKey('fk_regions_country', 'regions', 'countries_id', 'countries', 'id', 'CASCADE', 'CASCADE');
 

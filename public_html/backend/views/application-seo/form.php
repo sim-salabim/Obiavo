@@ -15,6 +15,8 @@ $items = [
             'panel-title' => 'Основныe данные',
             'attributes' => [
                 ['name' => 'active','type' => Form::INPUT_CHECKBOX,'label' => 'Активность','model'=>$page, 'model_name' => 'AddApplication'],
+                ['name' => 'category_default','type' => Form::INPUT_CHECKBOX,'label' => 'Дефолтное сео категорий','model'=>$page, 'model_name' => 'AddApplication'],
+                ['name' => 'placements_default','type' => Form::INPUT_CHECKBOX,'label' => 'Дефолтное сео для типов','model'=>$page, 'model_name' => 'AddApplication'],
             ]
         ],
         [
