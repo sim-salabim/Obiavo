@@ -9,8 +9,6 @@ use common\models\scopes\AddApplicationQuery;
  *
  * @property integer $id
  * @property integer $active
- * @property integer $category_default
- * @property integer $placements_default
  */
 class AddApplication extends \yii\db\ActiveRecord
 {
@@ -22,9 +20,7 @@ class AddApplication extends \yii\db\ActiveRecord
     {
         return [
             self::SCENARIO_DEFAULT => [
-                'active',
-                'category_default',
-                'placements_default'
+                'active'
             ],
         ];
     }
