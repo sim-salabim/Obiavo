@@ -5,6 +5,7 @@ namespace frontend\rules\url;
 use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\City;
+use common\models\Region;
 use yii\web\UrlRule;
 
 class NewAddCityUrlRule extends UrlRule
@@ -25,7 +26,10 @@ class NewAddCityUrlRule extends UrlRule
         if(isset($params['city']) and $params['city']){
             $city = City::find()->where(['domain'=>$params['city']])->one();
             if(!$city){
-                return false;
+                $region = Region::find()->where(['domain'=>$params['city']])->one();
+                if(!$region) {
+                    return false;
+                }
             }
         }
         return [$route,$params];

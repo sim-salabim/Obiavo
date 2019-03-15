@@ -8,10 +8,12 @@ use common\models\AutopostingTasks;
 use common\models\CategoriesText;
 use common\models\Category;
 use common\models\City;
+use common\models\Country;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\Placement;
 use common\models\PlacementsText;
+use common\models\Region;
 use common\models\Settings;
 use frontend\components\Location;
 use frontend\models\LoginForm;
@@ -23,6 +25,12 @@ use yii\web\HttpException;
 class AdController extends BaseController
 {
     public $params;
+    protected $seo_title;
+    protected $seo_h1;
+    protected $seo_h2;
+    protected $seo_text;
+    protected $seo_desc;
+    protected $seo_keywords;
     /**
      * @inheritdoc
      */
@@ -40,11 +48,17 @@ class AdController extends BaseController
      */
     public function actionNewAdd(){
         $url = Yii::$app->request->get('url');
-        $city_name_rp = "";
-        if(Yii::$app->request->get('city')){
-            $city = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
-            $city_name_rp = __('in')." ".$city->_text->name_rp;
+        $current_domain = Location::getCurrentDomain();
+        $place_name_rp = "";
+        if(Yii::$app->request->get('city')){//если мы находимся в городе или регионе
+            $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+            if(!$place){
+                $place = Region::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+            }
+        }else{//если мы не находимся ни в городе ни в регионе
+            $place = Country::find()->where(['domain' => $current_domain])->one();
         }
+        $place_name_rp = __('in')." ".$place->_text->name_rp;
         $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
         if(!$text){
             $url_part = str_replace(Ads::DEFAULT_LINK."-","",$url );
@@ -60,18 +74,18 @@ class AdController extends BaseController
                 $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK])->one();
             }
         }
-        $current_domain = Location::getCurrentDomain();
-        $page_title = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_title);
-        $seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_h1);
-        $seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_desc);
-        $seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_keywords);
-        $seo_text = str_replace( ['{key:location-in}', '{key:site}'], [$city_name_rp, $current_domain],$text->seo_text);
 
-        Yii::$app->view->params['seo_h1'] = $seo_h1;
-        Yii::$app->view->params['seo_desc'] = $seo_desc;
-        Yii::$app->view->params['seo_keywords'] = $seo_keywords;
-        Yii::$app->view->params['seo_text'] = $seo_text;
-        $this->setPageTitle($page_title);
+        $this->seo_title = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_title);
+        $this->seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_h1);
+        $this->seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_desc);
+        $this->seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_keywords);
+        $this->seo_text = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text);
+        $library_search = new AdsSearch();
+        $library_search->setActive(true);
+        $list = Ads::getList($library_search);
+        $this->switchSeoKeys($list);
+        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords);
+        $this->setPageTitle($this->seo_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
             ->orderBy('order ASC, brand ASC, techname ASC')

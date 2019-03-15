@@ -3,10 +3,8 @@
 namespace common\models;
 
 use common\models\libraries\AdsSearch;
-use frontend\helpers\ArrayHelper;
-use frontend\helpers\LocationHelper;
-use Yii;
 use frontend\helpers\TransliterationHelper;
+use Yii;
 
 /**
  * This is the model class for table "ads".
@@ -433,15 +431,17 @@ class Ads extends \yii\db\ActiveRecord
             }
         }
         $city_found = null;
-        if($city){
-            $city_found = City::find()->where(['domain' => $city])->one();
-            if(!$city_found){
-                $city_found = Region::find()->where(['domain' => $city])->one();
+        $append_str = "";
+        if(Yii::$app->location->city){
+            if(Yii::$app->location->city->_text->application_url and Yii::$app->location->city->_text->application_url != ""){
+                $append_str = "-".Yii::$app->location->city->_text->application_url;
+            }
+        }else if(Yii::$app->location->region){
+            if(Yii::$app->location->region->_text->application_url and Yii::$app->location->region->_text->application_url != ""){
+                $append_str = "-".Yii::$app->location->region->_text->application_url;
             }
         }
-        if($city_found and $city_found->_text->application_url and $city_found->_text->application_url != ''){
-            $application_url .= "-".$city_found->_text->application_url;
-        }
+        $application_url .= $append_str;
         return $application_url."/";
     }
 }
