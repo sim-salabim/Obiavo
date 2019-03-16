@@ -413,35 +413,30 @@ class Ads extends \yii\db\ActiveRecord
     }
 
     static function generateApplicationUrl(){
-        $city = Yii::$app->request->get('city');
+
         $category = Yii::$app->request->get('category');
         $placement = Yii::$app->request->get('placement');
         $application_url = self::DEFAULT_LINK;
         if($placement){
             $placement_found = PlacementsText::find()->where(['url' => $placement])->one();
             if($placement_found and $placement_found->application_url and $placement_found->application_url != ""){
-                $application_url .= "-".$placement_found->application_url;
+                $application_url = $placement_found->application_url;
             }
         }else{
             if($category){
                 $category_found = CategoriesText::find()->where(['url'=>$category])->one();
                 if($category_found and $category_found->application_url and $category_found->application_url != ""){
-                    $application_url .= "-".$category_found->application_url;
+                    $application_url = $category_found->application_url;
                 }
             }
         }
         $city_found = null;
-        $append_str = "";
+        $prepend_str = "/";
         if(Yii::$app->location->city){
-            if(Yii::$app->location->city->_text->application_url and Yii::$app->location->city->_text->application_url != ""){
-                $append_str = "-".Yii::$app->location->city->_text->application_url;
-            }
+            $prepend_str = Yii::$app->location->city->domain."/";
         }else if(Yii::$app->location->region){
-            if(Yii::$app->location->region->_text->application_url and Yii::$app->location->region->_text->application_url != ""){
-                $append_str = "-".Yii::$app->location->region->_text->application_url;
-            }
+            $prepend_str = Yii::$app->location->region->domain."/";
         }
-        $application_url .= $append_str;
-        return $application_url."/";
+        return $prepend_str.$application_url."/";
     }
 }

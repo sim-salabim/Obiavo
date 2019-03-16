@@ -28,6 +28,7 @@ class m181212_062335_sitemap_tables extends Migration
         ], $tableOptions);
 
 
+        $this->createIndex('idx_si_link', 'sitemap_index', 'link');
         $this->createIndex('idx_st_c_id', 'sitemap_tasks', 'countries_id');
         $this->addForeignKey('fk_st_countries', 'sitemap_tasks', 'countries_id', 'countries', 'id');
 
