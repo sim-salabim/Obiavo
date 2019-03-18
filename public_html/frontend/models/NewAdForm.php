@@ -45,7 +45,7 @@ class NewAdForm extends Model
             [[
                 'categories',
                 'placement_id',
-//                'expiry_date', // временно закоменчено
+                'expiry_date',
                 'title',
                 'text',
                 'agreement',
@@ -55,9 +55,9 @@ class NewAdForm extends Model
             [['title'], 'string', 'max' => 100, 'tooLong' => __("Fields must not be more than 100 chars long")],
             [['cities_id'], 'integer', 'integerOnly' => true, 'min' => 1, 'tooSmall' => __('Required field')],
             [['placement_id'], 'integer', 'integerOnly' => true, 'min' => 1, 'tooSmall' => __('Required field')],
-            [['expiry_date'], 'integer', 'integerOnly' => true, 'min' => 1],
+            [['expiry_date'], 'string'],
             [['agreement'], 'integer', 'integerOnly' => true, 'max' => 1],
-            [['expiry_date','price'], 'integer', 'message' => __('Incorrect format')],
+            [['price'], 'integer', 'message' => __('Incorrect format')],
             ['email','email', 'message' => __('Incorrect email')],
             ['name', "validateName" ],
             ['phone', "validatePhone" ],
@@ -166,7 +166,7 @@ class NewAdForm extends Model
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
-        $adsModel->url = $adsModel->id."-".TransliterationHelper::transliterate($this->title);
+        $adsModel->url = TransliterationHelper::transliterate($this->title)."-".$adsModel->id;
         $adsModel->save();
         if(isset($_POST['files'])) {
             Files::linkFilesToModel($_POST['files'], $adsModel);

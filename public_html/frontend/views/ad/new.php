@@ -164,7 +164,7 @@ if(isset($model) and $user){
 <!--        </div>-->
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
             <div class="row">
-                <div id="sub-title" class="col sub-title padding-bottom-0">
+                <div id="sub-title" class="col sub-title padding-bottom-10">
                     <?= __('Select category')?>
                 </div>
             </div>
@@ -204,34 +204,24 @@ if(isset($model) and $user){
             <div class="invalid-feedback" id="placement_id_error"></div>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12 margin-bottom0">
-            <? if($user){?>
-                <select
-                    name="cities_id"
-                    id='cities_id'
-                    disabled
-                    class="form-control <?php if(Yii::$app->session->getFlash('cities_id_error')){?> is-invalid<?php }?>">
-                    <option value="0"><?= __('City') ?></option>
-                </select>
-            <? }else{?>
-                <div class="form-group validation-errors">
-                    <div class="form-group">
-                        <input
-                                class="form-control bs-autocomplete <?php if(Yii::$app->session->getFlash('cities_id_error')){?> is-invalid<?php }?>"
-                                id="live-search-select"
+            <div class="form-group validation-errors">
+                <div class="form-group">
+                    <input
+                            class="form-control bs-autocomplete <?php if(Yii::$app->session->getFlash('cities_id_error')){?> is-invalid<?php }?>"
+                            id="live-search-select"
 
-                                placeholder="<?= $selectCity ?>"
-                                type="text"
-                                data-hidden_field_id="cities_id"
-                                data-item_id="live-search-select"
-                                data-item_label="text"
-                                autocomplete="off">
-                            <div class="invalid-feedback" id="cities_id_error"></div>
-                        <input type="hidden" id="cities_id" name="cities_id" <? if(isset($model) AND $model->cities_id){?>
-                            value="<?= $model->cities_id ?>"
-                        <? }else{?> value=""<? } ?>>
-                    </div>
+                            placeholder="<?= $selectCity ?>"
+                            type="text"
+                            data-hidden_field_id="cities_id"
+                            data-item_id="live-search-select"
+                            data-item_label="text"
+                            autocomplete="off">
+                        <div class="invalid-feedback" id="cities_id_error"></div>
+                    <input type="hidden" id="cities_id" name="cities_id" <? if(isset($model) AND $model->cities_id){?>
+                        value="<?= $model->cities_id ?>"
+                    <? }else{?> value=""<? } ?>>
                 </div>
-            <? } ?>
+            </div>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
             <select
@@ -314,8 +304,25 @@ if(isset($model) and $user){
 </div>
 <script>
     $(document).ready(function(){
+
+        $('#title').keyup(function(){
+            var val = ltrim($(this).val());
+            $(this).val(val);
+        });
+        $('#text').keyup(function(){
+            var val = ltrim($(this).val());
+            $(this).val(val);
+        });
+        function ltrim(str) {
+            if(str == null) return str;
+            return capitalizeFirstLetter(str.replace(/^\s+/g, ''));
+        }
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
         $('#publication-button').bind('click', function(e){
             e.preventDefault();
+            $(this).prop('disabled', true);
             $("[id*='_error']").text('');
             $(".is-invalid").removeClass('is-invalid');
             //TODO написать экшен, который будет сразу валидировать и сохранять если все ОК
@@ -346,6 +353,7 @@ if(isset($model) and $user){
             data.title = $('#title').val();
             data.text = $('#text').val();
             data.price = $('#price').val();
+            data.expiry_date = $('#expiry_date :selected').val();
             console.log(data);
             $.ajax({
                 dataType: "json",
@@ -376,6 +384,9 @@ if(isset($model) and $user){
                 }
 
             });
+            setTimeout(function(){
+                $('#publication-button').prop('disabled', false);
+            }, 5000);
         });
 
         $('#nav-main-tab').bind('click', function(){

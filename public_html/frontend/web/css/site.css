@@ -302,7 +302,7 @@ ul.bs-autocomplete-menu a {
     color: #868e96!important;
 }
 .padding-bottom-10{
-    padding-bottom: 10px;
+    padding-bottom: 10px !important;
 }
 .padding-top-10{
     padding-top: 10px;
