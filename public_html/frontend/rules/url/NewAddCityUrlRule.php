@@ -19,7 +19,7 @@ class NewAddCityUrlRule extends UrlRule
         $item = null;
         if($params['url'] != Ads::DEFAULT_LINK) {
             $item = AddApplicationText::find()->where(['url' => $params['url']])->one();
-            if ($result === false OR $route != 'ad/new-add' OR (!$item and strpos($params['url'], Ads::DEFAULT_LINK) === false)) {
+            if (!$item) {
                 return false;
             }
         }

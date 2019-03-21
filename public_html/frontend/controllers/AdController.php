@@ -16,6 +16,7 @@ use common\models\PlacementsText;
 use common\models\Region;
 use common\models\Settings;
 use frontend\components\Location;
+use frontend\helpers\LocationHelper;
 use frontend\models\LoginForm;
 use frontend\models\NewAdForm;
 use Yii;
@@ -48,9 +49,17 @@ class AdController extends BaseController
      */
     public function actionNewAdd(){
         $url = Yii::$app->request->get('url');
+        $city = Yii::$app->request->get('city');
+        $this->setApplicationUrl($url);
         $current_domain = Location::getCurrentDomain();
         $place_name_rp = "";
-        if(Yii::$app->request->get('city')){//если мы находимся в городе или регионе
+        if($city){//если мы находимся в городе или регионе
+            if($city != LocationHelper::getCurrentDomain()){
+                City::setCookieLocation($city);
+            }
+            if($city){
+                $this->setUrlForLogo($city);
+            }
             $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
             if(!$place){
                 $place = Region::find()->where(['domain' => Yii::$app->request->get('city')])->one();

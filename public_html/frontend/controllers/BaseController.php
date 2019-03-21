@@ -57,6 +57,14 @@ class BaseController extends \yii\web\Controller {
         }
     }
 
+    /** Задает урл для кнопки "подать обьявление" в шапке сайта
+     *
+     * @param $application_url
+     */
+    public function setApplicationUrl($application_url){
+        Yii::$app->view->params['application_url'] = "/".$application_url."/";
+    }
+
     /**
      * @param $seo_h1
      * @param $seo_h2

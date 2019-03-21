@@ -390,9 +390,9 @@ class Ads extends \yii\db\ActiveRecord
         $ad_day_number = date('z', $date);
         $today_number = date('z', time());
         $daystr = '';
-        if($ad_day_number == $today_number){
+        if($ad_day_number == $today_number and date('y', $date) == date('y', time())){
             $daystr .= __('Today');
-        }else if($today_number == (1 + $ad_day_number)){
+        }else if($today_number == (1 + $ad_day_number) and date('y', $date) == date('y', time())){
             $daystr .= __('Yesterday');
         }else{
             $daystr .= date('d:m:y', $date);
@@ -413,7 +413,6 @@ class Ads extends \yii\db\ActiveRecord
     }
 
     static function generateApplicationUrl(){
-
         $category = Yii::$app->request->get('category');
         $placement = Yii::$app->request->get('placement');
         $application_url = self::DEFAULT_LINK;
@@ -430,13 +429,6 @@ class Ads extends \yii\db\ActiveRecord
                 }
             }
         }
-        $city_found = null;
-        $prepend_str = "/";
-        if(Yii::$app->location->city){
-            $prepend_str = Yii::$app->location->city->domain."/";
-        }else if(Yii::$app->location->region){
-            $prepend_str = Yii::$app->location->region->domain."/";
-        }
-        return $prepend_str.$application_url."/";
+        return $application_url."/";
     }
 }
