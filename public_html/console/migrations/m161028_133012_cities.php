@@ -25,6 +25,7 @@ class m161028_133012_cities extends Migration
         ], $tableOptions);
 
         $this->createIndex('idx_c_regions_id', 'cities', 'regions_id');
+        $this->createIndex('idx_c_domain', 'cities', 'domain');
         $this->addForeignKey('fk_cities_region', 'cities', 'regions_id', 'regions', 'id', 'CASCADE', 'CASCADE');
 
         $this->addcommentOnColumn('cities','longitude','Долгота');

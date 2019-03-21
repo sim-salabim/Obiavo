@@ -94,3 +94,13 @@ function make_thumb($src, $dest, $desired_width, $ext) {
 function humanDate($time){
     return date("Y-m-d H:i:s", $time);
 }
+
+function generateRandomString($length = 5) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}

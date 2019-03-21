@@ -19,11 +19,13 @@ class m161028_122106_regions_text extends Migration
             'regions_id' => $this->integer()->unsigned()->notNull(),
             'languages_id' => $this->integer()->unsigned()->notNull(),
             'name' => $this->string()->notNull(),
+            'application_url' => $this->string()->null(),
             'short_name' => $this->string()->null(),
             'name_rp' => $this->string()->null(),
             'name_pp' => $this->string()->null(),
         ], $tableOptions);
 
+        $this->createIndex('idx_rt_application_url', 'regions_text', 'application_url');
         $this->createIndex('idx_rt_countries_id', 'regions_text', 'countries_id');
         $this->addForeignKey('fk_regions_text_region', 'regions_text', 'regions_id', 'regions', 'id', 'CASCADE', 'CASCADE');
 

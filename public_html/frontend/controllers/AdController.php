@@ -1,15 +1,22 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
 use common\models\AutopostingTasks;
+use common\models\CategoriesText;
 use common\models\Category;
 use common\models\City;
+use common\models\Country;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\Placement;
+use common\models\PlacementsText;
+use common\models\Region;
 use common\models\Settings;
+use frontend\components\Location;
+use frontend\helpers\LocationHelper;
 use frontend\models\LoginForm;
 use frontend\models\NewAdForm;
 use Yii;
@@ -19,6 +26,12 @@ use yii\web\HttpException;
 class AdController extends BaseController
 {
     public $params;
+    protected $seo_title;
+    protected $seo_h1;
+    protected $seo_h2;
+    protected $seo_text;
+    protected $seo_desc;
+    protected $seo_keywords;
     /**
      * @inheritdoc
      */
@@ -35,19 +48,57 @@ class AdController extends BaseController
      * @return string|\yii\web\Response
      */
     public function actionNewAdd(){
-        $cms = \common\models\Cms::getByTechname('new-ad');
-        Yii::$app->view->params['seo_h1'] = $cms->_text->seo_h1;
-        Yii::$app->view->params['seo_desc'] = $cms->_text->seo_desc;
-        Yii::$app->view->params['seo_keywords'] = $cms->_text->seo_keywords;
-        $this->setPageTitle($cms->_text->seo_title);
+        $url = Yii::$app->request->get('url');
+        $city = Yii::$app->request->get('city');
+        $this->setApplicationUrl($url);
+        $current_domain = Location::getCurrentDomain();
+        $place_name_rp = "";
+        if($city){//если мы находимся в городе или регионе
+            if($city != LocationHelper::getCurrentDomain()){
+                City::setCookieLocation($city);
+            }
+            if($city){
+                $this->setUrlForLogo($city);
+            }
+            $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+            if(!$place){
+                $place = Region::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+            }
+        }else{//если мы не находимся ни в городе ни в регионе
+            $place = Country::find()->where(['domain' => $current_domain])->one();
+        }
+        $place_name_rp = __('in')." ".$place->_text->name_rp;
+        $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
+        if(!$text){
+            $url_part = str_replace(Ads::DEFAULT_LINK."-","",$url );
+            if($url_part != $url){
+                $pl_app_url = PlacementsText::find()->where(['application_url' => $url_part])->one();
+                if($pl_app_url){
+                    $text = AddApplicationText::find()->where(['placements_default' => 1])->one();
+                }else{
+                    $text = CategoriesText::find()->where(['application_url' => $url_part])->one();
+                }
+            }
+            if(!$text) {
+                $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK])->one();
+            }
+        }
+
+        $this->seo_title = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_title);
+        $this->seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_h1);
+        $this->seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_desc);
+        $this->seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_keywords);
+        $this->seo_text = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text);
+        $library_search = new AdsSearch();
+        $library_search->setActive(true);
+        $list = Ads::getList($library_search);
+        $this->switchSeoKeys($list);
+        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords);
+        $this->setPageTitle($this->seo_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
             ->orderBy('order ASC, brand ASC, techname ASC')
             ->withText(['languages_id' => Language::getDefault()->id])
-            ->all();
-        $cities = City::find()
-            ->withText(['languages_id' => Language::getDefault()->id])
-           // ->where(['id' => '317'])// потом убрать, а пока для красоты
             ->all();
         $limit = Settings::find()->one()->categories_limit;
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
@@ -57,7 +108,6 @@ class AdController extends BaseController
             'categories_limit' => $limit,
             'placements' => $placements,
             'categories' => $categories,
-            'cities' => $cities,
         ]);
     }
 
@@ -65,27 +115,30 @@ class AdController extends BaseController
      * @return string|\yii\web\Response
      */
     public function actionAdd(){
-        if (Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
         $model = new NewAdForm();
         if (Yii::$app->request->isPost){
             // если инпут со сроком действия задизейблен, то сделаем +месяц
             $_POST['expiry_date'] = !isset($_POST['expiry_date']) ? 2592000 : $_POST['expiry_date'];
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(), '');
-            $model->cities_id = Yii::$app->user->identity->cities_id;// пока ид города оставим захардкоженным
+
+            if(Yii::$app->user->identity){
+                $model->cities_id = Yii::$app->user->identity->cities_id;
+            }
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $return = [];
             if(!$model->validate()) {
                 $errors = $model->getErrors();
-                foreach($errors as $key => $item){
-                    \Yii::$app->getSession()->setFlash($key.'_error', $item[0]);
-                }
-                \Yii::$app->getSession()->setFlash('model', $model);
-                return $this->redirect('/podat-obiavlenie/');
+                $return['message'] = NewAdForm::MESSAGE_FAILED;
+                $return['errors'] = (array)$errors;
+                $return['model'] = (array)$model;
+                return $return;
             }else{
+                $return['message'] = NewAdForm::MESSAGE_SUCCESS;
                 $model = $model->newAd();
+                $return['url'] = "$model->url";
                 AutopostingTasks::createTasks($model);
-                return $this->redirect("/$model->url/");
+                return $return;
             }
         } else {
             return $this->render('podat-obiavlenie');

@@ -27,7 +27,8 @@ class FilesController extends BaseController
 
         if (isset($_FILES[$fileName])) {
             $file = \yii\web\UploadedFile::getInstanceByName($fileName);
-            $hashed_name = md5(time() + \Yii::$app->user->identity->id + uniqid(rand(), true));
+            $user_id = (\Yii::$app->user->identity) ? \Yii::$app->user->identity->id : "no_user";
+            $hashed_name = md5(time() + $user_id + uniqid(rand(), true));
             if ($file->saveAs($uploadPath . '/' . $hashed_name)) {
                 $path = $_FILES['file']['name'];
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
@@ -38,7 +39,7 @@ class FilesController extends BaseController
                     $file->name = str_replace(".".$ext, '', $path);
                     $file->hash = $hashed_name;
                     $file->files_exts_id = $extObj->id;
-                    $file->users_id = \Yii::$app->user->identity->id;
+                    $file->users_id = (\Yii::$app->user->identity) ? \Yii::$app->user->identity->id : null;
                     $file->save();
                     echo \yii\helpers\Json::encode($file);
                 }

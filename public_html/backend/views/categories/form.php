@@ -43,6 +43,7 @@ $items = [
             'panel-title' => 'Сео данные',
             'attributes' => [
                 ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'URL','model'=>$category->_text],
+                ['name' => 'application_url','type' => Form::INPUT_TEXT,'label' => 'URL подачи','model'=>$category->_text],
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Name','model'=>$category->_text],
                 ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'Title','model'=>$category->_text],
                 ['name' => 'seo_h1','type' => Form::INPUT_TEXT,'label' => 'H1','model'=>$category->_text],

@@ -11,6 +11,7 @@ use Yii;
  * @property integer $regions_id
  * @property integer $languages_id
  * @property string $name
+ * @property string $application_url
  * @property string $name_rp
  * @property string $name_pp
  *
@@ -35,7 +36,7 @@ class RegionText extends \yii\db\ActiveRecord
         return [
             [['regions_id', 'name'], 'required'],
             [['regions_id', 'languages_id'], 'integer'],
-            [['name', 'name_rp', 'name_pp'], 'string', 'max' => 255],
+            [['name', 'name_rp', 'name_pp', 'application_url'], 'string', 'max' => 255],
             [['regions_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::className(), 'targetAttribute' => ['regions_id' => 'id']],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
             [['languages_id'],'default', 'value' => Language::getDefault()->id],
@@ -52,6 +53,7 @@ class RegionText extends \yii\db\ActiveRecord
             'regions_id' => 'Regions ID',
             'languages_id' => 'Languages ID',
             'name' => 'Name',
+            'application_url' => 'Url подачи',
             'name_rp' => 'Name Rp',
             'name_pp' => 'Name Pp',
         ];

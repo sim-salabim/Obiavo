@@ -26,6 +26,10 @@ class m161028_141150_ads extends Migration
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
+        $this->createIndex('idx_a_created_at', 'ads', 'created_at');
+        $this->createIndex('idx_a_title', 'ads', 'title');
+        $this->createIndex('idx_a_price', 'ads', 'price');
+        $this->createIndex('idx_a_active', 'ads', 'active');
         $this->createIndex('idx_a_cities_id', 'ads', 'cities_id');
         $this->addForeignKey('fk_ads_city', 'ads', 'cities_id', 'cities', 'id', 'CASCADE', 'CASCADE');
 

@@ -17,6 +17,7 @@ $items = [
             'panel-title' => 'Тексты',
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$region->_mttext],
+                ['name' => 'application_url','type' => Form::INPUT_TEXT,'label' => 'Url подачи','model'=>$region->_mttext],
                 ['name' => 'name_rp','type' => Form::INPUT_TEXT,'label' => 'Название в родительном падеже','model'=>$region->_mttext],
                 ['name' => 'name_pp','type' => Form::INPUT_TEXT,'label' => 'Название в предложном падеже','model'=>$region->_mttext],
             ]

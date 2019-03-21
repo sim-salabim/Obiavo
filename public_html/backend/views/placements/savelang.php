@@ -11,6 +11,7 @@ $items = [
             'attributes' => [
                 ['name' => 'name','type' => Form::INPUT_TEXT,'label' => 'Название','model'=>$placement->_mttext],
                 ['name' => 'url','type' => Form::INPUT_TEXT,'label' => 'Url','model'=>$placement->_mttext],
+                ['name' => 'application_url','type' => Form::INPUT_TEXT,'label' => 'Url подачи','model'=>$placement->_mttext],
             ]
         ],
     ]

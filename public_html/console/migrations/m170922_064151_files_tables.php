@@ -29,7 +29,7 @@ class m170922_064151_files_tables extends Migration
             'name' => $this->string()->notNull(),
             'hash' => $this->string()->notNull(),
             'files_exts_id' => $this->integer(10)->unsigned()->notNull(),
-            'users_id' => $this->integer(10)->unsigned()->notNull(),
+            'users_id' => $this->integer(10)->unsigned()->null()->defaultValue(null),
         ], $tableOptions);
 
         $this->createIndex('idx_fet_id', 'files_exts', 'files_exts_types_id');

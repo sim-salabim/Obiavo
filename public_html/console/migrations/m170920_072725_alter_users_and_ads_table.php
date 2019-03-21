@@ -11,6 +11,8 @@ class m170920_072725_alter_users_and_ads_table extends Migration
         $this->addColumn('ads', 'url', $this->string()->notNull()->unique());
         $this->addColumn('ads', 'placements_id', $this->integer(10)->unsigned()->notNull());
 
+        $this->createIndex('idx_a_expiry_date', 'ads', 'expiry_date');
+        $this->createIndex('idx_a_url', 'ads', 'url');
         $this->createIndex('idx_a_placements_id', 'ads', 'placements_id');
         $this->addForeignKey('fk_a_placement', 'ads', 'placements_id', 'placements', 'id', 'CASCADE', 'CASCADE');
     }

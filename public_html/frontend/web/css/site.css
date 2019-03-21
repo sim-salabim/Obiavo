@@ -302,7 +302,7 @@ ul.bs-autocomplete-menu a {
     color: #868e96!important;
 }
 .padding-bottom-10{
-    padding-bottom: 10px;
+    padding-bottom: 10px !important;
 }
 .padding-top-10{
     padding-top: 10px;
@@ -607,4 +607,19 @@ div pre.text_font{
 }
 div.padding-top-7{
     padding-top: 7px;
+}
+button.is_invalid{
+    border-color: #dc3545 !important;
+}
+.padding-bottom-0{
+    padding-bottom: 0px !important;
+}
+.margin-top-15{
+    margin-top: 15px;
+}
+.new-add-btn{
+    color: white !important;
+}
+.new-add-btn:hover{
+    color: white !important;
 }
