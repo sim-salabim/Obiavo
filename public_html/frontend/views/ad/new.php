@@ -325,6 +325,7 @@ if(isset($model) and $user){
             $(this).prop('disabled', true);
             $("[id*='_error']").text('');
             $(".is-invalid").removeClass('is-invalid');
+            $('#tree-category-select').removeClass('is_invalid');
             //TODO написать экшен, который будет сразу валидировать и сохранять если все ОК
             var user = false;
             <? if($user) {?>
