@@ -191,13 +191,13 @@ class NewAdForm extends Model
             $category_ad->ads_id = $adsModel->id;
             $category_ad->save();
         }
-//        if(!isset(\Yii::$app->user->identity)){
-//            if(isset($password)) {
-//                Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);
-//            }
-//        }else {
-//            Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
-//        }
+        if(!isset(\Yii::$app->user->identity)){
+            if(isset($password)) {
+                Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);
+            }
+        }else {
+            Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
+        }
         return $adsModel;
     }
 }
