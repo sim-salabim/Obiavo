@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\AddApplication;
 use common\models\Category;
 use common\models\CategoryPlacement;
 use common\models\City;
@@ -58,7 +59,7 @@ class SitemapController extends BaseController
         }
         Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         Yii::$app->response->headers->add('Content-Type', 'text/xml');
-        $categories = Yii::$app->cache->getOrSet("category-offset-".$offset,
+        $categories = Yii::$app->cache->getOrSet("category-offset-".$offset.$current_domain,
             function () use (
                 $offset
             ) {
@@ -77,7 +78,7 @@ class SitemapController extends BaseController
         $city_domain = $city->domain;
         $current_offset = Yii::$app->request->get('offset');
         $offset = $current_offset * 1000;
-        $links = Yii::$app->cache->getOrSet("category-placement-".$offset,
+        $links = Yii::$app->cache->getOrSet("category-placement-".$offset.$current_domain,
             function () use (
                 $offset
             ) {
@@ -99,7 +100,7 @@ class SitemapController extends BaseController
         Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         Yii::$app->response->headers->add('Content-Type', 'text/xml');
         $offset = $current_offset * 1000;
-        $links = Yii::$app->cache->getOrSet("category-placement-".$offset,
+        $links = Yii::$app->cache->getOrSet("category-placement-".$offset.$current_domain,
             function () use (
                 $offset
             ) {
@@ -126,7 +127,7 @@ class SitemapController extends BaseController
         Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         Yii::$app->response->headers->add('Content-Type', 'text/xml');
         $offset = --$current_index * 10000;
-        $categories = Yii::$app->cache->getOrSet("category-offset-".$offset,
+        $categories = Yii::$app->cache->getOrSet("category-offset-".$offset.$current_domain,
             function () use (
                 $offset
             ) {
@@ -135,4 +136,28 @@ class SitemapController extends BaseController
         return $this->renderPartial('idx', compact('categories', 'current_domain'));
     }
 
+    /**
+     * @return string
+     * @throws HttpException
+     */
+    public function actionApplyAdd(){
+        $current_domain = Yii::$app->location->country->domain;
+        $sm_index = SitemapIndex::find()->where(['link'=>'https://'.$current_domain.'/sitemap.apply_add.xml'])->one();
+        if(!$sm_index) throw new HttpException(404, 'Not Found');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->add('Content-Type', 'text/xml');
+        $links = AddApplication::find()->all();
+        $cities = Yii::$app->cache->getOrSet("add-apply-city".$current_domain,
+            function () {
+                return (new \yii\db\Query())
+                    ->select('*')
+                    ->from('cities')
+                    ->groupBy(['id'])
+                    ->where(['in', 'regions_id',
+                        (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => Yii::$app->location->country->id])])
+                    ->andWhere(['sitemap' => 1])
+                    ->all();
+            }, 8640000);
+        return $this->renderPartial('apply', compact('cities', 'links', 'current_domain'));
+    }
 }
