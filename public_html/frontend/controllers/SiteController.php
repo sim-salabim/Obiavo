@@ -23,6 +23,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\HttpException;
 
 
 class SiteController extends BaseController
@@ -82,11 +83,19 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        $url = str_replace('/','',Yii::$app->getRequest()->getUrl());
-        if($url != LocationHelper::getCurrentDomain()){
-            $splited = explode("?", $url);
-            City::setCookieLocation($splited[0]);
+        $domain = Yii::$app->request->get('domain');
+        if($domain){
+            $city = City::find()->where(['domain' => $domain])->one();
+            if($city and $city->region->country->id != Yii::$app->location->country->id){
+                throw new HttpException(404, 'Not Found');
+            }
+            $region = Region::find()->where(['domain' => $domain])->one();
+            if($region and $region->country->id != Yii::$app->location->country->id){
+                throw new HttpException(404, 'Not Found');
+            }
+            City::setCookieLocation($domain);
         }
+
         $region = isset($_COOKIE['region']) ? $_COOKIE['region'] : null;
         $city = isset($_COOKIE['city']) ? $_COOKIE['city'] : null;
         if($region){

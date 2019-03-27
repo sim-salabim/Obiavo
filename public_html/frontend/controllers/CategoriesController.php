@@ -8,6 +8,7 @@ use common\models\City;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\PlacementsText;
+use common\models\Region;
 use frontend\helpers\LocationHelper;
 use Yii;
 use yii\db\Query;
@@ -39,6 +40,16 @@ class CategoriesController extends BaseController
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
         $city = Yii::$app->request->get('city') ?: null;
+        if($city){
+            $city_found = City::find()->where(['domain' => $city])->one();
+            if($city_found and $city_found->region->country->id != Yii::$app->location->country->id){
+                throw new HttpException(404, 'Not Found');
+            }
+            $region_found = Region::find()->where(['domain' => $city])->one();
+            if($region_found and $region_found->country->id != Yii::$app->location->country->id){
+                throw new HttpException(404, 'Not Found');
+            }
+        }
         $action = Yii::$app->request->get('placement');
         if($city != LocationHelper::getCurrentDomain()){
             City::setCookieLocation($city);
