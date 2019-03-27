@@ -38,6 +38,12 @@ class SitemapCronController extends Controller
     }
 
     private function handleTask(){
+        $sm = new SitemapIndex();
+        $sm->link = "https://".$this->task->country->domain."/sitemap.apply_add.xml";
+        $sm->tasks_id = $this->task->id;
+        $sm->countries_id = $this->task->countries_id;
+        $sm->save();
+
         $ii = 0;
         for($i = 1;$i <= 148; $i++){
             $sm = new SitemapIndex();
