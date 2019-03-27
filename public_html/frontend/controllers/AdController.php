@@ -54,15 +54,21 @@ class AdController extends BaseController
         $current_domain = Location::getCurrentDomain();
         $place_name_rp = "";
         if($city){//если мы находимся в городе или регионе
+            $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+            if($place and Yii::$app->location->country->id != $place->region->country->id){
+                throw new HttpException(404, 'Not Found');
+            }
+            if(!$place){
+                $place = Region::find()->where(['domain' => Yii::$app->request->get('city')])->one();
+                if($place and Yii::$app->location->country->id != $place->country->id){
+                    throw new HttpException(404, 'Not Found');
+                }
+            }
             if($city != LocationHelper::getCurrentDomain()){
                 City::setCookieLocation($city);
             }
             if($city){
                 $this->setUrlForLogo($city);
-            }
-            $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
-            if(!$place){
-                $place = Region::find()->where(['domain' => Yii::$app->request->get('city')])->one();
             }
         }else{//если мы не находимся ни в городе ни в регионе
             $place = Country::find()->where(['domain' => $current_domain])->one();
