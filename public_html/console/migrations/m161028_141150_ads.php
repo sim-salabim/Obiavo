@@ -19,7 +19,7 @@ class m161028_141150_ads extends Migration
             'categories_id' => $this->integer()->unsigned()->notNull(),
             'title' => $this->string()->notNull(),
             'text' => $this->text()->notNull(),
-            'price' => $this->integer(),
+            'price' => $this->bigInteger(),
             'only_locally' => 'TINYINT(1) NOT NULL DEFAULT 0',
             'active' => $this->boolean()->defaultValue(true),
             'created_at' => $this->integer()->notNull(),

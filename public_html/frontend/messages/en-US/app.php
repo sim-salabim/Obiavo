@@ -180,4 +180,5 @@ return [
     'Contact info' => "Contact info",
     'Pick time range' => "Pick time range",
     'No categories picked'=>'No categories picked',
+    'Fields must not be more than 11 chars long'=>'Fields must not be more than 11 chars long',
 ];

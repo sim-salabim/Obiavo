@@ -128,9 +128,9 @@ class AdController extends BaseController
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(), '');
 
-            if(Yii::$app->user->identity){
-                $model->cities_id = Yii::$app->user->identity->cities_id;
-            }
+            //if(Yii::$app->user->identity){
+//                $model->cities_id = Yii::$app->user->identity->cities_id;
+            //}
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $return = [];
             if(!$model->validate()) {

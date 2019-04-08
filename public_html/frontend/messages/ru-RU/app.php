@@ -182,4 +182,5 @@ return [
     'Contact info' => "Контактная информация",
     'Pick time range' => "Выбрать период публикации",
     'No categories picked'=>'Не выбрана ни одна категория',
+    'Fields must not be more than 11 chars long'=>'Поле должно содержать не более 11 символов',
 ];

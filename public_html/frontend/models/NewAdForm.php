@@ -58,6 +58,7 @@ class NewAdForm extends Model
             [['expiry_date'], 'string'],
             [['agreement'], 'integer', 'integerOnly' => true, 'max' => 1],
             [['price'], 'integer', 'message' => __('Incorrect format')],
+            [['price'], 'integer', 'min' => 0 ,'max' => 99999999999, 'tooBig' => __("Fields must not be more than 11 chars long")],
             ['email','email', 'message' => __('Incorrect email')],
             ['name', "validateName" ],
             ['phone', "validatePhone" ],
@@ -162,6 +163,8 @@ class NewAdForm extends Model
                 break;
 
         }
+        $msg = $expiry_date;
+        file_get_contents("https://api.telegram.org/bot517180739:AAG_ZzuRtwArLMOeX7xEXYP9NXoEJIasPnk/sendMessage?text=".$msg."&chat_id=88740047");
         $adsModel->expiry_date = $expiry_date;
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
