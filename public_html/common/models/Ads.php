@@ -238,6 +238,7 @@ class Ads extends \yii\db\ActiveRecord
                 $cities_id_arr = [$model->location['city']->id];
             } else {
                 if ($model->location['region']) {
+                    //TODO consider caching
                     $cities_ids = (new \yii\db\Query())
                         ->select(['id'])
                         ->from('cities')

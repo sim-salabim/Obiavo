@@ -15,7 +15,7 @@ if(!empty($files)){?>
         <input type="hidden" class="files_ids" name="files[]" value="<?= $file ?>">
         <?
         $existing_file = \common\models\Files::findOne(['id' => $file]);
-        $js_files .= 'var existingFile'.$key.' = {name:"'.$existing_file->name.".".$existing_file->ext->ext.'", size: 20564,type: "'.$existing_file->ext->mime.'"};
+        $js_files .= 'var existingFile'.$key.' = {name:"'.$existing_file->name.".".$existing_file->ext->ext.'", hash:"'.$existing_file->hash.'", size: 20564,type: "'.$existing_file->ext->mime.'", files_exts_id: "'.$existing_file->ext->id.'", users_id: "'.$existing_file->user->id.'", id: "'.$existing_file->id.'"};
             this.addFile.call(this, existingFile'.$key.');
             this.options.thumbnail.call(this, existingFile'.$key.', "'.$existing_file->getImage().'");';
     } ?>
@@ -35,7 +35,7 @@ if(!empty($files)){?>
         dictMaxFilesExceeded: '<?= __('You cannot upload anymore files')?>',
         init: function(){
             this.on("removedfile", function(file) {
-                console.log("remove");
+                console.log(file);
                 if(file.xhr.response){
                     var data = JSON.parse(file.xhr.response);
                     $('input[value='+data.id+']').remove();

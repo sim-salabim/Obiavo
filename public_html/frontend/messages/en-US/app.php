@@ -180,4 +180,5 @@ return [
     'Contact info' => "Contact info",
     'Pick time range' => "Pick time range",
     'No categories picked'=>'No categories picked',
+    'Edit'=>'Edit',
 ];

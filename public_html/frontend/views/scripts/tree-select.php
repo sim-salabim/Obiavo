@@ -1,9 +1,24 @@
+<?
+/**
+ * categories - все категории не имеющие родителей
+ * categories_limit - int максимальное количество категорий для выбора
+ * if_user_logged - 1 либо 0
+ * selected_categories - массив с выбранными категориями
+ */
+?>
 <script>
 var categoriesLimit = <?= $categories_limit ?>;
 var selected_cats = [];
-
-<? foreach($selected_categories as $selected_cat){ ?>
-    selected_cats[] = '<?= $selected_cat ?>';
+var selected_cat_ids = [];
+<?
+    $selected_cat_ids = [];
+    foreach($selected_categories as $key => $selected_cat){
+        $selected_cat_ids[] = $selected_cat['id'];
+        ?>
+        selected_cats[<?= $key ?>] = [];
+        selected_cats[<?= $key ?>]['techname'] = '<?= $selected_cat['techname'] ?>';
+        selected_cats[<?= $key ?>]['id'] = '<?= $selected_cat['id'] ?>';
+        selected_cat_ids[<?= $key ?>] = '<?= $selected_cat['id'] ?>';
 <? } ?>
 var ifUserLogged = <?= $if_user_logged ?>;
 $(document).ready(function() {
@@ -27,7 +42,7 @@ $("#tree-container").dynatree({
         checkbox: true,
         children: [
         <? foreach($categories as $cat){?>
-    {title: "<?= $cat->techname ?>", isFolder: true, isLazy: true, key: "<?= $cat->id ?>"},
+    {title: "<?= $cat->techname ?>", isFolder: true, isLazy: true, key: "<?= $cat->id ?>", select: <? if(array_search($cat->id, $selected_cat_ids) !== false){?>true<?}else{?>false<?}?>},
 <? } ?>
 ],
 onLazyRead: function(dtnode){
@@ -47,7 +62,7 @@ onCreate: function(node, nodeSpan){
         node.select(true);
     }
 },
-title: "Lazy loading sample",
+title: "Подгрузка...",
     onSelect: function(flag, node){
     if(flag){
         var element = $("#checked-"+node.data.key);

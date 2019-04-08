@@ -155,7 +155,7 @@ class NewAdForm extends Model
                 $expiry_date = strtotime(" +3 years");
                 break;
             case Ads::DATE_RANGE_UNLIMITED :
-                $expiry_date = strtotime(" +100 years");
+                $expiry_date = strtotime(" +10 years");
                 break;
             default :
                 $expiry_date = strtotime(" +1 month");

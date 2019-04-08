@@ -99,12 +99,14 @@ class CategoriesController extends BaseController
             $this->seo_desc = $category->_text->seo_desc;
             $this->seo_keywords = $category->_text->seo_keywords;
         }
+        //TODO move this request to cache
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         $librarySearch = new AdsSearch();
         $librarySearch->setMainCategory($this->category->id);
         $librarySearch->setAction($action_id);
         $librarySearch->setActive(true);
+        $librarySearch->setAll(true);
         $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
         $librarySearch->setPage($page);
         if($sort AND $direction) {
