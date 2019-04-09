@@ -42,11 +42,11 @@
             <?= $ad->price . " ". __('rub') ?>
         </div>
         <div >
-            <button class="btn btn-success my-1 width-100 <? //if(time() < $ad->expiry_date and $ad->active){?>show-number-button<? //} ?>" >
-                <? if(!$show_phone_number){?>
+            <button class="btn btn-success my-1 width-100 <? if($ad->active){?>show-number-button<? } ?>" >
+                <? if(!$show_phone_number and $ad->active){?>
                     <?= __('Show phone number') ?><br/>
                     <?= cutText($ad->user->phone_number, 3, false)."-**-***-***" ?>
-                <? }else if(($show_phone_number AND $show_phone_number == 1) ){//and (time() < $ad->expiry_date and $ad->active)){ ?>
+                <? }else if(($show_phone_number AND $show_phone_number == 1 and $ad->active) ){//and (time() < $ad->expiry_date and $ad->active)){ ?>
                     <?= $ad->user->phone_number ?>
                 <? }else{ ?>
                     <?= __('Show phone number') ?><br/>
