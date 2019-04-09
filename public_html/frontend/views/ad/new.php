@@ -436,7 +436,6 @@ if($ad){
             data.price = $('#price').val();
             data.expiry_date = $('#expiry_date :selected').val();
             var url = $(this).hasClass('editing') ? '/edit-add/' : "/apply-add/";
-            console.log(url);
             $.ajax({
                 dataType: "json",
                 type: "POST",

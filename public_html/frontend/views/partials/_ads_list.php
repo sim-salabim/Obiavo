@@ -67,6 +67,9 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <? if($ad->active AND time() < $ad->expiry_date){ ?>
                                         <a id="active<?= $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
                                     <? }?>
+                                    <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id)){?>
+                                        <a id="edit<?= $ad->id?>" onclick="moveToEdit('<?= $ad->url ?>')"><?= __('Edit') ?></a>
+                                    <? } ?>
                                 </small>
                             <? }?>
                         <br/>
@@ -153,5 +156,9 @@ $root_url = isset($root_url) ? $root_url : null;
                 }
             }
         });
+    }
+
+    function moveToEdit(url){
+        window.location = '/redaktirovat/'+url+'/';
     }
 </script>
