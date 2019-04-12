@@ -16,7 +16,7 @@ return [
     'GET /moi-obiavleniya' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
     'POST /apply-add/' => 'ad/add',
-    'POST /edit-add/' => 'ad/edit-add',
+    'POST /edit-add/<id:([0-9\-]+)>/' => 'ad/edit-add',
 
     /**
      * Класс правила ГОРОД

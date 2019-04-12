@@ -183,4 +183,6 @@ return [
     'Pick time range' => "Выбрать период публикации",
     'No categories picked'=>'Не выбрана ни одна категория',
     'Edit'=>'Редактировать',
+    'Ad editing'=>'Редактирование объявления',
+    'Fields must not be more than 16 chars long'=>'Поле не может содержать более чем 16 символов',
 ];

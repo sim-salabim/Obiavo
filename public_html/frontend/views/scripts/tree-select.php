@@ -5,6 +5,9 @@
  * if_user_logged - 1 либо 0
  * selected_categories - массив с выбранными категориями
  */
+
+use common\models\Category;
+
 ?>
 <script>
 var categoriesLimit = <?= $categories_limit ?>;
@@ -12,8 +15,19 @@ var selected_cats = [];
 var selected_cat_ids = [];
 <?
     $selected_cat_ids = [];
+    $all_selected_parent_ids = [];
     foreach($selected_categories as $key => $selected_cat){
         $selected_cat_ids[] = $selected_cat['id'];
+        $c = Category::find()->where(['id'=>$selected_cat['id']])->one();
+        $parents = $c->getAllParentsExceptCurrent();
+
+        if(!empty($parents)){
+            foreach($parents as $parent){
+                if(!in_array($parent->id, $all_selected_parent_ids)){
+                    $all_selected_parent_ids[] = $parent->id;
+                }
+            }
+        }
         ?>
         selected_cats[<?= $key ?>] = [];
         selected_cats[<?= $key ?>]['techname'] = '<?= $selected_cat['techname'] ?>';
@@ -41,8 +55,48 @@ $(document).ready(function() {
 $("#tree-container").dynatree({
         checkbox: true,
         children: [
-        <? foreach($categories as $cat){?>
-    {title: "<?= $cat->techname ?>", isFolder: true, isLazy: true, key: "<?= $cat->id ?>", select: <? if(array_search($cat->id, $selected_cat_ids) !== false){?>true<?}else{?>false<?}?>},
+        <?
+            function getKidsString(Category $cat, array $all_selected_parent_ids, array $selected_cat_ids){
+                $children_string = '';
+                if(in_array($cat->id, $all_selected_parent_ids)){
+                    $kids = Category::find()->where(['parent_id'=>$cat->id, 'active'=>1])->orderBy('order ASC, brand ASC, techname ASC')->all();
+                    if($kids){
+                        $children_string .= 'children:[';
+                        foreach($kids as $k=>$kid){
+
+                            $has_kids = Category::find()->where(['parent_id'=>$kid->id, 'active'=>1])->one();
+                            $isLazy = $isFolder = $has_kids ? 'true' : 'false';
+                            $expand = $has_kids ? 'true' : 'false';
+                            $extra_kids = '';
+                            if(in_array($kid->id, $all_selected_parent_ids)){
+                                $extra_kids .= ','.getKidsString($kid, $all_selected_parent_ids, $selected_cat_ids);
+                            }else{
+                                $expand = 'false';
+                            }
+                            $select = 'false';
+                            if(in_array($kid->id, $selected_cat_ids)){
+                                $select = 'true';
+                                $expand = 'false';
+                            }
+                            $children_string .= "{title:'$kid->techname', expand: $expand, isFolder: $isFolder, select: $select,isLazy: $isLazy, key: '$kid->id' $extra_kids}";
+                            if(count($kids) > $k + 1){
+                                $children_string .= ",";
+                            }
+                        }
+                        $children_string .= "]";
+                    }
+                }
+                return $children_string;
+            }
+
+            foreach($categories as $cat){
+            $expand = 'false';
+            $kids_str = getKidsString($cat, $all_selected_parent_ids, $selected_cat_ids);
+            if($kids_str != ''){
+                $expand = 'true';
+            }
+        ?>
+    {title: "<?= $cat->techname ?>", expand: <?= $expand ?>,isFolder: true, isLazy: true, key: "<?= $cat->id ?>", select: <? if(array_search($cat->id, $selected_cat_ids) !== false){?>true<?}else{?>false<?}?>, <?= $kids_str ?>},
 <? } ?>
 ],
 onLazyRead: function(dtnode){

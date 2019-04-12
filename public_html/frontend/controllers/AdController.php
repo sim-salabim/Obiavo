@@ -183,6 +183,9 @@ class AdController extends BaseController
         if(!$ad or !$current_user or ($ad and $ad->users_id != $current_user->id and !$current_user->is_admin)){
             throw new HttpException(404, 'Not Found');
         }
+        $this->seo_title = $this->seo_h1 = __('Ad editing'). " \"".$ad->title."\"";
+        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords);
+        $this->setPageTitle($this->seo_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
             ->orderBy('order ASC, brand ASC, techname ASC')
@@ -200,11 +203,12 @@ class AdController extends BaseController
     }
 
     public function actionEditAdd(){
-        $model = new NewAdForm();
         if (Yii::$app->request->isPost){
+
             // если инпут со сроком действия задизейблен, то сделаем +месяц
             $_POST['expiry_date'] = !isset($_POST['expiry_date']) ? 2592000 : $_POST['expiry_date'];
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $model = new NewAdForm();
             $model->load(Yii::$app->request->post(), '');
             $model->cities_id = $model->cities_id;
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -229,6 +233,7 @@ class AdController extends BaseController
                 return $return;
             }else{
                 $return['message'] = NewAdForm::MESSAGE_SUCCESS;
+
                 $model = $model->newAd();
                 $return['url'] = "$model->url";
                 AutopostingTasks::createTasks($model);

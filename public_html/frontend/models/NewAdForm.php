@@ -20,6 +20,7 @@ use common\models\Files;
  */
 class NewAdForm extends Model
 {
+    public $id;
     public $email;
     public $name;
     public $phone;
@@ -61,6 +62,8 @@ class NewAdForm extends Model
             ['email','email', 'message' => __('Incorrect email')],
             ['name', "validateName" ],
             ['phone', "validatePhone" ],
+            ['phone', "string", 'max' => 16, 'tooLong' => __('Fields must not be more than 16 chars long') ],
+            ['id', "integer" ],
         ];
     }
     /**
@@ -69,6 +72,7 @@ class NewAdForm extends Model
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'cities_id' => 'City',
             'users_id' => 'User',
             'categories_id' => 'Category',
@@ -126,8 +130,10 @@ class NewAdForm extends Model
         }else{
             $user_id = \Yii::$app->user->identity->id;
         }
-        $adsModel = new Ads();
-        $adsModel->created_at = time();
+        $adsModel = $this->id ? Ads::findOne($this->id) : new Ads();
+        if(!$this->id) {
+            $adsModel->created_at = time();
+        }
         $adsModel->cities_id = $this->cities_id;
         $adsModel->users_id = $user_id;
         $adsModel->categories_id = $this->categories[0];
@@ -135,42 +141,57 @@ class NewAdForm extends Model
         $adsModel->text = $this->text;
         $adsModel->price = $this->price;
         $expiry_date = null;
+        $expiry_date = date_create(date('Y-m-d h:i:s',$adsModel->created_at));
         switch($this->expiry_date){
             case Ads::DATE_RANGE_ONE_MONTH :
-                $expiry_date = strtotime(" +1 month");
+                date_add($expiry_date, date_interval_create_from_date_string('1 month'));
                 break;
             case Ads::DATE_RANGE_THREE_MONTHS :
-                $expiry_date = strtotime(" +3 months");
+                date_add($expiry_date, date_interval_create_from_date_string('3 months'));
                 break;
             case Ads::DATE_RANGE_SIX_MONTHS :
-                $expiry_date = strtotime(" +6 months");
+                date_add($expiry_date, date_interval_create_from_date_string('6 months'));
                 break;
             case Ads::DATE_RANGE_ONE_YEAR :
-                $expiry_date = strtotime(" +1 year");
+                date_add($expiry_date, date_interval_create_from_date_string('1 year'));
                 break;
             case Ads::DATE_RANGE_TWO_YEARS :
-                $expiry_date = strtotime(" +2 years");
+                date_add($expiry_date, date_interval_create_from_date_string('2 years'));
                 break;
             case Ads::DATE_RANGE_THREE_YEARS :
-                $expiry_date = strtotime(" +3 years");
+                date_add($expiry_date, date_interval_create_from_date_string('3 years'));
                 break;
             case Ads::DATE_RANGE_UNLIMITED :
-                $expiry_date = strtotime(" +10 years");
+                date_add($expiry_date, date_interval_create_from_date_string('20 years'));
                 break;
             default :
-                $expiry_date = strtotime(" +1 month");
+                date_add($expiry_date, date_interval_create_from_date_string('1 month'));
                 break;
 
         }
+        $expiry_date = strtotime(date_format($expiry_date, 'Y-m-d h:i:s'));
         $adsModel->expiry_date = $expiry_date;
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
         $adsModel->url = TransliterationHelper::transliterate($this->title)."-".$adsModel->id;
+        $adsModel->updated_at = time();
         $adsModel->save();
+
         if(isset($_POST['files'])) {
             Files::linkFilesToModel($_POST['files'], $adsModel);
         }
+        if($this->id){//если это редактирование, то удалим все связки с категориями что бы после перезаписать
+            $ac = AdCategory::find()->where(['ads_id'=>$this->id])->all();
+            foreach($ac as $i){
+                $i->delete();
+            }
+            $ca = CategoryAd::find()->where(['ads_id'=>$this->id])->all();
+            foreach($ca as $i){
+                $i->delete();
+            }
+        }
+
         $parents_arr = [];
         foreach($this->categories as $k => $cat){
             $category_model = Category::find()->where(['id'=>$cat])->one();
@@ -196,7 +217,9 @@ class NewAdForm extends Model
                 Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);
             }
         }else {
-            Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
+            if(!$this->id) {
+                Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
+            }
         }
         return $adsModel;
     }

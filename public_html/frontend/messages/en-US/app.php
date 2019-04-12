@@ -181,4 +181,6 @@ return [
     'Pick time range' => "Pick time range",
     'No categories picked'=>'No categories picked',
     'Edit'=>'Edit',
+    'Ad editing'=>'Ad editing',
+    'Fields must not be more than 16 chars long'=>'Fields must not be more than 16 chars long',
 ];

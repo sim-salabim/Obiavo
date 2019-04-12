@@ -623,3 +623,11 @@ button.is_invalid{
 .new-add-btn:hover{
     color: white !important;
 }
+button.edit-btn{
+    background: #df4253;
+    border-color:#df4253;
+}
+button.edit-btn:hover{
+    background: #d33444;
+    border-color:#d33444;
+}

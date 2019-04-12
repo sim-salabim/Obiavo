@@ -200,14 +200,15 @@ if($ad){
             <p id="no-cats-picked">
                 <? if(empty($selected_categories)){ ?>
                 <?= __('No categories picked') ?>
-                <? }else{
-                    foreach($selected_categories as $selected_cat){
-                    ?>
-                        <span id="checked-<?= $selected_cat['id'] ?>" class="js_tree_el"><input type="hidden" name="categories[]" value="<?= $selected_cat['id'] ?>" class="js_tree_el"><?= $selected_cat['techname'] ?> <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-<?= $selected_cat['id'] ?>" onclick="closeCheckedAndTree(<?= $selected_cat['id'] ?>)"></i></span>
-                        <br class="js_tree_el">
-                <?  }
-                    } ?>
+                <? } ?>
             </p>
+            <? if(!empty($selected_categories)){
+            foreach($selected_categories as $selected_cat){
+            ?>
+            <span id="checked-<?= $selected_cat['id'] ?>" class="js_tree_el"><input type="hidden" name="categories[]" value="<?= $selected_cat['id'] ?>" class="js_tree_el"><?= $selected_cat['techname'] ?> <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-<?= $selected_cat['id'] ?>" onclick="closeCheckedAndTree(<?= $selected_cat['id'] ?>)"></i></span>
+            <br class="js_tree_el">
+            <?  }
+             } ?>
         </div>
         <hr class="width-100">
         <?= $this->render('/scripts/tree-select', ['categories' => $categories, 'categories_limit' => $categories_limit, "if_user_logged" => $if_user_logged,
@@ -256,26 +257,52 @@ if($ad){
             <?
                 $validity = null;
                 if($ad){
-                    $period = $ad->expiry_date - $ad->created_at;
-                    if($period <= 2592000){ //месяц в секах
+                    $created_at_mnth = date('n',$ad->created_at);
+                    $created_at_yr = date('Y',$ad->created_at);
+                    $exp_date_mnth = date('n',$ad->expiry_date);
+                    $exp_date_yr = date('Y',$ad->expiry_date);
+                    if(//если expiry_date 1 месяц
+                        ($created_at_yr == $exp_date_yr and $exp_date_mnth - $created_at_mnth == 1) or
+                        ($created_at_yr < $exp_date_yr and $exp_date_mnth == 12 and $created_at_mnth == 1)
+                    ){
                         $validity = \common\models\Ads::DATE_RANGE_ONE_MONTH;
                     }
-                    if($period > 2592000 and $period <= 7776000){
+                    if(
+                        ($created_at_yr == $exp_date_yr and $exp_date_mnth - $created_at_mnth == 3) or
+                        ($created_at_yr < $exp_date_yr and ($exp_date_mnth == 12 and $created_at_mnth == 3) or
+                            ($exp_date_mnth == 11 and $created_at_mnth == 2) or
+                            ($exp_date_mnth == 10 and $created_at_mnth == 1)
+                        )
+                    ){//если expiry_date 3 месяца
                         $validity = \common\models\Ads::DATE_RANGE_THREE_MONTHS;
                     }
-                    if($period > 7776000 and $period <= 15552000){
+                    if(
+                        ($created_at_yr == $exp_date_yr and $exp_date_mnth - $created_at_mnth == 6) or
+                        ($created_at_yr < $exp_date_yr and
+                            ($exp_date_mnth == 12 and $created_at_mnth == 6) or
+                            ($exp_date_mnth == 11 and $created_at_mnth == 5) or
+                            ($exp_date_mnth == 10 and $created_at_mnth == 4) or
+                            ($exp_date_mnth == 9 and $created_at_mnth == 3) or
+                            ($exp_date_mnth == 8 and $created_at_mnth == 2) or
+                            ($exp_date_mnth == 7 and $created_at_mnth == 1)
+                        )
+                    ){//если expiry_date 6 месяцев
                         $validity = \common\models\Ads::DATE_RANGE_SIX_MONTHS;
                     }
-                    if($period > 15552000 and $period <= 31536000){
+                    //если expiry_date 1 год
+                    if($exp_date_yr - $created_at_yr == 1 and $created_at_mnth == $exp_date_mnth){
                         $validity = \common\models\Ads::DATE_RANGE_ONE_YEAR;
                     }
-                    if($period > 31536000 and $period <= 63072000){
+                    //если expiry_date 2 года
+                    if($exp_date_yr - $created_at_yr == 2 and $created_at_mnth == $exp_date_mnth){
                         $validity = \common\models\Ads::DATE_RANGE_TWO_YEARS;
                     }
-                    if($period > 63072000 and $period <= 94608000){
+                    //если expiry_date 3 года
+                    if($exp_date_yr - $created_at_yr == 3 and $created_at_mnth == $exp_date_mnth){
                         $validity = \common\models\Ads::DATE_RANGE_THREE_YEARS;
                     }
-                    if($period > 94608000){
+                    //если expiry_date неорганичен
+                    if($exp_date_yr - $created_at_yr == 20 and $created_at_mnth == $exp_date_mnth){
                         $validity = \common\models\Ads::DATE_RANGE_UNLIMITED;
                     }
                 }
@@ -402,7 +429,6 @@ if($ad){
             $("[id*='_error']").text('');
             $(".is-invalid").removeClass('is-invalid');
             $('#tree-category-select').removeClass('is_invalid');
-            //TODO написать экшен, который будет сразу валидировать и сохранять если все ОК
             var user = false;
             <? if($user) {?>
                 user = true;
@@ -435,7 +461,7 @@ if($ad){
             data.text = $('#text').val();
             data.price = $('#price').val();
             data.expiry_date = $('#expiry_date :selected').val();
-            var url = $(this).hasClass('editing') ? '/edit-add/' : "/apply-add/";
+            var url = '<? if($ad){ echo '/edit-add/'.$ad->id."/"; }else{ echo '/apply-add/'; }?>';
             $.ajax({
                 dataType: "json",
                 type: "POST",

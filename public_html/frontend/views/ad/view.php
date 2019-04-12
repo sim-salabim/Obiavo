@@ -33,7 +33,7 @@
         <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id)){?>
         <div>
             <button
-                class="btn btn-success my-1 width-100"
+                class="btn btn-danger my-1 width-100 edit-btn"
                 id="edit_ad_button"
             ><?= __('Edit') ?></button>
         </div>
