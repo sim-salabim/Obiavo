@@ -54,7 +54,7 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
                                 </small>
                             <? } ?>
-                            <? if($user and $user->id == $ad->user->id) { ?>
+                            <? if(($user and $user->id == $ad->user->id) or ($user and $user->is_admin)) { ?>
                                 <? if(!$ad->active OR time() > $ad->expiry_date ){ ?>
                                     <small class="date_string">
                                         <a id="repost<?= $ad->id ?>" onclick="repostAd(<?= $ad->id ?>)"><?= __('Repost the ad') ?></a>

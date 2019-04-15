@@ -110,32 +110,35 @@ class NewAdForm extends Model
         }
     }
     public function newAd(){
-        if(!isset(\Yii::$app->user->identity)){
-            $user = User::find()->where(['email' => $this->email])->one();
-            if($user){
-                $user_id = $user->id;
-            }else {
-                $user = new User();
-                $user->cities_id = $this->cities_id;
-                $user->email = $this->email;
-                $name_arr = explode(" ", $this->name);
-                $user->first_name = $name_arr[0];
-                $user->last_name = (isset($name_arr[1])) ? $name_arr[1] : null;
-                $user->phone_number = $this->phone;
-                $password = generateRandomString();
-                $user->setPassword($password);
-                $user->save();
-                $user_id = $user->id;
-            }
-        }else{
-            $user_id = \Yii::$app->user->identity->id;
-        }
+
         $adsModel = $this->id ? Ads::findOne($this->id) : new Ads();
         if(!$this->id) {
             $adsModel->created_at = time();
         }
         $adsModel->cities_id = $this->cities_id;
-        $adsModel->users_id = $user_id;
+        if(!$this->id) {
+            if(!isset(\Yii::$app->user->identity)){
+                $user = User::find()->where(['email' => $this->email])->one();
+                if($user){
+                    $user_id = $user->id;
+                }else {
+                    $user = new User();
+                    $user->cities_id = $this->cities_id;
+                    $user->email = $this->email;
+                    $name_arr = explode(" ", $this->name);
+                    $user->first_name = $name_arr[0];
+                    $user->last_name = (isset($name_arr[1])) ? $name_arr[1] : null;
+                    $user->phone_number = $this->phone;
+                    $password = generateRandomString();
+                    $user->setPassword($password);
+                    $user->save();
+                    $user_id = $user->id;
+                }
+            }else{
+                $user_id = \Yii::$app->user->identity->id;
+            }
+            $adsModel->users_id = $user_id;
+        }
         $adsModel->categories_id = $this->categories[0];
         $adsModel->title = $this->title;
         $adsModel->text = $this->text;
