@@ -20,6 +20,7 @@ class m161028_141150_ads extends Migration
             'title' => $this->string()->notNull(),
             'text' => $this->text()->notNull(),
             'price' => $this->integer(),
+            'session_token' => $this->string()->null()->defaultValue(null),
             'only_locally' => 'TINYINT(1) NOT NULL DEFAULT 0',
             'active' => $this->boolean()->defaultValue(true),
             'created_at' => $this->integer()->notNull(),

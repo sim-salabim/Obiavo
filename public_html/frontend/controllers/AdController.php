@@ -140,6 +140,9 @@ class AdController extends BaseController
             }else{
                 $return['message'] = NewAdForm::MESSAGE_SUCCESS;
                 $model = $model->newAd();
+                if(!Yii::$app->user->identity){
+                    $return['session_token'] = $model->session_token;
+                }
                 $return['url'] = "$model->url";
                 AutopostingTasks::createTasks($model);
                 return $return;
@@ -180,7 +183,11 @@ class AdController extends BaseController
         $ad_url = Yii::$app->request->get('adUrl');
         $ad = Ads::find()->where(['url' => $ad_url])->one();
         $current_user = Yii::$app->user->identity;
-        if(!$ad or !$current_user or ($ad and $ad->users_id != $current_user->id and !$current_user->is_admin)){
+        if(
+            !$ad or
+            (!$current_user and (!isset($_COOKIE['session_token']) or $_COOKIE['session_token'] != $ad->session_token)) or
+            ($current_user and $ad and $ad->users_id != $current_user->id and !$current_user->is_admin)
+        ){
             throw new HttpException(404, 'Not Found');
         }
         $this->seo_title = $this->seo_h1 = __('Ad editing'). " \"".$ad->title."\"";

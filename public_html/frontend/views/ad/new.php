@@ -5,7 +5,9 @@ $selectCity = __('Select a city');
 $ad = isset($ad) ? $ad : null;
 ?>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
-    <? if($user) {?>
+    <? if($user or (isset($_COOKIE['session_token']) and $ad and $_COOKIE['session_token'] == $ad->session_token)) {
+        if(!$user and $ad) $user = $ad->user;
+        ?>
     <div class="row">
         <div class="col-12 sub-title">
             <?= __('_Contacts')?>
@@ -32,7 +34,9 @@ $ad = isset($ad) ? $ad : null;
         </div>
     </div>
     <hr>
-<? }else{?>
+<?
+    $user = null;
+    }else{?>
         <nav class="padding-bottom-10">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-main-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Без регистрации</a>
@@ -470,6 +474,12 @@ if($ad){
                 success:function(data){
                     // если все огонь
                     if(data.message == '<?= \frontend\models\NewAdForm::MESSAGE_SUCCESS?>'){
+                        if(data.session_token){
+                            var date = new Date(0);
+                            document.cookie = "session_token=; path=/; expires=" + date.toUTCString();
+
+                            document.cookie = "session_token="+data.session_token+"; path=/ ";
+                        }
                         window.location.replace(window.location.origin+"/"+data.url+"/");
                     }
                     //если НЕ все огонь

@@ -30,7 +30,7 @@
         <? if(time() >= $ad->expiry_date or !$ad->active){?>
 <!--            <p>--><?//= __('Ad is inactive since')." ".$ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION).". ".__("All ads contacts are blocked.") ?><!--</p>-->
         <? } ?>
-        <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id)){?>
+        <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)){?>
         <div>
             <button
                 class="btn btn-danger my-1 width-100 edit-btn"

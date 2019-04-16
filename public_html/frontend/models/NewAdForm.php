@@ -133,6 +133,8 @@ class NewAdForm extends Model
                     $user->setPassword($password);
                     $user->save();
                     $user_id = $user->id;
+                    $adsModel->session_token = base64_encode(time()."-".$this->email);
+
                 }
             }else{
                 $user_id = \Yii::$app->user->identity->id;
