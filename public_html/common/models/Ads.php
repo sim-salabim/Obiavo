@@ -15,6 +15,7 @@ use Yii;
  * @property integer $categories_id
  * @property string $title
  * @property string $text
+ * @property string $session_token
  * @property boolean $only_locally
  * @property boolean $active
  * @property int $price
@@ -62,8 +63,9 @@ class Ads extends \yii\db\ActiveRecord
     {
         return [
             [['cities_id', 'users_id', 'categories_id'], 'required'],
-            [['title', ], 'string', 'max' => 100],
-            [['text', ], 'string', 'max' => 1000],
+            [['title' ], 'string', 'max' => 100],
+            [['text' ], 'string', 'max' => 1000],
+            [['session_token' ], 'string'],
             [['only_locally', 'active'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
@@ -238,6 +240,7 @@ class Ads extends \yii\db\ActiveRecord
                 $cities_id_arr = [$model->location['city']->id];
             } else {
                 if ($model->location['region']) {
+                    //TODO consider caching
                     $cities_ids = (new \yii\db\Query())
                         ->select(['id'])
                         ->from('cities')

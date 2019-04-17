@@ -28,17 +28,25 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 nonpadding-left-items-media">
         <? if(time() >= $ad->expiry_date or !$ad->active){?>
-            <p><?= __('Ad is inactive since')." ".$ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION).". ".__("All ads contacts are blocked.") ?></p>
+<!--            <p>--><?//= __('Ad is inactive since')." ".$ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION).". ".__("All ads contacts are blocked.") ?><!--</p>-->
+        <? } ?>
+        <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)){?>
+        <div>
+            <button
+                class="btn btn-danger my-1 width-100 edit-btn"
+                id="edit_ad_button"
+            ><?= __('Edit') ?></button>
+        </div>
         <? } ?>
         <div class="price-title">
             <?= $ad->price . " ". __('rub') ?>
         </div>
         <div >
-            <button class="btn btn-success my-1 width-100 <? if(time() < $ad->expiry_date and $ad->active){?>show-number-button<? } ?>" >
-                <? if(!$show_phone_number){?>
+            <button class="btn btn-success my-1 width-100 <? if($ad->active){?>show-number-button<? } ?>" >
+                <? if(!$show_phone_number and $ad->active){?>
                     <?= __('Show phone number') ?><br/>
                     <?= cutText($ad->user->phone_number, 3, false)."-**-***-***" ?>
-                <? }else if(($show_phone_number AND $show_phone_number == 1) and (time() < $ad->expiry_date and $ad->active)){ ?>
+                <? }else if(($show_phone_number AND $show_phone_number == 1 and $ad->active) ){//and (time() < $ad->expiry_date and $ad->active)){ ?>
                     <?= $ad->user->phone_number ?>
                 <? }else{ ?>
                     <?= __('Show phone number') ?><br/>
@@ -68,6 +76,9 @@
         $('#<?= $id ?>').carousel()
         $('.show-number-button').bind('click', function(){
             window.location.href = window.location.href.split('?')[0] + '?show_phone_number=1';
+        });
+        $('#edit_ad_button').bind('click', function(){
+            window.location = '/redaktirovat/<?= $ad->url ?>/';
         });
     });
 </script>

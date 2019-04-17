@@ -54,19 +54,22 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
                                 </small>
                             <? } ?>
-                            <? if($user and $user->id == $ad->user->id) { ?>
-                                <? if(!$ad->active OR time() > $ad->expiry_date ){ ?>
+                            <? if(($user and $user->id == $ad->user->id) or ($user and $user->is_admin) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)) { ?>
+                                <? if(!$ad->active OR time() > $ad->expiry_date  and ($user and $user->id == $ad->user->id)){ ?>
                                     <small class="date_string">
                                         <a id="repost<?= $ad->id ?>" onclick="repostAd(<?= $ad->id ?>)"><?= __('Repost the ad') ?></a>
                                     </small>
                                 <? } ?>
                                 <small class="date_string">
-                                    <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date){ ?>
+                                    <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date and ($user and $user->id == $ad->user->id)){ ?>
                                         <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                     <? } ?>
-                                    <? if($ad->active AND time() < $ad->expiry_date){ ?>
+                                    <? if($ad->active AND time() < $ad->expiry_date and ($user and $user->id == $ad->user->id)){ ?>
                                         <a id="active<?= $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
                                     <? }?>
+                                    <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)){?>
+                                        <a id="edit<?= $ad->id?>" onclick="moveToEdit('<?= $ad->url ?>')"><?= __('Edit') ?></a>
+                                    <? } ?>
                                 </small>
                             <? }?>
                         <br/>
@@ -153,5 +156,9 @@ $root_url = isset($root_url) ? $root_url : null;
                 }
             }
         });
+    }
+
+    function moveToEdit(url){
+        window.location = '/redaktirovat/'+url+'/';
     }
 </script>

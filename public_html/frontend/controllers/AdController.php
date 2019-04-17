@@ -128,9 +128,7 @@ class AdController extends BaseController
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $model->load(Yii::$app->request->post(), '');
 
-            //if(Yii::$app->user->identity){
-//                $model->cities_id = Yii::$app->user->identity->cities_id;
-            //}
+            $model->cities_id = $model->cities_id;
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $return = [];
             if(!$model->validate()) {
@@ -142,6 +140,9 @@ class AdController extends BaseController
             }else{
                 $return['message'] = NewAdForm::MESSAGE_SUCCESS;
                 $model = $model->newAd();
+                if(!Yii::$app->user->identity){
+                    $return['session_token'] = $model->session_token;
+                }
                 $return['url'] = "$model->url";
                 AutopostingTasks::createTasks($model);
                 return $return;
@@ -169,11 +170,90 @@ class AdController extends BaseController
         AdsView::eraseView($ad->id, Yii::$app->user->id);
         return $this->render('view', [
             'ad'   => $ad,
-            'show_phone_number' => (Yii::$app->request->get('show_phone_number') AND time() < $ad->expiry_date) ? Yii::$app->request->get('show_phone_number') : null,
+//            'show_phone_number' => (Yii::$app->request->get('show_phone_number') AND time() < $ad->expiry_date) ? Yii::$app->request->get('show_phone_number') : null,
+            'show_phone_number' => (Yii::$app->request->get('show_phone_number')) ? Yii::$app->request->get('show_phone_number') : null,
             'user' => Yii::$app->user->identity,
         ]);
     }
 
+    /**
+     * Редактирование обьявления
+     */
+    public function actionEdit(){
+        $ad_url = Yii::$app->request->get('adUrl');
+        $ad = Ads::find()->where(['url' => $ad_url])->one();
+        $current_user = Yii::$app->user->identity;
+        if(
+            !$ad or
+            (!$current_user and (!isset($_COOKIE['session_token']) or $_COOKIE['session_token'] != $ad->session_token)) or
+            ($current_user and $ad and $ad->users_id != $current_user->id and !$current_user->is_admin)
+        ){
+            throw new HttpException(404, 'Not Found');
+        }
+        $this->seo_title = $this->seo_h1 = __('Ad editing'). " \"".$ad->title."\"";
+        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords);
+        $this->setPageTitle($this->seo_title);
+        $categories = Category::find()
+            ->where(['parent_id' => NULL, 'active'=>1])
+            ->orderBy('order ASC, brand ASC, techname ASC')
+            ->withText(['languages_id' => Language::getDefault()->id])
+            ->all();
+        $limit = Settings::find()->one()->categories_limit;
+        $placements = Placement::find()->all();
+        return $this->render('new', [
+            'user'=>$current_user,
+            'categories'=>$categories,
+            'categories_limit'=>$limit,
+            'placements'=>$placements,
+            'ad'=>$ad
+            ]);
+    }
+
+    public function actionEditAdd(){
+        if (Yii::$app->request->isPost){
+
+            // если инпут со сроком действия задизейблен, то сделаем +месяц
+            $_POST['expiry_date'] = !isset($_POST['expiry_date']) ? 2592000 : $_POST['expiry_date'];
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $model = new NewAdForm();
+            $model->load(Yii::$app->request->post(), '');
+            $model->cities_id = $model->cities_id;
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $ad = Ads::find()->where(['id'=>$_POST['id']])->one();
+            if(!$ad){
+                Yii::$app->response->statusCode = 404;
+                $return['errors'] = (array)'Обьявление не найдено';
+                return  $return;
+            }
+
+            foreach($ad->files as $ad_file){
+                if(!in_array($ad_file->id, $_POST['files'])){
+                    $ad_file->deleteFile();
+                }
+            }
+            $return = [];
+            if(!$model->validate()) {
+                $errors = $model->getErrors();
+                $return['message'] = NewAdForm::MESSAGE_FAILED;
+                $return['errors'] = (array)$errors;
+                $return['model'] = (array)$model;
+                return $return;
+            }else{
+                $return['message'] = NewAdForm::MESSAGE_SUCCESS;
+
+                $model = $model->newAd();
+                $return['url'] = "$model->url";
+                AutopostingTasks::createTasks($model);
+                return $return;
+            }
+        } else {
+            return $this->render('podat-obiavlenie');
+        }
+    }
+
+    /** Используется для поиска обьявления
+     * @return string
+     */
     public function actionSearch(){
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');

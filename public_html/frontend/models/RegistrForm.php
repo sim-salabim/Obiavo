@@ -18,7 +18,7 @@ class RegistrForm extends Model
     public $phone_number;
     public $agreement;
     public $rememberMe = true;
-    const PHONE_NUMBER_MIN_LENGTH = 8;
+    const PHONE_NUMBER_MIN_LENGTH = 6;
 
     private $_user;
 

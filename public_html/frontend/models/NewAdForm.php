@@ -20,6 +20,7 @@ use common\models\Files;
  */
 class NewAdForm extends Model
 {
+    public $id;
     public $email;
     public $name;
     public $phone;
@@ -62,6 +63,8 @@ class NewAdForm extends Model
             ['email','email', 'message' => __('Incorrect email')],
             ['name', "validateName" ],
             ['phone', "validatePhone" ],
+            ['phone', "string", 'max' => 16, 'tooLong' => __('Fields must not be more than 16 chars long') ],
+            ['id', "integer" ],
         ];
     }
     /**
@@ -70,6 +73,7 @@ class NewAdForm extends Model
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'cities_id' => 'City',
             'users_id' => 'User',
             'categories_id' => 'Category',
@@ -107,73 +111,99 @@ class NewAdForm extends Model
         }
     }
     public function newAd(){
-        if(!isset(\Yii::$app->user->identity)){
-            $user = User::find()->where(['email' => $this->email])->one();
-            if($user){
-                $user_id = $user->id;
-            }else {
-                $user = new User();
-                $user->cities_id = $this->cities_id;
-                $user->email = $this->email;
-                $name_arr = explode(" ", $this->name);
-                $user->first_name = $name_arr[0];
-                $user->last_name = (isset($name_arr[1])) ? $name_arr[1] : null;
-                $user->phone_number = $this->phone;
-                $password = generateRandomString();
-                $user->setPassword($password);
-                $user->save();
-                $user_id = $user->id;
-            }
-        }else{
-            $user_id = \Yii::$app->user->identity->id;
+
+        $adsModel = $this->id ? Ads::findOne($this->id) : new Ads();
+        if(!$this->id) {
+            $adsModel->created_at = time();
         }
-        $adsModel = new Ads();
-        $adsModel->created_at = time();
         $adsModel->cities_id = $this->cities_id;
-        $adsModel->users_id = $user_id;
+        if(!$this->id) { //если нет ID значти это не редактирование, а создание обьявления
+            if(!isset(\Yii::$app->user->identity)){
+                $user = User::find()->where(['email' => $this->email])->one();
+                if($user){
+                    $user_id = $user->id;
+                }else {// если мы не находим юзера с таким емейлом, то создаем нового
+                    $user = new User();
+                    $user->cities_id = $this->cities_id;
+                    $user->email = $this->email;
+                    $name_arr = explode(" ", $this->name);
+                    $user->first_name = $name_arr[0];
+                    $user->last_name = (isset($name_arr[1])) ? $name_arr[1] : null;
+                    $user->phone_number = $this->phone;
+                    $password = generateRandomString();
+                    $user->setPassword($password);
+                    $user->save();
+                    $user_id = $user->id;
+                }
+                $ad_with_token = Ads::find()
+                    ->where(['users_id' => $user->id])
+                    ->andWhere(['not', ['session_token' => null]])
+                    ->one();
+                if($ad_with_token){ //если у этого неавторизованного юзера уже есть обьявление, то берем сессионый токен из него, для того чтоб он мог редактировать его не авотризуясь
+                    $adsModel->session_token = $ad_with_token->session_token;
+                }else{// если нет обьявления - значит генерим его
+                    $adsModel->session_token = base64_encode(time()."-".$this->email);
+                }
+            }else{
+                $user_id = \Yii::$app->user->identity->id;
+            }
+            $adsModel->users_id = $user_id;
+        }
         $adsModel->categories_id = $this->categories[0];
         $adsModel->title = $this->title;
         $adsModel->text = $this->text;
         $adsModel->price = $this->price;
-        $expiry_date = null;
+        $expiry_date = date_create(date('Y-m-d h:i:s',$adsModel->created_at));
         switch($this->expiry_date){
             case Ads::DATE_RANGE_ONE_MONTH :
-                $expiry_date = strtotime(" +1 month");
+                date_add($expiry_date, date_interval_create_from_date_string('1 month'));
                 break;
             case Ads::DATE_RANGE_THREE_MONTHS :
-                $expiry_date = strtotime(" +3 months");
+                date_add($expiry_date, date_interval_create_from_date_string('3 months'));
                 break;
             case Ads::DATE_RANGE_SIX_MONTHS :
-                $expiry_date = strtotime(" +6 months");
+                date_add($expiry_date, date_interval_create_from_date_string('6 months'));
                 break;
             case Ads::DATE_RANGE_ONE_YEAR :
-                $expiry_date = strtotime(" +1 year");
+                date_add($expiry_date, date_interval_create_from_date_string('1 year'));
                 break;
             case Ads::DATE_RANGE_TWO_YEARS :
-                $expiry_date = strtotime(" +2 years");
+                date_add($expiry_date, date_interval_create_from_date_string('2 years'));
                 break;
             case Ads::DATE_RANGE_THREE_YEARS :
-                $expiry_date = strtotime(" +3 years");
+                date_add($expiry_date, date_interval_create_from_date_string('3 years'));
                 break;
             case Ads::DATE_RANGE_UNLIMITED :
-                $expiry_date = strtotime(" +100 years");
+                date_add($expiry_date, date_interval_create_from_date_string('20 years'));
                 break;
             default :
-                $expiry_date = strtotime(" +1 month");
+                date_add($expiry_date, date_interval_create_from_date_string('1 month'));
                 break;
 
         }
-        $msg = $expiry_date;
-        file_get_contents("https://api.telegram.org/bot517180739:AAG_ZzuRtwArLMOeX7xEXYP9NXoEJIasPnk/sendMessage?text=".$msg."&chat_id=88740047");
+        $expiry_date = strtotime(date_format($expiry_date, 'Y-m-d h:i:s'));
         $adsModel->expiry_date = $expiry_date;
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
         $adsModel->url = TransliterationHelper::transliterate($this->title)."-".$adsModel->id;
+        $adsModel->updated_at = time();
         $adsModel->save();
+
         if(isset($_POST['files'])) {
             Files::linkFilesToModel($_POST['files'], $adsModel);
         }
+        if($this->id){//если это редактирование, то удалим все связки с категориями что бы после перезаписать
+            $ac = AdCategory::find()->where(['ads_id'=>$this->id])->all();
+            foreach($ac as $i){
+                $i->delete();
+            }
+            $ca = CategoryAd::find()->where(['ads_id'=>$this->id])->all();
+            foreach($ca as $i){
+                $i->delete();
+            }
+        }
+
         $parents_arr = [];
         foreach($this->categories as $k => $cat){
             $category_model = Category::find()->where(['id'=>$cat])->one();
@@ -199,7 +229,9 @@ class NewAdForm extends Model
                 Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);
             }
         }else {
-            Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
+            if(!$this->id) {
+                Mailer::send(Yii::$app->user->identity->email, __('Add successfully added.'), 'add-published', ['user' => Yii::$app->user->identity, 'add' => $adsModel, "fast" => false]);
+            }
         }
         return $adsModel;
     }

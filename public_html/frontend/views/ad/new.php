@@ -2,9 +2,12 @@
 <?
 $url = \yii\helpers\Url::toRoute('cities/search-cities-for-select');
 $selectCity = __('Select a city');
+$ad = isset($ad) ? $ad : null;
 ?>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
-    <? if($user) {?>
+    <? if($user or (isset($_COOKIE['session_token']) and $ad and $_COOKIE['session_token'] == $ad->session_token)) {
+        if(!$user and $ad) $user = $ad->user;
+        ?>
     <div class="row">
         <div class="col-12 sub-title">
             <?= __('_Contacts')?>
@@ -31,7 +34,9 @@ $selectCity = __('Select a city');
         </div>
     </div>
     <hr>
-<? }else{?>
+<?
+    $user = null;
+    }else{?>
         <nav class="padding-bottom-10">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-main-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Без регистрации</a>
@@ -135,11 +140,24 @@ $selectCity = __('Select a city');
 
 <?
 $selected_categories = [];
+if($ad){
+    $selected_categories[0]['techname'] = $ad->category->techname;
+    $selected_categories[0]['id'] = $ad->category->id;
+    if(!empty($ad->categories)) {
+        foreach ($ad->categories as $key => $c) {
+            $key += 1;
+            $selected_categories[$key]['techname'] = $c->techname;
+            $selected_categories[$key]['id'] = $c->id;
+        }
+    }
+}
 $model = Yii::$app->session->getFlash('model');
 $files = [];
 $if_user_logged = ($user) ? 1 : 0;
-if(isset($model) and $user){
-    $files = $model->files;
+if($ad){
+    foreach($ad->files as $file){
+        $files[] = $file->id;
+    }
 }
 ?>
 <form id="new-ad-form" method="post" enctype="multipart/form-data" action="/publish-add/">
@@ -183,7 +201,18 @@ if(isset($model) and $user){
         <hr class="width-100">
         <div class="col-12 sub-title padding-left0  " id="picked-cats-div" ><?= __('Picked categories') ?></div>
         <div id="category-append">
-            <p id="no-cats-picked"><?= __('No categories picked') ?></p>
+            <p id="no-cats-picked">
+                <? if(empty($selected_categories)){ ?>
+                <?= __('No categories picked') ?>
+                <? } ?>
+            </p>
+            <? if(!empty($selected_categories)){
+            foreach($selected_categories as $selected_cat){
+            ?>
+            <span id="checked-<?= $selected_cat['id'] ?>" class="js_tree_el"><input type="hidden" name="categories[]" value="<?= $selected_cat['id'] ?>" class="js_tree_el"><?= $selected_cat['techname'] ?> <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-<?= $selected_cat['id'] ?>" onclick="closeCheckedAndTree(<?= $selected_cat['id'] ?>)"></i></span>
+            <br class="js_tree_el">
+            <?  }
+             } ?>
         </div>
         <hr class="width-100">
         <?= $this->render('/scripts/tree-select', ['categories' => $categories, 'categories_limit' => $categories_limit, "if_user_logged" => $if_user_logged,
@@ -198,7 +227,7 @@ if(isset($model) and $user){
                 <? if($placements){
                     foreach ($placements as $pl){
                         ?>
-                        <option value="<?= $pl->id ?>" <? if(isset($model) and $model AND $pl->id == $model->placement_id){?>selected<?}?> ><?= $pl->_text->name ?></option>
+                        <option value="<?= $pl->id ?>" <? if($ad and $ad->placements_id == $pl->id){?>selected<?}?> ><?= $pl->_text->name ?></option>
                     <? }} ?>
             </select>
             <div class="invalid-feedback" id="placement_id_error"></div>
@@ -206,10 +235,15 @@ if(isset($model) and $user){
         <div class="form-group col-lg-12 col-sm-12 col-md-12 margin-bottom0">
             <div class="form-group validation-errors">
                 <div class="form-group">
+                    <?
+                    $selected_city = '';
+                    if($ad){
+                        $selected_city = $ad->city->_text->name;
+                    }?>
                     <input
                             class="form-control bs-autocomplete <?php if(Yii::$app->session->getFlash('cities_id_error')){?> is-invalid<?php }?>"
                             id="live-search-select"
-
+                            value="<?= $selected_city ?>"
                             placeholder="<?= $selectCity ?>"
                             type="text"
                             data-hidden_field_id="cities_id"
@@ -217,25 +251,92 @@ if(isset($model) and $user){
                             data-item_label="text"
                             autocomplete="off">
                         <div class="invalid-feedback" id="cities_id_error"></div>
-                    <input type="hidden" id="cities_id" name="cities_id" <? if(isset($model) AND $model->cities_id){?>
-                        value="<?= $model->cities_id ?>"
+                    <input type="hidden" id="cities_id" name="cities_id" <? if($ad){?>
+                        value="<?= $ad->city->id ?>"
                     <? }else{?> value=""<? } ?>>
                 </div>
             </div>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
+            <?
+                $validity = null;
+                if($ad){
+                    $created_at_mnth = date('n',$ad->created_at);
+                    $created_at_yr = date('Y',$ad->created_at);
+                    $exp_date_mnth = date('n',$ad->expiry_date);
+                    $exp_date_yr = date('Y',$ad->expiry_date);
+                    if(//если expiry_date 1 месяц
+                        ($created_at_yr == $exp_date_yr and $exp_date_mnth - $created_at_mnth == 1) or
+                        ($created_at_yr < $exp_date_yr and $exp_date_mnth == 12 and $created_at_mnth == 1)
+                    ){
+                        $validity = \common\models\Ads::DATE_RANGE_ONE_MONTH;
+                    }
+                    if(
+                        ($created_at_yr == $exp_date_yr and $exp_date_mnth - $created_at_mnth == 3) or
+                        ($created_at_yr < $exp_date_yr and ($exp_date_mnth == 12 and $created_at_mnth == 3) or
+                            ($exp_date_mnth == 11 and $created_at_mnth == 2) or
+                            ($exp_date_mnth == 10 and $created_at_mnth == 1)
+                        )
+                    ){//если expiry_date 3 месяца
+                        $validity = \common\models\Ads::DATE_RANGE_THREE_MONTHS;
+                    }
+                    if(
+                        ($created_at_yr == $exp_date_yr and $exp_date_mnth - $created_at_mnth == 6) or
+                        ($created_at_yr < $exp_date_yr and
+                            ($exp_date_mnth == 12 and $created_at_mnth == 6) or
+                            ($exp_date_mnth == 11 and $created_at_mnth == 5) or
+                            ($exp_date_mnth == 10 and $created_at_mnth == 4) or
+                            ($exp_date_mnth == 9 and $created_at_mnth == 3) or
+                            ($exp_date_mnth == 8 and $created_at_mnth == 2) or
+                            ($exp_date_mnth == 7 and $created_at_mnth == 1)
+                        )
+                    ){//если expiry_date 6 месяцев
+                        $validity = \common\models\Ads::DATE_RANGE_SIX_MONTHS;
+                    }
+                    //если expiry_date 1 год
+                    if($exp_date_yr - $created_at_yr == 1 and $created_at_mnth == $exp_date_mnth){
+                        $validity = \common\models\Ads::DATE_RANGE_ONE_YEAR;
+                    }
+                    //если expiry_date 2 года
+                    if($exp_date_yr - $created_at_yr == 2 and $created_at_mnth == $exp_date_mnth){
+                        $validity = \common\models\Ads::DATE_RANGE_TWO_YEARS;
+                    }
+                    //если expiry_date 3 года
+                    if($exp_date_yr - $created_at_yr == 3 and $created_at_mnth == $exp_date_mnth){
+                        $validity = \common\models\Ads::DATE_RANGE_THREE_YEARS;
+                    }
+                    //если expiry_date неорганичен
+                    if($exp_date_yr - $created_at_yr == 20 and $created_at_mnth == $exp_date_mnth){
+                        $validity = \common\models\Ads::DATE_RANGE_UNLIMITED;
+                    }
+                }
+            ?>
             <select
                 name="expiry_date"
                 id="expiry_date"
                 class="form-control ">
                 <option value="0"><?= __('Pick time range') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_ONE_MONTH ?>"><?= __('One month') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_THREE_MONTHS ?>"><?= __('Three months') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_SIX_MONTHS ?>"><?= __('Six months') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_ONE_YEAR ?>"><?= __('One year') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_TWO_YEARS ?>"><?= __('Two years') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_THREE_YEARS ?>"><?= __('Three years') ?></option>
-                <option value="<?= \common\models\Ads::DATE_RANGE_UNLIMITED ?>"><?= __('Unlimited') ?></option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_ONE_MONTH ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_ONE_MONTH){?> selected <? } ?>>
+                    <?= __('One month') ?>
+                </option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_THREE_MONTHS ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_THREE_MONTHS){?> selected <? } ?>>
+                    <?= __('Three months') ?>
+                </option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_SIX_MONTHS ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_SIX_MONTHS){?> selected <? } ?>>
+                    <?= __('Six months') ?>
+                </option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_ONE_YEAR ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_ONE_YEAR){?> selected <? } ?>>
+                    <?= __('One year') ?>
+                </option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_TWO_YEARS ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_TWO_YEARS){?> selected <? } ?>>
+                    <?= __('Two years') ?>
+                </option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_THREE_YEARS ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_THREE_YEARS){?> selected <? } ?>>
+                    <?= __('Three years') ?>
+                </option>
+                <option value="<?= \common\models\Ads::DATE_RANGE_UNLIMITED ?>" <? if($validity and $validity == \common\models\Ads::DATE_RANGE_UNLIMITED){?> selected <? } ?>>
+                    <?= __('Unlimited') ?>
+                </option>
             </select>
             <div class="invalid-feedback" id="expiry_date_error"></div>
         </div>
@@ -248,8 +349,8 @@ if(isset($model) and $user){
                 type="text"
                 name="title"
                 id="title"
-                <? if($user AND isset($model) AND $model->title){?>
-                    value="<?= $model->title ?>"
+                <? if($ad){?>
+                    value="<?= $ad->title ?>"
                 <? }?>
                 placeholder="<?= __('Title')?>">
                     <div class="invalid-feedback" id="title_error"></div>
@@ -261,7 +362,7 @@ if(isset($model) and $user){
                 placeholder="<?= __('Write your ad\'s text') ?>"
                 name="text"
                 id="text"
-            ><? if($user AND isset($model) AND $model->text){?><?= $model->text ?><? }?></textarea>
+            ><? if($ad){?><?= $ad->text ?><? }?></textarea>
             <div class="invalid-feedback" id="text_error"></div>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
@@ -270,8 +371,8 @@ if(isset($model) and $user){
                 type="text"
                 name="price"
                 id="price"
-                <? if($user AND isset($model) AND $model->price){?>
-                value="<?= $model->price ?>"
+                <? if($ad){?>
+                value="<?= $ad->price ?>"
                 <? }?>
                 placeholder="<?= __('Price')?>">
             <div class="invalid-feedback" id="price_error"></div>
@@ -281,6 +382,7 @@ if(isset($model) and $user){
         </div>
         <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
     </div>
+    <? if(!$ad){ ?>
     <div class="form-group validation-errors">
         <label id="agreement-label">
             <input
@@ -288,15 +390,20 @@ if(isset($model) and $user){
                     name="agreement"
                     type="checkbox"> <?= __('Publishing you\'re accepting') ?> <a id="agreement-link" href="/polzovatelskoe-soglashenie/" target="_blank"><?= __('User agreement')?></a> <?= __('and agree with') ?> <a id="policy-link" href="/policy/" target="_blank"><?= __('Privacy policy') ?></a>.</label>
     </div>
-        <div class="invalid-feedback dispaly-block" id="agreement_error"></div>
+    <div class="invalid-feedback dispaly-block" id="agreement_error"></div>
+    <? } ?>
     <hr>
     <div class="row">
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
             <button
-                class="btn btn-success senddata col-lg-2 col-md-6 col-sm-12 publish-button"
+                class="btn btn-success senddata col-lg-2 col-md-6 col-sm-12 publish-button <? if($ad){?>editing<? } ?>"
             id="publication-button"
             >
-                <?= __('Publish') ?>
+                <? if(!$ad){
+                    echo __('Publish');
+                }else{
+                    echo __('Edit');
+                }  ?>
             </button>
         </div>
     </div>
@@ -326,7 +433,6 @@ if(isset($model) and $user){
             $("[id*='_error']").text('');
             $(".is-invalid").removeClass('is-invalid');
             $('#tree-category-select').removeClass('is_invalid');
-            //TODO написать экшен, который будет сразу валидировать и сохранять если все ОК
             var user = false;
             <? if($user) {?>
                 user = true;
@@ -341,6 +447,10 @@ if(isset($model) and $user){
             if($('#agreement').is(":checked")){
                 data.agreement = 1;
             }
+            <? if($ad){ ?>
+                data.id = <?= $ad->id ?>;
+                data.agreement = 1;
+            <? } ?>
             data.categories = [];
             $('input[name*=categories]').each(function( index ) {
                 data.categories[index] = $(this).val();
@@ -355,21 +465,26 @@ if(isset($model) and $user){
             data.text = $('#text').val();
             data.price = $('#price').val();
             data.expiry_date = $('#expiry_date :selected').val();
-            console.log(data);
+            var url = '<? if($ad){ echo '/edit-add/'.$ad->id."/"; }else{ echo '/apply-add/'; }?>';
             $.ajax({
                 dataType: "json",
                 type: "POST",
-                url: "/apply-add/",
+                url: url,
                 data: data,
                 success:function(data){
                     // если все огонь
                     if(data.message == '<?= \frontend\models\NewAdForm::MESSAGE_SUCCESS?>'){
+                        if(data.session_token){
+                            var date = new Date(0);
+                            document.cookie = "session_token=; path=/; expires=" + date.toUTCString();
+
+                            document.cookie = "session_token="+data.session_token+"; path=/ ";
+                        }
                         window.location.replace(window.location.origin+"/"+data.url+"/");
                     }
                     //если НЕ все огонь
                     if(data.message == '<?= \frontend\models\NewAdForm::MESSAGE_FAILED?>'){
                         Object.keys(data.errors).map(function(key) {
-                            console.log()
                             $('#'+key+'_error').show();
                             $('#'+key).addClass('is-invalid');
                             $('#'+key+'_error').text(data.errors[key]);

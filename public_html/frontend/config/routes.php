@@ -16,6 +16,7 @@ return [
     'GET /moi-obiavleniya' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
     'POST /apply-add/' => 'ad/add',
+    'POST /edit-add/<id:([0-9\-]+)>/' => 'ad/edit-add',
 
     /**
      * Класс правила ГОРОД
@@ -58,6 +59,11 @@ return [
         'class' => 'frontend\rules\url\AdUrlRule',
         'pattern' => '/<adUrl:([0-9a-zA-Z\-]+)>/',
         'route' => 'ad/view',
+    ],
+    [
+    //    'class' => 'frontend\rules\url\AdUrlRule',
+        'pattern' => '/redaktirovat/<adUrl:([0-9a-zA-Z\-]+)>/',
+        'route' => 'ad/edit',
     ],
     [
         'class' => 'frontend\rules\url\AdUrlRule',

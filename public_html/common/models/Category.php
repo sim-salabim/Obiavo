@@ -329,6 +329,22 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
+     * Найти всех родителей категории  кроме текущей
+     */
+    public function getAllParentsExceptCurrent()
+    {
+        $parent = $this;
+        $parents = [];
+        while ($parent) {
+            $parent = $parent->getParent()->one();
+            if($parent) {
+                $parents[] = $parent;
+            }
+        }
+        return $parents;
+    }
+
+    /**
      * Найти всех родителей пункта меню
      */
     public function getBreadcrumbs()
