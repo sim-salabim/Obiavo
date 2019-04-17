@@ -342,7 +342,6 @@ class Ads extends \yii\db\ActiveRecord
             ->andWhere($add_expired_conditions)
             ->andWhere($add_active_conditions)
             ->andWhere($add_like_conditions)
-            ->andWhere($add_location_conditions)
             ->count();
 
         $price_range =  (new \yii\db\Query())
