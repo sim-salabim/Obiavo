@@ -134,6 +134,7 @@ class SiteController extends BaseController
         $librarySearch = new AdsSearch();
         $librarySearch->setActive(true);
         $librarySearch->setConsiderLocation(true);
+        $librarySearch->setAll(true);
         $ads_model = new Ads();
         $ads_list = $ads_model->getList($librarySearch, false);
         $this->switchSeoKeys($ads_list);

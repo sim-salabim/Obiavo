@@ -230,6 +230,10 @@ class Ads extends \yii\db\ActiveRecord
                     '>', 'expiry_date', time()
                 ];
             }
+        }else{
+            $expired_conditions = [
+                '<>', 'expiry_date', time()
+            ];
         }
         if($model->query) $like_conditions = [
             'like', 'title' , "$model->query"
