@@ -243,7 +243,6 @@ class AdController extends BaseController
 
                 $model = $model->newAd();
                 $return['url'] = "$model->url";
-                AutopostingTasks::createTasks($model);
                 return $return;
             }
         } else {
