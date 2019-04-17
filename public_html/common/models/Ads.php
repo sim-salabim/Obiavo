@@ -342,7 +342,6 @@ class Ads extends \yii\db\ActiveRecord
             ->where($additional_category_conditions)
             ->andWhere($location_conditions)
             ->andWhere($user_conditions)
-            ->andWhere($active_conditions)
             ->andWhere($add_expired_conditions)
             ->andWhere($add_active_conditions)
             ->andWhere($add_like_conditions)
