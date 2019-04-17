@@ -116,12 +116,12 @@ class NewAdForm extends Model
             $adsModel->created_at = time();
         }
         $adsModel->cities_id = $this->cities_id;
-        if(!$this->id) {
+        if(!$this->id) { //если нет ID значти это не редактирование, а создание обьявления
             if(!isset(\Yii::$app->user->identity)){
                 $user = User::find()->where(['email' => $this->email])->one();
                 if($user){
                     $user_id = $user->id;
-                }else {
+                }else {// если мы не находим юзера с таким емейлом, то создаем нового
                     $user = new User();
                     $user->cities_id = $this->cities_id;
                     $user->email = $this->email;
@@ -133,8 +133,15 @@ class NewAdForm extends Model
                     $user->setPassword($password);
                     $user->save();
                     $user_id = $user->id;
+                }
+                $ad_with_token = Ads::find()
+                    ->where(['users_id' => $user->id])
+                    ->andWhere(['not', ['session_token' => null]])
+                    ->one();
+                if($ad_with_token){ //если у этого неавторизованного юзера уже есть обьявление, то берем сессионый токен из него, для того чтоб он мог редактировать его не авотризуясь
+                    $adsModel->session_token = $ad_with_token->session_token;
+                }else{// если нет обьявления - значит генерим его
                     $adsModel->session_token = base64_encode(time()."-".$this->email);
-
                 }
             }else{
                 $user_id = \Yii::$app->user->identity->id;
