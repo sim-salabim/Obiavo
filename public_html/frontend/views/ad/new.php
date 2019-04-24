@@ -45,8 +45,8 @@ $ad = isset($ad) ? $ad : null;
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-login-tab">
-                <form class="form-horizontal" method="post" id="login-form">
-                    <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+                <form class="form-horizontal" method="post" id="auth-form">
+                    <input id="formtoken" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
                            value="<?=Yii::$app->request->csrfToken?>"/>
                     <!-- Email-->
                     <div class="form-group validation-errors ">
@@ -89,7 +89,7 @@ $ad = isset($ad) ? $ad : null;
                     </div>
                     <hr>
                     <div class="form-group">
-                        <button class="btn btn-success" data-input="#login-form"><?= __('Sign in') ?></button>
+                        <button class="btn btn-success" data-input="#auth-form"><?= __('Sign in') ?></button>
                     </div>
 
                 </form></div>

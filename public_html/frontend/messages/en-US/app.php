@@ -183,5 +183,7 @@ return [
     'Fields must not be more than 11 chars long'=>'Fields must not be more than 11 chars long',
     'Edit'=>'Edit',
     'Ad editing'=>'Ad editing',
+    'Ad'=>'Advertisement',
+    'Obiavo - advertisement site'=>'Obiavo - advertisement site',
     'Fields must not be more than 16 chars long'=>'Fields must not be more than 16 chars long',
 ];

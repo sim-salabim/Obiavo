@@ -35,7 +35,7 @@ $root_url = isset($root_url) ? $root_url : null;
         <? foreach($ads_search['items'] as $ad){?>
             <div class="col-lg-2 col-md-3 col-4 nonpadding-right image-div">
                 <? $avatar = $ad->avatar(true); ?>
-                <img class="img-fluid" src="<?= $avatar ?>" alt="<? if(strpos($avatar, 'placeholder') !== false){ echo __('No photo'); }else{ echo __('photo')." ".$ad->title; }?>">
+                <img class="img-fluid" src="<?= $avatar ?>" alt='<?= __('Ad')." \"".$ad->title."\"" ?>'>
             </div>
             <div class="col-lg-10 col-md-9 col-8 nonpadding-left-items">
                 <span><strong><a href="/<?= $ad->url() ?>" ><?= $ad->title ?></a></strong></span>
@@ -72,6 +72,7 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <? } ?>
                                 </small>
                             <? }?>
+                        </span>
                         <br/>
                     <? } else { ?>
                         <span>
@@ -84,7 +85,7 @@ $root_url = isset($root_url) ? $root_url : null;
                     <? } ?>
                 </div>
             </div>
-            <div class="col-12 placeholder"></div>
+    <div class="col-12 placeholder"><hr></div>
         <? } ?>
         <? if($library_search->limit < $ads_search['count']){?>
             <?= $this->render('/partials/_pagination.php',

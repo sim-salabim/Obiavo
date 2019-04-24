@@ -1,5 +1,6 @@
 <header class="header" id="main-header">
     <nav class="navbar navbar-expand navbar-light navbar-fixed-top bg-light">
+        <div class="container nav-container">
         <button class="navbar-toggler"
                 type="button"
                 onclick="openNav()"
@@ -18,7 +19,7 @@
                     </a>
                 </li>
                 <li>
-                    <img src="/logo.png" width="27" class="logo-img">
+                    <img src="/logo.png" width="27" alt="<?= __('Obiavo - advertisement site'); ?>" class="logo-img">
                     <a class="navbar-brand mx-2 root-url" href="<?= $location_domain ?>">
                         <?= ucfirst(Yii::$app->location->country->domain) ?>
                     </a>
@@ -81,13 +82,14 @@
 
             <a href="<?= $application_url ?>" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn">+ </a>
         </div>
+        </div>
     </nav>
 </header>
 <div  id="mySidenav">
     <ul class=" sidebar sidenav navbar-nav mr-auto">
         <?php if (Yii::$app->user->isGuest) { ?>
             <li><a href="<?= yii\helpers\Url::toRoute('/login') ?>" rel="nofollow"><?= __('Login') ?></a></li>
-            <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?> "rel="nofollow"><?= __('Registration') ?></a></li>
+            <li><a href="<?= yii\helpers\Url::toRoute('/registration') ?>" rel="nofollow"><?= __('Registration') ?></a></li>
         <?php } ?>
         <li><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>" rel="nofollow"><?= __('_Location') ?></a></li>
         <?php if (!Yii::$app->user->isGuest) { ?>

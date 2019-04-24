@@ -185,5 +185,7 @@ return [
     'Fields must not be more than 11 chars long'=>'Поле должно содержать не более 11 символов',
     'Edit'=>'Редактировать',
     'Ad editing'=>'Редактирование объявления',
+    'Ad'=>'Объявление',
+    'Obiavo - advertisement site'=>'Объяво - сайт объявлений',
     'Fields must not be more than 16 chars long'=>'Поле не может содержать более чем 16 символов',
 ];

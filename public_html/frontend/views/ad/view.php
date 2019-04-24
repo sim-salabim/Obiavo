@@ -7,7 +7,7 @@
                 <? if(count($ad->files)){ ?>
                     <? foreach($ad->files as $key => $image){ ?>
                         <div class="carousel-item <? if($key == 0){ ?> active<? } ?>">
-                            <img class="d-block img-fluid" src="<?= $image->getImage(false)?>">
+                            <img class="d-block img-fluid" alt="<?= $ad->title." - ".__('photo') ?>" src="<?= $image->getImage(false)?>">
                         </div>
                     <? } ?>
                 <? }else{ ?>
