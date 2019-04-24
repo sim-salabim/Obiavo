@@ -641,7 +641,7 @@ button.edit-btn:hover{
 }
 @media (min-width: 990px) {
     .nav-container{
-        padding-right: 45px !important;
+        padding-right: 20px !important;
     }
 }
 @media (max-width: 990px) {
@@ -653,4 +653,16 @@ button.edit-btn:hover{
     .nav-container{
         padding-right: 0px !important;
     }
+}
+@media (max-width: 575px) {
+    .nav-sm-res{
+        padding-left: 0px !important;
+    }
+}
+.placeholder-padding-0{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.social-n-block h2{
+    font-size: 1.8rem;
 }

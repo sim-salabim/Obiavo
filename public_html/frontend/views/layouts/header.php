@@ -1,5 +1,5 @@
 <header class="header" id="main-header">
-    <nav class="navbar navbar-expand navbar-light navbar-fixed-top bg-light">
+    <nav class="navbar navbar-expand navbar-light nav-sm-res navbar-fixed-top bg-light">
         <div class="container nav-container">
         <button class="navbar-toggler"
                 type="button"
@@ -12,7 +12,7 @@
 
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto mt-lg-0">
+            <ul class="navbar-nav nav-ul mr-auto mt-lg-0">
                 <li>
                     <a class="nav-link" href="javascript:openNav()" id="navbarDropdownMenuLink">
                         <span class="navbar-toggler-icon"></span>
