@@ -186,4 +186,6 @@ return [
     'Ad'=>'Advertisement',
     'Obiavo - advertisement site'=>'Obiavo - advertisement site',
     'Fields must not be more than 16 chars long'=>'Fields must not be more than 16 chars long',
+    'Other city' => 'Other city',
+    'Enter' => 'Enter',
 ];

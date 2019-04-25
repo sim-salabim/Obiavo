@@ -669,3 +669,14 @@ button.edit-btn:hover{
 .nav-link{
     padding-left: 0.8rem !important;
 }
+.ent-btn{
+    margin-right: 1.5rem !important;
+}
+@media (max-width: 765px) {
+    .ent-btn{
+        margin-left: 1.5rem !important;
+    }
+}
+.no-transition{
+    transition: none !important;
+}

@@ -188,4 +188,6 @@ return [
     'Ad'=>'Объявление',
     'Obiavo - advertisement site'=>'Объяво - сайт объявлений',
     'Fields must not be more than 16 chars long'=>'Поле не может содержать более чем 16 символов',
+    'Other city' => 'Другой город',
+    'Enter' => 'Вход',
 ];

@@ -57,20 +57,18 @@
                     <i class="fa fa-search"></i>
                 </button>
             </div>
-            <span class="navbar-text mx-2 text-dark"><a href="<?= yii\helpers\Url::toRoute('/vybor-goroda') ?>" rel="nofollow"><?
+            <?
                 $region_add = '';
                 if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
-                    echo __('City');
+
                     $region_add = "/".Yii::$app->location->city->domain;
                 }else{
                     if(Yii::$app->location->region){
-                        echo __('Region');
+
                         $region_add = "/".Yii::$app->location->region->domain;
-                    }else{
-                        echo Yii::$app->location->country->_text->name;
                     }
                 }
-                ?></a></span>
+                ?>
             <?
             $application_url = '';
             if(isset($this->params['application_url']) AND $this->params['application_url']){
@@ -78,9 +76,10 @@
             }else{
                 $application_url = yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl());
             }?>
-            <a href="<?= $application_url ?>" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn">+ <?= __('Post an add') ?></a>
+            <a href="<?= yii\helpers\Url::toRoute('/login') ?>" class="btn btn-success my-2 ent-btn d-md-block d-lg-block new-add-btn" rel="nofollow"><?= __('Enter') ?></a>
+            <a href="<?= $application_url ?>" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an add') ?></a>
 
-            <a href="<?= $application_url ?>" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn">+ </a>
+            <a href="<?= $application_url ?>" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn no-transition">+ </a>
         </div>
         </div>
     </nav>
