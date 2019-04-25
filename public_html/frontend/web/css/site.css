@@ -670,7 +670,7 @@ button.edit-btn:hover{
     padding-left: 0.8rem !important;
 }
 .ent-btn{
-    margin-right: 1.5rem !important;
+    margin-right: 0.6rem !important;
 }
 @media (max-width: 765px) {
     .ent-btn{
