@@ -21,7 +21,6 @@ use common\models\scopes\CityQuery;
  * @property Ads[] $ads
  * @property Region $region
  * @property CityText[] $cityTexts
- * @property Users[] $users
  * @property SocialNetworksGroups[] $socialNetworksGroups
  */
 class City extends \yii\db\ActiveRecord

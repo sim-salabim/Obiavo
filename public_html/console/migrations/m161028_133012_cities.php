@@ -21,7 +21,8 @@ class m161028_133012_cities extends Migration
             'meta_google' => $this->string(),
             'meta_yandex' => $this->string(),
             'longitude' => $this->string(100),
-            'latitude' => $this->string(100)
+            'latitude' => $this->string(100),
+            'ads_amount' => $this->integer(11)->defaultValue(null)
         ], $tableOptions);
 
         $this->createIndex('idx_c_regions_id', 'cities', 'regions_id');

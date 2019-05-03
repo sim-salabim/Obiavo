@@ -23,6 +23,7 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $expiry_date
+ * @property int $ads_amount
  *
 * @property City $city
 * @property User $user

@@ -1,0 +1,1 @@
+curl http://admin.obiavo.ru/counter/city?token=XC5Vs2iI69OznxOUjIiC
