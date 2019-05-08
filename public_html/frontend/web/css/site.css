@@ -680,3 +680,9 @@ button.edit-btn:hover{
 .no-transition{
     transition: none !important;
 }
+.font-12{
+    font-size: 12px;
+}
+.ads-amount-city{
+    color: #adadad;
+}

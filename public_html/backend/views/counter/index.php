@@ -102,7 +102,7 @@ $this->title = 'Подсчет обьявлений';
                 url = '/counter/category';
         }
         $.ajax({
-            url: url+'?token=XC5Vs2iI69OznxOUjIiC'+additioanalUrl,
+            url: url+'?token=<?= Yii::$app->params['cron_token'] ?>'+additioanalUrl,
             method: 'POST',
             success: function(data){
                 if(data.status === 200){

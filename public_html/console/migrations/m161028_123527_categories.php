@@ -25,16 +25,19 @@ class m161028_123527_categories extends Migration
             'href' => $this->boolean()->defaultValue(0),
             'href_id' => $this->integer()->null(),
             'order' => $this->integer()->defaultValue(0),
+            'categories_list' => $this->text()->null()->defaultValue(null),
         ], $tableOptions);
 
         $this->createIndex('idx_c_parent_id', 'categories', 'parent_id');
         $this->addForeignKey('fk_categories_category', 'categories', 'parent_id', 'categories', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx_c_categories_list', 'categories', 'categories_list');
     }
 
     public function down()
     {
         $this->dropForeignKey('fk_categories_category','categories');
         $this->dropIndex('idx_c_parent_id','categories');
+        $this->dropIndex('idx_c_categories_list','categories');
         $this->dropTable('categories');
     }
 

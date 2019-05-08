@@ -17,6 +17,7 @@ use common\models\scopes\CityQuery;
  * @property string $meta_yandex
  * @property string $longitude
  * @property string $latitude
+ * @property integer $ads_amount
  *
  * @property Ads[] $ads
  * @property Region $region
@@ -41,7 +42,7 @@ class City extends \yii\db\ActiveRecord
     {
         return [
             [['regions_id', 'domain'], 'required'],
-            [['regions_id', 'active'], 'integer'],
+            [['regions_id', 'active', 'ads_amount'], 'integer'],
             [['active', 'sitemap'], 'integer', 'max' => 1],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
