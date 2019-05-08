@@ -23,6 +23,7 @@ use common\models\scopes\CategoryQuery;
  * @property integer $seo_id
  * @property integer $href_id
  * @property integer $order
+ * @property string $categories_list
  *
  * @property Ads[] $ads
  * @property Category $parent

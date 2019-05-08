@@ -31,6 +31,7 @@ class NewAdForm extends Model
     public $text;
     public $price;
     public $agreement;
+    public $categories_list;
     public $files = [];
     public $categories = [];
     const MESSAGE_FAILED = 'failed';
@@ -42,7 +43,7 @@ class NewAdForm extends Model
     {
         return [
             [['files'], 'safe'],
-            [['email', 'name', 'phone'], 'string'],
+            [['email', 'name', 'phone', 'categories_list'], 'string'],
             [[
                 'categories',
                 'placement_id',
@@ -186,7 +187,7 @@ class NewAdForm extends Model
         $adsModel->placements_id = $this->placement_id;
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
-        $adsModel->url = TransliterationHelper::transliterate($this->title)."-".$adsModel->id;
+        $adsModel->url = $adsModel->url."-".$adsModel->id;
         $adsModel->updated_at = time();
         $adsModel->save();
 
@@ -209,7 +210,9 @@ class NewAdForm extends Model
             $category_model = Category::find()->where(['id'=>$cat])->one();
             $parents = $category_model->getAllParents();
             foreach($parents as $parent){
-                $parents_arr[$parent['id']] = $parent;
+                if(!isset($parents_arr[$parent['id']])) {
+                    $parents_arr[$parent['id']] = $parent;
+                }
             }
             if($k > 0) {
                 $adCategory = new AdCategory();
@@ -218,12 +221,16 @@ class NewAdForm extends Model
                 $adCategory->save();
             }
         }
+        $id_str = '';
         foreach($parents_arr as $id => $parent){
             $category_ad = new CategoryAd();
             $category_ad->categories_id = $id;
             $category_ad->ads_id = $adsModel->id;
             $category_ad->save();
+            $id_str .= "|$id|";
         }
+        $adsModel->categories_list = $id_str;
+        $adsModel->save();
         if(!isset(\Yii::$app->user->identity)){
             if(isset($password)) {
                 Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);

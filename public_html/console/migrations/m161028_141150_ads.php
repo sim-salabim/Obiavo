@@ -23,12 +23,14 @@ class m161028_141150_ads extends Migration
             'session_token' => $this->string()->null()->defaultValue(null),
             'only_locally' => 'TINYINT(1) NOT NULL DEFAULT 0',
             'active' => $this->boolean()->defaultValue(true),
+            'categories_list' => $this->text()->null()->defaultValue(null),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
         $this->createIndex('idx_a_created_at', 'ads', 'created_at');
         $this->createIndex('idx_a_title', 'ads', 'title');
+        $this->createIndex('idx_a_categories_list', 'ads', 'categories_list');
         $this->createIndex('idx_a_price', 'ads', 'price');
         $this->createIndex('idx_a_active', 'ads', 'active');
         $this->createIndex('idx_a_cities_id', 'ads', 'cities_id');
@@ -47,6 +49,7 @@ class m161028_141150_ads extends Migration
     {
         $this->dropForeignKey('fk_ads_city','ads');
         $this->dropIndex('idx_a_cities_id','ads');
+        $this->dropIndex('idx_a_categories_list','ads');
         $this->dropForeignKey('fk_ads_user','ads');
         $this->dropIndex('idx_a_users_id','ads');
         $this->dropForeignKey('fk_ads_category','ads');
