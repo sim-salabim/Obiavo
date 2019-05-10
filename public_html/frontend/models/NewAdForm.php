@@ -210,7 +210,7 @@ class NewAdForm extends Model
             $category_model = Category::find()->where(['id'=>$cat])->one();
             $parents = $category_model->getAllParents();
             foreach($parents as $parent){
-                if(!isset($parents_arr[$parent['id']])) {
+                if(!isset($parents_arr[$parent['id']]) AND $parent['id'] != '') {
                     $parents_arr[$parent['id']] = $parent;
                 }
             }
