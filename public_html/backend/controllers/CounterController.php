@@ -63,59 +63,34 @@ class CounterController extends Controller
         $country = Country::find()->where(['id' => $country_id, 'active' => 1])->one();
         if(!$country) throw new NotFoundHttpException();
         try {
-            $count = (new Query())
-                ->select('categories_id, COUNT( * ) as ads_amount')->from('ads')
-                ->where(['active' => 1])
-                ->andWhere(['in', 'cities_id',
-                    (new \yii\db\Query())
-                        ->select(['id'])
-                        ->from('cities')
-                        ->groupBy(['id'])
-                        ->where(['in', 'regions_id',
-                            (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])])
-                ->groupBy('categories_id')
-                ->all();
-            $array = [];
-            foreach ($count as $c) {
-                $array[$c['categories_id']] = $c['ads_amount'];
-            }
-            $count_add = (new Query())->select('ads_has_categories.categories_id categories_id, COUNT( * ) as ads_amount')->from('ads_has_categories')
-                ->leftJoin('ads', 'ads_has_categories.ads_id = ads.id')
-                ->where(['in', 'ads.cities_id',
-                    (new \yii\db\Query())
-                        ->select(['id'])
-                        ->from('cities')
-                        ->groupBy(['id'])
-                        ->where(['in', 'regions_id',
-                            (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])])])
-                ->andWhere(['ads.active' => 1])
-                ->groupBy('ads_has_categories.categories_id')
-                ->all();
-            foreach ($count_add as $k => $c) {
-                if (isset($array[$c['categories_id']])) {
-                    $array[$c['categories_id']] = $array[$c['categories_id']] + $c['ads_amount'];
-                } else {
-                    $array[$c['categories_id']] = $c['ads_amount'];
-                }
+
+            $counters = CounterCategory::find()->where(['countries_id' => $country_id])->all();
+            foreach($counters as $c){
+                $c->delete();
             }
 
-            $existing_counter = CounterCategory::find()->where(['countries_id' => $country_id])->all();
-            foreach ($existing_counter as $ec) {
-                $ec->delete();
-            }
 
-            foreach ($array as $k => $v) {
-                $counter = CounterCategory::find()->where([
-                    'countries_id' => $country_id,
-                    'categories_id' => $k
-                ])->one();
-                if (!$counter) {
+            foreach($ids as $id){
+                $id = $id['id'];
+                $count = (new Query())
+                    ->select('count(*) as count')
+                    ->from('ads')
+                    ->where(['active' => 1])
+                    ->andWhere(['LIKE','categories_list', "|$id|"])
+                    ->andWhere(['IN', 'cities_id',
+                        (new Query())->select('id')->from('cities')->where(['IN', 'regions_id',
+                            (new Query())->select('id')->from('regions')->where(['countries_id' => $country_id])
+                        ])
+                    ])
+                    ->having('COUNT(*) > 1')
+                    ->all();
+                if(!empty($count)) {
                     $counter = new CounterCategory();
+                    $counter->categories_id = $id;
                     $counter->countries_id = $country_id;
-                    $counter->categories_id = $k;
+                    $counter->ads_amount = $count[0]['count'];
+                    $counter->save();
                 }
-                $counter->ads_amount = $v;
-                $counter->save();
             }
         }catch(\Exception $e){
             Yii::$app->response->statusCode = 500;
