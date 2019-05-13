@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\Ads;
 use common\models\City;
 use common\models\CounterCategory;
 use common\models\CounterCityCategory;
@@ -52,7 +53,7 @@ class CounterController extends Controller
             return ['status'=>500, 'message' => $e->getMessage()];
         }
         Yii::$app->response->statusCode = 200;
-        return ['status'=>200, 'message' => 'success'];
+        return ['status'=>200, 'message' => 'success', 'offset' => 0, "finished" => 1];
     }
 
     public function actionCategory(){
@@ -62,35 +63,45 @@ class CounterController extends Controller
         if(!$country_id) throw new NotFoundHttpException();
         $country = Country::find()->where(['id' => $country_id, 'active' => 1])->one();
         if(!$country) throw new NotFoundHttpException();
+        $post = Yii::$app->request->post();
+        $limit = $post['limit'];
+        $offset = $post['offset'];
         try {
-
-            $counters = CounterCategory::find()->where(['countries_id' => $country_id])->all();
-            foreach($counters as $c){
-                $c->delete();
-            }
-
-
-            foreach($ids as $id){
-                $id = $id['id'];
-                $count = (new Query())
-                    ->select('count(*) as count')
-                    ->from('ads')
-                    ->where(['active' => 1])
-                    ->andWhere(['LIKE','categories_list', "|$id|"])
-                    ->andWhere(['IN', 'cities_id',
-                        (new Query())->select('id')->from('cities')->where(['IN', 'regions_id',
-                            (new Query())->select('id')->from('regions')->where(['countries_id' => $country_id])
-                        ])
-                    ])
-                    ->having('COUNT(*) > 1')
-                    ->all();
-                if(!empty($count)) {
-                    $counter = new CounterCategory();
-                    $counter->categories_id = $id;
-                    $counter->countries_id = $country_id;
-                    $counter->ads_amount = $count[0]['count'];
-                    $counter->save();
+            if($offset == 0) {
+                $counters = CounterCategory::find()->where(['countries_id' => $country_id])->all();
+                foreach ($counters as $c) {
+                    $c->delete();
                 }
+            }
+            $ads = Ads::find()->where(['active'=>1])
+                ->andWhere(["IN",'cities_id',(new Query())->select('id')->from('cities')->where(['IN', 'regions_id',
+                    (new Query())->select('id')->from('regions')->where(['countries_id' => $country_id])
+                ]) ])
+                ->limit($limit)
+                ->offset($offset)
+                ->all();
+            if(count($ads)) {
+                foreach ($ads as $ad) {
+                    $arr = explode("||", $ad->categories_list);
+                    foreach ($arr as $element) {
+                        $cat_id = str_replace("|", "", $element);
+                        $counter = CounterCategory::find()->where(['categories_id' => $cat_id, 'countries_id' => $country_id])->one();
+                        if (!$counter) {
+                            $counter = new CounterCategory();
+                            $counter->categories_id = $cat_id;
+                            $counter->countries_id = $country_id;
+                            $counter->ads_amount = 0;
+                        }
+                        $counter->ads_amount = $counter->ads_amount + 1;
+                        $counter->save();
+                        unset($counter);
+                        unset($cat_id);
+                    }
+                    unset($arr);
+                }
+            }else{
+                Yii::$app->response->statusCode = 200;
+                return ['status'=>200, 'message' => 'success', 'offset' => $offset, "finished" => 1];
             }
         }catch(\Exception $e){
             Yii::$app->response->statusCode = 500;
@@ -98,32 +109,48 @@ class CounterController extends Controller
             return ['status'=>500, 'message' => $e->getMessage()];
         }
         Yii::$app->response->statusCode = 200;
-        return ['status'=>200, 'message' => 'success'];
+        return ['status'=>200, 'message' => 'success', 'offset' => $offset, 'finished' => 0];
     }
 
     public function actionCityCategory(){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $this->checkCredentials();
+        $post = Yii::$app->request->post();
+        $limit = $post['limit'];
+        $offset = $post['offset'];
         try {
-            $counter_city_categories = CounterCityCategory::find()->all();
-            foreach ($counter_city_categories as $c) {
-                $c->delete();
-            }
-            $cities = City::find()->where(['sitemap' => 1])->all();
-            foreach ($cities as $city) {
-                $count = (new Query())
-                    ->select('categories_id, COUNT( * ) as ads_amount')->from('ads')
-                    ->where(['active' => 1])
-                    ->andWhere(['cities_id' => $city->id])
-                    ->groupBy('categories_id')
-                    ->all();
-                foreach ($count as $c) {
-                    $counter = new CounterCityCategory();
-                    $counter->categories_id = $c['categories_id'];
-                    $counter->cities_id = $city->id;
-                    $counter->ads_amount = $c['ads_amount'];
-                    $counter->save();
+            if($offset == 0) {
+                $counter_city_categories = CounterCityCategory::find()->all();
+                foreach ($counter_city_categories as $c) {
+                    $c->delete();
                 }
+            }
+            $ads = Ads::find()
+                ->where(['active'=>1])
+                ->limit($limit)
+                ->offset($offset)
+                ->all();
+            if(count($ads)){
+                foreach ($ads as $ad) {
+                    $arr = explode("||", $ad->categories_list);
+                    foreach ($arr as $element) {
+                        $cat_id = str_replace("|", "", $element);
+                        $counter = CounterCityCategory::find()->where(['categories_id' => $cat_id, 'cities_id' => $ad->city->id])->one();
+                        if (!$counter) {
+                            $counter = new CounterCityCategory();
+                            $counter->categories_id = $cat_id;
+                            $counter->cities_id = $ad->city->id;
+                            $counter->ads_amount = 0;
+                        }
+                        $counter->ads_amount = $counter->ads_amount + 1;
+                        $counter->save();
+                        unset($counter);
+                        unset($cat_id);
+                    }
+                    unset($arr);
+                }
+                Yii::$app->response->statusCode = 200;
+                return ['status'=>200, 'message' => 'success','offset' => $offset, 'finished' => 0];
             }
         }catch(\Exception $e){
             Yii::$app->response->statusCode = 500;
@@ -131,7 +158,7 @@ class CounterController extends Controller
             return ['status'=>500, 'message' => $e->getMessage()];
         }
         Yii::$app->response->statusCode = 200;
-        return ['status'=>200, 'message' => 'success'];
+        return ['status'=>200, 'message' => 'success','offset' => $offset, 'finished' => 1];
     }
 
     /**

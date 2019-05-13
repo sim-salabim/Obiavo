@@ -60,7 +60,7 @@ $this->title = 'Подсчет обьявлений';
                     <tr>
                         <td>Категории + Города</td>
                         <td>
-                            <button id="btn-category-city" onclick="count('category-city')" class="btn btn-primary btn-sm">
+                            <button id="btn-category-city" onclick="count('category-city',100,0)" class="btn btn-primary btn-sm">
                                 Посчитать
                             </button>
                             <div id="load-category-city" style="display: none">
@@ -81,7 +81,7 @@ $this->title = 'Подсчет обьявлений';
 
     });
 
-    function count(title){
+    function count(title, limit = 100, offset = 0){
         $('#btn-'+title).hide();
         $('#load-'+title).show();
         var url = '';
@@ -104,14 +104,19 @@ $this->title = 'Подсчет обьявлений';
         $.ajax({
             url: url+'?token=<?= Yii::$app->params['cron_token'] ?>'+additioanalUrl,
             method: 'POST',
+            data: {limit:limit, offset: offset},
             success: function(data){
-                if(data.status === 200){
+                if(data.status === 200 && data.finished === 1){
                     $('#btn-'+title).show();
                     $('#load-'+title).hide();
+                }else if(data.status === 200 && data.finished === 0 ){
+                    offset = limit + offset;
+                    console.log(offset);
+                    count(title, limit, offset);
                 }
             },
             error: function(){
-                $('#load-'+title+" span").text('Произошла ошибка');
+                $('#load-'+title+" span").text('Произошла чудовищная ошибка! ;)');
             }
         });
     }
