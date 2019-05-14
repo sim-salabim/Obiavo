@@ -25,7 +25,6 @@ class m161028_123527_categories extends Migration
             'href' => $this->boolean()->defaultValue(0),
             'href_id' => $this->integer()->null(),
             'order' => $this->integer()->defaultValue(0),
-            'categories_list' => $this->text()->null()->defaultValue(null),
         ], $tableOptions);
 
         $this->createIndex('idx_c_parent_id', 'categories', 'parent_id');

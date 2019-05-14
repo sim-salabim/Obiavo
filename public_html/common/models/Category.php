@@ -107,6 +107,10 @@ class Category extends \yii\db\ActiveRecord
         return CounterCategory::find()->where(['countries_id'=>$id, 'categories_id'=> $this->id])->one();
     }
 
+    public function getCounterByCityId($cities_id){
+        return CounterCityCategory::find()->where(['cities_id'=>$cities_id, 'categories_id'=> $this->id])->one();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

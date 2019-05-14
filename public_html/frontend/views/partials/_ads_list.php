@@ -14,8 +14,8 @@ $root_url = isset($root_url) ? $root_url : null;
 ?>
 <!--<hr class="extra-margin-bottom45">-->
 <div class="row padding-top-7">
-    <div class="col-lg-9 col-md-6 col-sm-12 text-align-left">
-        <? $title ?>
+    <div class="col-lg-9 col-md-6 col-sm-12 text-align-left margin-top-12">
+        <? if(isset($title) and $title) echo $title ?>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end ">
         <?=  $this->render('/partials/_filter_select.php',
@@ -24,8 +24,10 @@ $root_url = isset($root_url) ? $root_url : null;
 <!--    <div class="col-lg-2 col-md-3 col-sm-12 text-align-right-grid">-->
 <!--        --><?//= $this->render('/partials/_grid_settings.php', []); ?>
 <!--    </div>-->
+    <div class="w-100">
+        <hr>
+    </div>
 </div>
-<hr class="margin-top-1045">
 <div class="row">
     <? if($ads_search['count'] == 0){?>
         <div class="col-12">
@@ -86,7 +88,7 @@ $root_url = isset($root_url) ? $root_url : null;
                 </div>
             </div>
             <? if($k + 1 < count($ads_search['items'])){?>
-                <div class="col-12 placeholder-padding-0"><hr></div>
+                <div class="placeholder-padding-0 w-100"><hr></div>
             <? } ?>
         <? } ?>
         <? if($library_search->limit < $ads_search['count']){?>

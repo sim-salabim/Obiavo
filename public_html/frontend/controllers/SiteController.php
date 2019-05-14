@@ -131,13 +131,25 @@ class SiteController extends BaseController
         $this->seo_h2 = $cms_page->_text->seo_h2;
         $this->seo_desc = $cms_page->_text->seo_desc;
         $this->seo_keywords = $cms_page->_text->seo_keywords;
-        $librarySearch = new AdsSearch();
-        $librarySearch->setActive(true);
-        $librarySearch->setConsiderLocation(true);
-        $librarySearch->setAll(true);
+        $library_search = new AdsSearch();
+        $library_search->setActive(true);
+        $library_search->setConsiderLocation(true);
+        $library_search->setAll(true);
+        $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $library_search->page;
+        $library_search->setPage($page);
+        $sort = Yii::$app->request->get('sort');
+        $direction = Yii::$app->request->get('direction');
+        if($sort AND $direction) {
+            $library_search->setSorting($sort." ".$direction);
+        }
         $ads_model = new Ads();
-        $ads_list = $ads_model->getList($librarySearch, false);
-        $this->switchSeoKeys($ads_list);
+        $ads_search = $ads_model->getList($library_search, true);
+        if($page > 1 AND !count($ads_search['items'])){
+            $page = ceil(($ads_search['count'] / $library_search->limit));
+            $library_search->page = $page;
+            $ads_search = Ads::getList($library_search);
+        }
+        $this->switchSeoKeys($ads_search);
         Yii::$app->view->params['seo_desc'] = $this->seo_desc;
         Yii::$app->view->params['seo_keywords'] = $this->seo_keywords;
         Yii::$app->view->params['seo_h1'] = $this->seo_h1;
@@ -146,7 +158,7 @@ class SiteController extends BaseController
         Yii::$app->view->params['no_hr'] = true;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
-        return $this->render('index',  compact('categories','cities', 'seo_text'));
+        return $this->render('index',  compact('categories','cities', 'seo_text', 'ads_search', 'library_search'));
     }
 
     /**

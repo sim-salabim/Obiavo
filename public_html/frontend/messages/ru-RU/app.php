@@ -190,4 +190,7 @@ return [
     'Fields must not be more than 16 chars long'=>'Поле не может содержать более чем 16 символов',
     'Other city' => 'Другой город',
     'Enter' => 'Вход',
+    'proposal' => 'предложение',
+    'proposals_im_p' => 'предложения',
+    'proposals_r_p' => 'предложений',
 ];

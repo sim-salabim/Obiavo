@@ -40,7 +40,7 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
                 <li class="page-item ">
                     <? if($i != $library_search->page){?>
                         <? if( $i > ($library_search->page - 3) AND $i < ($library_search->page + 3)){?>
-                            <? $href = ($i == 1) ? $link : "?".str_replace('{key:page}','page='.$i,$nav_str) ?>
+                            <? $href = "?".str_replace('{key:page}','page='.$i,$nav_str) ?>
                             <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
                         <? } ?>
                     <? }else{ ?>

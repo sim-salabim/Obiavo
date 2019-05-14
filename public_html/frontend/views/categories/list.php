@@ -17,7 +17,13 @@ function sortingKids($a, $b){
 
         <?php foreach ($categories as $category) { ?>
             <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-12">
-                <a class="text-secondary hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span>(<?= $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0 ?>)</span>
+                <a class="text-secondary hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
+                    if(!Yii::$app->location->city) {
+                        $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
+                    }else{
+                        $amnt = $category->getCounterByCityId(Yii::$app->location->city->id)['ads_amount'] ?: 0 ;
+                    } echo $amnt;
+                    ?></span>
             </div>
         <?php } ?>
     <?php }else{ ?>

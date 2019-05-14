@@ -188,4 +188,7 @@ return [
     'Fields must not be more than 16 chars long'=>'Fields must not be more than 16 chars long',
     'Other city' => 'Other city',
     'Enter' => 'Enter',
+    'proposal' => 'proposal',
+    'proposals_im_p' => 'proposals',
+    'proposals_r_p' => 'proposals',
 ];
