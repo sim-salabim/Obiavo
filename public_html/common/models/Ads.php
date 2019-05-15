@@ -418,4 +418,18 @@ class Ads extends \yii\db\ActiveRecord
         }
         return $application_url."/";
     }
+
+    /**
+     * Визвращает ид-шники всех категорий (и их родителей) обьявления
+     * @return array
+     */
+    public function getAllCategoriesIds(){
+        $ids = [];
+        $arr = explode("||",$this->categories_list);
+        foreach($arr as $item){
+            $item = str_replace("|", "", $item);
+            $ids[] = $item;
+        }
+        return $ids;
+    }
 }
