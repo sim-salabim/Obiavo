@@ -23,6 +23,7 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $expiry_date
+ * @property int $ads_amount
  *
 * @property City $city
 * @property User $user
@@ -302,26 +303,7 @@ class Ads extends \yii\db\ActiveRecord
             $add_like_conditions = [$like_conditions[0], "ads.".$like_conditions[1], $like_conditions[2]];
         }
         if($model->main_category) {
-
-            $ad_ids_arr = [];
-            $add_ids = CategoryAd::find()
-                        ->select('ads.*, categories_has_ads.ads_id, categories_has_ads.categories_id')
-                        ->leftJoin("ads", "ads.id = categories_has_ads.ads_id")
-                        ->where(["categories_has_ads.categories_id" => $model->main_category])
-                        ->andFilterWhere($add_active_conditions)
-                        ->andFilterWhere($where_conditions)
-                        ->andFilterWhere($add_expired_conditions)
-                        ->andFilterWhere($add_user_conditions)
-                        ->andFilterWhere($add_location_conditions)
-                        ->andFilterWhere($add_like_conditions)
-                        ->all();
-            if($add_ids){
-                $ad_ids_arr = [];
-                foreach($add_ids as $c){
-                    $ad_ids_arr[] = $c->ads_id;
-                }
-            }
-            $additional_category_conditions = ["ads.id" => $ad_ids_arr];
+            $additional_category_conditions = ["LIKE","ads.categories_list","|$model->main_category|"];
         }
         $ads = [];
         if($ads_list) {
@@ -435,5 +417,19 @@ class Ads extends \yii\db\ActiveRecord
             }
         }
         return $application_url."/";
+    }
+
+    /**
+     * Визвращает ид-шники всех категорий (и их родителей) обьявления
+     * @return array
+     */
+    public function getAllCategoriesIds(){
+        $ids = [];
+        $arr = explode("||",$this->categories_list);
+        foreach($arr as $item){
+            $item = str_replace("|", "", $item);
+            $ids[] = $item;
+        }
+        return $ids;
     }
 }

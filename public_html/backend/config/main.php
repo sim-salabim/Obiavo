@@ -88,7 +88,14 @@ return [
     'params' => $params,
     'as access' => [
         'class' => 'yii\filters\AccessControl',
-        'except' => ['site/login','site/error', 'autoposting-api/index'],
+        'except' => [
+            'site/login',
+            'site/error',
+            'autoposting-api/index',
+            'counter/city',
+            'counter/category',
+            'counter/city-category'
+            ],
         'rules' => [
             [
                 'allow' => true,

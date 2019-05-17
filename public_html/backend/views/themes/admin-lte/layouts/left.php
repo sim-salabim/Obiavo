@@ -50,6 +50,7 @@ use yii\helpers\Url;
                     ['label' => 'Sitemap', 'icon' => 'map-o', 'url' => ['/sitemap']],
                     ['label' => 'Настройки', 'icon' => 'cog', 'url' => ['/settings']],
                     ['label' => 'SEO подачи', 'icon' => 'eye', 'url' => ['/application-seo']],
+                    ['label' => 'Подсчет обьявлений', 'icon' => 'magnet', 'url' => ['/counter']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

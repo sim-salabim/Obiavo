@@ -15,8 +15,6 @@ use yii\web\ForbiddenHttpException;
 class AutopostingApiController extends Controller
 {
 
-    private $_token = 'XC5Vs2iI69OznxOUjIiC';
-
     /**
      * @inheritdoc
      */
@@ -68,7 +66,7 @@ class AutopostingApiController extends Controller
      */
     private function checkCredentials(){
         $token = Yii::$app->request->get('token');
-        if(!$token OR $token != $this->_token){
+        if(!$token OR $token != Yii::$app->params['cron_token']){
             $error = (object) array();
             $error->error_code = '403';
             $error->error_msg = 'Неверный токен';

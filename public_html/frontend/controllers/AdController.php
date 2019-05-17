@@ -8,6 +8,8 @@ use common\models\AutopostingTasks;
 use common\models\CategoriesText;
 use common\models\Category;
 use common\models\City;
+use common\models\CounterCategory;
+use common\models\CounterCityCategory;
 use common\models\Country;
 use common\models\Language;
 use common\models\libraries\AdsSearch;
@@ -316,6 +318,21 @@ class AdController extends BaseController
         $ad->active = 0;
         $ad->updated_at = time();
         $ad->save();
+        $ids = $ad->getAllCategoriesIds();
+        foreach($ids as $id){
+            $category_counter = CounterCategory::find()->where([
+                'categories_id' => $id,
+                'countries_id' => $ad->city->region->country->id
+                ])->one();
+            $category_counter->ads_amount = $category_counter->ads_amount - 1;
+            $category_counter->save();
+
+            $category_city_counter = CounterCityCategory::find()->where(['cities_id' => $ad->city->id, 'categories_id' => $id])->one();
+            $category_city_counter->ads_amount = $category_city_counter->ads_amount - 1;
+        }
+        $city_counter = City::find()->where(['id' => $ad->city->id])->one();
+        $city_counter->ads_amount = $city_counter->ads_amount - 1;
+        $city_counter->save();
         return $ad->id;
     }
 
@@ -330,6 +347,21 @@ class AdController extends BaseController
         $ad->updated_at = time();
         $ad->expiry_date = time() + 2592000;
         $ad->save();
+        $ids = $ad->getAllCategoriesIds();
+        foreach($ids as $id){
+            $category_counter = CounterCategory::find()->where([
+                'categories_id' => $id,
+                'countries_id' => $ad->city->region->country->id
+            ])->one();
+            $category_counter->ads_amount = $category_counter->ads_amount + 1;
+            $category_counter->save();
+
+            $category_city_counter = CounterCityCategory::find()->where(['cities_id' => $ad->city->id, 'categories_id' => $id])->one();
+            $category_city_counter->ads_amount = $category_city_counter->ads_amount + 1;
+        }
+        $city_counter = City::find()->where(['id' => $ad->city->id])->one();
+        $city_counter->ads_amount = $city_counter->ads_amount + 1;
+        $city_counter->save();
         return $ad->getHumanDate(Ads::DATE_TYPE_EXPIRATION);
     }
 }

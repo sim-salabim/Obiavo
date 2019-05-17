@@ -5,6 +5,9 @@ use common\models\AdCategory;
 use common\models\Ads;
 use common\models\Category;
 use common\models\CategoryAd;
+use common\models\City;
+use common\models\CounterCategory;
+use common\models\CounterCityCategory;
 use common\models\Placement;
 use common\models\User;
 use frontend\components\Location;
@@ -188,7 +191,6 @@ class NewAdForm extends Model
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
         $adsModel->url = $adsModel->url."-".$adsModel->id;
-        $adsModel->updated_at = time();
         $adsModel->save();
 
         if(isset($_POST['files'])) {
@@ -203,6 +205,25 @@ class NewAdForm extends Model
             foreach($ca as $i){
                 $i->delete();
             }
+
+            $categories_ids = $adsModel->getAllCategoriesIds();
+            foreach($categories_ids as $c_id){
+                // уменьшаем на 1 каунтеры категорий
+                $cat_counter = CounterCategory::find()->where(['categories_id' => $c_id, 'countries_id' => $adsModel->city->region->country->id])->one();
+                $cat_counter->ads_amount = $cat_counter->ads_amount - 1;
+                $cat_counter->save();
+                // уменьшаем на 1 каунтеры для город+категория
+                $city_cat_counter = CounterCityCategory::find()->where(['categories_id' => $c_id, 'cities_id' => $adsModel->cities_id])->one();
+                $city_cat_counter->ads_amount = $city_cat_counter->ads_amount - 1;
+                $city_cat_counter->save();
+                //уменьшаем на 1 каунтеры для городa
+                $city = City::find()->where(['id' => $adsModel->cities_id])->one();
+                $city->ads_amount = $city->ads_amount - 1;
+                $city->save();
+            }
+            //очистим строку ads.categories_list дабы потом ее перезаписать
+            $adsModel->categories_list = null;
+            $adsModel->save();
         }
 
         $parents_arr = [];
@@ -227,10 +248,38 @@ class NewAdForm extends Model
             $category_ad->categories_id = $id;
             $category_ad->ads_id = $adsModel->id;
             $category_ad->save();
+            // counter для категории
+            $cat_counter = CounterCategory::find()->where(['categories_id' => $id, 'countries_id' => $adsModel->city->region->country->id])->one();
+            if(!$cat_counter){
+                $cat_counter = new CounterCategory();
+                $cat_counter->categories_id = $id;
+                $cat_counter->countries_id = $adsModel->city->region->country->id;
+                $cat_counter->ads_amount = 1;
+            }else{
+                $cat_counter->ads_amount = $cat_counter->ads_amount + 1;
+            }
+            $cat_counter->save();
+            //counter для катагории + город
+            $city_cat_counter = CounterCityCategory::find()->where(['categories_id' => $id, 'cities_id' => $adsModel->cities_id])->one();
+            if(!$city_cat_counter){
+                $city_cat_counter = new CounterCityCategory();
+                $city_cat_counter->cities_id = $adsModel->cities_id;
+                $city_cat_counter->categories_id = $id;
+                $city_cat_counter->ads_amount = 1;
+            }else{
+                $city_cat_counter->ads_amount = $city_cat_counter->ads_amount + 1;
+            }
+            $city_cat_counter->save();
             $id_str .= "|$id|";
         }
+
         $adsModel->categories_list = $id_str;
         $adsModel->save();
+        //каунтер для городов
+        $city = City::find()->where(['id' => $adsModel->cities_id])->one();
+        $city->ads_amount = $city->ads_amount ? $city->ads_amount + 1 : 1;
+        $city->save();
+
         if(!isset(\Yii::$app->user->identity)){
             if(isset($password)) {
                 Mailer::send($user->email, __("Add applied"), 'add-published', ['user' => $user, 'url' => "https://" . Location::getCurrentDomain() . "/" . $adsModel->url(), "pass" => $password, "fast" => true, 'add' => $adsModel]);

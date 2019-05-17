@@ -34,6 +34,7 @@ use common\models\scopes\CategoryQuery;
  * @property CategoryAttribute[] $categoriesAttributes
  * @property SocialNetworksGroups[] $socialNetworkGroups
  * @property SocialNetworksGroupsMain $socialNetworkGroupsMain
+ * @property CounterCategory $counterCategories
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -93,6 +94,21 @@ class Category extends \yii\db\ActiveRecord
 
     public static function find(){
         return new CategoryQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCounterCategories(){
+        return $this->hasMany(CounterCategory::className(), ['id' => 'categories_id']);
+    }
+
+    public function getCounterByCountryId($id){
+        return CounterCategory::find()->where(['countries_id'=>$id, 'categories_id'=> $this->id])->one();
+    }
+
+    public function getCounterByCityId($cities_id){
+        return CounterCityCategory::find()->where(['cities_id'=>$cities_id, 'categories_id'=> $this->id])->one();
     }
 
     /**

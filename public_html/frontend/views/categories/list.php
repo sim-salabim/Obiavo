@@ -1,4 +1,9 @@
 <?php
+/**
+ * $categories - список Categories
+ * $row_list - true or false меняет вид списка
+ * $div_row_unneeded
+ */
 use \frontend\helpers\LocationHelper;
 function sortingKids($a, $b){
     if($a->order == $b->order) {
@@ -12,29 +17,21 @@ function sortingKids($a, $b){
     }
 }
 ?>
+<? if(!isset($div_row_unneeded) or !$div_row_unneeded){?>
 <div class="row margin-right-0">
+<? } ?>
     <? if(!isset($row_list) OR !$row_list){ ?>
 
         <?php foreach ($categories as $category) { ?>
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <ul class="lvl-block" style="list-style: none;">
-                    <li class="lvl-1">
-                        <a class="text-secondary hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a>
-                    </li>
-                    <?
-
-                    $children = $category->children;
-                    usort($children, "sortingKids");
-
-                    ?>
-                    <?php foreach ($children as $child) { ?>
-                        <? if($child->active){ ?>
-                        <li class="lvl-2 ml-4" style="color: #777;"><a href="<?= LocationHelper::getDomainForUrl($child->url())?>"><?= $child->_text->name?></a></li>
-                    <? } ?>
-                    <?php } ?>
-                </ul>
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-14">
+                <a class="cat-title hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
+                    if(!Yii::$app->location->city) {
+                        $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
+                    }else{
+                        $amnt = $category->getCounterByCityId(Yii::$app->location->city->id)['ads_amount'] ?: 0 ;
+                    } echo $amnt;
+                    ?></span>
             </div>
-
         <?php } ?>
     <?php }else{ ?>
         <div class="col-12 ">
@@ -52,4 +49,6 @@ function sortingKids($a, $b){
             </span>
         </div>
     <? } ?>
+<? if(!isset($div_row_unneeded) or !$div_row_unneeded){?>
 </div>
+<? } ?>

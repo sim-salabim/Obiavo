@@ -5,5 +5,6 @@ return [
     'debugEmail' => 'asmaliaks@gmail.com',
     'staticDomain' => '/',
     'mainDomain' => 'obiavo.ru',
-    'FBAppId' => "576754169327687"
+    'FBAppId' => "576754169327687",
+    'cron_token' => 'XC5Vs2iI69OznxOUjIiC'
 ];
