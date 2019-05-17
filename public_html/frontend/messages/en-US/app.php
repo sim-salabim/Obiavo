@@ -35,6 +35,7 @@ return [
     'Language' => 'Language',
     'Home page' => 'Home',
     '_Location' => 'Location',
+    '_City' => 'City',
     'Reset location' => 'Reset location',
     'My ads' => 'My ads',
     'Add ad' => 'Add ad',

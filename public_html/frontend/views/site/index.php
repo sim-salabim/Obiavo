@@ -13,7 +13,7 @@ use yii\helpers\Url;
              </div>
          <?php } ?>
         <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-14">
-            <a href="<?= Url::toRoute(["/vybor-goroda/"])?>"><?= __('_Location') ?></a>
+            <a href="<?= Url::toRoute(["/vybor-goroda/"])?>"><?= __('_City') ?></a>
         </div>
     <div class="w-100"><hr></div>
     <? $div_row_unneeded = true; ?>
