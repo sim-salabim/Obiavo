@@ -8,15 +8,12 @@ use common\models\CategoryAd;
 use common\models\City;
 use common\models\CounterCategory;
 use common\models\CounterCityCategory;
-use common\models\Placement;
+use common\models\Files;
+use common\models\Mailer;
 use common\models\User;
 use frontend\components\Location;
-use frontend\controllers\UsersController;
-use frontend\helpers\TransliterationHelper;
 use Yii;
 use yii\base\Model;
-use common\models\Mailer;
-use common\models\Files;
 
 /**
  * New Add form

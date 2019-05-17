@@ -92,9 +92,6 @@ return [
             'site/login',
             'site/error',
             'autoposting-api/index',
-            'counter/city',
-            'counter/category',
-            'counter/city-category'
             ],
         'rules' => [
             [

@@ -5,7 +5,7 @@ use yii\helpers\Url;
 <div class="row site-index">
     <div class="w-100"><hr></div>
         <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-14">
-            <a href="<?= Url::toRoute([Yii::$app->location->country->domain])?>"><?= Yii::$app->location->country->_text->name?></a> <span class="ads-amount-city"> <?= $country_amount['ads_amount'] ?></span>
+            <a href="<?= Url::toRoute(["/"])?>"><?= Yii::$app->location->country->_text->name?></a> <span class="ads-amount-city"> <?= $country_amount['ads_amount'] ?></span>
         </div>
          <?php foreach ($cities as $key => $city) { ?>
              <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-14">

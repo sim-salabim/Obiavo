@@ -80,7 +80,7 @@ $root_url = isset($root_url) ? $root_url : null;
 <!--                        <span>-->
 <!--                            <small class="date_string">-->
 <!--                                --><?//= __("Inactive since") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
-<!--                                <a>--><?//= __('Repost') ?><!--</a>-->
+<!--                             _ads_list   <a>--><?//= __('Repost') ?><!--</a>-->
 <!--                            </small>-->
 <!--                        </span>-->
 <!--                        <br/>-->
