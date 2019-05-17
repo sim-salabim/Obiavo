@@ -7,22 +7,18 @@ use common\models\CityOrder;
 use common\models\Cms;
 use common\models\Country;
 use common\models\libraries\AdsSearch;
-use common\models\Region;
-use frontend\components\Location;
-use frontend\helpers\LocationHelper;
-use MongoDB\Operation\Count;
-use Yii;
-use yii\base\InvalidParamException;
-use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\Region;
+use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use Yii;
+use yii\base\InvalidParamException;
+use yii\db\Query;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 
 
@@ -158,7 +154,11 @@ class SiteController extends BaseController
         Yii::$app->view->params['no_hr'] = true;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
-        return $this->render('index',  compact('categories','cities', 'seo_text', 'ads_search', 'library_search'));
+        $country_amount = (new Query())->select('sum(ads_amount) as ads_amount')
+            ->from('cities')
+            ->where(["IN", 'regions_id', (new Query())->select('id')->from('regions')->where(['countries_id' => Yii::$app->location->country->id])])
+            ->one();
+        return $this->render('index',  compact('categories','cities', 'seo_text', 'ads_search', 'library_search', 'country_amount'));
     }
 
     /**
