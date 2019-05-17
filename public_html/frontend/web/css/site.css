@@ -680,12 +680,24 @@ button.edit-btn:hover{
 .no-transition{
     transition: none !important;
 }
-.font-12{
-    font-size: 12px;
+.font-14{
+    font-size: 14px;
 }
 .ads-amount-city{
     color: #adadad;
+    font-size: 12px;
 }
 .margin-top-12{
     margin-top: 12px !important;
+}
+@media (max-width: 766px) {
+    .filter-title{
+        margin-bottom: 10px !important;
+    }
+}
+.cat-title{
+    color: #3b4144!important;
+}
+.padding-top-20{
+    padding-top: 20px;
 }

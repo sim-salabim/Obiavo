@@ -191,7 +191,6 @@ class NewAdForm extends Model
         $adsModel->url = $adsModel->generateUniqueUrl($this->title);
         $adsModel->save();
         $adsModel->url = $adsModel->url."-".$adsModel->id;
-        $adsModel->updated_at = time();
         $adsModel->save();
 
         if(isset($_POST['files'])) {
@@ -206,6 +205,25 @@ class NewAdForm extends Model
             foreach($ca as $i){
                 $i->delete();
             }
+
+            $categories_ids = $adsModel->getAllCategoriesIds();
+            foreach($categories_ids as $c_id){
+                // уменьшаем на 1 каунтеры категорий
+                $cat_counter = CounterCategory::find()->where(['categories_id' => $c_id, 'countries_id' => $adsModel->city->region->country->id])->one();
+                $cat_counter->ads_amount = $cat_counter->ads_amount - 1;
+                $cat_counter->save();
+                // уменьшаем на 1 каунтеры для город+категория
+                $city_cat_counter = CounterCityCategory::find()->where(['categories_id' => $c_id, 'cities_id' => $adsModel->cities_id])->one();
+                $city_cat_counter->ads_amount = $city_cat_counter->ads_amount - 1;
+                $city_cat_counter->save();
+                //уменьшаем на 1 каунтеры для городa
+                $city = City::find()->where(['id' => $adsModel->cities_id])->one();
+                $city->ads_amount = $city->ads_amount - 1;
+                $city->save();
+            }
+            //очистим строку ads.categories_list дабы потом ее перезаписать
+            $adsModel->categories_list = null;
+            $adsModel->save();
         }
 
         $parents_arr = [];
