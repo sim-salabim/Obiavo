@@ -166,6 +166,19 @@ class SocialNetworks extends \yii\db\ActiveRecord
                 }
             }
         }
+
+        //если до сих пор не нашлось сообщества, то берем дефолтное для страны
+        if(!$group){
+            $group = SocialNetworksGroups::find()
+                ->where([
+                    'social_networks_id' =>$this->id,
+                    'countries_id' =>Yii::$app->location->country->id,
+                    'regions_id' => null,
+                    'cities_id' => null
+                ])->one();
+        }
+
+        //если и здесь группа не найдена, то выводим дефолтную для данной соцсети
         if(!$group){
             $group = $this->default;
         }

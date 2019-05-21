@@ -20,10 +20,6 @@ use yii\helpers\Url;
     <?= $this->render('/categories/list', compact('categories', 'div_row_unneeded'));?>
 
 </div>
-<?
-$show_s_blocks = Yii::$app->location->country->id == 1 ? true : false;
-
-?>
 <?=  $this->render('/partials/_ads_list.php',
     [
         'padding_top_20' => true,
@@ -31,7 +27,7 @@ $show_s_blocks = Yii::$app->location->country->id == 1 ? true : false;
         'library_search'=> $library_search,
         'title' => countString($ads_search['count'], [__('proposal'), __('proposals_im_p'), __('proposals_r_p') ]),
         'no_ads_title' => __('No ads found'),
-        'show_sn_widgets' => $show_s_blocks,
+        'show_sn_widgets' => true,
 //            'current_category' => $current_category,
 //            'current_action' => $current_action
     ]) ?>
