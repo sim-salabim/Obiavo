@@ -165,19 +165,28 @@ class SocialNetworks extends \yii\db\ActiveRecord
                     $group = $category->socialNetworkGroupsMain->getDefaultGroupBySnIdFromDefault($this->id);
                 }
             }
+        }else{
+            // для начала попробуем найти дефолтную группу для города, если он есть
+            if($location->city){
+                $group = SocialNetworksGroups::find()
+                    ->where([
+                        "cities_id" => $location->city->id,
+                        "social_networks_id" => $this->id,
+                        "social_networks_groups_main_id" =>
+                            (new \yii\db\Query())->select('id')->from('social_networks_groups_main')->where(['as_default' => 1])
+                    ])->one();
+            }
+            //если нет категории, то берем дефолтную группу для страны
+            if(!$group){
+                $group = SocialNetworksGroups::find()
+                    ->where([
+                        'social_networks_id' =>$this->id,
+                        'countries_id' =>Yii::$app->location->country->id,
+                        'regions_id' => null,
+                        'cities_id' => null
+                    ])->one();
+            }
         }
-
-        //если до сих пор не нашлось сообщества, то берем дефолтное для страны
-        if(!$group){
-            $group = SocialNetworksGroups::find()
-                ->where([
-                    'social_networks_id' =>$this->id,
-                    'countries_id' =>Yii::$app->location->country->id,
-                    'regions_id' => null,
-                    'cities_id' => null
-                ])->one();
-        }
-
         //если и здесь группа не найдена, то выводим дефолтную для данной соцсети
         if(!$group){
             $group = $this->default;
