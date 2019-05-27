@@ -391,7 +391,7 @@ ul.bs-autocomplete-menu a {
 }
 .breadcrumb{
     padding: 0rem 0.1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
     list-style: none;
     background-color: #FFFFFF;
     border-radius: .8rem;
@@ -689,6 +689,9 @@ button.edit-btn:hover{
 }
 .margin-top-12{
     margin-top: 12px !important;
+}
+.margin-top-7{
+    margin-top: 7px !important;
 }
 @media (max-width: 766px) {
     .filter-title{

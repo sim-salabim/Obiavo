@@ -72,7 +72,9 @@ AppAsset::register($this);
                     } ?>
                 </h1>
                 <? if(!isset($this->params['no_hr']) OR (isset($this->params['no_hr']) AND !$this->params['no_hr'])){?>
-                    <div class="w-100"><hr></div>
+                    <div class="row">
+                        <div class="w-100"><hr></div>
+                    </div>
                 <? } ?>
                 <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
                 <?= $this->render(

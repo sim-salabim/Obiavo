@@ -1,6 +1,10 @@
 <?php
 ?>
-<hr>
+<div class="row">
+    <div class="w-100">
+        <hr>
+    </div>
+</div>
 <?
 $row_list = (isset($row_list)) ? $row_list : false;
 $current_category = (isset($current_category))  ? $current_category : null;
