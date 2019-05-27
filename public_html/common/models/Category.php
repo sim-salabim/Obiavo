@@ -441,4 +441,20 @@ class Category extends \yii\db\ActiveRecord
             }
         }
     }
+
+    /** возврашает количество обьявления для текущей категории + плейсмента
+     * @param $placement_id
+     * @return array|bool
+     */
+    public function getAdsAmountByPlacementId($placement_id, $city_id = null){
+        $search_arr = [];
+        $search_arr['placements_id'] = $placement_id;
+        if($city_id){
+            $search_arr['cities_id'] = $city_id;
+        }
+        return (new Query())->select('count(*) as ads_amount')->from('ads')
+            ->where($search_arr)
+            ->andWhere(['LIKE', 'categories_list', "|$this->id|"])->one();
+    }
+
 }
