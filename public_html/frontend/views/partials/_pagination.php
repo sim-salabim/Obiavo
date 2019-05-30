@@ -12,7 +12,7 @@ $nav_str = $sort.$direction.$query.'{key:page}';
 $pages_amount = ceil(($ads_search['count'] / $library_search->limit));
 $action = isset($current_action)  ? $current_action."/" : '';
 $city = (Yii::$app->request->get('city')) ? Yii::$app->request->get('city')."/" : '';
-$link = (isset($current_category) and $current_category) ? "/$current_category->url/$action".$city : '';
+$link = (isset($current_category) and $current_category) ? "/".$city."$current_category->url/$action" : '';
 if($sort != '' OR $direction != ''){
     $link .= "?".$sort.$direction;
 }
@@ -25,7 +25,10 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
         <ul class="pagination">
             <? if($library_search->page != 1){?>
             <li class="page-item ">
-                <? $prev_href = ($library_search->page == 2) ? $link : "?".str_replace('{key:page}','page='.($library_search->page - 1),$nav_str) ?>
+                <?
+                $prev_href = ($library_search->page == 2) ? $link : "?".str_replace('{key:page}','page='.($library_search->page - 1),$nav_str);
+                $prev_href = ($prev_href == "") ? "/" : $prev_href;
+                ?>
                 <a class="pagination-link" href="<?= $prev_href ?>">
                     <span aria-hidden="true"><?= __('Prv.') ?></span>
                 </a>
@@ -43,7 +46,8 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
                             <?
                             $href = "?".str_replace('{key:page}','page='.$i,$nav_str);
                             $href = ($i == 1) ? str_replace('page=1', '', $href) : $href;
-                            $href = ($href == "?") ? \yii\helpers\Url::toRoute([$root_url]) : $href;
+                            $to_route = ($root_url == "") ? "/" : $root_url;
+                            $href = ($href == "?") ? \yii\helpers\Url::toRoute([$to_route]) : $href;
                             ?>
                             <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
                         <? } ?>
