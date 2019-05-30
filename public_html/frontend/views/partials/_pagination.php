@@ -40,7 +40,11 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
                 <li class="page-item ">
                     <? if($i != $library_search->page){?>
                         <? if( $i > ($library_search->page - 3) AND $i < ($library_search->page + 3)){?>
-                            <? $href = "?".str_replace('{key:page}','page='.$i,$nav_str) ?>
+                            <?
+                            $href = "?".str_replace('{key:page}','page='.$i,$nav_str);
+                            $href = ($i == 1) ? str_replace('page=1', '', $href) : $href;
+                            $href = ($href == "?") ? \yii\helpers\Url::toRoute([$root_url]) : $href;
+                            ?>
                             <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
                         <? } ?>
                     <? }else{ ?>

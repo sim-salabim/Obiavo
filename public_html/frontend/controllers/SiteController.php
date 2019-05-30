@@ -81,6 +81,7 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         $domain = Yii::$app->request->get('domain');
+        $root_url = "";
         if($domain){
             $city = City::find()->where(['domain' => $domain])->one();
             if($city and $city->region->country->id != Yii::$app->location->country->id){
@@ -91,6 +92,7 @@ class SiteController extends BaseController
                 throw new HttpException(404, 'Not Found');
             }
             City::setCookieLocation($domain);
+            $root_url = $root_url.$domain."/";
         }
 
         $region = isset($_COOKIE['region']) ? $_COOKIE['region'] : null;
@@ -171,7 +173,17 @@ class SiteController extends BaseController
             ->where(["IN", 'regions_id', (new Query())->select('id')->from('regions')->where(['countries_id' => Yii::$app->location->country->id])])
             ->one();
         $this->setNextAndPrevious($ads_search, $library_search, $page);
-        return $this->render('index',  compact('categories','cities', 'seo_text', 'ads_search', 'library_search', 'country_amount'));
+        return $this->render('index',
+            compact(
+                'categories',
+                'cities',
+                'seo_text',
+                'ads_search',
+                'library_search',
+                'country_amount',
+                'page',
+                'root_url'
+            ));
     }
 
     /**

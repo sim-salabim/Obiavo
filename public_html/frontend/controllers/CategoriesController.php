@@ -40,6 +40,7 @@ class CategoriesController extends BaseController
     public function actionIndex(){
         $categoryUrl = Yii::$app->request->get('category');
         $city = Yii::$app->request->get('city') ?: null;
+        $root_url = "/";
         if($city){
             $city_found = City::find()->where(['domain' => $city])->one();
             if($city_found and $city_found->region->country->id != Yii::$app->location->country->id){
@@ -49,7 +50,9 @@ class CategoriesController extends BaseController
             if($region_found and $region_found->country->id != Yii::$app->location->country->id){
                 throw new HttpException(404, 'Not Found');
             }
+            $root_url = $root_url.$city."/";
         }
+        $root_url = $root_url.$categoryUrl."/";
         $action = Yii::$app->request->get('placement');
         if($city != LocationHelper::getCurrentDomain()){
             City::setCookieLocation($city);
@@ -134,7 +137,8 @@ class CategoriesController extends BaseController
             'current_action'=> $action,
             'page'          => $page,
             'ads_search'    => $ads_list,
-            'library_search'=> $librarySearch
+            'library_search'=> $librarySearch,
+            'root_url' => $root_url
         ]);
     }
 

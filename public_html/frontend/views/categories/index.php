@@ -17,5 +17,6 @@ $current_category = (isset($current_category))  ? $current_category : null;
         'title' => countString($ads_search['count'], [__('proposal'), __('proposals_im_p'), __('proposals_r_p') ]),
         'no_ads_title' => __('No ads found'),
         'current_category' => $current_category,
-        'current_action' => $current_action
+        'current_action' => $current_action,
+        'root_url' => $root_url
     ]) ?>

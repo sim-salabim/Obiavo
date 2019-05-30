@@ -28,6 +28,7 @@ use yii\helpers\Url;
         'title' => countString($ads_search['count'], [__('proposal'), __('proposals_im_p'), __('proposals_r_p') ]),
         'no_ads_title' => __('No ads found'),
         'show_sn_widgets' => true,
+        'root_url' => $root_url,
 //            'current_category' => $current_category,
 //            'current_action' => $current_action
     ]) ?>
