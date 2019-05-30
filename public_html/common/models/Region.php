@@ -128,7 +128,7 @@ class Region extends \yii\db\ActiveRecord
             ->select('*, cities.id as id')->from('cities')
             ->leftJoin('cities_text', 'cities_text.cities_id = cities.id')
             ->where(['cities.regions_id' => $id])
-            ->andWhere(['languages_id' => Yii::$app->location->country->languages_id])
+            ->andWhere(['languages_id' => Language::getDefault()->id])
             ->orderBy(['name' => SORT_ASC])
             ->all();
         return $cities;

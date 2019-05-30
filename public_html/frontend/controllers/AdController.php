@@ -55,6 +55,7 @@ class AdController extends BaseController
         $this->setApplicationUrl($url);
         $current_domain = Location::getCurrentDomain();
         $place_name_rp = "";
+        $canonical_city = '';
         if($city){//если мы находимся в городе или регионе
             $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
             if($place and Yii::$app->location->country->id != $place->region->country->id){
@@ -72,6 +73,7 @@ class AdController extends BaseController
             if($city){
                 $this->setUrlForLogo($city);
             }
+            $canonical_city = "$city/";
         }else{//если мы не находимся ни в городе ни в регионе
             $place = Country::find()->where(['domain' => $current_domain])->one();
         }
@@ -101,7 +103,8 @@ class AdController extends BaseController
         $library_search->setActive(true);
         $list = Ads::getList($library_search);
         $this->switchSeoKeys($list);
-        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords);
+        $canonical_link = Url::home(true) . $canonical_city.$url."/";
+        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords,$canonical_link);
         $this->setPageTitle($this->seo_title);
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
@@ -337,6 +340,7 @@ class AdController extends BaseController
     }
 
     public function actionRepost(){
+        if(!Yii::$app->request->isPost) throw new HttpException(404, 'Not Found');
         $post = Yii::$app->request->post();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $ad = Ads::find()->where(['id'=>$post['id']])->one();

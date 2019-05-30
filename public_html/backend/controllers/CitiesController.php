@@ -65,7 +65,7 @@ class CitiesController extends BaseController
         $cities = CityOrder::find()->where(['in','cities_id',
             (new \yii\db\Query())->select('id')->from('cities')->where(['in','regions_id',
                 (new \yii\db\Query())->select('id')->from('regions')->where(['countries_id' => $country_id])
-            ])])
+            ])])->orderBy(['cities_order.order' => SORT_ASC])
             ->all();
 
         $homeLink = ['label' => 'Настройка порядка вывода городов', 'url' => '/cities/order-country-list'];
