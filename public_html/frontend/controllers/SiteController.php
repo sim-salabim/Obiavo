@@ -147,11 +147,15 @@ class SiteController extends BaseController
         }
         $ads_model = new Ads();
         $ads_search = $ads_model->getList($library_search, true);
-        if($page > 1 AND !count($ads_search['items'])){
-            $page = ceil(($ads_search['count'] / $library_search->limit));
-            $library_search->page = $page;
-            $ads_search = Ads::getList($library_search);
+        if($page > 1){
+            if(!count($ads_search['items'])) {
+                $page = ceil(($ads_search['count'] / $library_search->limit));
+                $library_search->page = $page;
+                $ads_search = Ads::getList($library_search);
+            }
+            $this->seo_title .= ". ".__('Page')." $page";
         }
+
         $this->switchSeoKeys($ads_search);
         Yii::$app->view->params['seo_desc'] = $this->seo_desc;
         Yii::$app->view->params['seo_keywords'] = $this->seo_keywords;
