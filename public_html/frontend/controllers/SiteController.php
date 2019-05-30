@@ -127,8 +127,13 @@ class SiteController extends BaseController
         if($domain) {
             $canonical = $domain. '/';
         }
+        $this->seo_title = $cms_page->_text->seo_title;
+        $this->seo_text = $cms_page->_text->seo_text;
+        $this->seo_h1 = $cms_page->_text->seo_h1;
+        $this->seo_h2 = $cms_page->_text->seo_h2;
+        $this->seo_desc = $cms_page->_text->seo_desc;
+        $this->seo_keywords = $cms_page->_text->seo_keywords;
         $canonical_link = Url::home(true) . $canonical;
-        $this->setSeo($cms_page->_text->seo_h1, $cms_page->_text->seo_h2, $cms_page->_text->seo_text, $cms_page->_text->seo_desc, $cms_page->_text->seo_keywords, $canonical_link);
         $library_search = new AdsSearch();
         $library_search->setActive(true);
         $library_search->setConsiderLocation(true);
@@ -154,6 +159,7 @@ class SiteController extends BaseController
         Yii::$app->view->params['seo_h2'] = $this->seo_h2;
         Yii::$app->view->params['seo_text'] = $this->seo_text;
         Yii::$app->view->params['no_hr'] = true;
+        Yii::$app->view->params['canonical'] = $canonical_link;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
         $country_amount = (new Query())->select('sum(ads_amount) as ads_amount')
