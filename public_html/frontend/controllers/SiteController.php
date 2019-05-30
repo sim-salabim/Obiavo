@@ -13,6 +13,7 @@ use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
+use yii\helpers\Url;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\db\Query;
@@ -122,11 +123,12 @@ class SiteController extends BaseController
         $cms_page = Cms::getByTechname('site-header');
         //настройка сео вещей
         $this->seo_title = $cms_page->_text->seo_title;
-        $this->seo_text = $cms_page->_text->seo_text;
-        $this->seo_h1 = $cms_page->_text->seo_h1;
-        $this->seo_h2 = $cms_page->_text->seo_h2;
-        $this->seo_desc = $cms_page->_text->seo_desc;
-        $this->seo_keywords = $cms_page->_text->seo_keywords;
+        $canonical = '';
+        if($domain) {
+            $canonical = $domain. '/';
+        }
+        $canonical_link = Url::home(true) . $canonical;
+        $this->setSeo($cms_page->_text->seo_h1, $cms_page->_text->seo_h2, $cms_page->_text->seo_text, $cms_page->_text->seo_desc, $cms_page->_text->seo_keywords, $canonical_link);
         $library_search = new AdsSearch();
         $library_search->setActive(true);
         $library_search->setConsiderLocation(true);
@@ -158,6 +160,7 @@ class SiteController extends BaseController
             ->from('cities')
             ->where(["IN", 'regions_id', (new Query())->select('id')->from('regions')->where(['countries_id' => Yii::$app->location->country->id])])
             ->one();
+        $this->setNextAndPrevious($ads_search, $library_search, $page);
         return $this->render('index',  compact('categories','cities', 'seo_text', 'ads_search', 'library_search', 'country_amount'));
     }
 
