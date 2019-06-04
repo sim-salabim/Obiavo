@@ -2,17 +2,18 @@
 
 namespace common\models;
 
-use common\models\CurrencyText;
+use common\models\scopes\CurrencyQuery;
 
 /**
  * This is the model class for table "categories".
  *
  * @property integer $id
  * @property string $code
+ * @property integer $countries_id
  * @property bool $active
  * @property bool $is_default
  *
- * @property Country[] $countries
+ * @property Country $country
  */
 class Currency extends \yii\db\ActiveRecord
 {
@@ -67,8 +68,34 @@ class Currency extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCountries()
+    public function getCountry()
     {
-        return $this->hasMany(Country::className(), ['currencies_id' => 'id']);
+        return $this->hasOne(Country::className(), ['id' => 'countries_id']);
+    }
+
+    public static function find(){
+        return new CurrencyQuery(get_called_class());
+    }
+    public function transactions() {
+        return [
+            // scenario name => operation (insert, update or delete)
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrencyText()
+    {
+        return $this->hasOne(CurrencyText::className(), ['currencies_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrencyTexts()
+    {
+        return $this->hasMany(CurrencyText::className(), ['currencies_id' => 'id']);
     }
 }

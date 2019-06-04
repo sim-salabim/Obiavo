@@ -41,7 +41,7 @@ $root_url = isset($root_url) ? $root_url : null;
             </div>
             <div class="col-lg-10 col-md-9 col-8 nonpadding-left-items">
                 <span><strong><a href="/<?= $ad->url() ?>" ><?= $ad->title ?></a></strong></span>
-                <p class="price-p"><strong><?= $ad->price . " " . \common\models\Ads::PRICE_LABEL ?></strong></p>
+                <p class="price-p"><strong><?= $ad->price . " " . Yii::$app->location->country->currency->_text->name_short ?></strong></p>
                 <span><small class="ads-pre-text"><?= cutText($ad->text, 50) ?></small></span><br/>
                 <div class="line-height-block">
                     <span><small class="ads-pre-text"><?= $ad->placement->_text->name ?>, <?= $ad->category->_text->name ?>, <?= $ad->city->_text->name ?></small></span><br/>

@@ -39,7 +39,7 @@
         </div>
         <? } ?>
         <div class="price-title">
-            <?= $ad->price . " ". __('rub') ?>
+            <?= $ad->price . " ". Yii::$app->location->country->currency->_text->name_short ?>
         </div>
         <div >
             <button class="btn btn-success my-1 width-100 <? if($ad->active){?>show-number-button<? } ?>" >

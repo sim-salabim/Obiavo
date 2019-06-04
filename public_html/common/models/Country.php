@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\models\scopes\CountryQuery;
+use phpDocumentor\Reflection\DocBlock\Tags\Property;
 
 /**
  * This is the model class for table "countries".
@@ -16,10 +17,9 @@ use common\models\scopes\CountryQuery;
  * @property string $longitude
  * @property string $latitude
  *
- * @property CategoryGenerated[] $categoryGenerated
- * @property Languages $languages
- * @property CountriesText[] $countriesTexts
- * @property Regions[] $regions
+ * @property Language $language
+ * @property Region[] $regions
+ * @property Currency $currency
  */
 class Country extends \yii\db\ActiveRecord
 {
@@ -100,6 +100,11 @@ class Country extends \yii\db\ActiveRecord
     public function getCountryText()
     {
         return $this->hasOne(CountryText::className(), ['countries_id' => 'id']);
+    }
+
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::className(), ['id'=> 'currencies_id']);
     }
 
     public function getCountryTexts()

@@ -17,7 +17,7 @@ class m170911_063839_currency_table extends Migration
             'code' => $this->string()->notNull(),
             'active' => $this->boolean()->defaultValue(1)->notNull(),
             'is_default' => $this->boolean()->defaultValue(0)->notNull(),
-            'symbol' => $this->string(1)->notNull(),
+            'symbol' => $this->string(10)->notNull(),
         ], $tableOptions);
 
         $this->createTable('currencies_text', [
@@ -25,6 +25,12 @@ class m170911_063839_currency_table extends Migration
             'currencies_id' => $this->integer(10)->unsigned()->notNull(),
             'languages_id' => $this->integer(10)->unsigned()->notNull(),
             'name' => $this->string(255)->notNull(),
+            'name_short' => $this->string(5)->notNull(),
+            'name_rp' => $this->string(255)->notNull(),
+            'name_pp' => $this->string(255)->notNull(),
+            'name_m' => $this->string(255)->notNull(),
+            'name_m_rp' => $this->string(255)->notNull(),
+            'name_m_pp' => $this->string(255)->notNull(),
         ], $tableOptions);
 
         $this->createIndex('idx_ct_currencies_id', 'currencies_text', 'currencies_id');
