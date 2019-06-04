@@ -35,13 +35,20 @@ class UsersController extends BaseController
 
     public function actionIndex()
     {
+        $current_page = \Yii::$app->request->get('page') ? \Yii::$app->request->get('page') : 1;
+        $limit = 20;
+        $offset = ($current_page - 1) * $limit;
+        $rows = User::find()->count();
+        $pages_amount = ceil($rows/$limit);
         $users = User::find()
-                    ->with(['city','city.cityText'])->all();
+            ->limit($limit)
+            ->offset($offset)
+            ->with(['city','city.cityText'])->all();
 //                    ->createCommand()->getRawSql();
 
         $toUrl = Url::toRoute('create');
 
-        return $this->render('index',  compact('users','toUrl'));
+        return $this->render('index',  compact('users','toUrl', 'pages_amount', 'current_page'));
     }
 
     public function actionCreate()
