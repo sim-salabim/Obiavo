@@ -6,6 +6,7 @@ use common\models\City;
 use common\models\CityOrder;
 use common\models\Cms;
 use common\models\Country;
+use common\models\Language;
 use common\models\libraries\AdsSearch;
 use common\models\LoginForm;
 use common\models\Region;
@@ -106,7 +107,7 @@ class SiteController extends BaseController
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
                             ->orderBy('order ASC, brand ASC, techname ASC')
-                            ->withText()
+                            ->withText(Language::getId())
                             ->withChildren()
                             ->orphan()
                             ->all();

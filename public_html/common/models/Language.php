@@ -138,4 +138,8 @@ class Language extends \yii\db\ActiveRecord
 
         return self::$_allLanguages;
     }
+
+    public static function getId(){
+        return self::find()->where(['code' => Yii::$app->language])->one()->id;
+    }
 }

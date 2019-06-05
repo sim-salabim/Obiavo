@@ -189,6 +189,7 @@ class Category extends \yii\db\ActiveRecord
             ->leftJoin('categories_has_placements', 'placements.id = categories_has_placements.placements_id')
             ->leftJoin('placements_text', 'placements.id = placements_text.placements_id')
             ->where(['categories_has_placements.categories_id' => $this->id])
+            ->andWhere(['placements_text.languages_id' => Language::getId()])
             ->all();
         return $placements ;
     }
@@ -421,7 +422,7 @@ class Category extends \yii\db\ActiveRecord
     }
 
     public static function getByUrl($url){
-        return self::find()->searchUrlByLanguage($url)->one();
+        return self::find()->searchUrlByLanguage($url)->withText(Language::getId())->one();
     }
 
     /** Возвращает основную группу (SocialNetworksGroupsMain) текущей категории, если группы нет, то

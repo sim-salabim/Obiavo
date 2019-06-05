@@ -18,4 +18,14 @@ class CmsQuery extends ActiveQuery {
                 ->andWhere(['cms_text.url' => $cmsUrl]);
     }
 
+    public function withText($languages_id = null){
+
+        return $this->with(['cmsText' => function($query) use ($languages_id){
+            $tableName = \common\models\CmsText::tableName();
+
+            if ($languages_id){
+                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
+            }
+        }]);
+    }
 }

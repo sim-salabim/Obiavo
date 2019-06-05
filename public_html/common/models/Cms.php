@@ -91,6 +91,6 @@ class Cms extends \yii\db\ActiveRecord
      * @return array|null|\yii\db\ActiveRecord
      */
     public static function getByTechname($techname){
-        return Cms::find()->where(['techname' => $techname])->one();
+        return Cms::find()->where(['techname' => $techname])->withText(Language::getId())->one();
     }
 }

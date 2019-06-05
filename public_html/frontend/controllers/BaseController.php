@@ -169,6 +169,7 @@ class BaseController extends \yii\web\Controller {
     }
 
     public function beforeAction(){
+        Yii::$app->language = Yii::$app->location->country->language->code;
         return $this->setPageTitle();
     }
 

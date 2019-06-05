@@ -83,11 +83,15 @@ class CategoriesController extends BaseController
         $subCategories = Category::find()
             ->where(['parent_id' => $this->category->id, 'active' => 1])
             ->orderBy('order ASC, brand ASC, techname ASC')
+            ->withText(Language::getId())
             ->all();
 //        $categoryPlacements = $this->category->placements;
 
         if($action){
-            $category_placement = CategoryPlacement::find()->where(['placements_id' => $action_id, 'categories_id' => $category->id])->one();
+            $category_placement = CategoryPlacement::find()
+                ->where(['placements_id' => $action_id, 'categories_id' => $category->id])
+                ->withText(Language::getId())
+                ->one();
             $this->seo_title = $category_placement->_text->seo_title;
             $this->seo_h1 = $category_placement->_text->seo_h1;
             $this->seo_h2 = $category_placement->_text->seo_h2;
