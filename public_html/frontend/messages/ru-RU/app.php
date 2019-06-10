@@ -195,4 +195,10 @@ return [
     'proposals_im_p' => 'предложения',
     'proposals_r_p' => 'предложений',
     'Information about' => 'Информация о',
+    'Help' => 'Помощь',
+    'About the project' => 'О проекте',
+    'Rules' => 'Правила',
+    '_Advertisement' => 'Реклама на сайте',
+    '_Offer' => 'Оферта',
+    'ads from individuals and companies' => 'сайт объявлений от частных лиц и компаний',
 ];

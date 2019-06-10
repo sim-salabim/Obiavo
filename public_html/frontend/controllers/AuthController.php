@@ -1,21 +1,19 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Mailer as Mailer;
 use common\models\PasswordRecovery as PasswordRecovery;
-use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use common\models\User as User;
 use frontend\models\LoginForm;
-use frontend\models\RegistrForm;
 use frontend\models\PasswordRecoveryForm;
 use frontend\models\PasswordResetForm as PasswordResetForm;
+use frontend\models\RegistrForm;
 use frontend\models\SignupForm;
-use common\helpers\JsonData;
-use common\models\User as User;
-use common\models\Mailer as Mailer;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
 
     /**

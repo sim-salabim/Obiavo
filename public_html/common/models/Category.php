@@ -35,6 +35,7 @@ use common\models\scopes\CategoryQuery;
  * @property SocialNetworksGroups[] $socialNetworkGroups
  * @property SocialNetworksGroupsMain $socialNetworkGroupsMain
  * @property CounterCategory $counterCategories
+ * @property CategoriesText[] $categoriesTexts
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -95,6 +96,22 @@ class Category extends \yii\db\ActiveRecord
     public static function find(){
         return new CategoryQuery(get_called_class());
     }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getCategoriesTexts()
+//    {
+//        return $this->hasMany(CategoriesText::className(), ['categories_id' => 'id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getCategoriesText()
+//    {
+//        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])->andWhere(['languages_id' => Language::getId()]);
+//    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -170,8 +187,7 @@ class Category extends \yii\db\ActiveRecord
 
     public function getCategoriesText()
     {
-        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id']);
-//                    ->where(['languages_id' => Yii::$app->user->getLanguage()->id]);
+        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])->andWhere(['languages_id' => Language::getId()]);
     }
 
     public function getAllCategoryChildren(){

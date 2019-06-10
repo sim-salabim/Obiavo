@@ -192,5 +192,11 @@ return [
     'proposal' => 'proposal',
     'proposals_im_p' => 'proposals',
     'proposals_r_p' => 'proposals',
-    'Information about' => 'Информация о',
+    'Information about' => 'Information about',
+    'Help' => 'Help',
+    'About the project' => 'About the project',
+    'Rules' => 'Rules',
+    '_Advertisement' => 'Advertisement',
+    '_Offer' => 'Offer',
+    'ads from individuals and companies' => 'ads from individuals and companies',
 ];

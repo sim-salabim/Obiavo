@@ -1,6 +1,7 @@
 <?php
 namespace common\models\scopes;
 
+use common\models\Language;
 use yii\db\ActiveQuery;
 use common\models\PlacementsText;
 
@@ -19,6 +20,7 @@ class PlacementQuery extends ActiveQuery {
         $tbPlacementsText = PlacementsText::tableName();
 
         return $this->joinWith('placementsText')
-                    ->onCondition(['=',"$tbPlacementsText.url",$name]);;
+                    ->andWhere(['languages_id' => Language::getId()])
+                    ->onCondition(['=',"$tbPlacementsText.url",$name]);
     }
 }

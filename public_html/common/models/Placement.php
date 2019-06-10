@@ -93,7 +93,7 @@ class Placement extends \yii\db\ActiveRecord
 
     public function getPlacementsText()
     {
-        return $this->hasOne(PlacementsText::className(), ['placements_id' => 'id']);
+        return $this->hasOne(PlacementsText::className(), ['placements_id' => 'id'])->andWhere(['languages_id' => Language::getId()]);
     }
 
     public static function getCurrent(){
