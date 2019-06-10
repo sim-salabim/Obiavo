@@ -194,4 +194,5 @@ return [
     'proposal' => 'предложение',
     'proposals_im_p' => 'предложения',
     'proposals_r_p' => 'предложений',
+    'Information about' => 'Информация о',
 ];

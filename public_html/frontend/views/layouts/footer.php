@@ -16,7 +16,7 @@
                         <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/help/">Помощь</a>
                     </li>
                     <li class="nav-item li-item">
-                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/kontakty/">Контакты</a>
+                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/kontakty/"><?= __('_Contacts') ?></a>
                     </li>
                 </ul>
             </div>
@@ -24,7 +24,7 @@
                 <hr>
             </div>
             <div class="col-12">
-                <p class="text-secondary">© Obiavo - сайт объявлений от частных лиц и компаний. <a class="footer-link" rel="nofollow" href="/polzovatelskoe-soglashenie/">Пользовательское соглашение</a>. <a class="footer-link" rel="nofollow" href="/oferta/">Оферта</a>. <a class="footer-link" rel="nofollow" href="/cookies/">Информация о cookies</a>.</p>
+                <p class="text-secondary">© Obiavo - сайт объявлений от частных лиц и компаний. <a class="footer-link" rel="nofollow" href="/polzovatelskoe-soglashenie/">Пользовательское соглашение</a>. <a class="footer-link" rel="nofollow" href="/oferta/">Оферта</a>. <a class="footer-link" rel="nofollow" href="/cookies/"><?= __('Information about') ?> cookies</a>.</p>
             </div>
         </div>
         <div class="footer-clear"></div>
