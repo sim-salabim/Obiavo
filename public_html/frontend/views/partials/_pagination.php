@@ -40,7 +40,6 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
             <?
             $i = 1;
             while($i <= $pages_amount){?>
-                <li class="page-item ">
                     <? if($i != $library_search->page){?>
                         <? if( $i > ($library_search->page - 3) AND $i < ($library_search->page + 3)){?>
                             <?
@@ -49,12 +48,15 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
                             $to_route = ($root_url == "") ? "/" : $root_url;
                             $href = ($href == "?") ? \yii\helpers\Url::toRoute([$to_route]) : $href;
                             ?>
-                            <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
+                            <li class="page-item ">
+                                <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
+                            </li>
                         <? } ?>
                     <? }else{ ?>
-                        <span class="pagination-link pagination-link-active"><?= $i ?></span>
+                        <li class="page-item ">
+                            <span class="pagination-link pagination-link-active"><?= $i ?></span>
+                        </li>
                     <? } ?>
-                </li>
             <? ++$i;
             } ?>
             <? if(($library_search->page + 3) <= $pages_amount){?>

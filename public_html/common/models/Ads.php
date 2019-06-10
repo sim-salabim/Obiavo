@@ -336,6 +336,7 @@ class Ads extends \yii\db\ActiveRecord
             ->from('ads')
             ->where($additional_category_conditions)
             ->andWhere($location_conditions)
+            ->andWhere(['>', 'price', 0])
             ->one();
 
         $views_expired_conditions = ['>', 'expiry_date', time()];
