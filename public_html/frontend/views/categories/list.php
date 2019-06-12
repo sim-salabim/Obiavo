@@ -53,15 +53,17 @@ function sortingKids($a, $b){
                 <? } ?>
             <? } ?>
             <? foreach($categories as $key =>  $category){ ?>
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
-                <a href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
-                    if(!Yii::$app->location->city) {
-                        $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
-                    }else{
-                        $amnt = $category->getCounterByCityId(Yii::$app->location->city->id)['ads_amount'] ?: 0 ;
-                    } echo $amnt;
-                    ?></span>
-            </div>
+                <? if($category->_text->name != ""){?>
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
+                        <a href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
+                            if(!Yii::$app->location->city) {
+                                $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
+                            }else{
+                                $amnt = $category->getCounterByCityId(Yii::$app->location->city->id)['ads_amount'] ?: 0 ;
+                            } echo $amnt;
+                            ?></span>
+                    </div>
+                <? } ?>
             <? } ?>
             <div class="w-100"><hr></div>
     <? } ?>

@@ -1,7 +1,6 @@
 <?php
 namespace common\models\scopes;
 
-use common\models\Language;
 use yii\db\ActiveQuery;
 
 class CategoryQuery extends ActiveQuery {
@@ -21,16 +20,16 @@ class CategoryQuery extends ActiveQuery {
     /**
      * Категория с текущим переводом
      */
-//    public function withText($languages_id = null){
-//
-//        return $this->with(['categoriesText' => function($query) use ($languages_id){
-//            $tableName = \common\models\CategoriesText::tableName();
-//
-//            if ($languages_id){
-//                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
-//            }
-//        }]);
-//    }
+    public function withText($languages_id = null){
+
+        return $this->with(['categoriesText' => function($query) use ($languages_id){
+            $tableName = \common\models\CategoriesText::tableName();
+
+            if ($languages_id){
+                return $query->andWhere(["$tableName.languages_id" => $languages_id]);
+            }
+        }]);
+    }
 
     /**
      * Категория без родителей
@@ -43,9 +42,16 @@ class CategoryQuery extends ActiveQuery {
     public function searchUrlByLanguage($categoryUrl){
         return
             $this->joinWith(['categoriesText' => function (\yii\db\ActiveQuery $query){
-                $query->andWhere(['categories_text.languages_id' => Language::find()->where(["is_default" => 1])->one()->id]);
+                $query->andWhere(['categories_text.languages_id' => \Yii::$app->location->country->languages_id]);
             }])
             ->andWhere(['categories_text.url' => $categoryUrl]);
     }
 
+//    public function getText($languages_id = null){
+//        $languages_id = !$languages_id ?: Language::find()->where(["is_default" => 1])->one()->id;
+//        return
+//            $this->joinWith(['categoriesText' => function (\yii\db\ActiveQuery $query) use($languages_id){
+//                $query->andWhere(['categories_text.languages_id' => $languages_id]);
+//            }]);
+//    }
 }

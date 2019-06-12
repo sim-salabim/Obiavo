@@ -23,6 +23,9 @@ class Language extends \yii\db\ActiveRecord
 {
     public static $_allLanguages;
 
+    const LANG_CODE_EN = 'en';
+    const LANG_CODE_RU = 'ru-RU';
+
     public static function tableName()
     {
         return 'languages';
@@ -137,5 +140,9 @@ class Language extends \yii\db\ActiveRecord
         }
 
         return self::$_allLanguages;
+    }
+
+    public static function getId(){
+        return self::find()->where(['code' => Yii::$app->language])->one()->id;
     }
 }

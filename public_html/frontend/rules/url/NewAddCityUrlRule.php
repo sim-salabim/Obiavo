@@ -5,6 +5,7 @@ namespace frontend\rules\url;
 use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\City;
+use common\models\Language;
 use common\models\Region;
 use yii\web\UrlRule;
 
@@ -17,8 +18,8 @@ class NewAddCityUrlRule extends UrlRule
         $result = parent::parseRequest($manager, $request);
         list($route, $params) = $result;
         $item = null;
-        if($params['url'] != Ads::DEFAULT_LINK) {
-            $item = AddApplicationText::find()->where(['url' => $params['url']])->one();
+        if($params['url'] != Ads::DEFAULT_LINK_RU AND $params['url'] != Ads::DEFAULT_LINK_EN) {
+            $item = AddApplicationText::find()->where(['url' => $params['url'], 'languages_id' => Language::getId()])->one();
             if (!$item) {
                 return false;
             }

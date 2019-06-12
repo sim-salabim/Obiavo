@@ -48,7 +48,8 @@ class Ads extends \yii\db\ActiveRecord
     const DATE_RANGE_TWO_YEARS = 'two_years';
     const DATE_RANGE_THREE_YEARS = 'three_years';
     const DATE_RANGE_UNLIMITED = 'unlimited';
-    const DEFAULT_LINK = 'podat-obiavlenie';
+    const DEFAULT_LINK_RU = 'podat-obiavlenie';
+    const DEFAULT_LINK_EN = 'publish-ad';
     /**
      * @inheritdoc
      */
@@ -406,9 +407,19 @@ class Ads extends \yii\db\ActiveRecord
     static function generateApplicationUrl(){
         $category = Yii::$app->request->get('category');
         $placement = Yii::$app->request->get('placement');
-        $application_url = self::DEFAULT_LINK;
+        $application_url = "";
+        switch(Yii::$app->language){
+            case Language::LANG_CODE_EN :
+                $application_url = self::DEFAULT_LINK_EN;
+                break;
+            case Language::LANG_CODE_RU :
+                $application_url = self::DEFAULT_LINK_RU;
+                break;
+            default:
+                $application_url = self::DEFAULT_LINK_RU;
+        }
         if($placement){
-            $placement_found = PlacementsText::find()->where(['url' => $placement])->one();
+            $placement_found = PlacementsText::find()->where(['url' => $placement, 'languages_id' => Language::getId()])->one();
             if($placement_found and $placement_found->application_url and $placement_found->application_url != ""){
                 $application_url = $placement_found->application_url;
             }

@@ -83,11 +83,15 @@ class CategoriesController extends BaseController
         $subCategories = Category::find()
             ->where(['parent_id' => $this->category->id, 'active' => 1])
             ->orderBy('order ASC, brand ASC, techname ASC')
+            ->withText(Language::getId())
             ->all();
 //        $categoryPlacements = $this->category->placements;
 
         if($action){
-            $category_placement = CategoryPlacement::find()->where(['placements_id' => $action_id, 'categories_id' => $category->id])->one();
+            $category_placement = CategoryPlacement::find()
+                ->where(['placements_id' => $action_id, 'categories_id' => $category->id])
+                ->withText(Language::getId())
+                ->one();
             $this->seo_title = $category_placement->_text->seo_title;
             $this->seo_h1 = $category_placement->_text->seo_h1;
             $this->seo_h2 = $category_placement->_text->seo_h2;
@@ -263,17 +267,25 @@ class CategoriesController extends BaseController
         $categories = Category::find()
             ->where(['parent_id' => $id, 'active'=> 1])
             ->orderBy('order ASC, brand ASC, techname ASC')
-            ->withText(['languages_id' => Language::getDefault()->id])
+            ->withText(['languages_id' => Language::getId()])
             ->all();
         $out = "[";
+        $DB = Yii::$app->getDb();
         foreach($categories as $k => $row){
-            $kid = Category::find()->where(['parent_id' => $row['id']])->one();
-            $has_kids = $kid ? 'true' : 'false';
-            $out .= '{"key": "'.$row['id'].'","isLazy":'.$has_kids.',"isFolder":'.$has_kids.',"title": "'.$row['techname'].'"}';
             $next = $k + 1;
-            if(isset($categories[$next])){
-                $out .= ",";
+            if($row->_text->name != "") {
+                $query = $DB->createCommand("SELECT categories.id FROM categories LEFT JOIN  categories_text ON categories_text.categories_id = categories.id WHERE parent_id = ".$row['id']." AND categories_text.languages_id = ".Language::getId()." AND categories_text.name IS NOT NULL AND TRIM(categories_text.name) <> '' AND categories.active = 1");
+                $kid = $query->queryOne();
+                $has_kids = ($kid) ? 'true' : 'false';
+                $out .= '{"key": "' . $row['id'] . '","isLazy":' . $has_kids . ',"isFolder":' . $has_kids . ',"title": "' . $row->_text->name . '"}';
+
+                if(isset($categories[$next])){
+                    $out .= ",";
+                }
             }
+        }
+        if(substr($out, -1) == ","){
+            $out = substr($out, 0, -1);
         }
         return $out."]";
     }

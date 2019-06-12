@@ -77,8 +77,9 @@ class LocationCategoryUrlRule extends UrlRule implements UrlRuleInterface
     private function isValidCategory($params){
         $categoryName = ArrayHelper::getValue($params, 'category', false);
         $category = \common\models\Category::find()
-                            ->searchUrlByLanguage($categoryName)
-                            ->one();
+            ->leftJoin('categories_text', 'categories_text.categories_id = categories.id')
+            ->where(['categories_text.url' => $categoryName])
+            ->one();
         return $category;
     }
 

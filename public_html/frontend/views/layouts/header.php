@@ -77,7 +77,7 @@
                 $application_url = yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl());
             }?>
             <? if (Yii::$app->user->isGuest) { ?>
-                <a href="<?= yii\helpers\Url::toRoute('/login') ?>" class="btn btn-success my-2 ent-btn d-md-block d-lg-block new-add-btn" rel="nofollow"><?= __('Enter') ?></a>
+                <a href="<?= yii\helpers\Url::toRoute('/login') ?>" class="btn btn-success my-2 ent-btn d-md-block d-lg-block new-add-btn" rel="nofollow"><?= __('Sign in') ?></a>
             <? } ?>
             <a href="<?= $application_url ?>" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an add') ?></a>
 

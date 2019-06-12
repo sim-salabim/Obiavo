@@ -90,14 +90,15 @@ $("#tree-container").dynatree({
             }
 
             foreach($categories as $cat){
+                if($cat->_text->name != ""){
             $expand = 'false';
             $kids_str = getKidsString($cat, $all_selected_parent_ids, $selected_cat_ids);
             if($kids_str != ''){
                 $expand = 'true';
             }
         ?>
-    {title: "<?= $cat->techname ?>", expand: <?= $expand ?>,isFolder: true, isLazy: true, key: "<?= $cat->id ?>", select: <? if(array_search($cat->id, $selected_cat_ids) !== false){?>true<?}else{?>false<?}?>, <?= $kids_str ?>},
-<? } ?>
+    {title: "<?= $cat->_text->name ?>", expand: <?= $expand ?>,isFolder: true, isLazy: true, key: "<?= $cat->id ?>", select: <? if(array_search($cat->id, $selected_cat_ids) !== false){?>true<?}else{?>false<?}?>, <?= $kids_str ?>},
+<? }} ?>
 ],
 onLazyRead: function(dtnode){
     dtnode.appendAjax(

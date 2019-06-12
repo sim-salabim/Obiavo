@@ -39,8 +39,8 @@ $ad = isset($ad) ? $ad : null;
     }else{?>
         <nav class="padding-bottom-10">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-main-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Без регистрации</a>
-                <a class="nav-item nav-link" id="nav-login-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Авторизация</a>
+                <a class="nav-item nav-link active" id="nav-main-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><?= __('Without registration') ?></a>
+                <a class="nav-item nav-link" id="nav-login-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><?= __('Authorization') ?></a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -105,7 +105,7 @@ $ad = isset($ad) ? $ad : null;
                             <input
                                     id="email"
                                     name="email"
-                                    placeholder="E-mail"
+                                    placeholder="<?= __('_E-mail') ?>"
                                     class="form-control input-md " >
                                 <div class="invalid-feedback" id="email_error"></div>
                         </div>
@@ -115,7 +115,7 @@ $ad = isset($ad) ? $ad : null;
                             <input
                                     id="name"
                                     name="name"
-                                    placeholder="Ваше имя"
+                                    placeholder="<?= __('_your_name'); ?>"
                                     class="form-control input-md " >
                                 <div class="invalid-feedback" id="name_error"></div>
                         </div>
@@ -125,7 +125,7 @@ $ad = isset($ad) ? $ad : null;
                             <input
                                     id="phone"
                                     name="phone"
-                                    placeholder="Номер телефона"
+                                    placeholder="<?= __('Phone number') ?>"
                                     class="form-control input-md " >
                                 <div class="invalid-feedback" id="phone_error"></div>
                         </div>

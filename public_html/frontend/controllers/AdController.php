@@ -78,22 +78,22 @@ class AdController extends BaseController
             $place = Country::find()->where(['domain' => $current_domain])->one();
         }
         $place_name_rp = __('in')." ".$place->_text->name_rp;
-        $text = AddApplicationText::find()->where(["languages_id" => Language::getDefault()->id, 'url' => $url])->one();
+        $text = AddApplicationText::find()->where(["languages_id" => Language::getId(), 'url' => $url])->one();
         if(!$text){
-            $url_part = str_replace(Ads::DEFAULT_LINK."-","",$url );
+            $url_part = str_replace(Ads::DEFAULT_LINK_RU."-","",$url );
             if($url_part != $url){
-                $pl_app_url = PlacementsText::find()->where(['application_url' => $url_part])->one();
+                $pl_app_url = PlacementsText::find()->where(['application_url' => $url_part, 'languages_id' => Language::getId()])->one();
                 if($pl_app_url){
-                    $text = AddApplicationText::find()->where(['placements_default' => 1])->one();
+                    $text = AddApplicationText::find()->where(['placements_default' => 1, 'languages_id' => Language::getId()])->one();
                 }else{
-                    $text = CategoriesText::find()->where(['application_url' => $url_part])->one();
+                    $text = CategoriesText::find()->where(['application_url' => $url_part, 'languages_id' => Language::getId()])->one();
                 }
             }
             if(!$text) {
-                $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK])->one();
+                $text = AddApplicationText::find()->where(['url' => Ads::DEFAULT_LINK_RU, 'languages_id' => Language::getId()])->one();
             }
         }
-
+        if(!$text) throw new HttpException(404, 'Not Found');
         $this->seo_title = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_title);
         $this->seo_h1 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_h1);
         $this->seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_desc);
@@ -109,11 +109,11 @@ class AdController extends BaseController
         $categories = Category::find()
             ->where(['parent_id' => NULL, 'active'=>1])
             ->orderBy('order ASC, brand ASC, techname ASC')
-            ->withText(['languages_id' => Language::getDefault()->id])
+            ->withText(['languages_id' => Language::getId()])
             ->all();
         $limit = Settings::find()->one()->categories_limit;
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
-        $placements = Placement::find()->all();
+        $placements = Placement::find()->withText(['languages_id' => Language::getId()])->all();
         return $this->render('new', [
             'user' => $user,
             'categories_limit' => $limit,
