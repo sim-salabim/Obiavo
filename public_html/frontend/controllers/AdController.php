@@ -113,7 +113,7 @@ class AdController extends BaseController
             ->all();
         $limit = Settings::find()->one()->categories_limit;
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
-        $placements = Placement::find()->all();
+        $placements = Placement::find()->withText(['languages_id' => Language::getId()])->all();
         return $this->render('new', [
             'user' => $user,
             'categories_limit' => $limit,
