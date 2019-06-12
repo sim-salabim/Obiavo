@@ -201,4 +201,7 @@ return [
     '_Advertisement' => 'Реклама на сайте',
     '_Offer' => 'Оферта',
     'ads from individuals and companies' => 'сайт объявлений от частных лиц и компаний',
+    '_your_name' => 'Ваше имя',
+    '_E-mail' => 'E-mail',
+    'Without registration' => 'Без регистрации',
 ];

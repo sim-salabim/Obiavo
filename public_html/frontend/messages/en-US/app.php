@@ -199,4 +199,7 @@ return [
     '_Advertisement' => 'Advertisement',
     '_Offer' => 'Offer',
     'ads from individuals and companies' => 'ads from individuals and companies',
+    '_your_name' => 'Name',
+    '_E-mail' => 'Email',
+    'Without registration' => 'Without registration',
 ];

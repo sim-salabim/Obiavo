@@ -23,6 +23,9 @@ class Language extends \yii\db\ActiveRecord
 {
     public static $_allLanguages;
 
+    const LANG_CODE_EN = 'en';
+    const LANG_CODE_RU = 'ru-RU';
+
     public static function tableName()
     {
         return 'languages';

@@ -187,7 +187,8 @@ class Category extends \yii\db\ActiveRecord
 
     public function getCategoriesText()
     {
-        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])->andWhere(['languages_id' => Language::getId()]);
+        return $this->hasOne(CategoriesText::className(), ['categories_id' => 'id'])
+            ->andWhere(['languages_id' => Language::getId()]);
     }
 
     public function getAllCategoryChildren(){
