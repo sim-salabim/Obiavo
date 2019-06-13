@@ -18,7 +18,10 @@ if($sort != '' OR $direction != ''){
 }
 $link .= ($link == '' AND $query != '') ? "?".$query : $query;
 if($link == '' AND $root_url) $link .= '/'.$root_url;
-?>    <div class="col-12 placeholder-padding-0"><hr></div>
+?>
+<div class="w-100">
+    <hr>
+</div>
 <div class="col-lg-12">
 
     <nav class="padding-top-10">

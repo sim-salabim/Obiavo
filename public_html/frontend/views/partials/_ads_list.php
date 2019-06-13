@@ -88,7 +88,9 @@ $root_url = isset($root_url) ? $root_url : null;
                 </div>
             </div>
             <? if($k + 1 < count($ads_search['items'])){?>
-                <div class="placeholder-padding-0 w-100"><hr></div>
+                <div class="w-100">
+                    <hr>
+                </div>
             <? } ?>
         <? } ?>
         <? if($library_search->limit < $ads_search['count']){?>
@@ -103,7 +105,9 @@ $root_url = isset($root_url) ? $root_url : null;
         <? }?>
     <? } ?>
     <? if($library_search->limit > $ads_search['count']){ ?>
-        <div class="col-lg-12"><hr class="end-list-padding"></div>
+        <div class="w-100">
+            <hr>
+        </div>
     <? } ?>
     <? if($show_sn_widgets){?>
         <?=  $this->render('/partials/_social_network_block.php', ['current_category' => $current_category]) ?>
