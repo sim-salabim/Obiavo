@@ -125,12 +125,17 @@ class City extends \yii\db\ActiveRecord
 
     public function getCityText()
     {
-        return $this->hasOne(CityText::className(), ['cities_id' => 'id'])->andWhere(['languages_id' => Language::getId()]);
+        return $this->hasOne(CityText::className(), ['cities_id' => 'id']);
     }
 
     public function getCityTexts()
     {
         return $this->hasMany(CityText::className(), ['cities_id' => 'id']);
+    }
+
+    public function multiText(){
+        return $this->hasOne(CityText::className(), ['cities_id' => 'id']);
+//                    ->andWhere(['regions_text.languages_id' => Yii::$app->user->getLanguage()->id]);
     }
 
     /**

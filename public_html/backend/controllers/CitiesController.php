@@ -158,9 +158,10 @@ class CitiesController extends BaseController
     }
 
     public function actionUpdate($id){
+        $city = City::findOne($id);
         $city = City::find()
                     ->where(['id' => $id])
-                    ->withText()->one();
+                    ->withText($city->region->country->languages_id)->one();
 
         $toUrl = Url::toRoute(['save','id' => $id]);
 

@@ -70,7 +70,10 @@ class RegionsController extends BaseController
     public function actionUpdate($id){
         $region = Region::find()
                     ->where(['id' => $id])
-                    ->withText()
+                    ->one();
+        $region = Region::find()
+                    ->where(['id' => $id])
+                    ->withText($region->country->language->id)
                     ->one();
 
         $toUrl = Url::toRoute(['save','id' => $region->id]);

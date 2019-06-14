@@ -104,7 +104,7 @@ class Region extends \yii\db\ActiveRecord
      */
     public function getSocialNetworkGroups()
     {
-        return $this->hasMany(SocialNetworksGroups::className(), ['cregions_id' => 'id']);
+        return $this->hasMany(SocialNetworksGroups::className(), ['regions_id' => 'id']);
     }
 
     public function getRegionText()
@@ -112,10 +112,10 @@ class Region extends \yii\db\ActiveRecord
         return $this->hasOne(RegionText::className(), ['regions_id' => 'id']);
     }
 
-    public function multiText(){
-        return $this->hasOne(RegionText::className(), ['regions_id' => 'id']);
-//                    ->andWhere(['regions_text.languages_id' => Yii::$app->user->getLanguage()->id]);
-    }
+//    public function multiText(){
+//        return $this->hasOne(RegionText::className(), ['regions_id' => 'id']);
+////                    ->andWhere(['regions_text.languages_id' => Yii::$app->user->getLanguage()->id]);
+//    }
 
     public function getRegionTexts()
     {

@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use common\helpers\JsonData;
+use common\models\CategoriesText;
 use common\models\Category;
 use common\models\CategoryPlacement;
 use common\models\CategoryPlacementText;
@@ -187,15 +188,18 @@ class CategoriesController extends BaseController
     }
 
     public function actionSaveLang($id,$languages_id){
-        $category = Category::find()
-                        ->where(['id' => $id])
-                        ->withText($languages_id)
+        $text = CategoriesText::find()
+                        ->where(['categories_id' => $id, 'languages_id' => $languages_id])
                         ->one();
-
-        if ($this->isJson()){
-            $text = $category->_mttext;
-            $text->categories_id = $category->id;
+        if(!$text){
+            $text = new CategoriesText();
+            $text->categories_id = $id;
             $text->languages_id = $languages_id;
+        }
+        $category = Category::find()
+            ->where(['id' => $id])
+            ->one();
+        if ($this->isJson()){
             $text->load(Yii::$app->request->post());
 
             if ($text->save()){
@@ -211,7 +215,7 @@ class CategoriesController extends BaseController
         }
 
         return $this->render('savelang',[
-            'category' => $category,
+            'text' => $text,
         ]);
     }
 
