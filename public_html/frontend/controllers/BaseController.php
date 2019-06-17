@@ -122,14 +122,15 @@ class BaseController extends \yii\web\Controller {
             '{key:slr-range}',
             '{key:salary-range}',
         ];
+        $currency_name = Yii::$app->location->country->currency->_text->name_short.".";
         $replace_arr = [
            /*{key:count-ads}*/countString($ads_list['count'], [__('one_ad'), __('two_ads'), __('more_ads')]),
-            /*{key:price-from}*/($ads_list['price_range']['min']) ? __('price from')." ".$ads_list['price_range']['min']." ".__('r.') : __('price not defined'),
+            /*{key:price-from}*/($ads_list['price_range']['min']) ? __('price from')." ".$ads_list['price_range']['min']." ".$currency_name : __('price not defined'),
             /*{key:location}*/$location->_text->name,
             /*{key:site}*/ucfirst(Yii::$app->location->country->domain),
             /*{key:location-in}*/__('in')." ".$location->_text->name_rp,
             /*{key:location-of}*/$location->_text->name_pp,
-            /*{key:prices-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('prices from')." ".$ads_list['price_range']['min']." ".__('r.')." ".__('_to')." ".$ads_list['price_range']['max']." ".__('r.') : __('prices not defined'),
+            /*{key:prices-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('prices from')." ".$ads_list['price_range']['min']." ".$currency_name." ".__('_to')." ".$ads_list['price_range']['max']." ".$currency_name : __('prices not defined'),
             /*{key:count-views}*/countString($ads_list['views_amount'], [__('one_view'), __('two_views'), __('more_views')]),
             /*{key:count-finished-deals}*/countString($ads_list['finished_deals'], [__('one finished deal'), __('two finished deals'), __('more finished deals'),]),
             /*{key:count-proposals}*/countString($ads_list['count'], [__('one_proposal'), __('two_proposals'), __('more_proposals')]),
@@ -137,9 +138,9 @@ class BaseController extends \yii\web\Controller {
             /*{key:count-deals}*/countString($ads_list['finished_deals'], [__('one_deal'), __('two_deals'), __('more_deals'),]),
             /*{key:count-deals-made}*/countString($ads_list['finished_deals'], [__('one_deal_made'), __('two_deals_made'), __('more_deals_made'),]),
             /*{key:count-items-views}*/countString($ads_list['views_amount'], [__('one_items_view'), __('two_items_views'), __('more_items_views')]),
-            /*{key:slr-from}*/($ads_list['price_range']['min']) ? __('slr_from')." ".$ads_list['price_range']['min']." ".__('r.') : __('slr not defined'),
-            /*{key:slr-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('slr_from')." ".$ads_list['price_range']['min']." ".__('r.')." ".__('_to')." ".$ads_list['price_range']['max']." ".__('r.') : __('slr not defined'),
-            /*{key:salary-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('salary from')." ".$ads_list['price_range']['min']." ".__('r.')." ".__('_to')." ".$ads_list['price_range']['max']." ".__('r.') : __('slr not defined'),
+            /*{key:slr-from}*/($ads_list['price_range']['min']) ? __('slr_from')." ".$ads_list['price_range']['min']." ".$currency_name : __('slr not defined'),
+            /*{key:slr-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('slr_from')." ".$ads_list['price_range']['min']." ".$currency_name." ".__('_to')." ".$ads_list['price_range']['max']." ".$currency_name : __('slr not defined'),
+            /*{key:salary-range}*/($ads_list['price_range']['min'] and $ads_list['price_range']['max'] ) ? __('salary from')." ".$ads_list['price_range']['min']." ".$currency_name." ".__('_to')." ".$ads_list['price_range']['max']." ".$currency_name : __('slr not defined'),
         ];
         $this->seo_title = str_replace($keys_arr, $replace_arr, $this->seo_title);
         $this->seo_h1 = str_replace($keys_arr, $replace_arr, $this->seo_h1);
