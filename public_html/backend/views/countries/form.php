@@ -5,7 +5,9 @@ use backend\widgets\Form;
 use yii\helpers\ArrayHelper;
 
 $languages = common\models\Language::find()->all();
+$currencies = \common\models\Currency::find()->where(['active' => 1])->all();
 $lang = $country->language ? $country->language : new common\models\Language;
+$currency = $country->currency ?:  \common\models\Currency::find()->where(['is_default' => 1])->one();
 
 $items = [
     'saveUrl' => $toUrl,
@@ -26,6 +28,20 @@ $items = [
                       'selected' => ArrayHelper::getValue($lang,'id'),
                        'options' => [
                            'id' => 'country-languages_id'
+                       ]
+                    ]
+                ],
+                [
+                    'name' => 'Country[currencies_id]',
+                    'type' => Form::MULTISELECT,
+                    'label'=>'Валюта',
+                    'model' => $country,
+
+                    'selectpicker' => [
+                      'values' => ArrayHelper::map($currencies, 'id','code'),
+                      'selected' => ArrayHelper::getValue($currency,'id'),
+                       'options' => [
+                           'id' => 'country-currencies_id'
                        ]
                     ]
                 ],
