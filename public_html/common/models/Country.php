@@ -42,6 +42,7 @@ class Country extends \yii\db\ActiveRecord
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['currencies_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currencies_id' => 'id']],
         ];
     }
 
