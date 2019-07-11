@@ -204,4 +204,5 @@ return [
     '_your_name' => 'Ваше имя',
     '_E-mail' => 'E-mail',
     'Without registration' => 'Без регистрации',
+    'Phone number' => 'Номер телефона',
 ];

@@ -12,7 +12,8 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css'
+        'css/site.css',
+        'css/ui.dynatree.css',
     ];
     public $js = [
     ];
@@ -20,6 +21,7 @@ class AppAsset extends AssetBundle
         'yii\bootstrap\BootstrapPluginAsset',
         'common\assets\CommonAsset',
         'frontend\assets\SelectpickerAsset',
+        'backend\assets\DropAsset',
     ];
 
     /**

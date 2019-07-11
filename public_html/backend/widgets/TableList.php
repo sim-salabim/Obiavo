@@ -166,6 +166,12 @@ class TableList extends Widget{
                 case 'delete':
                     $contentBut .= $this->render('opt-delete-button', compact('model'));
                     break;
+                case 'moderate':
+                    $contentBut .= $this->render('opt-moderate-button', compact('model'));
+                    break;
+                    case 'unpublish':
+                    $contentBut .= $this->render('opt-unpublish-button', compact('model'));
+                    break;
                 case 'update-seo-attached':
                     $contentBut .= $this->render('opt-update-seo-attached-button', compact('model'));
                     break;

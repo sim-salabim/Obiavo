@@ -6,6 +6,7 @@ use common\models\CategoriesText;
 use common\models\Category;
 use common\models\CategoryPlacement;
 use common\models\CategoryPlacementText;
+use common\models\Language;
 use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
@@ -366,6 +367,35 @@ class CategoriesController extends BaseController
         }else{
             return ['message'=>"finish"];
         }
+    }
+
+    public function actionGetRootCategories(){
+        $post = Yii::$app->request->get();
+        $id = ($post['key'] == "#") ? null : $post['key'];
+        $categories = Category::find()
+            ->where(['parent_id' => $id, 'active'=> 1])
+            ->orderBy('order ASC, brand ASC, techname ASC')
+            ->withText(['languages_id' => Language::getDefault()->id])
+            ->all();
+        $out = "[";
+        $DB = Yii::$app->getDb();
+        foreach($categories as $k => $row){
+            $next = $k + 1;
+            if($row->_text->name != "") {
+                $query = $DB->createCommand("SELECT categories.id FROM categories LEFT JOIN  categories_text ON categories_text.categories_id = categories.id WHERE parent_id = ".$row['id']." AND categories_text.languages_id = ".Language::getDefault()->id." AND categories_text.name IS NOT NULL AND TRIM(categories_text.name) <> '' AND categories.active = 1");
+                $kid = $query->queryOne();
+                $has_kids = ($kid) ? 'true' : 'false';
+                $out .= '{"key": "' . $row['id'] . '","isLazy":' . $has_kids . ',"isFolder":' . $has_kids . ',"title": "' . $row->_text->name . '"}';
+
+                if(isset($categories[$next])){
+                    $out .= ",";
+                }
+            }
+        }
+        if(substr($out, -1) == ","){
+            $out = substr($out, 0, -1);
+        }
+        return $out."]";
     }
 
     /**

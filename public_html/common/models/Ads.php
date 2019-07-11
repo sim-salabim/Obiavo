@@ -18,6 +18,7 @@ use Yii;
  * @property string $session_token
  * @property boolean $only_locally
  * @property boolean $active
+ * @property boolean $moderated
  * @property int $price
  * @property int $placements_id
  * @property int $created_at
@@ -68,7 +69,7 @@ class Ads extends \yii\db\ActiveRecord
             [['title' ], 'string', 'max' => 100],
             [['text' ], 'string', 'max' => 1000],
             [['session_token' ], 'string'],
-            [['only_locally', 'active'], 'integer', 'max' => 1],
+            [['only_locally', 'active', 'moderated'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
