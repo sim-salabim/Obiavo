@@ -32,7 +32,7 @@ if($attribute['model']){
             <?= $attribute['label'] ?>
         </button>
         <div class="invalid-feedback" id="categories_error"></div>
-        <div class="form-control" id="tree-container" style="min-height: 200px">
+        <div class="form-control" id="tree-container" style="min-height: 550px">
         </div>
     </div>
     <? if(!empty($attribute['selected_categories'])){ ?>
