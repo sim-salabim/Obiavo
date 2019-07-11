@@ -12,6 +12,9 @@ $container_id = (isset($container_id) AND $container_id) ? $container_id : 'file
 // если SERVER_NAME == admin.obiavo.loc (именно так у меня назван локальный хост) то ищем картинку локально (http://obiavo.loc/.....)
 // если SERVER_NAME != admin.obiavo.loc - значит мы на сервере и значит ищем там (https://obiavo.ru/......)
 $domain = ($_SERVER["SERVER_NAME"] == "admin.obiavo.loc") ? "http://obiavo.loc" : "https://obiavo.ru";
+if($_SERVER["SERVER_NAME"] == "adm.obiavo.site"){
+    $domain = "http://obiavo.site";
+}
 $js_files = '';
 if(!empty($files)){?>
     <? foreach($files as $key => $file){?>
