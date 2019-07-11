@@ -3,7 +3,10 @@
 <?
 //print_r(Yii::$app->request->hostInfo);exit;
 $dir = __DIR__;
-$image_url = str_replace('admin.','',Yii::$app->request->hostInfo);
+$image_url = ($_SERVER["SERVER_NAME"] == "admin.obiavo.loc") ? "http://obiavo.loc" : "https://obiavo.ru";
+if($_SERVER["SERVER_NAME"] == "adm.obiavo.site"){
+    $image_url = "http://obiavo.site";
+}
 str_replace("backend/views/moderation", 'frontend/views/moderation', $dir);
 require_once $dir.'/dynatree_script.php';
 ?>
