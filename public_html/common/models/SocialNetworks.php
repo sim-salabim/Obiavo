@@ -220,7 +220,9 @@ class SocialNetworks extends \yii\db\ActiveRecord
         }
 
         if(!$group){
-            $group = $this->default;
+            if($this->default->country->id == $ad->city->region->country->id){
+                $group = $this->default;
+            }
         }
         return $group;
     }
