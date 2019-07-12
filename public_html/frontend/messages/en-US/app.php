@@ -202,4 +202,5 @@ return [
     '_your_name' => 'Name',
     '_E-mail' => 'Email',
     'Without registration' => 'Without registration',
+    'Phone number' => 'Phone number',
 ];

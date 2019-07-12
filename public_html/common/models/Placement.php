@@ -114,6 +114,21 @@ class Placement extends \yii\db\ActiveRecord
         return self::$_current;
     }
 
+    /**
+     * @return array()
+     */
+    static function getAllForSelect(){
+        $result = [];
+        $placements = self::find()->all();
+        if(!empty($placements)){
+            foreach($placements as $k => $pl){
+                $result[$k]['id'] = $pl->id;
+                $result[$k]['name'] = $pl->_text->name;
+            }
+        }
+        return $result;
+    }
+
     public static function setCurrent(Placement $placement){
         self::$_current = $placement;
     }

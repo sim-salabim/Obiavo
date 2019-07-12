@@ -51,6 +51,7 @@ use yii\helpers\Url;
                     ['label' => 'Настройки', 'icon' => 'cog', 'url' => ['/settings']],
                     ['label' => 'SEO подачи', 'icon' => 'eye', 'url' => ['/application-seo']],
                     ['label' => 'Подсчет обьявлений', 'icon' => 'magnet', 'url' => ['/counter']],
+                    ['label' => 'Модерация', 'icon' => 'binoculars', 'url' => ['/moderation']],
 
                     ['label' => 'Tools', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

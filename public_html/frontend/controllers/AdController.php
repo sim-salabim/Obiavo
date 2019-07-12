@@ -149,7 +149,6 @@ class AdController extends BaseController
                     $return['session_token'] = $model->session_token;
                 }
                 $return['url'] = "$model->url";
-                AutopostingTasks::createTasks($model);
                 return $return;
             }
         } else {

@@ -26,6 +26,12 @@ class Form extends Widget {
 
     const MULTISELECT = 'multiselect';
 
+    const INPUT_TREE = 'inputTreeSelect';
+
+    const INPUT_MEDIA = 'inputMedia';
+
+    const INPUT_CSRF = 'inputCsrf';
+
     const SELECT = 'select';
 
     const SEARCH_AUTOCOMPLETE = 'searchAutocomplete';
@@ -67,6 +73,14 @@ class Form extends Widget {
         $row['panel-content'] = $panelForm;
     }
 
+    protected function inputTreeSelect($attribute){
+        return $this->render('input-tree-select', compact('attribute'));
+    }
+
+    protected function inputCsrf($attribute){
+        return $this->render('input-csrf', compact('attribute'));
+    }
+
     protected function searchAutocomplete($attribute){
         return $this->render('search-autocomplete', compact('attribute'));
     }
@@ -82,6 +96,10 @@ class Form extends Widget {
 
     protected function inputCheckbox($attribute){
         return $this->render('input-checkbox', compact('attribute'));
+    }
+
+    protected function inputMedia($attribute){
+        return $this->render('input-media', compact('attribute'));
     }
 
     protected function textAreaInput($attribute){
