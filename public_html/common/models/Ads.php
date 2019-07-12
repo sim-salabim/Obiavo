@@ -65,7 +65,7 @@ class Ads extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cities_id', 'users_id', 'categories_id'], 'required'],
+            [['cities_id', 'users_id', 'categories_id', 'title', 'price', 'expiry_date', 'placements_id'], 'required'],
             [['title' ], 'string', 'max' => 100],
             [['text' ], 'string', 'max' => 1000],
             [['session_token' ], 'string'],
@@ -92,6 +92,14 @@ class Ads extends \yii\db\ActiveRecord
             'price' => 'Price',
         ];
     }
+
+    public function transactions() {
+        return [
+            // scenario name => operation (insert, update or delete)
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
+        ];
+    }
+
     /**
      * @return string
      */

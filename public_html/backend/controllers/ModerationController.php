@@ -224,10 +224,14 @@ class ModerationController extends BaseController
         $ad->text = $post['Ads']['text'];
         $ad->placements_id = $post['Ads']['placements_id'];
         $ad->cities_id = $post['Ads']['cities_id'];
-        $ad->categories_id = $post['categories'][0];
+        $ad->categories_id = (isset($post['categories'])) ? $post['categories'][0] : null;
         if (!$ad->save()){
+            $errors = [];
+            foreach($ad->getErrors() as $key => $value){
+                $errors['ads-'.$key] =  $value;
+            }
             return $this->sendJsonData([
-                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $ad->getErrors(),
+                JsonData::SHOW_VALIDATION_ERRORS_INPUT => $errors,
             ]);
         }
         //esli все ок, то поработаем с категориями, каунтерами и файлами
