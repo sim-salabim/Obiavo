@@ -93,6 +93,6 @@ class AutopostingTasks extends \yii\db\ActiveRecord
                 $task->social_networks_groups_id = $group->id;
                 $task->save();
             }
-        }exit;
+        }
     }
 }
