@@ -405,6 +405,7 @@ if($ad){
                     echo __('Edit');
                 }  ?>
             </button>
+            <div class="invalid-feedback dispaly-block" id="button_error"></div>
         </div>
     </div>
 </form>
@@ -428,6 +429,7 @@ if($ad){
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
         $('#publication-button').bind('click', function(e){
+            $('#button_error').text('');
             e.preventDefault();
             $(this).prop('disabled', true);
             $("[id*='_error']").text('');
@@ -484,6 +486,9 @@ if($ad){
                     }
                     //если НЕ все огонь
                     if(data.message == '<?= \frontend\models\NewAdForm::MESSAGE_FAILED?>'){
+                        $('#publication-button').removeClass('btn-success');
+                        $('#publication-button').addClass('btn-danger');
+                        $('#button_error').text('<?= __('Check the data entered please.') ?>');
                         Object.keys(data.errors).map(function(key) {
                             $('#'+key+'_error').show();
                             $('#'+key).addClass('is-invalid');
@@ -502,6 +507,8 @@ if($ad){
             });
             setTimeout(function(){
                 $('#publication-button').prop('disabled', false);
+                $('#publication-button').removeClass('btn-danger');
+                $('#publication-button').addClass('btn-success');
             }, 5000);
         });
 

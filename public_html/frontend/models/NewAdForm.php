@@ -61,6 +61,7 @@ class NewAdForm extends Model
             [['agreement'], 'integer', 'integerOnly' => true, 'max' => 1],
             [['price'], 'integer', 'message' => __('Incorrect format')],
             [['price'], 'integer', 'min' => 0 ,'max' => 99999999999, 'tooBig' => __("Fields must not be more than 11 chars long")],
+            ['email','validateEmail'],
             ['email','email', 'message' => __('Incorrect email')],
             ['name', "validateName" ],
             ['phone', "validatePhone" ],
@@ -93,12 +94,17 @@ class NewAdForm extends Model
      * @param $params
      */
     public function validatePhone($attribute, $params){
+
         if(isset($this->phone)) {
-            if (!is_numeric($this->phone)) {
-                $this->addError($attribute, __('Phone number must contain digits only'));
-            }
-            if (strlen($this->phone ) < RegistrForm::PHONE_NUMBER_MIN_LENGTH) {
-                $this->addError($attribute, __('Min length is ') . RegistrForm::PHONE_NUMBER_MIN_LENGTH);
+            if($this->phone == "+"){
+                $this->addError($attribute, __('Required field'));
+            }else {
+                if (!is_numeric($this->phone)) {
+                    $this->addError($attribute, __('Phone number must contain digits only'));
+                }
+                if (strlen($this->phone) < RegistrForm::PHONE_NUMBER_MIN_LENGTH) {
+                    $this->addError($attribute, __('Min length is ') . RegistrForm::PHONE_NUMBER_MIN_LENGTH);
+                }
             }
         }
     }
@@ -106,11 +112,22 @@ class NewAdForm extends Model
 
     public function validateName($attribute, $params){
         if(isset($this->name)){
-            if(strlen($this->name) < 2){
-                $this->addError($attribute, __("Too short value"));
+            if($this->name == "+"){
+                $this->addError($attribute, __('Required field'));
+            }else {
+                if (strlen($this->name) < 2) {
+                    $this->addError($attribute, __("Too short value"));
+                }
             }
         }
     }
+
+    public function validateEmail($attribute, $params){
+        if(isset($this->email) and $this->email == "+"){
+            $this->addError($attribute, __('Required field'));
+        }
+    }
+
     public function newAd(){
 
         $adsModel = $this->id ? Ads::findOne($this->id) : new Ads();

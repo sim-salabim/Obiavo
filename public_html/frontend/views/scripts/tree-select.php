@@ -133,6 +133,7 @@ title: "Подгрузка...",
                 $('#category-append').append('<span id="checked-' + node.data.key + '" class="js_tree_el"><input type="hidden" name="categories[]" value="' + node.data.key + '" class="js_tree_el">' + node.data.title + ' <i style="cursor: pointer" class="fa fa-times js_tree_el" aria-hidden="true" id="checked-close-' + node.data.key + '" onclick="closeCheckedAndTree(' + node.data.key + ')"></i></span><br class="js_tree_el">');
                 removeParents(node);
                 uncheckChildren(node);
+                node.expand(true);
             }
         }
     }else{
@@ -145,7 +146,6 @@ debugLevel: 0
 });
 function appendDefaultText(){
     var checkedAmount = $("span[id^=checked-]").length;
-    console.log(checkedAmount);
     if(checkedAmount == 0){
         $("#category-append").append("<?= __('No categories picked'); ?>");
     }

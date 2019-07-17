@@ -131,8 +131,26 @@ class AdController extends BaseController
             // если инпут со сроком действия задизейблен, то сделаем +месяц
             $_POST['expiry_date'] = !isset($_POST['expiry_date']) ? 2592000 : $_POST['expiry_date'];
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $model->load(Yii::$app->request->post(), '');
+            if(isset($_POST['phone'])){
+                if($_POST['phone'] == ""){
+                    $_POST['phone'] = "+";
+                }
+            }
+            if(isset($_POST['name'])){
+                if($_POST['name'] == ""){
+                    $_POST['name'] = "+";
+                }
+            }
+            if(isset($_POST['email'])){
+                if($_POST['email'] == ""){
+                    $_POST['email'] = "+";
+                }
+            }
+            if(isset($_POST['expiry_date']) and $_POST['expiry_date'] == "0"){
+                unset($_POST['expiry_date']);
+            }
 
+            $model->load(Yii::$app->request->post(), '');
             $model->cities_id = $model->cities_id;
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $return = [];

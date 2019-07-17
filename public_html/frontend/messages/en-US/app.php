@@ -203,4 +203,5 @@ return [
     '_E-mail' => 'Email',
     'Without registration' => 'Without registration',
     'Phone number' => 'Phone number',
+    'Check the data entered please.' => 'Check the data entered please.',
 ];
