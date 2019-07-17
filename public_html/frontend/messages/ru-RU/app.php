@@ -205,5 +205,5 @@ return [
     '_E-mail' => 'E-mail',
     'Without registration' => 'Без регистрации',
     'Phone number' => 'Номер телефона',
-    'Check the data entered please.' => 'Проверьте введенные данные.',
+    'Check the data entered please.' => 'Некоторые поля были не заполнены или заполнены некорректно. Проверьте данные.',
 ];
