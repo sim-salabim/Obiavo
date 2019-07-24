@@ -1,9 +1,10 @@
-<? require_once 'dynatree_script.php'?>
+<? $this->registerJsFile("@web/js/dynatree.js", ['position' => \yii\web\View::POS_BEGIN]); ?>
 <?
 $url = \yii\helpers\Url::toRoute('cities/search-cities-for-select');
 $selectCity = __('Select a city');
 $ad = isset($ad) ? $ad : null;
 ?>
+<hr>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user or (isset($_COOKIE['session_token']) and $ad and $_COOKIE['session_token'] == $ad->session_token)) {
         if(!$user and $ad) $user = $ad->user;

@@ -206,4 +206,10 @@ return [
     'Without registration' => 'Без регистрации',
     'Phone number' => 'Номер телефона',
     'Check the data entered please.' => 'Некоторые поля были не заполнены или заполнены некорректно. Проверьте данные.',
+    'Publish an add' => 'Подать объявление',
+    'Free ads in ' => 'Барахолка бесплатных объявлений в ',
+    'Free ads Obiavo' => 'Доска бесплатных объявлений Объяво',
+    'Post your ad in' => 'Разместить ваше объявление в',
+    'free without registration' => 'бесплатно и без регистрации',
+    'Go to the main page fo free ads board of' => 'Перейти на главную страницу доски бесплатных объявлений',
 ];

@@ -204,4 +204,9 @@ return [
     'Without registration' => 'Without registration',
     'Phone number' => 'Phone number',
     'Check the data entered please.' => 'Check the data entered please.',
+    'Publish an add' => 'Publish an add',
+    'Free ads in ' => 'Free ads in ',
+    'Free ads Obiavo' => 'Free ads Obiavo',
+    'free without registration' => 'free without registration',
+    'Go to the main page fo free ads board of' => 'Go to the main page fo free ads board of',
 ];

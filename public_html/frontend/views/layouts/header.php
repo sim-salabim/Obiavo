@@ -1,3 +1,19 @@
+<?
+$region_add = '';
+$in_place = Yii::$app->location->country->_text->name_rp;
+$pp_place = Yii::$app->location->country->_text->name_pp;
+if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
+    $in_place = Yii::$app->location->city->_text->name_rp;
+    $pp_place = Yii::$app->location->city->_text->name_pp;
+    $region_add = "/".Yii::$app->location->city->domain;
+}else{
+    if(Yii::$app->location->region){
+        $in_place = Yii::$app->location->region->_text->name_rp;
+        $pp_place = Yii::$app->location->region->_text->name_pp;
+        $region_add = "/".Yii::$app->location->region->domain;
+    }
+}
+?>
 <header class="header" id="main-header">
     <nav class="navbar navbar-expand navbar-light nav-sm-res navbar-fixed-top bg-light">
         <div class="container nav-container">
@@ -20,7 +36,11 @@
                 </li>
                 <li>
                     <img src="/logo.png" width="27" alt="<?= __('Obiavo - advertisement site'); ?>" class="logo-img">
-                    <a class="navbar-brand mx-2 root-url" href="<?= $location_domain ?>">
+                    <a
+                        class="navbar-brand mx-2 root-url"
+                        title="<?= __('Go to the main page fo free ads board of')." ".$pp_place ?>"
+                        href="<?= $location_domain ?>"
+                    >
                         <?= ucfirst(Yii::$app->location->country->domain) ?>
                     </a>
                 </li>
@@ -58,18 +78,6 @@
                 </button>
             </div>
             <?
-                $region_add = '';
-                if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
-
-                    $region_add = "/".Yii::$app->location->city->domain;
-                }else{
-                    if(Yii::$app->location->region){
-
-                        $region_add = "/".Yii::$app->location->region->domain;
-                    }
-                }
-                ?>
-            <?
             $application_url = '';
             if(isset($this->params['application_url']) AND $this->params['application_url']){
                 $application_url = $region_add.$this->params['application_url'];
@@ -79,9 +87,15 @@
             <? if (Yii::$app->user->isGuest) { ?>
                 <a href="<?= yii\helpers\Url::toRoute('/login') ?>" class="btn btn-success my-2 ent-btn d-md-block d-lg-block new-add-btn" rel="nofollow"><?= __('Sign in') ?></a>
             <? } ?>
-            <a href="<?= $application_url ?>" class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an add') ?></a>
+            <a
+                href="<?= $application_url ?>"
+                title="<?= __('Post your ad in')." ".$in_place." ".__('free without registration') ?>"
+                class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an add') ?></a>
 
-            <a href="<?= $application_url ?>" class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn no-transition">+ </a>
+            <a
+                href="<?= $application_url ?>"
+                title="<?= __('Post your ad in')." ".$in_place." ".__('free without registration') ?>"
+                class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn no-transition">+ </a>
         </div>
         </div>
     </nav>

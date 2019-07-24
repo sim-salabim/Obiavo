@@ -114,6 +114,13 @@ class AdController extends BaseController
         $limit = Settings::find()->one()->categories_limit;
         $user = (Yii::$app->user->isGuest) ? null : Yii::$app->user->identity;
         $placements = Placement::find()->withText(['languages_id' => Language::getId()])->all();
+        $breadcrumbs = [];
+        if($city){
+            $breadcrumbs[] = ['label' => $place->_text->name, 'link' => $city, 'use_cookie' => true, 'title' => __('Free ads in ').$place->_text->name_rp];
+        }
+        $breadcrumbs[] = ['label' => __('Publish an add'), 'use_cookie' => true, 'is_active' => false];
+        Yii::$app->view->params['publish_page_hr'] = true;
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, true);
         return $this->render('new', [
             'user' => $user,
             'categories_limit' => $limit,

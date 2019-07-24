@@ -159,7 +159,7 @@ class BaseController extends \yii\web\Controller {
     public function setBreadcrumbs($array = [], $show_last_one = false, $location_domain = null){
         $home_link = $location_domain ? $location_domain."/" : URL::to(Yii::$app->homeUrl);
         $use_cookie = $location_domain ? false : true;
-        $breadcrumbs = [['label' => __('Home page'), 'link' => $home_link, 'use_cookie' => $use_cookie]];
+        $breadcrumbs = [['label' => __('Home page'), 'link' => $home_link, 'title'=> __('Free ads Obiavo'), 'use_cookie' => $use_cookie]];
         if(!empty($array)){
             foreach($array as $item){
                 $breadcrumbs[] = $item;
