@@ -32,6 +32,13 @@ class AdController extends BaseController
     protected $seo_h1;
     protected $seo_h2;
     protected $seo_text;
+    protected $seo_text1;
+    protected $seo_text2;
+    protected $seo_text3;
+    protected $seo_text4;
+    protected $seo_text5;
+    protected $seo_text6;
+    protected $seo_text7;
     protected $seo_desc;
     protected $seo_keywords;
     /**
@@ -99,6 +106,13 @@ class AdController extends BaseController
         $this->seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_desc);
         $this->seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_keywords);
         $this->seo_text = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text);
+        $this->seo_text1 = $text->seo_text1 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text1);
+        $this->seo_text2 = $text->seo_text2 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text2);
+        $this->seo_text3 = $text->seo_text3 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text3);
+        $this->seo_text4 = $text->seo_text4 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text4);
+        $this->seo_text5 = $text->seo_text5 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text5);
+        $this->seo_text6 = $text->seo_text6 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text6);
+        $this->seo_text7 = $text->seo_text7 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text7);
         $library_search = new AdsSearch();
         $library_search->setActive(true);
         $list = Ads::getList($library_search);
@@ -126,6 +140,7 @@ class AdController extends BaseController
             'categories_limit' => $limit,
             'placements' => $placements,
             'categories' => $categories,
+            'text' => $text,
         ]);
     }
 

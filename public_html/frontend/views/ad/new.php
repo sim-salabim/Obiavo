@@ -5,6 +5,7 @@ $selectCity = __('Select a city');
 $ad = isset($ad) ? $ad : null;
 ?>
 <hr>
+<?= $text->seo_text1; ?>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user or (isset($_COOKIE['session_token']) and $ad and $_COOKIE['session_token'] == $ad->session_token)) {
         if(!$user and $ad) $user = $ad->user;
@@ -44,6 +45,7 @@ $ad = isset($ad) ? $ad : null;
                 <a class="nav-item nav-link" id="nav-login-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><?= __('Authorization') ?></a>
             </div>
         </nav>
+        <?= $text->seo_text2; ?>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-login-tab">
                 <form class="form-horizontal" method="post" id="auth-form">
@@ -183,6 +185,7 @@ if($ad){
 <!--        </div>-->
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
             <div class="row">
+                <?= $text->seo_text3 ?>
                 <div id="sub-title" class="col sub-title padding-bottom-10">
                     <?= __('Select category')?>
                 </div>
@@ -220,6 +223,7 @@ if($ad){
          "selected_categories" => $selected_categories]); ?>
     <div class="row">
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
+            <?= $text->seo_text4 ?>
             <select
                 name="placement_id"
                 id="placement_id"
@@ -345,6 +349,7 @@ if($ad){
     <hr class="margin-top-0">
     <div class="row">
         <div class="form-group col-lg-12 col-sm-12 col-md-12">
+            <?= $text->seo_text5; ?>
             <input
                 class="form-control <?php if(Yii::$app->session->getFlash('title_error')){?> is-invalid<?php }?> "
                 type="text"
@@ -379,6 +384,8 @@ if($ad){
             <div class="invalid-feedback" id="price_error"></div>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12 " id="dropzone-container" >
+            <hr class="margin-top-0">
+            <?= $text->seo_text6; ?>
             <div class="dropzone" id="file-uploader"></div>
         </div>
         <?=  $this->render('/partials/_file_uploader.php', ['container_id' => 'file-uploader', 'files' => $files]) ?>
@@ -409,6 +416,7 @@ if($ad){
             <div class="invalid-feedback dispaly-block" id="button_error"></div>
         </div>
     </div>
+    <?= $text->seo_text7 ?>
 </form>
 </div>
 <script>

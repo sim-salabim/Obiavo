@@ -17,6 +17,13 @@ use Yii;
  * @property string $seo_desc
  * @property string $seo_keywords
  * @property string $seo_text
+ * @property string $seo_text1
+ * @property string $seo_text2
+ * @property string $seo_text3
+ * @property string $seo_text4
+ * @property string $seo_text5
+ * @property string $seo_text6
+ * @property string $seo_text7
  *
  * @property AddApplication $add_application
  * @property Language $languages
@@ -41,6 +48,13 @@ class AddApplicationText extends \yii\db\ActiveRecord
                 'seo_title',
                 'url',
                 'seo_text',
+                'seo_text1',
+                'seo_text2',
+                'seo_text3',
+                'seo_text4',
+                'seo_text5',
+                'seo_text6',
+                'seo_text7',
                 'seo_h1',
                 'seo_h2',
                 'seo_desc',
