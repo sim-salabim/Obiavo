@@ -130,11 +130,17 @@ class AdController extends BaseController
         $placements = Placement::find()->withText(['languages_id' => Language::getId()])->all();
         $breadcrumbs = [];
         if($city){
-            $breadcrumbs[] = ['label' => $place->_text->name, 'link' => $city, 'use_cookie' => true, 'title' => __('Free ads in ').$place->_text->name_rp];
+            $breadcrumbs[] = [
+                'label' => $place->_text->name,
+                'link' => "/",
+                'use_cookie' => true,
+                'title' => __('Free ads in ').$place->_text->name_rp,
+                'city' => $place->domain
+                ];
         }
         $breadcrumbs[] = ['label' => __('Publish an add'), 'use_cookie' => true, 'is_active' => false];
         Yii::$app->view->params['publish_page_hr'] = true;
-        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, true);
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, true, null);
         return $this->render('new', [
             'user' => $user,
             'categories_limit' => $limit,

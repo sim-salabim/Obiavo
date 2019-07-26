@@ -6,7 +6,7 @@ class LocationHelper {
     /** Преобразует строку урла в соответствии с выбранной локацией
      * @param $url
      */
-    public static function getDomainForUrl($url, $use_cookie = true){
+    public static function getDomainForUrl($url, $use_cookie = true, $city = null){
         $domain = '';
         if($use_cookie) {
             if (isset($_COOKIE['city']) AND $_COOKIE['city']) {
@@ -19,7 +19,7 @@ class LocationHelper {
             return "/".$domain . $url;
         }else{
 
-            return "/".$domain;
+            return "/".$city;
         }
 
     }

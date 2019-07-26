@@ -20,6 +20,7 @@ use yii\helpers\Html;
         <?= CKEditor::widget([
             'editorOptions' => [
                 'preset' => 'full',
+                'allowedContent' => true,
                 'inline' => false, //по умолчанию false
             ],
             'name' => $attribute['name'],

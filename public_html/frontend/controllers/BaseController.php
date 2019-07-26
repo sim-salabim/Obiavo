@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Country;
 use common\models\libraries\AdsSearch;
+use frontend\components\Location;
 use Yii;
 use frontend\helpers\TextHelper;
 use yii\helpers\Url;
@@ -157,7 +158,7 @@ class BaseController extends \yii\web\Controller {
      * @return array
      */
     public function setBreadcrumbs($array = [], $show_last_one = false, $location_domain = null){
-        $home_link = $location_domain ? $location_domain."/" : URL::to(Yii::$app->homeUrl);
+        $home_link = $location_domain ? $location_domain."/" : Url::toRoute(['/']);
         $use_cookie = $location_domain ? false : true;
         $breadcrumbs = [['label' => __('Home page'), 'link' => $home_link, 'title'=> __('Free ads Obiavo'), 'use_cookie' => $use_cookie]];
         if(!empty($array)){
