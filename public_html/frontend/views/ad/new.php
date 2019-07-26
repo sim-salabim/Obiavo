@@ -98,9 +98,7 @@ $ad = isset($ad) ? $ad : null;
                 </form></div>
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-main-tab">
                 <div class="row padding-bottom-10">
-                    <div class="col sub-title">
-                        <?= __('Contact info') ?>
-                    </div>
+
                 </div>
                 <form class="form-horizontal" method="post" id="login-form">
                     <div class="form-group validation-errors ">
@@ -186,14 +184,7 @@ if($ad){
         <div class="form-group col-lg-12 col-sm-12 col-md-12" id="checkbox-select">
             <div class="row">
                 <?= $text->seo_text3 ?>
-                <div id="sub-title" class="col sub-title padding-bottom-10">
-                    <?= __('Select category')?>
-                </div>
             </div>
-                <?
-
-                echo __('Pick a category. The category firstly picked wil be the main one for the ad.')." ".__("You can pick free only")." ".countString(\common\models\Settings::find()->one()->categories_limit, [__("pick_one_category"), __("pick_two_category"),__("pick_more_category")]).". <a href='/help-obiavlenya/' id='help-obiavlenia' target='_blank' >".__("Get details about posting ads?")."</a>";
-             ?>
             <button id="tree-category-select" class="form-control text-align-left cursor-pointer margin-top-15 <?php if(Yii::$app->session->getFlash('categories_error')){?> is-invalid <? } ?>" >
                 <?= __('Category tree selection') ?>
             </button>

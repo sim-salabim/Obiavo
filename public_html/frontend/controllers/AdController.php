@@ -62,6 +62,8 @@ class AdController extends BaseController
         $this->setApplicationUrl($url);
         $current_domain = Location::getCurrentDomain();
         $place_name_rp = "";
+        $place_name_rp = "";
+        $place_name = "";
         $canonical_city = '';
         if($city){//если мы находимся в городе или регионе
             $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
@@ -85,6 +87,8 @@ class AdController extends BaseController
             $place = Country::find()->where(['domain' => $current_domain])->one();
         }
         $place_name_rp = __('in')." ".$place->_text->name_rp;
+        $place_name_pp = $place->_text->name_pp;
+        $place_name = $place->_text->name;
         $text = AddApplicationText::find()->where(["languages_id" => Language::getId(), 'url' => $url])->one();
         if(!$text){
             $url_part = str_replace(Ads::DEFAULT_LINK_RU."-","",$url );
@@ -106,13 +110,13 @@ class AdController extends BaseController
         $this->seo_desc = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_desc);
         $this->seo_keywords = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_keywords);
         $this->seo_text = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text);
-        $this->seo_text1 = $text->seo_text1 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text1);
-        $this->seo_text2 = $text->seo_text2 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text2);
-        $this->seo_text3 = $text->seo_text3 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text3);
-        $this->seo_text4 = $text->seo_text4 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text4);
-        $this->seo_text5 = $text->seo_text5 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text5);
-        $this->seo_text6 = $text->seo_text6 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text6);
-        $this->seo_text7 = $text->seo_text7 = str_replace( ['{key:location-in}', '{key:site}'], [$place_name_rp, $current_domain],$text->seo_text7);
+        $this->seo_text1 = $text->seo_text1 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text1);
+        $this->seo_text2 = $text->seo_text2 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text2);
+        $this->seo_text3 = $text->seo_text3 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text3);
+        $this->seo_text4 = $text->seo_text4 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text4);
+        $this->seo_text5 = $text->seo_text5 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text5);
+        $this->seo_text6 = $text->seo_text6 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text6);
+        $this->seo_text7 = $text->seo_text7 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text7);
         $library_search = new AdsSearch();
         $library_search->setActive(true);
         $list = Ads::getList($library_search);

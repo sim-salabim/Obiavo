@@ -708,14 +708,14 @@ button.edit-btn:hover{
     padding-top: 20px;
 }
 
-h2.col.sub-title {
+.col.sub-title {
     padding-top: 40px !important;
     font-size: 1.09rem !important;
     margin-left: -14px !important;
     color: #db3727 !important;
     padding-bottom: 0px !important;
 }
-h2.col.sub-title-2 {
+.col.sub-title-2 {
     padding-top: 40px !important;
     font-size: 1.09rem !important;
     color: #db3727 !important;

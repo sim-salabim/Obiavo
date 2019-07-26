@@ -68,7 +68,7 @@ class AddApplicationText extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['add_application_id', 'seo_title', 'seo_text', 'url'], 'required'],
+            [['add_application_id', 'seo_title', 'url'], 'required'],
             [['add_application_id', 'languages_id'], 'integer'],
             [['seo_title'], 'string', 'max' => 255],
             [['add_application_id'], 'exist', 'skipOnError' => true, 'targetClass' => AddApplication::className(), 'targetAttribute' => ['add_application_id' => 'id']],
