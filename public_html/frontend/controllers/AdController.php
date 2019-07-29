@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\AddApplication;
 use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
@@ -61,9 +62,6 @@ class AdController extends BaseController
         $city = Yii::$app->request->get('city');
         $this->setApplicationUrl($url);
         $current_domain = Location::getCurrentDomain();
-        $place_name_rp = "";
-        $place_name_rp = "";
-        $place_name = "";
         $canonical_city = '';
         if($city){//если мы находимся в городе или регионе
             $place = City::find()->where(['domain' => Yii::$app->request->get('city')])->one();
@@ -254,12 +252,28 @@ class AdController extends BaseController
             ->all();
         $limit = Settings::find()->one()->categories_limit;
         $placements = Placement::find()->all();
+        $text = AddApplicationText::find()->where(["languages_id" => Language::getId(), 'url' => AddApplication::DEFAULT_URL])->one();
+        if($text){
+            $current_domain = Location::getCurrentDomain();
+            $place = Country::find()->where(['domain' => $current_domain])->one();
+            $place_name_rp = __('in')." ".$place->_text->name_rp;
+            $place_name_pp = $place->_text->name_pp;
+            $place_name = $place->_text->name;
+            $text->seo_text1 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text1);
+            $text->seo_text2 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text2);
+            $text->seo_text3 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text3);
+            $text->seo_text4 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text4);
+            $text->seo_text5 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text5);
+            $text->seo_text6 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text6);
+            $text->seo_text7 = str_replace( ['{key:location-in}', '{key:site}', '{key:location-of}', '{key:location}'], [$place_name_rp, $current_domain, $place_name_pp, $place_name],$text->seo_text7);
+        }
         return $this->render('new', [
             'user'=>$current_user,
             'categories'=>$categories,
             'categories_limit'=>$limit,
             'placements'=>$placements,
-            'ad'=>$ad
+            'ad'=>$ad,
+            'text' => $text
             ]);
     }
 
