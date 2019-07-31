@@ -19,6 +19,7 @@ $items = [
                 ['name' => 'ok_public_key','type' => Form::INPUT_TEXT,'label' => 'OK публичный ключ','model'=>$setting],
                 ['name' => 'ok_secret_key','type' => Form::INPUT_TEXT,'label' => 'OK секретный ключ','model'=>$setting],
                 ['name' => 'categories_limit','type' => Form::INPUT_TEXT,'label' => 'Максимальное количество категорий','model'=>$setting],
+                ['name' => 'ads_limit','type' => Form::INPUT_TEXT,'label' => 'Максимальное количество обьявлений в списке','model'=>$setting],
             ]
         ],
     ]

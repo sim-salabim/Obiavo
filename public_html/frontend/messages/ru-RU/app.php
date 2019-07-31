@@ -212,4 +212,6 @@ return [
     'Post your ad in' => 'Разместить ваше объявление в',
     'free without registration' => 'бесплатно и без регистрации',
     'Go to the main page fo free ads board of' => 'Перейти на главную страницу доски бесплатных объявлений',
+    'Advertisement' => 'Объявление',
+    'advertisement' => 'объявление',
 ];

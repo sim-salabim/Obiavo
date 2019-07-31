@@ -1,6 +1,8 @@
 <?php
 namespace common\models\libraries;
 
+use common\models\Settings;
+
 class AdsSearch {
 
     public $params = [];
@@ -25,7 +27,7 @@ class AdsSearch {
         $this->categories = [];
         $this->main_category = null;
         $this->action = null;
-        $this->limit = 10;
+        $this->limit = Settings::find()->one()->ads_limit;
         $this->query = null;
         $this->all = false;
         $this->expired = false;

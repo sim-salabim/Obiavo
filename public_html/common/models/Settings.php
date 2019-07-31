@@ -15,6 +15,7 @@ namespace common\models;
  * @property string $ok_public_key
  * @property string $ok_secret_key
  * @property integer $categories_limit
+ * @property integer $ads_limit
  */
 class Settings extends \yii\db\ActiveRecord
 {
@@ -34,7 +35,7 @@ class Settings extends \yii\db\ActiveRecord
     {
         return [
             [['vk_token', 'fb_email','fb_token', 'ok_token', 'ok_public_key','ok_secret_key', 'fb_app_secret', 'fb_app_id'], 'string', 'max' => 255],
-            [['categories_limit'], 'integer'],
+            [['categories_limit', 'ads_limit'], 'integer'],
         ];
     }
 

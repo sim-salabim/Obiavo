@@ -319,6 +319,7 @@ ul.bs-autocomplete-menu a {
 }
 .ads-pre-text{
     color: #a9a7a7 !important;
+    font-size: 0.8rem;
 }
 .ads-pre-text-dark{
     color: #514f4f !important;
@@ -530,9 +531,10 @@ ul.bs-autocomplete-menu a {
 .image-div{
     padding-top: 5px;
 }
-.price-p{
+.price-p {
     margin-top: 0.6rem;
     margin-bottom: 0.3rem;
+    font-weight: bold;
 }
 .placeholder{
     padding-bottom:10px;
@@ -740,4 +742,15 @@ h5.a-h5 {
 }
 h6.a-h6 {
     font-size:1.05rem !important;
+}
+.ad-title {
+    font-weight: bold;
+}
+.ads-text {
+    color: #6c6c6c !important;
+    font-size: 0.9rem;
+}
+.line-height-block {
+    line-height: 1.2;
+    padding-top: 7px;
 }

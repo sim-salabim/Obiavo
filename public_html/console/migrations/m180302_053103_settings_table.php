@@ -21,7 +21,8 @@ class m180302_053103_settings_table extends Migration
             'ok_token' => $this->string()->null(),
             'ok_public_key' => $this->string()->null(),
             'ok_secret_key' => $this->string()->null(),
-            'catetgories_limit' => $this->integer(10)->defaultValue(3)
+            'catetgories_limit' => $this->integer(10)->defaultValue(3),
+            'ads_limit' => $this->integer(10)->defaultValue(10)
             ], $tableOptions);
     }
 

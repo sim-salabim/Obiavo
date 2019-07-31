@@ -37,14 +37,27 @@ $root_url = isset($root_url) ? $root_url : null;
         <? foreach($ads_search['items'] as $k => $ad){?>
             <div class="col-lg-2 col-md-3 col-4 nonpadding-right image-div">
                 <? $avatar = $ad->avatar(true); ?>
-                <img class="img-fluid" src="<?= $avatar ?>" alt='<?= __('Ad')." \"".$ad->title."\"" ?>'>
+                <a
+                    href="/<?= $ad->url() ?>"
+                    title='<?= __('Advertisement').' "'.$ad->title.'" - '.__('photo') ?>'
+                    alt='<?= $ad->title.' - '.$ad->placement->_text->name.' '.__("advertisement").' '.__('in').' '.$ad->city->_text->name_rp?>'
+                >
+                    <img class="img-fluid" src="<?= $avatar ?>" alt='<?= __('Ad')." \"".$ad->title."\"" ?>'>
+                </a>
             </div>
             <div class="col-lg-10 col-md-9 col-8 nonpadding-left-items">
-                <span><strong><a href="/<?= $ad->url() ?>" ><?= $ad->title ?></a></strong></span>
-                <p class="price-p"><strong><?= $ad->price . " " . Yii::$app->location->country->currency->_text->name_short ?></strong></p>
-                <span><small class="ads-pre-text"><?= cutText($ad->text, 50) ?></small></span><br/>
+                <span class="ad-title">
+                    <a
+                        href="/<?= $ad->url() ?>"
+                        title="<?= $ad->placement->_text->name.' '.__('in').' '.$ad->city->_text->name_rp.': '.$ad->title ?>"
+                    ><?= $ad->title ?></a>
+                </span>
+                <p class="price-p">
+                    <?= $ad->price . " " . Yii::$app->location->country->currency->_text->name_short ?>
+                </p>
+                <span class="ads-text"><?= cutText($ad->text, 150) ?></span><br/>
                 <div class="line-height-block">
-                    <span><small class="ads-pre-text"><?= $ad->placement->_text->name ?>, <?= $ad->category->_text->name ?>, <?= $ad->city->_text->name ?></small></span><br/>
+                    <span class="line-height-block ads-pre-text"><?= $ad->placement->_text->name ?>, <a href="/<?= $ad->city->domain.'/'.$ad->category->url.'/' ?>" title="<?= __('Category').': '.$ad->category->_text->name.' '.__('in').' '.$ad->city->_text->name_rp ?>"><?= $ad->category->_text->name ?></a>, <?= $ad->city->_text->name ?></span><br/>
                     <span><small class="ads-pre-text"><?= $ad->getHumanDate() ?></small></span><br/>
                     <?
                     $user = Yii::$app->user->identity;
