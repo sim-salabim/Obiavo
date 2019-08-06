@@ -36,7 +36,7 @@ $current_category_link = $current_category ? "/$current_category->url/" : '';
                 $prev_href = ($library_search->page == 2) ? $link : "?".str_replace('{key:page}','page='.($library_search->page - 1),$nav_str);
                 $prev_href = ($prev_href == "") ? $current_category_link : $prev_href;
                 if($library_search->page == 2){
-                    $prev_href = $_SERVER['REQUEST_SCHEME']."://".\frontend\components\Location::getCurrentDomain().$prev_href;
+                    $prev_href = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain().$prev_href;
                 }
                 $nxt_page_title_res = str_replace('{page_num:key}', __('Next page'), $page_title);
                 ?>
@@ -62,7 +62,7 @@ $current_category_link = $current_category ? "/$current_category->url/" : '';
                             $to_route = ($root_url == "") ? "/" : $root_url;
                             $href = ($href == "?") ? \yii\helpers\Url::toRoute([$to_route]) : $href;
                             if($i == 1){
-                                $href = $_SERVER['REQUEST_SCHEME']."://".\frontend\components\Location::getCurrentDomain().$href;
+                                $href = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain().$href;
                             }
                             $page_title_res = str_replace('{page_num:key}', __('Page')." ".$i, $page_title);
                             ?>

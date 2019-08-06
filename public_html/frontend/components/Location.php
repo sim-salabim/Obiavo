@@ -183,4 +183,32 @@ class Location extends Component {
         }
         return $domain;
     }
+
+
+    public static function getCurrentProtocol(){
+        $base_url = Yii::$app->request->getHostInfo();
+        $protocol = "obiavo.ru";
+        if(strpos($base_url, 'obiavo.by') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.uz') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.kz') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.su') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.com') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.site') !== false){
+            $protocol = "http://";
+        }
+        if(strpos($base_url, 'obiavo.loc') !== false){
+            $protocol = "http://";
+        }
+        return $protocol;
+    }
 }
