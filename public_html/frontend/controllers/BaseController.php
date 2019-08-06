@@ -52,6 +52,7 @@ class BaseController extends \yii\web\Controller {
             }else if($current_page == $pages_amount){
                 Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
             }elseif($current_page == 2){
+                Yii::$app->view->params['prev'] = $url;
                 Yii::$app->view->params['next'] = $url."?page=".($current_page + 1);
             }else{
                 Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);

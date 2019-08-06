@@ -58,7 +58,7 @@ class CategoriesController extends BaseController
         if(Yii::$app->location->city){
             $place = Yii::$app->location->city;
         }
-        if(Yii::$app->location->region){
+        if(Yii::$app->location->region and !$place){
             $place = Yii::$app->location->region;
         }
         $root_url = $root_url.$categoryUrl."/";
