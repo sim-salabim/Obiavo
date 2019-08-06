@@ -171,7 +171,7 @@ class CategoriesController extends BaseController
         $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
         $this->setPageTitle($this->seo_title);
         $this->setNextAndPrevious($ads_list, $librarySearch, $page);
-        $page_pagination_title = "{page_num:key} ".__('of category').": ".__('free ads')." ".__('in')." ".$place->_text->name_rp;
+        $page_pagination_title = "{page_num:key} ".__('of category').": ".$this->category->_text->name." ".__('in')." ".$place->_text->name_rp;
         return $this->render('index',  [
             'current_category'      => $this->category,
             'categories'    => $subCategories,
