@@ -18,5 +18,6 @@ $current_category = (isset($current_category))  ? $current_category : null;
         'no_ads_title' => __('No ads found'),
         'current_category' => $current_category,
         'current_action' => $current_action,
-        'root_url' => $root_url
+        'root_url' => $root_url,
+        'page_pagination_title' => $page_pagination_title
     ]) ?>

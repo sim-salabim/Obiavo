@@ -3,6 +3,9 @@
  * ads_search - результат текущей выборки Ads()::getList()
  * library_search - обьект с параметрами списка, AdsSearch()
  * root_url - url без параметров
+ * current_category - текущая категория Category()
+ * current_action - текущее действие Placement()
+ * page_title - татл для кнопок пагинации
  */
 $root_url = isset($root_url) ? $root_url : false;
 $sort = (isset($_GET['sort'])) ? 'sort='.$_GET['sort'].'&' : '';
@@ -18,6 +21,7 @@ if($sort != '' OR $direction != ''){
 }
 $link .= ($link == '' AND $query != '') ? "?".$query : $query;
 if($link == '' AND $root_url) $link .= '/'.$root_url;
+$current_category_link = $current_category ? "/$current_category->url/" : '';
 ?>
 <div class="w-100">
     <hr>
@@ -30,9 +34,16 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
             <li class="page-item ">
                 <?
                 $prev_href = ($library_search->page == 2) ? $link : "?".str_replace('{key:page}','page='.($library_search->page - 1),$nav_str);
-                $prev_href = ($prev_href == "") ? "/" : $prev_href;
+                $prev_href = ($prev_href == "") ? $current_category_link : $prev_href;
+                if($library_search->page == 2){
+                    $prev_href = $_SERVER['REQUEST_SCHEME']."://".\frontend\components\Location::getCurrentDomain().$prev_href;
+                }
+                $nxt_page_title_res = str_replace('{page_num:key}', __('Next page'), $page_title);
                 ?>
-                <a class="pagination-link" href="<?= $prev_href ?>">
+                <a class="pagination-link"
+                   title="<?= $nxt_page_title_res ?>"
+                   href="<?= $prev_href ?>"
+                >
                     <span aria-hidden="true"><?= __('Prv.') ?></span>
                 </a>
             </li>
@@ -50,9 +61,13 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
                             $href = ($i == 1) ? str_replace('page=1', '', $href) : $href;
                             $to_route = ($root_url == "") ? "/" : $root_url;
                             $href = ($href == "?") ? \yii\helpers\Url::toRoute([$to_route]) : $href;
+                            if($i == 1){
+                                $href = $_SERVER['REQUEST_SCHEME']."://".\frontend\components\Location::getCurrentDomain().$href;
+                            }
+                            $page_title_res = str_replace('{page_num:key}', __('Page')." ".$i, $page_title);
                             ?>
                             <li class="page-item ">
-                                <a class="pagination-link" href="<?= $href ?>"><?= $i ?></a>
+                                <a class="pagination-link" title="<?= $page_title_res ?>" href="<?= $href ?>"><?= $i ?></a>
                             </li>
                         <? } ?>
                     <? }else{ ?>
@@ -65,9 +80,14 @@ if($link == '' AND $root_url) $link .= '/'.$root_url;
             <? if(($library_search->page + 3) <= $pages_amount){?>
                 <li class="page-item"><span class="pagination-link multidot">...</span></li>
             <? } ?>
-            <? if($library_search->page != $pages_amount){?>
+            <? if($library_search->page != $pages_amount){
+                $prev_page_title_res = str_replace('{page_num:key}', __('Previous page'), $page_title);
+            ?>
             <li class="page-item ">
-                <a class="pagination-link" href="?<?= str_replace('{key:page}','page='.($library_search->page + 1),$nav_str) ?>">
+                <a class="pagination-link"
+                   title="<?= $prev_page_title_res ?>"
+                   href="?<?= str_replace('{key:page}','page='.($library_search->page + 1),$nav_str) ?>"
+                >
                     <span aria-hidden="true"><?= __('Nxt.') ?></span>
                 </a>
             </li>

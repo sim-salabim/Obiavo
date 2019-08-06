@@ -98,10 +98,13 @@ class SiteController extends BaseController
 
         $region = isset($_COOKIE['region']) ? $_COOKIE['region'] : null;
         $city = isset($_COOKIE['city']) ? $_COOKIE['city'] : null;
+        $place = Yii::$app->location->country;
         if($region){
+            $place = Yii::$app->location->region;
             $this->setUrlForLogo($region);
         }
         if($city){
+            $place = Yii::$app->location->city;
             $this->setUrlForLogo($city);
         }
         $categories = \common\models\Category::find()
@@ -156,9 +159,36 @@ class SiteController extends BaseController
                 $library_search->page = $page;
                 $ads_search = Ads::getList($library_search);
             }
-            $this->seo_title .= ". ".__('Page')." $page";
+            $this->seo_title .= " - ".__('Page')." $page";
+            $this->seo_desc .= " - ".__('Page')." $page";
         }
-
+        //если мы не на первой странице списка, то уберем сео-текст
+        if($page > 1 or $sort or $direction){
+            $this->seo_text = null;
+        }
+        if($sort or $direction){
+            $seo_sort_str = " - ".__('Sorting')." ";
+            switch($sort){
+                case 'title':
+                    $seo_sort_str .= __('by alphabet')." ";
+                    break;
+                case 'price':
+                    $seo_sort_str .= __('by price')." ";
+                    break;
+                case 'created_at':
+                    $seo_sort_str .= __('by date')." ";
+            }
+            switch($direction){
+                case 'asc':
+                    $seo_sort_str .= __('asc');
+                    break;
+                case 'desc':
+                    $seo_sort_str .= __('desc');
+                    break;
+            }
+            $this->seo_desc .= $seo_sort_str.".";
+            $this->seo_title .= $seo_sort_str;
+        }
         $this->switchSeoKeys($ads_search);
         Yii::$app->view->params['seo_desc'] = $this->seo_desc;
         Yii::$app->view->params['seo_keywords'] = $this->seo_keywords;
@@ -174,6 +204,7 @@ class SiteController extends BaseController
             ->where(["IN", 'regions_id', (new Query())->select('id')->from('regions')->where(['countries_id' => Yii::$app->location->country->id])])
             ->one();
         $this->setNextAndPrevious($ads_search, $library_search, $page);
+        $page_pagination_title = "{page_num:key} ".__('of category').": ".__('free ads')." ".__('in')." ".$place->_text->name_rp;
         return $this->render('index',
             compact(
                 'categories',
@@ -183,7 +214,8 @@ class SiteController extends BaseController
                 'library_search',
                 'country_amount',
                 'page',
-                'root_url'
+                'root_url',
+                'page_pagination_title'
             ));
     }
 

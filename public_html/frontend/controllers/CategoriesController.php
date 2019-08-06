@@ -52,6 +52,15 @@ class CategoriesController extends BaseController
             }
             $root_url = $root_url.$city."/";
         }
+        $place = Yii::$app->location->country;
+        $librarySearch = new AdsSearch();
+        $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
+        if(Yii::$app->location->city){
+            $place = Yii::$app->location->city;
+        }
+        if(Yii::$app->location->region){
+            $place = Yii::$app->location->region;
+        }
         $root_url = $root_url.$categoryUrl."/";
         $action = Yii::$app->request->get('placement');
         if($city != LocationHelper::getCurrentDomain()){
@@ -106,10 +115,16 @@ class CategoriesController extends BaseController
             $this->seo_desc = $category->_text->seo_desc;
             $this->seo_keywords = $category->_text->seo_keywords;
         }
+        if($page > 1){
+            $this->seo_desc .= " - ".__('Page')." $page";
+        }
+        //если мы не на первой странице списка, то уберем сео-текст
+        if($page != 1 or $sort or $direction){
+            $this->seo_text = null;
+        }
         //TODO move this request to cache
         $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
         Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
-        $librarySearch = new AdsSearch();
         $librarySearch->setMainCategory($this->category->id);
         $librarySearch->setAction($action_id);
         $librarySearch->setActive(true);
@@ -127,12 +142,36 @@ class CategoriesController extends BaseController
             $ads_list = Ads::getList($librarySearch);
         }
         $this->switchSeoKeys($ads_list);
-        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
         if($page > 1){
             $this->seo_title = $this->seo_title." - ".__('Page')." ".$page;
         }
+        if($sort or $direction){
+            $seo_sort_str = " - ".__('Sorting')." ";
+            switch($sort){
+                case 'title':
+                    $seo_sort_str .= __('by alphabet')." ";
+                    break;
+                case 'price':
+                    $seo_sort_str .= __('by price')." ";
+                    break;
+                case 'created_at':
+                    $seo_sort_str .= __('by date')." ";
+            }
+            switch($direction){
+                case 'asc':
+                    $seo_sort_str .= __('asc');
+                    break;
+                case 'desc':
+                    $seo_sort_str .= __('desc');
+                    break;
+            }
+            $this->seo_desc .= $seo_sort_str.".";
+            $this->seo_title .= $seo_sort_str;
+        }
+        $this->setSeo($this->seo_h1, $this->seo_h2, $this->seo_text, $this->seo_desc, $this->seo_keywords, $this->canonical);
         $this->setPageTitle($this->seo_title);
         $this->setNextAndPrevious($ads_list, $librarySearch, $page);
+        $page_pagination_title = "{page_num:key} ".__('of category').": ".__('free ads')." ".__('in')." ".$place->_text->name_rp;
         return $this->render('index',  [
             'current_category'      => $this->category,
             'categories'    => $subCategories,
@@ -142,7 +181,8 @@ class CategoriesController extends BaseController
             'page'          => $page,
             'ads_search'    => $ads_list,
             'library_search'=> $librarySearch,
-            'root_url' => $root_url
+            'root_url' => $root_url,
+            'page_pagination_title' => $page_pagination_title
         ]);
     }
 

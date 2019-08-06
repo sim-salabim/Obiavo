@@ -37,12 +37,12 @@ $root_url = isset($root_url) ? $root_url : null;
         <? foreach($ads_search['items'] as $k => $ad){?>
             <div class="col-lg-2 col-md-3 col-4 nonpadding-right image-div">
                 <? $avatar = $ad->avatar(true); ?>
-                <a
-                    href="/<?= $ad->url() ?>"
-                    title='<?= __('Advertisement').' "'.$ad->title.'" - '.__('photo') ?>'
-                    alt='<?= $ad->title.' - '.$ad->placement->_text->name.' '.__("advertisement").' '.__('in').' '.$ad->city->_text->name_rp?>'
-                >
-                    <img class="img-fluid" src="<?= $avatar ?>" alt='<?= __('Ad')." \"".$ad->title."\"" ?>'>
+                <a href="/<?= $ad->url() ?>" >
+                    <img
+                        class="img-fluid"
+                        src="<?= $avatar ?>"
+                        title='<?= __('Advertisement').' "'.$ad->title.'" - '.__('photo') ?>'
+                        alt='<?= $ad->title.' - '.$ad->placement->_text->name.' '.__("advertisement").' '.__('in').' '.$ad->city->_text->name_rp?>'>
                 </a>
             </div>
             <div class="col-lg-10 col-md-9 col-8 nonpadding-left-items">
@@ -62,42 +62,30 @@ $root_url = isset($root_url) ? $root_url : null;
                     <?
                     $user = Yii::$app->user->identity;
                     ?>
-                        <?// if ($ad->created_at < $ad->expiry_date) {  временно закомментим?>
-                        <span>
-                            <? if(2 == 1 and time() < $ad->expiry_date and $ad->active and ($user and $user->id == $ad->user->id)){ ?>
-                                <small id="small<?= $ad->id ?>" class="date_string">
-                                    <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
-                                </small>
+                        <? if(2 == 1 and time() < $ad->expiry_date and $ad->active and ($user and $user->id == $ad->user->id)){ ?>
+                            <span id="small<?= $ad->id ?>" class="date_string">
+                                <?= __("Active to") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
+                            </span>
+                        <? } ?>
+                        <? if(($user and $user->id == $ad->user->id) or ($user and $user->is_admin) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)) { ?>
+                            <? if(!$ad->active  and ($user and $user->id == $ad->user->id or $user->is_admin)){ ?>
+                                <span class="date_string">
+                                    <a id="repost<?= $ad->id ?>" onclick="repostAd(<?= $ad->id ?>)"><?= __('Repost the ad') ?></a>
+                                </span>
                             <? } ?>
-                            <? if(($user and $user->id == $ad->user->id) or ($user and $user->is_admin) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)) { ?>
-                                <? if(!$ad->active  and ($user and $user->id == $ad->user->id or $user->is_admin)){ ?>
-                                    <small class="date_string">
-                                        <a id="repost<?= $ad->id ?>" onclick="repostAd(<?= $ad->id ?>)"><?= __('Repost the ad') ?></a>
-                                    </small>
+                            <span class="date_string">
+                                <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date and ($user and $user->id == $ad->user->id)){ ?>
+                                    <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                 <? } ?>
-                                <small class="date_string">
-                                    <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date and ($user and $user->id == $ad->user->id)){ ?>
-                                        <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
-                                    <? } ?>
-                                    <? if($ad->active and ($user and ($user->id == $ad->user->id or $user->is_admin))){ ?>
-                                        <a id="active<?= $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
-                                    <? }?>
-                                    <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)){?>
-                                        <a id="edit<?= $ad->id?>" onclick="moveToEdit('<?= $ad->url ?>')"><?= __('Edit') ?></a>
-                                    <? } ?>
-                                </small>
-                            <? }?>
-                        </span>
+                                <? if($ad->active and ($user and ($user->id == $ad->user->id or $user->is_admin))){ ?>
+                                    <a id="active<?= $ad->id?>" onclick="inactivateAd(<?= $ad->id ?>)"><?= __('Inactivate ad') ?></a>
+                                <? }?>
+                                <? if(($user and $user->is_admin) or ($user and $ad->users_id == $user->id) or (isset($_COOKIE['session_token']) and $_COOKIE['session_token'] == $ad->session_token)){?>
+                                    <a id="edit<?= $ad->id?>" onclick="moveToEdit('<?= $ad->url ?>')"><?= __('Edit') ?></a>
+                                <? } ?>
+                            </span>
+                        <? }?>
                         <br/>
-<!--                    --><?// } else { ?>
-<!--                        <span>-->
-<!--                            <small class="date_string">-->
-<!--                                --><?//= __("Inactive since") . " " . $ad->getHumanDate(\common\models\Ads::DATE_TYPE_EXPIRATION) ?>
-<!--                             _ads_list   <a>--><?//= __('Repost') ?><!--</a>-->
-<!--                            </small>-->
-<!--                        </span>-->
-<!--                        <br/>-->
-<!--                    --><?// } ?>
                 </div>
             </div>
             <? if($k + 1 < count($ads_search['items'])){?>
@@ -110,6 +98,7 @@ $root_url = isset($root_url) ? $root_url : null;
             <?= $this->render('/partials/_pagination.php',
                 [
                     'ads_search' => $ads_search,
+                    'page_title' => $page_pagination_title,
                     'library_search'=> $library_search,
                     'current_category' => $current_category,
                     'current_action' => $current_action,

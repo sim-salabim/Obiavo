@@ -29,6 +29,7 @@ use yii\helpers\Url;
         'no_ads_title' => __('No ads found'),
         'show_sn_widgets' => true,
         'root_url' => $root_url,
+        'page_pagination_title' => $page_pagination_title,
 //            'current_category' => $current_category,
 //            'current_action' => $current_action
     ]) ?>
