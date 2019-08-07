@@ -49,7 +49,7 @@ class BaseController extends \yii\web\Controller {
         if($pages_amount > 1 AND count($ads_search['items']) > 0){
             if($current_page == 1){
                 Yii::$app->view->params['next'] = $url."?page=2";
-            }else if($current_page == $pages_amount){
+            }else if($current_page == $pages_amount and $current_page != 2){
                 Yii::$app->view->params['prev'] = $url."?page=".($current_page - 1);
             }elseif($current_page == 2){
                 Yii::$app->view->params['prev'] = $url;
