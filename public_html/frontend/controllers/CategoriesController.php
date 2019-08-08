@@ -123,8 +123,14 @@ class CategoriesController extends BaseController
             $this->seo_text = null;
         }
         //TODO move this request to cache
-        $breadcrumbs = $this->category->getAllParentsForBreadcrumbs();
-        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
+        $breadcrumbs = $this->category->getAllParentsForBreadcrumbs($place);
+        $breadcrumbs[] = [
+            'label' => __('Pavilion')." ".__('in')." ".$place->_text->name_rp,
+            'link' => $place->domain. "/",
+            'use_cookie' => true,
+            'is_active' => false,
+        ];
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, true);
         $librarySearch->setMainCategory($this->category->id);
         $librarySearch->setAction($action_id);
         $librarySearch->setActive(true);

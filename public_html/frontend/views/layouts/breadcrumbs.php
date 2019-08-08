@@ -8,7 +8,13 @@ if(!empty($breadcrumbs)){
     foreach($breadcrumbs as $key => $crumb){
         $city = isset($crumb['city']) ? $crumb['city']."/" : null;
     ?>
-        <li class="breadcrmb-item <? if($key + 1 < count($breadcrumbs) and $key > 0){ ?>slash-content<? } ?> <? if($key == 0){?> slash-first <? } ?><? if(!isset($breadcrumbs[$key + 1])){?> active <? } ?>" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <li
+            class="breadcrmb-item
+                <? if($key + 1 < count($breadcrumbs) and $key > 0){ ?>slash-content<? } ?>
+                <? if($key == 0){?> slash-first <? } ?>
+                <? if(!isset($breadcrumbs[$key + 1])){?> active <? } ?>"
+            itemprop="itemListElement"
+            itemscope itemtype="http://schema.org/ListItem">
             <? if(!isset($crumb['is_active']) OR $crumb['is_active']){?>
             <a
                 href="<?= LocationHelper::getDomainForUrl($crumb['link'], $crumb['use_cookie'], $city)  ?>"
@@ -21,7 +27,7 @@ if(!empty($breadcrumbs)){
                 <span itemprop="name"><?=  $crumb['label'] ?></span>
             </a>
             <? }elseif (isset($crumb['is_active']) and !$crumb['is_active']) {?>
-                <span itemprop="name"><?=  $crumb['label'] ?></span>
+                <h2 class="h2-breadcrumb "><?=  $crumb['label'] ?></h2>
             <? } ?>
             <meta itemprop="position" content="<?= $key + 1 ?>" />
         </li>

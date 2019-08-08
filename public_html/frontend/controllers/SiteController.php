@@ -189,13 +189,25 @@ class SiteController extends BaseController
             $this->seo_desc .= $seo_sort_str.".";
             $this->seo_title .= $seo_sort_str;
         }
+        $show_cities_list = true;
+        Yii::$app->view->params['no_hr'] = true;
+        if($region or $city) {
+            $breadcrumbs[] = [
+                'label' => __('Baraholka')." ".$place->_text->name_pp,
+                'link' => $place->domain. "/",
+                'use_cookie' => true,
+                'is_active' => false,
+            ];
+            Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, true);
+            Yii::$app->view->params['no_hr'] = false;
+            $show_cities_list = false;
+        }
         $this->switchSeoKeys($ads_search);
         Yii::$app->view->params['seo_desc'] = $this->seo_desc;
         Yii::$app->view->params['seo_keywords'] = $this->seo_keywords;
         Yii::$app->view->params['seo_h1'] = $this->seo_h1;
         Yii::$app->view->params['seo_h2'] = $this->seo_h2;
         Yii::$app->view->params['seo_text'] = $this->seo_text;
-        Yii::$app->view->params['no_hr'] = true;
         Yii::$app->view->params['canonical'] = $canonical_link;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
@@ -215,7 +227,8 @@ class SiteController extends BaseController
                 'country_amount',
                 'page',
                 'root_url',
-                'page_pagination_title'
+                'page_pagination_title',
+                'show_cities_list'
             ));
     }
 

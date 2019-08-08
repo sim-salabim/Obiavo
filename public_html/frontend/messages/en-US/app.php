@@ -221,4 +221,7 @@ return [
     'by date' => 'by date',
     'asc' => 'ascending',
     'desc' => 'descending',
+    'Baraholka' => 'Free ads in',
+    'ads' => 'ads',
+    'Павильон' => 'Павильон',
 ];

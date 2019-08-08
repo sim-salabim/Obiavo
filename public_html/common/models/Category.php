@@ -336,14 +336,22 @@ class Category extends \yii\db\ActiveRecord
      /**
      * Найти всех родителей пункта меню
      */
-    public function getAllParentsForBreadcrumbs()
+    public function getAllParentsForBreadcrumbs($place = null)
     {
         $parent = $this;
         $breadcrumbs = [];
-
+        $n = 0;
         while ($parent) {
-            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $parent->_text->url."/", 'use_cookie' => true];
+            $breadcrumbs[$n] = [
+                'label' => $parent->_text->name,
+                'link' => $parent->_text->url."/",
+                'use_cookie' => true,
+                ];
+            if($place){
+                $breadcrumbs[$n]['title'] =  $parent->_text->name." ".__('ads')." ".__('in')." ".$place->_text->name_rp;
+            }
             $parent = $parent->getParent()->one();
+            $n++;
         }
         return array_reverse($breadcrumbs);
     }
