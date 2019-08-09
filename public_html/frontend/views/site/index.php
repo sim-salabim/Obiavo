@@ -30,7 +30,12 @@ use yii\helpers\Url;
 </div>
 <div class="row">
     <div class="col-12">
-        <?= \common\models\Cms::getByTechname('main-page-under-categories-list')->_text->seo_text?>
+        <?
+            $head_cms_page = \common\models\Cms::getByTechname('main-page-under-categories-list');
+            if($head_cms_page){
+                echo $head_cms_page->_text->seo_text;
+            }
+        ?>
     </div>
 </div>
 <div class="row">
