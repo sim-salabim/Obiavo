@@ -759,3 +759,7 @@ h6.a-h6 {
     margin: 0 0 0 0 !important;
     padding-top: 3px !important;
 }
+.main-text-1 {
+    font-size: 0.9rem;
+    color: #707070;
+}

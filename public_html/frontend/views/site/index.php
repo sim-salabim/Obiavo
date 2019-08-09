@@ -22,7 +22,21 @@ use yii\helpers\Url;
     <? } ?>
     <? $div_row_unneeded = true; ?>
     <?= $this->render('/categories/list', compact('categories', 'div_row_unneeded'));?>
-
+</div>
+<div class="row">
+    <div class="w-100">
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <?= \common\models\Cms::getByTechname('main-page-under-categories-list')->_text->seo_text?>
+    </div>
+</div>
+<div class="row">
+    <div class="w-100">
+        <hr>
+    </div>
 </div>
 <?=  $this->render('/partials/_ads_list.php',
     [
