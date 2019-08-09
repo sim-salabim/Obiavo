@@ -52,14 +52,14 @@ if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city']))
                    data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="false">
-                    <i class="fa fa-search"></i>
+                    <span class="fa fa-search"></span>
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownSearchLink">
                     <div class="form-inline my-2 mr-4 my-lg-0">
                         <input class="form-control mr-sm-2 search-input-dropdown" type="text" placeholder="<?= __('Search') ?>" aria-label="Search">
                         <button class="btn btn-secondary my-2 search-button">
-                            <i class="fa fa-search"></i>
+                            <span class="fa fa-search"></span>
                         </button>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city']))
                        placeholder="<?= __('Search') ?>"
                        aria-label="Search">
                 <button class="btn btn-secondary my-2 search-button">
-                    <i class="fa fa-search"></i>
+                    <span class="fa fa-search"></span>
                 </button>
             </div>
             <?
