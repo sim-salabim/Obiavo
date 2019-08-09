@@ -766,8 +766,9 @@ h6.a-h6 {
 .h3-main-page {
     font-size: 1rem;
 }
-
-
+.mr-right {
+    margin-left: auto!important;
+}
 .margin-top-11 {
     margin-top: 11px !important;
 }

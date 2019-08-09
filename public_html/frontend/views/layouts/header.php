@@ -84,18 +84,25 @@ if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city']))
             }else{
                 $application_url = yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl());
             }?>
+            <ul class="navbar-nav nav-ul mr-right mt-lg-0">
             <? if (Yii::$app->user->isGuest) { ?>
-                <a href="<?= yii\helpers\Url::toRoute('/login') ?>" class="btn btn-success my-2 ent-btn d-md-block d-lg-block new-add-btn" rel="nofollow"><?= __('Sign in') ?></a>
+                <li>
+                    <a href="<?= yii\helpers\Url::toRoute('/login') ?>" class="btn btn-success my-2 ent-btn d-md-block d-lg-block new-add-btn" rel="nofollow"><?= __('Sign in') ?></a>
+                </li>
             <? } ?>
-            <a
+            <li>
+                <a
                 href="<?= $application_url ?>"
                 title="<?= __('Post your ad in')." ".$in_place." ".__('free without registration') ?>"
                 class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an add') ?></a>
-
+            </li>
+                <li>
             <a
                 href="<?= $application_url ?>"
                 title="<?= __('Post your ad in')." ".$in_place." ".__('free without registration') ?>"
                 class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn no-transition">+ </a>
+                </li>
+            </ul>
         </div>
         </div>
     </nav>
