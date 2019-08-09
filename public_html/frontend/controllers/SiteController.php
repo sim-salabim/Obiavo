@@ -228,7 +228,8 @@ class SiteController extends BaseController
                 'page',
                 'root_url',
                 'page_pagination_title',
-                'show_cities_list'
+                'show_cities_list',
+                'place'
             ));
     }
 

@@ -14,8 +14,8 @@ $root_url = isset($root_url) ? $root_url : null;
 ?>
 <!--<hr class="extra-margin-bottom45">-->
 <div class="row <? if(!isset($padding_top_20) or !$padding_top_20){?> <? }else{?> padding-top-20<? } ?>">
-    <div class="col-lg-9 col-md-6 col-sm-12 text-align-left margin-top-7 filter-title">
-        <? if(isset($title) and $title) echo $title ?>
+    <div class="col-lg-9 col-md-6 col-sm-12 text-align-left margin-top-11 filter-title">
+        <? if(isset($title) and $title) echo "<h3 class='h3-main-page '>".$title."</h3>" ?>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end ">
         <?=  $this->render('/partials/_filter_select.php',

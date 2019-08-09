@@ -48,7 +48,7 @@ use yii\helpers\Url;
         'padding_top_20' => true,
         'ads_search' => $ads_search,
         'library_search'=> $library_search,
-        'title' => countString($ads_search['count'], [__('proposal'), __('proposals_im_p'), __('proposals_r_p') ]),
+        'title' => countString($ads_search['count'], [__('free ad'), __('free ads_im_p'), __('free ads_r_p') ])." ".__('in')." ".$place->_text->name_rp,
         'no_ads_title' => __('No ads found'),
         'show_sn_widgets' => true,
         'root_url' => $root_url,

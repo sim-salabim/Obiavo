@@ -223,5 +223,8 @@ return [
     'desc' => 'descending',
     'Baraholka' => 'Free ads in',
     'ads' => 'ads',
-    'Павильон' => 'Павильон',
+    'Pavilion' => 'Павильон',
+    'free ad' => 'free ad',
+    'free ads_im_p' => 'free ads',
+    'free ads_r_p' => 'free ads',
 ];
