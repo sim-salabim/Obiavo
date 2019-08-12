@@ -227,4 +227,5 @@ return [
     'free ad' => 'free ad',
     'free ads_im_p' => 'free ads',
     'free ads_r_p' => 'free ads',
+    'of free ads' => 'of free ads',
 ];

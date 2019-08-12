@@ -337,7 +337,7 @@ class Category extends \yii\db\ActiveRecord
      /**
      * Найти всех родителей пункта меню
      */
-    public function getAllParentsForBreadcrumbs($place = null)
+    public function getAllParentsForBreadcrumbs($place = null, $is_country = true)
     {
         $parent = $this;
         $breadcrumbs = [];
@@ -358,10 +358,11 @@ class Category extends \yii\db\ActiveRecord
             $parent = $parent->getParent()->one();
             $n++;
         }
-        if($place){
+        if($place and !$is_country){
             $breadcrumbs[$n] = [
                 'label' => $place->_text->name,
                 'link' => '/',
+                'title' => __('Baraholka')." ".__('of free ads')." ".__('in')." ".$place->_text->name_rp,
                 'use_cookie' => true,
                 'city' => $place->domain
             ];

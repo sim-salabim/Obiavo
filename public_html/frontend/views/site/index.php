@@ -5,15 +5,15 @@ use yii\helpers\Url;
 <div class="row site-index">
     <? if($show_cities_list){?>
         <div class="w-100"><hr></div>
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                 <a href="<?= Url::toRoute(["/"])?>"><?= Yii::$app->location->country->_text->name?></a> <span class="ads-amount-city"> <?= $country_amount['ads_amount'] ?></span>
             </div>
              <?php foreach ($cities as $key => $city) { ?>
-                 <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
+                 <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                      <a href="<?= Url::toRoute(["/".$city->city->domain."/"])?>"><?= $city->_text->name?></a> <span class="ads-amount-city"> <?= $city->city->ads_amount ?: 0 ?></span>
                  </div>
              <?php } ?>
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                 <a href="<?= Url::toRoute(["/vybor-goroda/"])?>"><?= __('_City') ?></a>
             </div>
         <div class="w-100"><hr></div>
@@ -34,7 +34,7 @@ if($head_cms_page and $head_cms_page->_text->seo_text2){ ?>
 <div class="row">
     <div class="col-12">
         <?
-            $text = str_replace(['{key:location}', '{key:location-in}'], [$place->_text->name, $place->_text->name_pp], $head_cms_page->_text->seo_text2);
+            $text = str_replace(['{key:location}', '{key:location-in}', '{key:location-of}'], [$place->_text->name, __('in')." ".$place->_text->name_rp, $place->_text->name_pp], $head_cms_page->_text->seo_text2);
             echo $text;
         ?>
     </div>

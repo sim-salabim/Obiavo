@@ -41,6 +41,7 @@ class CategoriesController extends BaseController
         $categoryUrl = Yii::$app->request->get('category');
         $city = Yii::$app->request->get('city') ?: null;
         $root_url = "/";
+        $is_country = true;
         if($city){
             $city_found = City::find()->where(['domain' => $city])->one();
             if($city_found and $city_found->region->country->id != Yii::$app->location->country->id){
@@ -56,9 +57,11 @@ class CategoriesController extends BaseController
         $librarySearch = new AdsSearch();
         $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
         if(Yii::$app->location->city){
+            $is_country = false;
             $place = Yii::$app->location->city;
         }
         if(Yii::$app->location->region and !$place){
+            $is_country = false;
             $place = Yii::$app->location->region;
         }
         $root_url = $root_url.$categoryUrl."/";
@@ -123,7 +126,7 @@ class CategoriesController extends BaseController
             $this->seo_text = null;
         }
         //TODO move this request to cache
-        $breadcrumbs = $this->category->getAllParentsForBreadcrumbs($place);
+        $breadcrumbs = $this->category->getAllParentsForBreadcrumbs($place, $is_country);
 //        $breadcrumbs[] = [
 //            'label' => $category->_text->name." ".__('in')." ".$place->_text->name_rp,
 //            'link' => $place->domain. "/",
