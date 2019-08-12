@@ -38,7 +38,7 @@ function sortingKids($a, $b){
     <?php }else{ ?>
             <? if($current_category->placements){?>
                 <? foreach($current_category->placements as $k => $placement){ ?>
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                         <a href="<?= LocationHelper::getDomainForUrl($current_category->url().$placement['url']."/") ?>">
                             <?= $placement['name']?></a><span class="ads-amount-city"> <?
                             if(!Yii::$app->location->city) {
@@ -54,7 +54,7 @@ function sortingKids($a, $b){
             <? } ?>
             <? foreach($categories as $key =>  $category){ ?>
                 <? if($category->_text->name != ""){?>
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 font-15">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                         <a href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
                             if(!Yii::$app->location->city) {
                                 $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
