@@ -25,7 +25,7 @@ function sortingKids($a, $b){
     <? if(!isset($row_list) OR !$row_list){ ?>
 
         <?php foreach ($categories as $category) { ?>
-            <div class="col-lg-3 col-md-3 col-sm-4 col-6 font-15">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                 <a class="cat-title hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
                     if(!Yii::$app->location->city) {
                         $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;

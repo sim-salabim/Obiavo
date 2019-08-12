@@ -16,6 +16,7 @@ use Yii;
  * @property string $seo_desc
  * @property string $seo_keywords
  * @property string $seo_text
+ * @property string $seo_text2
  *
  * @property Cms $cms
  * @property Language $languages
@@ -40,6 +41,7 @@ class CmsText extends \yii\db\ActiveRecord
                  'seo_title',
                  'url',
                  'seo_text',
+                 'seo_text2',
                  'seo_h1',
                  'seo_h2',
                  'seo_desc',
@@ -73,6 +75,7 @@ class CmsText extends \yii\db\ActiveRecord
             'languages_id' => 'Languages ID',
             'seo_title' => 'Title',
             'seo_text' => 'Text',
+            'seo_text2' => 'Text 2',
             'seo_h1' => 'H1',
             'seo_h2' => 'H2',
             'seo_desc' => 'Description',

@@ -2,10 +2,11 @@
 
 namespace common\models;
 
+use common\models\scopes\CategoryQuery;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
-use common\models\scopes\CategoryQuery;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "categories".
@@ -349,9 +350,21 @@ class Category extends \yii\db\ActiveRecord
                 ];
             if($place){
                 $breadcrumbs[$n]['title'] =  $parent->_text->name." ".__('ads')." ".__('in')." ".$place->_text->name_rp;
+                $k = $n + 1;
+                if($n == 0) {
+                    $breadcrumbs[$n]['label'] = $parent->_text->name . " " . __('in') . " " . $place->_text->name_rp;
+                }
             }
             $parent = $parent->getParent()->one();
             $n++;
+        }
+        if($place){
+            $breadcrumbs[$n] = [
+                'label' => $place->_text->name,
+                'link' => '/',
+                'use_cookie' => true,
+                'city' => $place->domain
+            ];
         }
         return array_reverse($breadcrumbs);
     }

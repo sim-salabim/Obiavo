@@ -156,15 +156,21 @@ class BaseController extends \yii\web\Controller {
      * @param array $array[label => '', link =>'']
      * @param bool $show_last_one
      * @param string $location_domain
+     * @param bool $is_last_active
      * @return array
      */
-    public function setBreadcrumbs($array = [], $show_last_one = false, $location_domain = null){
+    public function setBreadcrumbs($array = [], $show_last_one = false, $location_domain = null, $is_last_active = true){
         $home_link = $location_domain ? $location_domain."/" : Url::toRoute(['/']);
         $use_cookie = $location_domain ? false : true;
         $breadcrumbs = [['label' => __('Home page'), 'link' => $home_link, 'title'=> __('Free ads Obiavo'), 'use_cookie' => $use_cookie]];
         if(!empty($array)){
+            $n = 0;
             foreach($array as $item){
-                $breadcrumbs[] = $item;
+                $n++;
+                $breadcrumbs[$n] = $item;
+            }
+            if(!$is_last_active){
+                $breadcrumbs[$n]['is_active'] = false;
             }
         }
         if(!$show_last_one) array_pop($breadcrumbs);

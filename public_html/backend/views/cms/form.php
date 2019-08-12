@@ -25,6 +25,7 @@ $items = [
                 ['name' => 'seo_h1','type' => Form::INPUT_TEXT,'label' => 'H1','model'=>$cms->_text],
                 ['name' => 'seo_h2','type' => Form::INPUT_TEXT,'label' => 'H2','model'=>$cms->_text],
                 ['name' => 'seo_text','type' => Form::INPUT_AREA_TEXT ,'label' => 'Text','model_name'=>'CmsText', 'model' =>$cms->_text],
+                ['name' => 'seo_text2','type' => Form::INPUT_AREA_TEXT ,'label' => 'Text 2','model_name'=>'CmsText', 'model' =>$cms->_text],
                 ['name' => 'seo_desc','type' => Form::INPUT_AREA_TEXT,'label' => 'Description','model_name'=>'CmsText', 'model' =>$cms->_text],
                 ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'Keywords','model'=>$cms->_text],
             ]

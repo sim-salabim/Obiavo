@@ -23,6 +23,9 @@ use yii\helpers\Url;
     <? $div_row_unneeded = true; ?>
     <?= $this->render('/categories/list', compact('categories', 'div_row_unneeded'));?>
 </div>
+<?
+$head_cms_page = \common\models\Cms::getByTechname('site-header');
+if($head_cms_page and $head_cms_page->_text->seo_text2){ ?>
 <div class="row">
     <div class="w-100">
         <hr>
@@ -31,10 +34,8 @@ use yii\helpers\Url;
 <div class="row">
     <div class="col-12">
         <?
-            $head_cms_page = \common\models\Cms::getByTechname('main-page-under-categories-list');
-            if($head_cms_page){
-                echo $head_cms_page->_text->seo_text;
-            }
+            $text = str_replace(['{key:location}', '{key:location-in}'], [$place->_text->name, $place->_text->name_pp], $head_cms_page->_text->seo_text2);
+            echo $text;
         ?>
     </div>
 </div>
@@ -43,12 +44,13 @@ use yii\helpers\Url;
         <hr>
     </div>
 </div>
+<? }?>
 <?=  $this->render('/partials/_ads_list.php',
     [
         'padding_top_20' => true,
         'ads_search' => $ads_search,
         'library_search'=> $library_search,
-        'title' => countString($ads_search['count'], [__('free ad'), __('free ads_im_p'), __('free ads_r_p') ])." ".__('in')." ".$place->_text->name_rp,
+        'title' => countString($ads_search['count'], [__('free ad'), __('free ads_r_p'), __('free ads_im_p') ])." ".__('in')." ".$place->_text->name_rp,
         'no_ads_title' => __('No ads found'),
         'show_sn_widgets' => true,
         'root_url' => $root_url,
