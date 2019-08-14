@@ -108,7 +108,7 @@ class SiteController extends BaseController
         if($city){
             $place = Yii::$app->location->city;
             $this->setUrlForLogo($city);
-            $region_add = "/".Yii::$app->location->region->domain;
+            $region_add = "/".Yii::$app->location->city->domain;
         }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
