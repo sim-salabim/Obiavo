@@ -99,13 +99,16 @@ class SiteController extends BaseController
         $region = isset($_COOKIE['region']) ? $_COOKIE['region'] : null;
         $city = isset($_COOKIE['city']) ? $_COOKIE['city'] : null;
         $place = Yii::$app->location->country;
+        $region_add = '';
         if($region){
             $place = Yii::$app->location->region;
             $this->setUrlForLogo($region);
+            $region_add = "/".Yii::$app->location->region->domain;
         }
         if($city){
             $place = Yii::$app->location->city;
             $this->setUrlForLogo($city);
+            $region_add = "/".Yii::$app->location->region->domain;
         }
         $categories = \common\models\Category::find()
                             ->where(['active' => 1])
@@ -207,7 +210,7 @@ class SiteController extends BaseController
         Yii::$app->view->params['seo_keywords'] = $this->seo_keywords;
         Yii::$app->view->params['seo_h1'] = $this->seo_h1;
         Yii::$app->view->params['seo_h2'] = $this->seo_h2;
-        Yii::$app->view->params['seo_text'] = $this->seo_text;
+        Yii::$app->view->params['seo_text'] = str_replace('{key:application-url}', yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl()), $this->seo_text);
         Yii::$app->view->params['canonical'] = $canonical_link;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
@@ -217,6 +220,7 @@ class SiteController extends BaseController
             ->one();
         $this->setNextAndPrevious($ads_search, $library_search, $page);
         $page_pagination_title = "{page_num:key} ".__('of category').": ".__('free ads')." ".__('in')." ".$place->_text->name_rp;
+//        print_r($this->params);exit;
         return $this->render('index',
             compact(
                 'categories',

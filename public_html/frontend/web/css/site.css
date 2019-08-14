@@ -772,3 +772,6 @@ h6.a-h6 {
 .margin-top-11 {
     margin-top: 11px !important;
 }
+.h5, h6 {
+    font-size: 1.2rem !important;
+}
