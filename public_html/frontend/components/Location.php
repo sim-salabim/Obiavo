@@ -187,7 +187,7 @@ class Location extends Component {
 
     public static function getCurrentProtocol(){
         $base_url = Yii::$app->request->getHostInfo();
-        $protocol = "obiavo.ru";
+        $protocol = "http://";
         if(strpos($base_url, 'obiavo.by') !== false){
             $protocol = "https://";
         }
