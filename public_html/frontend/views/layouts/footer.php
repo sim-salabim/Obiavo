@@ -12,7 +12,7 @@
 
                 <!-- Content -->
                 <p class="font-weight-bold"><?= Yii::$app->location->country->domain ?></p>
-                <p>© <?= __('Obiavo') ?> - <?= __('free ads site') ?> <?= __('in') ?> <?= $pp_place ?>.</p>
+                <p>© <?= __('Obiavo') ?> - <?= __('free ads site') ?> <?= $pp_place ?>.</p>
                 <p class="text-secondary"><a rel="nofollow" href="/polzovatelskoe-soglashenie/"><?= __('User agreement') ?></a>. <a rel="nofollow" href="/oferta/"><?= __('_Offer') ?></a>. <a rel="nofollow" href="/cookies/"><?= __('Information about') ?> cookies</a>.</p>
 
             </div>
