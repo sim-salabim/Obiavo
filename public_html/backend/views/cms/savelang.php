@@ -16,7 +16,8 @@ $items = [
                 ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'Ключевые слова','model'=>$cms->_text],
                 ['name' => 'seo_desc','type' => Form::INPUT_AREA_TEXT,'label' => 'Описание','model_name'=>'CmsText', 'model' =>$cms->_text],
                 ['name' => 'seo_text','type' => Form::INPUT_AREA_TEXT ,'label' => 'Tекст','model_name'=>'CmsText', 'model' =>$cms->_text],
-                ['name' => 'seo_text2','type' => Form::INPUT_AREA_TEXT ,'label' => 'Tекст 2','model_name'=>'CmsText', 'model' =>$cms->_text]
+                ['name' => 'seo_text2','type' => Form::INPUT_AREA_TEXT ,'label' => 'Tекст 2','model_name'=>'CmsText', 'model' =>$cms->_text],
+                ['name' => 'seo_text3','type' => Form::INPUT_AREA_TEXT ,'label' => 'Tекст 3','model_name'=>'CmsText', 'model' =>$cms->_text]
             ]
         ]
     ]

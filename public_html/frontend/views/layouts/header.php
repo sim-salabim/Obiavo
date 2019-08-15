@@ -1,19 +1,4 @@
-<?
-$region_add = '';
-$in_place = Yii::$app->location->country->_text->name_rp;
-$pp_place = Yii::$app->location->country->_text->name_pp;
-if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
-    $in_place = Yii::$app->location->city->_text->name_rp;
-    $pp_place = Yii::$app->location->city->_text->name_pp;
-    $region_add = "/".Yii::$app->location->city->domain;
-}else{
-    if(Yii::$app->location->region){
-        $in_place = Yii::$app->location->region->_text->name_rp;
-        $pp_place = Yii::$app->location->region->_text->name_pp;
-        $region_add = "/".Yii::$app->location->region->domain;
-    }
-}
-?>
+
 <header class="header" id="main-header">
     <nav class="navbar navbar-expand navbar-light nav-sm-res navbar-fixed-top bg-light">
         <div class="container nav-container">

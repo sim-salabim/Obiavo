@@ -1,32 +1,87 @@
-<footer class="footer  footer-height">
-    <div class="container">
+<!-- Footer -->
+<footer class="page-footer font-small mdb-color lighten-3 pt-4">
+
+    <!-- Footer Links -->
+    <div class="container text-center text-md-left">
+
+        <!-- Grid row -->
         <div class="row">
-            <div class="col-12 footer-menu">
-                <ul class="nav justify-content-end45 flex-ul">
-                    <li class="nav-item li-item">
-                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/o-proekte/"><?= __('About the project') ?></a>
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+
+                <!-- Content -->
+                <p class="font-weight-bold"><?= Yii::$app->location->country->domain ?></p>
+                <p>© <?= __('Obiavo') ?> - <?= __('free ads site') ?> <?= __('in') ?> <?= $pp_place ?>.</p>
+                <p class="text-secondary"><a rel="nofollow" href="/polzovatelskoe-soglashenie/"><?= __('User agreement') ?></a>. <a rel="nofollow" href="/oferta/"><?= __('_Offer') ?></a>. <a rel="nofollow" href="/cookies/"><?= __('Information about') ?> cookies</a>.</p>
+
+            </div>
+            <!-- Grid column -->
+
+            <hr class="clearfix w-100 d-md-none">
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+
+                <!-- Links -->
+                <p class="font-weight-bold"><?= __('Read') ?></p>
+
+                <ul class="list-unstyled">
+                    <li class="footer-li-margin">
+
+                        <a rel="nofollow" href="/o-proekte/"><?= __('About the project') ?></a>
+
                     </li>
-                    <li class="nav-item li-item">
-                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/rules/"><?= __('Rules') ?></a>
+                    <li class="footer-li-margin">
+
+                        <a rel="nofollow" href="/rules/"><?= __('Rules') ?></a>
+
                     </li>
-                    <li class="nav-item li-item">
-                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/reklama/"><?= __('_Advertisement') ?></a>
+                    <li class="footer-li-margin">
+
+                        <a rel="nofollow" href="/reklama/"><?= __('_Advertisement') ?></a>
+
                     </li>
-                    <li class="nav-item li-item">
-                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/help/"><?= __('Help') ?></a>
+                    <li class="footer-li-margin">
+
+                        <a rel="nofollow" href="/help/"><?= __('Help') ?></a>
+
                     </li>
-                    <li class="nav-item li-item">
-                        <a class="nav-link text-secondary additional-links hover-red" rel="nofollow" href="/kontakty/"><?= __('_Contacts') ?></a>
+                    <li class="footer-li-margin">
+
+                        <a rel="nofollow" href="/kontakty/"><?= __('_Contacts') ?></a>
+
                     </li>
                 </ul>
+
             </div>
-            <div class="col-12">
-                <hr>
+            <!-- Grid column -->
+
+            <hr class="clearfix w-100 d-md-none">
+
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+
+
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-3 mr-auto my-4 my-0 mt-4 mb-1">
+                <?= \common\models\Cms::getByTechname('site-header')->_text->seo_text3?>
             </div>
-            <div class="col-12">
-                <p class="text-secondary">© Obiavo - <?= __('ads from individuals and companies') ?>. <a class="footer-link" rel="nofollow" href="/polzovatelskoe-soglashenie/"><?= __('User agreement') ?></a>. <a class="footer-link" rel="nofollow" href="/oferta/"><?= __('_Offer') ?></a>. <a class="footer-link" rel="nofollow" href="/cookies/"><?= __('Information about') ?> cookies</a>.</p>
-            </div>
+            <!-- Grid column -->
+
         </div>
-        <div class="footer-clear"></div>
+        <!-- Grid row -->
+
     </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">
+        <p></p>
+    </div>
+    <!-- Copyright -->
+
 </footer>
+<!-- Footer -->

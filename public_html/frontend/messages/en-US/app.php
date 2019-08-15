@@ -228,4 +228,7 @@ return [
     'free ads_im_p' => 'free ads',
     'free ads_r_p' => 'free ads',
     'of free ads' => 'of free ads',
+    'free ads site' => 'free ads site',
+    'Obiavo' => 'Obiavo',
+    'Read' => 'Read',
 ];

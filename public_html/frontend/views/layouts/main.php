@@ -47,6 +47,22 @@ AppAsset::register($this);
         <title><?= Html::decode(strip_tags($this->title)) ?></title>
              <?php $this->head() ?>
     </head>
+    <?
+    $region_add = '';
+    $in_place = Yii::$app->location->country->_text->name_rp;
+    $pp_place = Yii::$app->location->country->_text->name_pp;
+    if(Yii::$app->location->city AND (isset($_COOKIE['city']) and $_COOKIE['city'])){
+        $in_place = Yii::$app->location->city->_text->name_rp;
+        $pp_place = Yii::$app->location->city->_text->name_pp;
+        $region_add = "/".Yii::$app->location->city->domain;
+    }else{
+        if(Yii::$app->location->region){
+            $in_place = Yii::$app->location->region->_text->name_rp;
+            $pp_place = Yii::$app->location->region->_text->name_pp;
+            $region_add = "/".Yii::$app->location->region->domain;
+        }
+    }
+    ?>
     <body>
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
@@ -60,7 +76,14 @@ AppAsset::register($this);
     <? if(!isset($this->params['location_domain'])){
         $this->params['location_domain'] = "/";
     }?>
-    <?= $this->render('header', ['location_domain' => $this->params['location_domain']]); ?>
+    <?= $this->render('header',
+        [
+            'location_domain' => $this->params['location_domain'],
+            'region_add'=>$region_add,
+            'pp_place' => $pp_place,
+            'in_place' => $in_place
+        ]);
+    ?>
     <div id="wrapper">
         <div class="jumbotron jumbotron-fluid mt-2" style="background: #ffffff;">
             <div class="container">
@@ -101,7 +124,15 @@ AppAsset::register($this);
         </div>
     </div>
 
-        <?= $this->render('footer'); ?>
+        <?=
+        $this->render('footer',
+        [
+            'region_add'=>$region_add,
+            'pp_place' => $pp_place,
+            'in_place' => $in_place
+        ]
+        );
+        ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
             integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
             crossorigin="anonymous"></script>

@@ -775,3 +775,12 @@ h6.a-h6 {
 .h5, h6 {
     font-size: 1.2rem !important;
 }
+.footer-li-margin {
+    margin-bottom: 0.3rem;
+}
+
+
+.pt-4 {
+    padding-top: 1.5rem!important;
+    background-color: #eee!important;
+}

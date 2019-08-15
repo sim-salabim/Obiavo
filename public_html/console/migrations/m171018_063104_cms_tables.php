@@ -29,6 +29,7 @@ class m171018_063104_cms_tables extends Migration
             'seo_keywords' => $this->string(),
             'seo_text' => $this->text()->notNull(),
             'seo_text2' => $this->text(),
+            'seo_text3' => $this->text(),
         ], $tableOptions);
 
         $this->createIndex('idx_cms_languages_id', 'cms_text', 'languages_id');
