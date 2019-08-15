@@ -231,4 +231,5 @@ return [
     'free ads site' => 'free ads site',
     'Obiavo' => 'Obiavo',
     'Read' => 'Read',
+    'Join our communities to see the freshest ads' => 'Join our communities to see the freshest ads',
 ];

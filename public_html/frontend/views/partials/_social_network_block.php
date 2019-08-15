@@ -10,7 +10,7 @@ foreach($active_sns as $sn){
     $sn_blocks[] = $sn->getGroupsBlock($current_category);
 }
 ?>
-<div class="col-12 social-n-block"><h4><?= __('Join us in social networks') ?></h4></div>
+<div class="col-12 social-n-block"><h4><?= __('Join our communities to see the freshest ads') ?></h4></div>
 <? foreach($sn_blocks as $block){?>
 <div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px">
     <? if($block and $location->country->id == $block->country->id){?>

@@ -234,4 +234,5 @@ return [
     'free ads site' => 'сайт бесплатных объявлений',
     'Obiavo' => 'Объяво',
     'Read' => 'Читай',
+    'Join our communities to see the freshest ads' => 'Вступайте в группы свежих объявлений',
 ];
