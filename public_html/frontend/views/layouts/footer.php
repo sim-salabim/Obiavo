@@ -8,7 +8,7 @@
         <div class="row">
 
             <!-- Grid column -->
-            <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+            <div >
 
                 <!-- Content -->
                 <p class="font-weight-bold"><?= Yii::$app->location->country->domain ?></p>
