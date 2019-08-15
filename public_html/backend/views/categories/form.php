@@ -48,7 +48,7 @@ $items = [
                 ['name' => 'seo_title','type' => Form::INPUT_TEXT,'label' => 'Title','model'=>$category->_text],
                 ['name' => 'seo_h1','type' => Form::INPUT_TEXT,'label' => 'H1','model'=>$category->_text],
                 ['name' => 'seo_h2','type' => Form::INPUT_TEXT,'label' => 'H2','model'=>$category->_text],
-                ['name' => 'seo_text','type' => Form::INPUT_TEXT_AREA_REACH ,'label' => 'Text','model_name'=>'CategoriesText', 'model' => $category->_text],
+                ['name' => 'seo_text','type' => Form::INPUT_AREA_TEXT ,'label' => 'Text','model_name'=>'CategoriesText', 'model' => $category->_text],
                 ['name' => 'seo_desc','type' => Form::INPUT_AREA_TEXT,'label' => 'Description','model_name'=>'CategoriesText', 'model' => $category->_text],
                 ['name' => 'seo_keywords','type' => Form::INPUT_TEXT,'label' => 'Keywords','model'=>$category->_text],
             ]

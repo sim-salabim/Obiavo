@@ -40,7 +40,7 @@ if(!empty($arr)) {
         $placement_form_arr['attributes'][] = ['name' => "seo_title[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Title', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_title'];
         $placement_form_arr['attributes'][] = ['name' => "seo_h1[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'H1', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_h1'];
         $placement_form_arr['attributes'][] = ['name' => "seo_h2[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'H2', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_h2'];
-        $placement_form_arr['attributes'][] = ['name' => "seo_text[{$key}]", 'type' => Form::INPUT_TEXT_AREA_REACH, 'label' => 'Text', 'model_name' => 'CategoryPlacementText', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_text'];
+        $placement_form_arr['attributes'][] = ['name' => "seo_text[{$key}]", 'type' => Form::INPUT_AREA_TEXT, 'label' => 'Text', 'model_name' => 'CategoryPlacementText', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_text'];
         $placement_form_arr['attributes'][] = ['name' => "seo_desc[{$key}]", 'type' => Form::INPUT_AREA_TEXT, 'label' => 'Description', 'model_name' => 'CategoryPlacementText', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_desc'];
         $placement_form_arr['attributes'][] = ['name' => "seo_keywords[{$key}]", 'type' => Form::INPUT_TEXT, 'label' => 'Keywords', 'model' => $text_model, 'manually' => true, 'params_name' => 'seo_keywords'];
         array_push($items['rows'], $placement_form_arr);

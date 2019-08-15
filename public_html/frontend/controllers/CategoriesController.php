@@ -56,13 +56,16 @@ class CategoriesController extends BaseController
         $place = Yii::$app->location->country;
         $librarySearch = new AdsSearch();
         $page = (Yii::$app->request->get('page')) ? Yii::$app->request->get('page') : $librarySearch->page;
+        $region_add = '';
         if(Yii::$app->location->city){
             $is_country = false;
             $place = Yii::$app->location->city;
+            $region_add = "/".Yii::$app->location->city->domain;
         }
         if(Yii::$app->location->region and !$place){
             $is_country = false;
             $place = Yii::$app->location->region;
+            $region_add = "/".Yii::$app->location->region->domain;
         }
         $root_url = $root_url.$categoryUrl."/";
         $action = Yii::$app->request->get('placement');
@@ -98,7 +101,7 @@ class CategoriesController extends BaseController
             ->withText(Language::getId())
             ->all();
 //        $categoryPlacements = $this->category->placements;
-
+        $application_url = yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl());
         if($action){
             $category_placement = CategoryPlacement::find()
                 ->where(['placements_id' => $action_id, 'categories_id' => $category->id])
@@ -107,14 +110,14 @@ class CategoriesController extends BaseController
             $this->seo_title = $category_placement->_text->seo_title;
             $this->seo_h1 = $category_placement->_text->seo_h1;
             $this->seo_h2 = $category_placement->_text->seo_h2;
-            $this->seo_text = $category_placement->_text->seo_text;
+            $this->seo_text = str_replace('{key:application-url}', yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl()), $category_placement->_text->seo_text);
             $this->seo_desc = $category_placement->_text->seo_desc;
             $this->seo_keywords = $category_placement->_text->seo_keywords;
         }else{
             $this->seo_title = $category->_text->seo_title;
             $this->seo_h1 = $category->_text->seo_h1;
             $this->seo_h2 = $category->_text->seo_h2;
-            $this->seo_text = $category->_text->seo_text;
+            $this->seo_text = str_replace('{key:application-url}', yii\helpers\Url::toRoute($region_add."/".\common\models\Ads::generateApplicationUrl()), $category->_text->seo_text);
             $this->seo_desc = $category->_text->seo_desc;
             $this->seo_keywords = $category->_text->seo_keywords;
         }
