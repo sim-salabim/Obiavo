@@ -235,4 +235,5 @@ return [
     'Obiavo' => 'Объяво',
     'Read' => 'Читай',
     'Join our communities to see the freshest ads' => 'Вступайте в группы свежих объявлений',
+    'Personal office' => 'Личный кабинет',
 ];
