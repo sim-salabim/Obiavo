@@ -40,7 +40,7 @@
                     <span class="fa fa-search"></span>
                 </a>
 
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-search show"
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-search"
                      aria-labelledby="dropdownSearchLink">
                     <div class="form-inline my-2 mr-4 my-lg-0">
                         <input class="form-control mr-sm-2 search-input-dropdown"

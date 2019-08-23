@@ -3,5 +3,6 @@
         'title' => __('Ads'),
         'ads_search' => (new \common\models\Ads())->getList($library_search),
         'no_ads_title' => __('No ads found'),
-        'library_search' => $library_search
+        'library_search' => $library_search,
+        'page_pagination_title' => $page_pagination_title
     ]) ?>

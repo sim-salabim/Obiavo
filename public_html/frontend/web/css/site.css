@@ -624,6 +624,7 @@ button.is_invalid{
 }
 .new-add-btn:hover{
     color: white !important;
+    border-color: #86ca00 !important;
 }
 button.edit-btn{
     background: #df4253;
@@ -791,7 +792,9 @@ h6.a-h6 {
 .search-button {
     margin-left: -14px;
 }
-
+.search-button:hover{
+    border-color: #d9d9d9 !important;
+}
 .btn-secondary {
     color: #fff;
     background-color: #d9d9d9;
@@ -851,10 +854,13 @@ h6.a-h6 {
     list-style: none;
     background-color: #fff;
     background-clip: padding-box;
-    /* border: 1px solid rgba(0,0,0,.15); */
+    border: 0px solid rgba(0,0,0,.15);
     border-radius: .25rem;
     line-height: 2.5rem;
     margin-right: 10px;
+}
+ul.dropdown-menu {
+    margin: .7rem 0 0 !important;
 }
 
 
@@ -932,4 +938,12 @@ h6.a-h6 {
 .btn-user-enter:hover {
     color: #88cc02 !important;
     border: 1px solid #8dd500;
+}
+
+@media (max-width: 765px) {
+    .form-inline .form-control {
+        display: inline-block;
+        width: 103px !important;
+        vertical-align: middle;
+    }
 }

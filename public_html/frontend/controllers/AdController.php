@@ -273,7 +273,7 @@ class AdController extends BaseController
             'categories_limit'=>$limit,
             'placements'=>$placements,
             'ad'=>$ad,
-            'text' => $text
+            'text' => $text,
             ]);
     }
 
@@ -338,7 +338,8 @@ class AdController extends BaseController
             $librarySearch->setSorting($sort." ".$direction);
         }
         return $this->render('search',  [
-            'library_search' => $librarySearch
+            'library_search' => $librarySearch,
+            'page_pagination_title' => ''
         ]);
     }
 
