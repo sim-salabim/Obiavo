@@ -74,7 +74,7 @@ $root_url = isset($root_url) ? $root_url : null;
                                 </span>
                             <? } ?>
                             <span class="date_string">
-                                <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() < $ad->expiry_date and ($user and $user->id == $ad->user->id)){ ?>
+                                <? if((time() - $ad->updated_at) > 2592000 and $ad->active and time() > $ad->expiry_date and ($user and $user->id == $ad->user->id)){ ?>
                                     <a id="raise<?=$ad->id ?>" onclick="raiseAd(<?= $ad->id ?>)"><?= __('Raise') ?></a>
                                 <? } ?>
                                 <? if($ad->active and ($user and ($user->id == $ad->user->id or $user->is_admin))){ ?>
