@@ -25,6 +25,7 @@ use Yii;
  * @property int $updated_at
  * @property int $expiry_date
  * @property int $ads_amount
+ * @property string $categories_list
  *
 * @property City $city
 * @property User $user
@@ -68,7 +69,7 @@ class Ads extends \yii\db\ActiveRecord
             [['cities_id', 'users_id', 'categories_id', 'title', 'price', 'expiry_date', 'placements_id'], 'required'],
             [['title' ], 'string', 'max' => 100],
             [['text' ], 'string', 'max' => 1000],
-            [['session_token' ], 'string'],
+            [['session_token', 'categories_list' ], 'string'],
             [['only_locally', 'active', 'moderated'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
