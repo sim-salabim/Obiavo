@@ -15,6 +15,7 @@ class m170911_063839_currency_table extends Migration
         $this->createTable('currencies', [
             'id' => $this->primaryKey()->unsigned(),
             'code' => $this->string()->notNull(),
+            'iso_code' => $this->string()->notNull(),
             'active' => $this->boolean()->defaultValue(1)->notNull(),
             'is_default' => $this->boolean()->defaultValue(0)->notNull(),
             'symbol' => $this->string(10)->notNull(),

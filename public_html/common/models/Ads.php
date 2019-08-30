@@ -19,6 +19,7 @@ use Yii;
  * @property boolean $only_locally
  * @property boolean $active
  * @property boolean $moderated
+ * @property boolean $redirect
  * @property int $price
  * @property int $placements_id
  * @property int $created_at
@@ -70,7 +71,7 @@ class Ads extends \yii\db\ActiveRecord
             [['title' ], 'string', 'max' => 100],
             [['text' ], 'string', 'max' => 1000],
             [['session_token', 'categories_list' ], 'string'],
-            [['only_locally', 'active', 'moderated'], 'integer', 'max' => 1],
+            [['only_locally', 'active', 'moderated', 'redirect'], 'integer', 'max' => 1],
             [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['users_id' => 'id']],
             [['categories_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['categories_id' => 'id']],
@@ -105,11 +106,7 @@ class Ads extends \yii\db\ActiveRecord
      * @return string
      */
     public function url(){
-        $domain = '';
-        if($this->only_locally){
-            $domain = $this->city->domain."/";
-        }
-        return $this->url.'/'.$domain;
+        return $this->city->domain.'/'.$this->url.'/';
     }
     /**
      * @return \yii\db\ActiveQuery
@@ -408,9 +405,10 @@ class Ads extends \yii\db\ActiveRecord
         $breadcrumbs = [];
         $breadcrumbs[] = ['label' => $this->title, 'link' => $this->city->domain."/".$this->url, 'use_cookie' => false  ];
         while ($parent) {
-            $breadcrumbs[] = ['label' => $parent->_text->name, 'link' => $this->city->domain.'/'.$parent->_text->url."/", 'use_cookie' => false];
+            $breadcrumbs[] = ['label' => $parent->_text->name, 'title' => $parent->_text->name." ".__("ads in")." ".$this->city->_text->name_rp ,'link' => $this->city->domain.'/'.$parent->_text->url."/", 'use_cookie' => false];
             $parent = $parent->getParent()->one();
         }
+        $breadcrumbs[] = ['label' => $this->city->_text->name, 'link' => $this->city->domain."/", 'title' => __('Free ads in ').$this->city->_text->name_rp,'use_cookie' => false  ];
         return array_reverse($breadcrumbs);
     }
 

@@ -84,6 +84,26 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <a id="edit<?= $ad->id?>" onclick="moveToEdit('<?= $ad->url ?>')"><?= __('Edit') ?></a>
                                 <? } ?>
                             </span>
+                            <script type="application/ld+json">
+                            {
+                            "@context": "http://schema.org/",
+                            "@type": "Product",
+                            "name": "<?= $ad->title ?>",
+                            "image": [
+                            "<?= mb_substr(\yii\helpers\Url::home(), 0, -1).$avatar ?>"
+                            ],
+                            "description": "<?= $ad->text ?>",
+                            "mpn": "<?= $ad->id ?>",
+                            "offers": {
+                            "@type": "Offer",
+                            "availability": "http://schema.org/InStock",
+                            "priceCurrency": "<?= $ad->city->region->country->currency->iso_code ?>",
+                            "price": "<?= $ad->price ?>",
+                            "seller": {
+                            "@type": "Organization",
+                            "name": "<?= $ad->user->getFullName(); ?>"
+                            }}}
+                            </script>
                         <? }?>
                         <br/>
                 </div>

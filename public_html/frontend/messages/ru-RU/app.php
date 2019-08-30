@@ -236,4 +236,5 @@ return [
     'Read' => 'Читай',
     'Join our communities to see the freshest ads' => 'Вступайте в группы свежих объявлений',
     'Personal office' => 'Личный кабинет',
+    'Share it' => "Поделись",
 ];

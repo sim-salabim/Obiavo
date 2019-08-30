@@ -16,7 +16,7 @@ class AdUrlRule extends UrlRule
     {
         $result = parent::parseRequest($manager, $request);
         list($route, $params) = $result;
-        if ($result === false OR $route != 'ad/view' OR $result === false) {
+        if ($result === false OR $route != 'ad/view') {
             return false;
         }
         $ad_url = ArrayHelper::getValue($params, 'adUrl', false);

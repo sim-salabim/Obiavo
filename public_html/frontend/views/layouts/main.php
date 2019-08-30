@@ -14,7 +14,11 @@ AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
-    <html lang="<?= Yii::$app->language ?>">
+    <html
+        lang="<?= Yii::$app->language ?>"
+        <? if(isset($this->params['opengraph_html']) and $this->params['opengraph_html']){?>
+            prefix="og: http://ogp.me/ns#"
+        <? } ?>>
     <head>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130047868-1"></script>
@@ -26,6 +30,21 @@ AppAsset::register($this);
             gtag('config', 'UA-130047868-1');
         </script>
         <link rel="icon" href="<?php echo Yii::$app->request->baseUrl; ?>/favicon.ico" type="image/x-icon" />
+        <? if(isset($this->params['opengraph_title'])){?>
+            <meta property="og:title" content="<?= $this->params['opengraph_title'] ?>" />
+        <? } ?>
+        <? if(isset($this->params['opengraph_website']) and $this->params['opengraph_website']){?>
+            <meta property="og:type" content="website" />
+        <? } ?>
+        <? if(isset($this->params['opengraph_url'])){?>
+            <meta property="og:url" content="<?= $this->params['opengraph_url'] ?>" />
+        <? } ?>
+        <? if(isset($this->params['opengraph_image'])){?>
+            <meta property="og:image" content="<?= $this->params['opengraph_image'] ?>" />
+        <? } ?>
+        <? if(isset($this->params['opengraph_desc'])){?>
+            <meta property="og:description" content="<?= $this->params['opengraph_desc'] ?>" />
+        <? } ?>
         <meta charset="<?= Yii::$app->charset ?>">
         <? if(isset($this->params['canonical']) AND $this->params['canonical']){?>
             <link rel="canonical" href="<?= $this->params['canonical'] ?>">
@@ -46,6 +65,30 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::decode(strip_tags($this->title)) ?></title>
              <?php $this->head() ?>
+        <? if(isset($this->params['opengraph_html']) and $this->params['opengraph_html']){?>
+            <script type="application/ld+json">
+                {
+                "@context": "http://schema.org/",
+                "@type": "Product",
+                "name": "<?= $this->params['opengraph_title'] ?>",
+                "image": [
+                "<?= $this->params['opengraph_image'] ?>"
+                ],
+                "description": "<?= $this->params['opengraph_desc'] ?>",
+                "mpn": "<?= $this->params['opengraph_ad_id'] ?>",
+                "offers": {
+                "@type": "Offer",
+                "availability": "http://schema.org/InStock",
+                "priceCurrency": "<?= $this->params['opengraph_ad_currency'] ?>",
+                "price": "<?= $this->params['opengraph_ad_price'] ?>",
+                "seller": {
+                "@type": "Organization",
+                "name": "<?= $this->params['opengraph_ad_user_name'] ?>"
+                }
+                }
+                }
+            </script>
+        <? }?>
     </head>
     <?
     $region_add = '';

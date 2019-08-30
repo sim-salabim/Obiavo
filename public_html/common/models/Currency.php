@@ -9,6 +9,7 @@ use common\models\scopes\CurrencyQuery;
  *
  * @property integer $id
  * @property string $code
+ * @property string $iso_code
  * @property integer $countries_id
  * @property bool $active
  * @property bool $is_default
@@ -29,7 +30,7 @@ class Currency extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'active', 'is_default'], 'required'],
+            [['code', 'active', 'is_default', 'iso_code'], 'required'],
             [['code'], 'string'],
             [['active', 'is_default'], 'integer', 'max' => 1],
         ];

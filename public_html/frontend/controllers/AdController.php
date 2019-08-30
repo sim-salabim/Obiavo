@@ -207,19 +207,44 @@ class AdController extends BaseController
     public function actionView(){
         $ad_url = Yii::$app->request->get('adUrl');
         $city = Yii::$app->request->get('city');
-        //TODO проверка есть ли домен
         $ad = Ads::find()->where(['url' => $ad_url])->one();
-        if(($ad->only_locally AND ($ad->city->domain != $city)) OR (!$ad->only_locally AND $city)) throw new HttpException(404, 'Not Found');
+        if(!$ad){
+            throw new HttpException(404, 'Not Found');
+        }
+        if(!$city){
+            if($ad->redirect) {
+                Yii::$app->response->redirect('/'.$ad->city->domain . '/' . $ad_url . '/', 301)->send();
+                Yii::$app->end();
+                return;
+            }else{
+                throw new HttpException(404, 'Not Found');
+            }
+        }else{
+            if($ad->city->domain != $city){
+                throw new HttpException(404, 'Not Found');
+            }
+        }
         if($ad->city->region->country->id != Yii::$app->location->country->id) throw new HttpException(404, 'Not Found');
         $ad_title = $ad->title." - ".__('ads in')." ".$ad->city->_text->name_rp." ".__('on the site')." ".ucfirst(Yii::$app->location->country->domain);
         $this->setPageTitle($ad_title);
-        Yii::$app->view->params['canonical'] = Url::home(true) . $ad_url . "/";
+        Yii::$app->view->params['canonical'] = Url::home(true) .$ad->city->domain."/". $ad_url . "/";
         $breadcrumbs = $ad->getBreadcrumbs();
         $this->setUrlForLogo($ad->city->domain);
-        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, false, $ad->city->domain);
+        Yii::$app->view->params['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs, false, null);
         Yii::$app->view->params['seo_h1'] = $ad->title;
         Yii::$app->view->params['seo_desc'] = $ad->text;
+        Yii::$app->view->params['opengraph_html'] = true;
+        Yii::$app->view->params['opengraph_ad_id'] = $ad->id;
+        Yii::$app->view->params['opengraph_ad_price'] = $ad->price;
+        Yii::$app->view->params['opengraph_ad_currency'] = $ad->city->region->country->currency->iso_code;
+        Yii::$app->view->params['opengraph_ad_user_name'] = $ad->user->getFullName();
+        Yii::$app->view->params['opengraph_title'] = $ad->title;
+        Yii::$app->view->params['opengraph_website'] = true;
+        Yii::$app->view->params['opengraph_url'] = Url::home(true).$ad->city->domain."/".$ad->url."/";
+        Yii::$app->view->params['opengraph_image'] = (count($ad->files)) ? mb_substr(Url::home(true), 0, -1).$ad->files[0]->getImage(false) : mb_substr(Url::home(true).$ad->avatar(false), 0, -1);
+        Yii::$app->view->params['opengraph_desc'] = $ad->text;
         AdsView::eraseView($ad->id, Yii::$app->user->id);
+        Yii::$app->view->params['application_url'] = yii\helpers\Url::toRoute($ad->city->domain."/".\common\models\Ads::generateApplicationUrl());
         return $this->render('view', [
             'ad'   => $ad,
 //            'show_phone_number' => (Yii::$app->request->get('show_phone_number') AND time() < $ad->expiry_date) ? Yii::$app->request->get('show_phone_number') : null,

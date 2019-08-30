@@ -233,4 +233,5 @@ return [
     'Read' => 'Read',
     'Join our communities to see the freshest ads' => 'Join our communities to see the freshest ads',
     'Personal office' => 'Personal office',
+    'Share it' => 'Share it',
 ];

@@ -7,7 +7,12 @@
                 <? if(count($ad->files)){ ?>
                     <? foreach($ad->files as $key => $image){ ?>
                         <div class="carousel-item <? if($key == 0){ ?> active<? } ?>">
-                            <img class="d-block img-fluid" alt="<?= $ad->title." - ".__('photo') ?>" src="<?= $image->getImage(false)?>">
+                            <img
+                                    class="d-block img-fluid"
+                                    alt="<?= $ad->title." - ".__('photo') ?>"
+                                    src="<?= $image->getImage(false)?>"
+                                    title='<?= __('Ad').' "'.$ad->title.'" - '.__('photo') ?>'
+                            >
                         </div>
                     <? } ?>
                 <? }else{ ?>
@@ -64,6 +69,21 @@
         </div>
         <div class="col-lg-12  col-sm-4 nonpadding-left-items">
             <?= date('h:i', $ad->created_at)." ".date('d/m/Y', $ad->created_at) ?>
+        </div>
+        <div class="col-lg-12  col-sm-4 nonpadding-left-items">
+            <?= __('Share it') ?>
+        </div>
+        <div class="col-lg-12  col-sm-4 nonpadding-left-items">
+            <script type="text/javascript">(function() {
+                    if (window.pluso)if (typeof window.pluso.start == "function") return;
+                    if (window.ifpluso==undefined) { window.ifpluso = 1;
+                        var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+                        s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+                        s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+                        var h=d[g]('body')[0];
+                        h.appendChild(s);
+                    }})();</script>
+            <div class="pluso" data-background="transparent" data-options="big,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,twitter"></div>
         </div>
     </div>
     <div class="col-12"><hr></div>
