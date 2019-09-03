@@ -60,6 +60,11 @@ return [
         'pattern' => '/<adUrl:([0-9a-zA-Z\-]+)>/',
         'route' => 'ad/view',
     ],
+    [
+        'class' => 'frontend\rules\url\AdEditUrlRule',
+        'pattern' => '/redaktirovat/<adUrl:([0-9a-zA-Z\-]+)>/',
+        'route' => 'ad/edit',
+    ],
     /**
      *  Город + Объявление
      */
@@ -67,11 +72,6 @@ return [
         'class' => 'frontend\rules\url\AdUrlRule',
         'pattern' => '/<city:([0-9a-zA-Z\-]+)>/<adUrl:([0-9a-zA-Z\-]+)>/',
         'route' => 'ad/view',
-    ],
-    [
-    //    'class' => 'frontend\rules\url\AdUrlRule',
-        'pattern' => '/redaktirovat/<adUrl:([0-9a-zA-Z\-]+)>/',
-        'route' => 'ad/edit',
     ],
     [
         'class' => 'frontend\rules\url\AdUrlRule',

@@ -196,7 +196,7 @@ class AdController extends BaseController
                 if(!Yii::$app->user->identity){
                     $return['session_token'] = $model->session_token;
                 }
-                $return['url'] = "$model->url";
+                $return['url'] = $model->city->domain."/$model->url";
                 return $return;
             }
         } else {

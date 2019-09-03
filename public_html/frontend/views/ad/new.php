@@ -387,7 +387,7 @@ if($ad){
             <input
                     id="agreement"
                     name="agreement"
-                    type="checkbox"> <?= __('Publishing you\'re accepting') ?> <a id="agreement-link" href="/polzovatelskoe-soglashenie/" target="_blank"><?= __('User agreement')?></a> <?= __('and agree with') ?> <a id="policy-link" href="/policy/" target="_blank"><?= __('Privacy policy') ?></a>.</label>
+                    type="checkbox"> <?= __('Publishing you\'re accepting') ?> <a id="agreement-link" href="/polzovatelskoe-soglashenie/" rel="nofollow" target="_blank"><?= __('User agreement')?></a> <?= __('and agree with') ?> <a id="policy-link" href="/policy/" rel="nofollow" target="_blank"><?= __('Privacy policy') ?></a>.</label>
     </div>
     <div class="invalid-feedback dispaly-block" id="agreement_error"></div>
     <? } ?>

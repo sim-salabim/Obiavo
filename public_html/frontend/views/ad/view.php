@@ -67,13 +67,14 @@
             <?= $ad->user->city->region->_text->name ?>,
             <?= $ad->user->city->_text->name ?>
         </div>
-        <div class="col-lg-12  col-sm-4 nonpadding-left-items">
+        <div class="col-lg-12  col-sm-12 nonpadding-left-items">
             <?= date('h:i', $ad->created_at)." ".date('d/m/Y', $ad->created_at) ?>
         </div>
-        <div class="col-lg-12  col-sm-4 nonpadding-left-items">
+        <br/>
+        <div class="col-lg-12  col-sm-12 nonpadding-left-items">
             <?= __('Share it') ?>
         </div>
-        <div class="col-lg-12  col-sm-4 nonpadding-left-items">
+        <div class="col-lg-12  col-sm-12 nonpadding-left-items">
             <script type="text/javascript">(function() {
                     if (window.pluso)if (typeof window.pluso.start == "function") return;
                     if (window.ifpluso==undefined) { window.ifpluso = 1;
@@ -83,7 +84,7 @@
                         var h=d[g]('body')[0];
                         h.appendChild(s);
                     }})();</script>
-            <div class="pluso" data-background="transparent" data-options="big,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,twitter"></div>
+            <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,twitter"></div>
         </div>
     </div>
     <div class="col-12"><hr></div>
