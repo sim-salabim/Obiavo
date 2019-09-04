@@ -335,7 +335,7 @@ class AdController extends BaseController
                 $return['message'] = NewAdForm::MESSAGE_SUCCESS;
 
                 $model = $model->newAd();
-                $return['url'] = "$model->url";
+                $return['url'] = $model->city->domain."/$model->url";
                 return $return;
             }
         } else {
