@@ -88,13 +88,16 @@ $root_url = isset($root_url) ? $root_url : null;
                         <? }?>
                         <br/>
                 </div>
+                <?
+                $home_url = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain();
+                ?>
                 <script type="application/ld+json">
                             {
                             "@context": "http://schema.org/",
                             "@type": "Product",
                             "name": "<?= $ad->title ?>",
                             "image": [
-                            "<?= mb_substr(\yii\helpers\Url::home(), 0, -1).$avatar ?>"
+                            "<?= $home_url.$avatar ?>"
                             ],
                             "description": "<?= $ad->text ?>",
                             "mpn": "<?= $ad->id ?>",

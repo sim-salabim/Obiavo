@@ -176,10 +176,10 @@ class Location extends Component {
             $domain = "obiavo.com";
         }
         if(strpos($base_url, 'obiavo.site') !== false){
-            $domain = "obiavo.ru";
+            $domain = "obiavo.site";
         }
         if(strpos($base_url, 'obiavo.loc') !== false){
-            $domain = "obiavo.ru";
+            $domain = "obiavo.loc";
         }
         return $domain;
     }
