@@ -191,6 +191,9 @@ class Location extends Component {
         if(strpos($base_url, 'obiavo.by') !== false){
             $protocol = "https://";
         }
+        if(strpos($base_url, 'obiavo.ru') !== false){
+            $protocol = "https://";
+        }
         if(strpos($base_url, 'obiavo.uz') !== false){
             $protocol = "https://";
         }
