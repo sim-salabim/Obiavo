@@ -84,7 +84,11 @@ $root_url = isset($root_url) ? $root_url : null;
                                     <a id="edit<?= $ad->id?>" onclick="moveToEdit('<?= $ad->url ?>')"><?= __('Edit') ?></a>
                                 <? } ?>
                             </span>
-                            <script type="application/ld+json">
+
+                        <? }?>
+                        <br/>
+                </div>
+                <script type="application/ld+json">
                             {
                             "@context": "http://schema.org/",
                             "@type": "Product",
@@ -104,9 +108,6 @@ $root_url = isset($root_url) ? $root_url : null;
                             "name": "<?= $ad->user->getFullName(); ?>"
                             }}}
                             </script>
-                        <? }?>
-                        <br/>
-                </div>
             </div>
             <? if($k + 1 < count($ads_search['items'])){?>
                 <div class="w-100">
