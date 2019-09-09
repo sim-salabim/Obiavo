@@ -90,6 +90,7 @@ $root_url = isset($root_url) ? $root_url : null;
                 </div>
                 <?
                 $home_url = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain();
+                $og_desc = trim(preg_replace('/\s\s+/', ' ',str_replace(['"','\n'], ['',''],$ad->text)), '\n');
                 ?>
                 <script type="application/ld+json">
                             {
@@ -99,7 +100,7 @@ $root_url = isset($root_url) ? $root_url : null;
                             "image": [
                             "<?= $home_url.$avatar ?>"
                             ],
-                            "description": "<?= trim(preg_replace('/\s\s+/', ' ',str_replace(['"','\n'], ['',''],$ad->text)), '\n') ?>",
+                            "description": "<?= $og_desc; ?>",
                             "mpn": "<?= $ad->id ?>",
                             "offers": {
                             "@type": "Offer",
