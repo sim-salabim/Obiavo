@@ -99,7 +99,7 @@ $root_url = isset($root_url) ? $root_url : null;
                             "image": [
                             "<?= $home_url.$avatar ?>"
                             ],
-                            "description": "<?= rtrim(str_replace(['"','\n'], ['',''],$ad->text), '\n') ?>",
+                            "description": "<?= trim(preg_replace('/\s\s+/', ' ',str_replace(['"','\n'], ['',''],$ad->text)), '\n') ?>",
                             "mpn": "<?= $ad->id ?>",
                             "offers": {
                             "@type": "Offer",
