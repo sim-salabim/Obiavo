@@ -52,7 +52,7 @@ class Ads extends \yii\db\ActiveRecord
     const DATE_RANGE_THREE_YEARS = 'three_years';
     const DATE_RANGE_UNLIMITED = 'unlimited';
     const DEFAULT_LINK_RU = 'podat-obiavlenie';
-    const DEFAULT_LINK_EN = 'publish-ad';
+    const DEFAULT_LINK_EN = 'post-an-ad';
     /**
      * @inheritdoc
      */
