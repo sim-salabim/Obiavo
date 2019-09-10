@@ -90,28 +90,28 @@ $root_url = isset($root_url) ? $root_url : null;
                 </div>
                 <?
                 $home_url = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain();
-                $og_desc = trim(preg_replace('/\s\s+/', ' ',str_replace(['"','\n'], ['',''],$ad->text)), '\n');
+                $og_desc = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"'], [''],$ad->text))));
                 ?>
                 <script type="application/ld+json">
-                            {
-                            "@context": "http://schema.org/",
-                            "@type": "Product",
-                            "name": "<?= $ad->title ?>",
-                            "image": [
-                            "<?= $home_url.$avatar ?>"
-                            ],
-                            "description": "<?= $og_desc; ?>",
-                            "mpn": "<?= $ad->id ?>",
-                            "offers": {
-                            "@type": "Offer",
-                            "availability": "http://schema.org/InStock",
-                            "priceCurrency": "<?= $ad->city->region->country->currency->iso_code ?>",
-                            "price": "<?= $ad->price ?>",
-                            "seller": {
-                            "@type": "Organization",
-                            "name": "<?= $ad->user->getFullName(); ?>"
-                            }}}
-                            </script>
+                    {
+                        "@context": "http://schema.org/",
+                        "@type": "Product",
+                        "name": "<?= $ad->title ?>",
+                        "image": [
+                        "<?= $home_url.$avatar ?>"
+                        ],
+                        "description": "<?= $og_desc; ?>",
+                        "mpn": "<?= $ad->id ?>",
+                        "offers": {
+                        "@type": "Offer",
+                        "availability": "http://schema.org/InStock",
+                        "priceCurrency": "<?= $ad->city->region->country->currency->iso_code ?>",
+                        "price": "<?= $ad->price ?>",
+                        "seller": {
+                        "@type": "Organization",
+                        "name": "<?= $ad->user->getFullName(); ?>"
+                    }}}
+                </script>
             </div>
             <? if($k + 1 < count($ads_search['items'])){?>
                 <div class="w-100">
