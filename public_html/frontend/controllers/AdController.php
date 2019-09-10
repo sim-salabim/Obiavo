@@ -277,7 +277,15 @@ class AdController extends BaseController
             ->all();
         $limit = Settings::find()->one()->categories_limit;
         $placements = Placement::find()->all();
-        $text = AddApplicationText::find()->where(["languages_id" => Language::getId(), 'url' => AddApplication::DEFAULT_URL])->one();
+        switch(Location::getDefaultLanguageId()){
+            case Language::LANG_RU:
+                $application_url = AddApplication::DEFAULT_URL_RUS;
+                break;
+            case Language::LANG_EN:
+                $application_url = AddApplication::DEFAULT_URL_EN;
+                break;
+        }
+        $text = AddApplicationText::find()->where(["languages_id" => Language::getId(), 'url' => $application_url])->one();
         if($text){
             $current_domain = Location::getCurrentDomain();
             $place = Country::find()->where(['domain' => $current_domain])->one();

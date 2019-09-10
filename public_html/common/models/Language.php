@@ -25,6 +25,8 @@ class Language extends \yii\db\ActiveRecord
 
     const LANG_CODE_EN = 'en';
     const LANG_CODE_RU = 'ru-RU';
+    const LANG_RU = 1;
+    const LANG_EN = 2;
 
     public static function tableName()
     {

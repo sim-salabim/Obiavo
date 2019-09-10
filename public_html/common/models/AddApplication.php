@@ -17,7 +17,8 @@ class AddApplication extends \yii\db\ActiveRecord
     const SCENARIO_DEFAULT = 'default';
     const STATUS_ACTIVE = 1;
     const STATUS_UNACTIVE = 0;
-    const DEFAULT_URL = 'podat-obiavlenie';
+    const DEFAULT_URL_RUS = 'podat-obiavlenie';
+    const DEFAULT_URL_EN = 'post-an-ad';
 
     public function scenarios()
     {

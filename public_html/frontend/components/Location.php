@@ -214,4 +214,19 @@ class Location extends Component {
         }
         return $protocol;
     }
+
+    public static function getDefaultLanguageId(){
+        $base_url = Yii::$app->request->getHostInfo();
+        $language = Language::LANG_RU;
+        if(strpos($base_url, 'obiavo.com') !== false){
+            $language = Language::LANG_EN;
+        }
+        if(strpos($base_url, 'obiavo.site') !== false){
+            $language = Language::LANG_EN;
+        }
+        if(strpos($base_url, 'obiavo.loc') !== false){
+            $language = Language::LANG_EN;
+        }
+        return $language;
+    }
 }
