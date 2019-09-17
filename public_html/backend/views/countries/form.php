@@ -6,7 +6,8 @@ use yii\helpers\ArrayHelper;
 
 $languages = common\models\Language::find()->all();
 $currencies = \common\models\Currency::find()->where(['active' => 1])->all();
-$lang = $country->language ? $country->language : new common\models\Language;
+$lang = $country->language ?: new common\models\Language;
+$local_lang = $country->localLanguage ? ['id'=>$country->localLanguage->id, 'techname' => $country->localLanguage->techname] : null;
 $currency = $country->currency ?:  \common\models\Currency::find()->where(['is_default' => 1])->one();
 
 $items = [
@@ -31,6 +32,7 @@ $items = [
                        ]
                     ]
                 ],
+                ['name' => 'local_languages_id', 'label_name' => 'techname','type' => Form::SELECT, 'options' => \common\models\Language::getAllAsArray(), 'model_name' => 'Country','label' => 'Местный язык','model'=>$country, 'selected' => $local_lang, 'null_option' => true],
                 [
                     'name' => 'Country[currencies_id]',
                     'type' => Form::MULTISELECT,

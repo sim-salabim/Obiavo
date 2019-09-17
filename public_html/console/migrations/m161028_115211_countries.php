@@ -18,6 +18,7 @@ class m161028_115211_countries extends Migration
         $this->createTable('countries', [
             'id' => $this->primaryKey()->unsigned()->notNull(),
             'languages_id' => $this->integer(10)->unsigned()->notNull(),
+            'local_languages_id' => $this->integer(10)->unsigned()->notNull(),
             'domain' => $this->string()->notNull(),
             'active' => $this->boolean()->defaultValue(1)->notNull(),
             'meta_google' => $this->string(),
@@ -29,6 +30,9 @@ class m161028_115211_countries extends Migration
         $this->createIndex('idx_c_languages_id', 'countries', 'languages_id');
         $this->addForeignKey('fk_countries_language', 'countries', 'languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
 
+        $this->createIndex('idx_c_local_languages_id', 'countries', 'local_languages_id');
+        $this->addForeignKey('fk_countries_local_language', 'countries', 'local_languages_id', 'languages', 'id', 'CASCADE', 'CASCADE');
+
         $this->addCommentOnColumn('countries','longitude','Долгота');
 
         $this->addCommentOnColumn('countries','latitude','Широта');
@@ -38,6 +42,8 @@ class m161028_115211_countries extends Migration
     {
         $this->dropForeignKey('fk_countries_language','countries');
         $this->dropIndex('idx_c_languages_id','countries');
+        $this->dropForeignKey('fk_countries_local_language','countries');
+        $this->dropIndex('idx_c_local_languages_id','countries');
         $this->dropTable('countries');
     }
 }

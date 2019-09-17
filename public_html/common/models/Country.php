@@ -10,6 +10,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
  *
  * @property integer $id
  * @property integer $languages_id
+ * @property integer $local_languages_id
  * @property string $domain
  * @property integer $active
  * @property string $meta_google
@@ -18,6 +19,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
  * @property string $latitude
  *
  * @property Language $language
+ * @property Language $local_language
  * @property Region[] $regions
  * @property Currency $currency
  */
@@ -37,11 +39,12 @@ class Country extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['domain','languages_id'], 'required'],
-            [['active'], 'integer'],
+            [['domain','languages_id','local_languages_id'], 'required'],
+            [['active', 'local_languages_id'], 'integer'],
             [['domain', 'meta_google', 'meta_yandex'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 100],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['languages_id' => 'id']],
+            [['local_languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['local_languages_id' => 'id']],
             [['currencies_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currencies_id' => 'id']],
         ];
     }
@@ -96,6 +99,14 @@ class Country extends \yii\db\ActiveRecord
     public function getLanguage()
     {
         return $this->hasOne(Language::className(), ['id' => 'languages_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocalLanguage()
+    {
+        return $this->hasOne(Language::className(), ['id' => 'local_languages_id']);
     }
 
     public function getCountryText()

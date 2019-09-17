@@ -1,6 +1,8 @@
 <!-- Footer -->
 <footer class="page-footer font-small mdb-color lighten-3 pt-4">
-
+    <?
+    $current_lang_id = \frontend\components\Location::getDefaultLanguageId();
+    ?>
     <!-- Footer Links -->
     <div class="container text-center text-md-left">
 
@@ -13,7 +15,8 @@
                 <!-- Content -->
                 <p class="font-weight-bold"><?= Yii::$app->location->country->domain ?></p>
                 <p>© <?= __('Obiavo') ?> - <?= __('free ads site') ?> <?= $pp_place ?>.</p>
-                <p class="text-secondary"><a rel="nofollow" href="/polzovatelskoe-soglashenie/"><?= __('User agreement') ?></a>. <a rel="nofollow" href="/oferta/"><?= __('_Offer') ?></a>. <a rel="nofollow" href="/cookies/"><?= __('Information about') ?> cookies</a>.</p>
+                <p class="text-secondary">
+                    <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/polzovatelskoe-soglashenie/";}else{ echo "/user-agreement/";}?>"><?= __('User agreement') ?></a>. <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/oferta/";}else{ echo "/offer/";}?>"><?= __('_Offer') ?></a>. <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/cookies/";}else{ echo "/cookies-policy/";}?>"><?= __('Information about cookies') ?></a>.</p>
 
             </div>
             <!-- Grid column -->
@@ -29,7 +32,8 @@
                 <ul class="list-unstyled">
                     <li class="footer-li-margin">
 
-                        <a rel="nofollow" href="/o-proekte/"><?= __('About the project') ?></a>
+                        <a rel="nofollow"
+                           href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/o-proekte/";}else{ echo "/about/";}?>"><?= __('_About the project') ?></a>
 
                     </li>
                     <li class="footer-li-margin">
@@ -39,7 +43,7 @@
                     </li>
                     <li class="footer-li-margin">
 
-                        <a rel="nofollow" href="/reklama/"><?= __('_Advertisement') ?></a>
+                        <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/reklama/";}else{ echo "/advertising/";}?>"><?= __('_Advertisement') ?></a>
 
                     </li>
                     <li class="footer-li-margin">
@@ -49,7 +53,7 @@
                     </li>
                     <li class="footer-li-margin">
 
-                        <a rel="nofollow" href="/kontakty/"><?= __('_Contacts') ?></a>
+                        <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/kontakty/";}else{ echo "/contacts/";}?>"><?= __('_Contacts') ?></a>
 
                     </li>
                 </ul>

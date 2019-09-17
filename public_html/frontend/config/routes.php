@@ -12,9 +12,12 @@ return [
     'POST /files-upload' => 'files/upload',
     'POST /remove-file' => 'files/remove',
     'GET /nastroiki/' => 'users/settings',
+    'GET /settings/' => 'users/settings',
     'POST /nastroiki/' => 'users/settings',
     'GET /moi-obiavleniya' => 'users/my-ads',
+    'GET /my-ads' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
+    'GET /search' => 'ad/search',
     'POST /apply-add/' => 'ad/add',
     'POST /edit-add/<id:([0-9\-]+)>/' => 'ad/edit-add',
 
@@ -63,6 +66,11 @@ return [
     [
         'class' => 'frontend\rules\url\AdEditUrlRule',
         'pattern' => '/redaktirovat/<adUrl:([0-9a-zA-Z\-]+)>/',
+        'route' => 'ad/edit',
+    ],
+    [
+        'class' => 'frontend\rules\url\AdEditUrlRule',
+        'pattern' => '/edit/<adUrl:([0-9a-zA-Z\-]+)>/',
         'route' => 'ad/edit',
     ],
     /**

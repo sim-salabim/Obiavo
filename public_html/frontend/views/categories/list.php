@@ -25,18 +25,20 @@ function sortingKids($a, $b){
     <? if(!isset($row_list) OR !$row_list){ ?>
 
         <?php foreach ($categories as $category) { ?>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
-                <a class="cat-title hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
-                    if(!Yii::$app->location->city) {
-                        $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
-                    }else{
-                        $amnt = $category->getCounterByCityId(Yii::$app->location->city->id)['ads_amount'] ?: 0 ;
-                    } echo $amnt;
-                    ?></span>
-            </div>
+            <? if($category->_text->name != "" and $category->_text->name){?>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
+                    <a class="cat-title hover-red" href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
+                        if(!Yii::$app->location->city) {
+                            $amnt = $category->getCounterByCountryId(Yii::$app->location->country->id)['ads_amount'] ?: 0;
+                        }else{
+                            $amnt = $category->getCounterByCityId(Yii::$app->location->city->id)['ads_amount'] ?: 0 ;
+                        } echo $amnt;
+                        ?></span>
+                </div>
+            <?php } ?>
         <?php } ?>
     <?php }else{ ?>
-            <? if($current_category->placements){?>
+            <? if($current_category->placements and \frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_RU){?>
                 <? foreach($current_category->placements as $k => $placement){ ?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                         <a href="<?= LocationHelper::getDomainForUrl($current_category->url().$placement['url']."/") ?>">
@@ -53,7 +55,7 @@ function sortingKids($a, $b){
                 <? } ?>
             <? } ?>
             <? foreach($categories as $key =>  $category){ ?>
-                <? if($category->_text->name != ""){?>
+                <? if($category->_text->name != "" and $category->_text->name){?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
                         <a href="<?= LocationHelper::getDomainForUrl($category->url())?>"><?= $category->_text->name?></a><span class="ads-amount-city"> <?
                             if(!Yii::$app->location->city) {

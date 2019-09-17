@@ -147,4 +147,23 @@ class Language extends \yii\db\ActiveRecord
     public static function getId(){
         return self::find()->where(['code' => Yii::$app->language])->one()->id;
     }
+
+    /**
+     * @param array $keys
+     * @return array(key => value, key => value....)
+     */
+    static function getAllAsArray($keys = ['id', 'techname']){
+        $result = [];
+        $languages = self::find()->where(['active' => true])->all();
+        if(!empty($languages)){
+            foreach($languages as $k => $lang){
+                foreach($keys as $key){
+                    if(isset($lang->{$key})) {
+                        $result[$k][$key] = $lang->{$key};
+                    }
+                }
+            }
+        }
+        return $result;
+    }
 }

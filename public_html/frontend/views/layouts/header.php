@@ -115,13 +115,13 @@
             <li>
                 <a
                 href="<?= $application_url ?>"
-                title="<?= __('Post your ad in')." ".$in_place." ".__('free without registration') ?>"
-                class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an add') ?></a>
+                title="<?= __('Post your ad in')." ".$in_place." ".__('for free without registration') ?>"
+                class="btn btn-success my-2 d-none d-md-block d-lg-block new-add-btn no-transition">+ <?= __('Post an ad') ?></a>
             </li>
                 <li>
             <a
                 href="<?= $application_url ?>"
-                title="<?= __('Post your ad in')." ".$in_place." ".__('free without registration') ?>"
+                title="<?= __('Post your ad in')." ".$in_place." ".__('for free without registration') ?>"
                 class="btn btn-success d-block my-2 d-md-none d-lg-none new-add-btn no-transition">+ </a>
                 </li>
             </ul>
@@ -134,10 +134,6 @@ $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
 ?>
 <script>
     $(document).ready(function(){
-        $('.new-add-btn').bind('click', function(){
-            console.log('<?= $ad_href ?>');
-            window.location.href = '<?= $ad_href ?>';
-        });
         $('.search-button').bind('click', function(){
             var query = $('.search-input-dropdown').val();
             if(query == ''){
@@ -160,7 +156,11 @@ $ad_href = \yii\helpers\Url::toRoute('/podat-obiavlenie');
                 getString += key+"="+getParams[key]+'&';
             }
             getString = getString.substring(0, getString.length - 1);
-            window.location.href = window.location.origin+ "/poisk/" + getString
+            <? if(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_RU){?>
+                window.location.href = window.location.origin+ "/poisk/" + getString;
+            <? }else if(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_EN){?>
+                window.location.href = window.location.origin+ "/search/" + getString;
+            <? } ?>
         });
         <?php if (Yii::$app->user->isGuest) { ?>
             $('#login-btn').bind('click', function(){

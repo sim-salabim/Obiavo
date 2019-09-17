@@ -355,6 +355,12 @@ class AdController extends BaseController
      * @return string
      */
     public function actionSearch(){
+        if(
+            (Yii::$app->request->getPathInfo() == "search/" and Location::getDefaultLanguageId() != Language::LANG_EN) OR
+            (Yii::$app->request->getPathInfo() == "poisk/" and Location::getDefaultLanguageId() != Language::LANG_RU)
+        ){
+            throw new HttpException(404, 'Not Found');
+        }
         $sort = Yii::$app->request->get('sort');
         $direction = Yii::$app->request->get('direction');
         $query = Yii::$app->request->get('query');

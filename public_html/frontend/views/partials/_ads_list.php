@@ -195,6 +195,10 @@ $root_url = isset($root_url) ? $root_url : null;
     }
 
     function moveToEdit(url){
-        window.location = '/redaktirovat/'+url+'/';
+        <? if(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_RU){?>
+            window.location = '/redaktirovat/'+url+'/';
+        <? }elseif(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_EN){?>
+            window.location = '/edit/'+url+'/';
+        <? } ?>
     }
 </script>

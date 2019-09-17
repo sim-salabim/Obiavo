@@ -27,14 +27,21 @@ class CmsController extends BaseController
         $cms_url = Yii::$app->request->get('cmsUrl');
         $domain = Location::getCurrentDomain();
         $country = Country::find()->where(["domain"=>$domain])->one();
-        $cms_id = Cms::find()
+        $cms_id = null;
+        $cms_page = Cms::find()
             ->leftJoin('cms_text', '`cms_text`.`cms_id` = `cms`.`id`')
-            ->where(['cms_text.url' => $cms_url])
-            ->one()->id;
-        $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => $country->languages_id])->one();
+            ->where(['cms_text.url' => $cms_url, 'cms_text.languages_id' => $country->localLanguage->id])
+            ->one();
+        if(!$cms_page){
+            $cms_page = Cms::find()
+                ->leftJoin('cms_text', '`cms_text`.`cms_id` = `cms`.`id`')
+                ->where(['cms_text.url' => $cms_url, 'cms_text.languages_id' => Language::getDefault()->id])
+                ->one();
+        }
+        $cms_id = $cms_page->id;
+        $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => $country->localLanguage->id])->one();
         if(!$cms_text){
-            $default_language = Language::find()->where(['is_default'=>1])->one();
-            $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => $default_language->id])->one();
+            $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => Language::getDefault()->id])->one();
         }
         $this->setPageTitle($cms_text->seo_title);
         $breadcrumbs = [['label' => $cms_text->seo_title, 'link' => $cms_text->url, 'use_cookie' => true]];
