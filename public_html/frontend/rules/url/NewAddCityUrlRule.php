@@ -7,6 +7,7 @@ use common\models\Ads;
 use common\models\City;
 use common\models\Language;
 use common\models\Region;
+use frontend\components\Location;
 use yii\web\UrlRule;
 
 class NewAddCityUrlRule extends UrlRule
@@ -19,7 +20,7 @@ class NewAddCityUrlRule extends UrlRule
         list($route, $params) = $result;
         $item = null;
         if($params['url'] != Ads::DEFAULT_LINK_RU AND $params['url'] != Ads::DEFAULT_LINK_EN) {
-            $item = AddApplicationText::find()->where(['url' => $params['url'], 'languages_id' => Language::getId()])->one();
+            $item = AddApplicationText::find()->where(['url' => $params['url'], 'languages_id' => Location::getDefaultLanguageId()])->one();
             if (!$item) {
                 return false;
             }

@@ -118,7 +118,6 @@ class CmsController extends BaseController
             $text = $cms->_mttext;
             $text->cms_id = $cms->id;
             $text->languages_id = $languages_id;
-            $text->countries_id = $cms->_text->language->id;
             $text->load(Yii::$app->request->post());
 
             if ($text->save()){

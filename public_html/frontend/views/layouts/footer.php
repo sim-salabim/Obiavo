@@ -14,7 +14,7 @@
 
                 <!-- Content -->
                 <p class="font-weight-bold"><?= Yii::$app->location->country->domain ?></p>
-                <p>© <?= __('Obiavo') ?> - <?= __('free ads site') ?> <?= $pp_place ?>.</p>
+                <p>© <?= __('Obiavo') ?> - <?= __('free ads site') ?><?if(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_EN){ echo " ".__('in'); }?> <?= $pp_place ?>.</p>
                 <p class="text-secondary">
                     <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/polzovatelskoe-soglashenie/";}else{ echo "/user-agreement/";}?>"><?= __('User agreement') ?></a>. <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/oferta/";}else{ echo "/offer/";}?>"><?= __('_Offer') ?></a>. <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/cookies/";}else{ echo "/cookies-policy/";}?>"><?= __('Information about cookies') ?></a>.</p>
 
