@@ -347,7 +347,7 @@ if($ad){
                 name="title"
                 id="title"
                 <? if($ad){?>
-                    value="<?= $ad->title ?>"
+                    value="<?= htmlspecialchars($ad->title); ?>"
                 <? }?>
                 placeholder="<?= __('Title')?>">
                     <div class="invalid-feedback" id="title_error"></div>
@@ -359,7 +359,7 @@ if($ad){
                 placeholder="<?= __('Write your ad\'s text') ?>"
                 name="text"
                 id="text"
-            ><? if($ad){?><?= $ad->text ?><? }?></textarea>
+            ><? if($ad){?><?= htmlspecialchars($ad->text) ?><? }?></textarea>
             <div class="invalid-feedback" id="text_error"></div>
         </div>
         <div class="form-group col-lg-12 col-sm-12 col-md-12">

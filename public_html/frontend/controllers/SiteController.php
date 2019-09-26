@@ -214,13 +214,10 @@ class SiteController extends BaseController
         Yii::$app->view->params['canonical'] = $canonical_link;
         $this->setPageTitle($this->seo_title);
         $seo_text = $this->seo_text;
-        $country_amount = (new Query())->select('sum(ads_amount) as ads_amount')
-            ->from('cities')
-            ->where(["IN", 'regions_id', (new Query())->select('id')->from('regions')->where(['countries_id' => Yii::$app->location->country->id])])
-            ->one();
+        $country_amount = $ads_search['count'];
         $this->setNextAndPrevious($ads_search, $library_search, $page);
         $page_pagination_title = "{page_num:key} ".__('of category').": ".__('free ads')." ".__('in')." ".$place->_text->name_rp;
-//        print_r($this->params);exit;
+
         return $this->render('index',
             compact(
                 'categories',

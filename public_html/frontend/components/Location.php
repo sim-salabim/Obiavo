@@ -179,7 +179,7 @@ class Location extends Component {
             $domain = "obiavo.com";
         }
         if(strpos($base_url, 'obiavo.loc') !== false){
-            $domain = "obiavo.com";
+            $domain = "obiavo.ru";
         }
         return $domain;
     }
@@ -225,7 +225,7 @@ class Location extends Component {
             $language = Language::LANG_EN;
         }
         if(strpos($base_url, 'obiavo.loc') !== false){
-            $language = Language::LANG_EN;
+            $language = Language::LANG_RU;
         }
         return $language;
     }

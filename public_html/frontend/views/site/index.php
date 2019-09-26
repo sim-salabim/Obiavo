@@ -6,7 +6,7 @@ use yii\helpers\Url;
     <? if($show_cities_list){?>
         <div class="w-100"><hr></div>
             <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
-                <a href="<?= Url::toRoute(["/"])?>"><?= Yii::$app->location->country->_text->name?></a> <span class="ads-amount-city"> <?= $country_amount['ads_amount'] ?></span>
+                <a href="<?= Url::toRoute(["/"])?>"><?= Yii::$app->location->country->_text->name?></a> <span class="ads-amount-city"> <?= $country_amount ?></span>
             </div>
              <?php foreach ($cities as $key => $city) { ?>
                  <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">

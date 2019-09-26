@@ -52,7 +52,7 @@ use yii\helpers\Html;
                         [
                             'label'        => 'Название',
                             'content'      => function($model){
-                                $html = Html::a($model->title, "https://".$model->city->region->country->domain."/".$model->url."/");
+                                $html = Html::a($model->title, "https://".$model->city->region->country->domain."/".$model->city->domain."/".$model->url."/");
                                 $html .= "<br>$model->price ".$model->city->region->country->currency->_text->name_short."<br>";
                                 $html .= cutText($model->text, 100)."<br>";
                                 $html .= "<span><small class='ads-pre-text'> ".$model->placement->_text->name.", ".$model->category->_text->name.", ".$model->city->_text->name."</small></span><br/>";

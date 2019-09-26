@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <?
-//print_r(Yii::$app->request->hostInfo);exit;
+
 $dir = __DIR__;
 $image_url = ($_SERVER["SERVER_NAME"] == "admin.obiavo.loc") ? "http://obiavo.loc" : "https://obiavo.ru";
 if($_SERVER["SERVER_NAME"] == "adm.obiavo.site"){
@@ -52,7 +52,7 @@ use yii\helpers\Html;
                         [
                             'label'        => 'Название',
                             'content'      => function($model){
-                                $html = Html::a($model->title, "https://".$model->city->region->country->domain."/".$model->url."/");
+                                $html = Html::a($model->title, "https://".$model->city->region->country->domain."/".$model->city->domain."/".$model->url."/");
                                 $html .= "<br>$model->price ".$model->city->region->country->currency->_text->name_short."<br>";
                                 $html .= cutText($model->text, 100)."<br>";
                                 $html .= "<span><small class='ads-pre-text'> ".$model->placement->_text->name.", ".$model->category->_text->name.", ".$model->city->_text->name."</small></span><br/>";

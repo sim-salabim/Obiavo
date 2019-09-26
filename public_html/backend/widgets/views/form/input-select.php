@@ -22,7 +22,11 @@ $null_option = (isset($attribute['null_option']) and $attribute['null_option']) 
 <?= Html::tag('label',$attribute['label'],['class' => 'col-xs-2 col-form-label']);?>
 
     <div class="col-xs-10">
-        <select name="<?= $attribute['model_name']."[".$attribute['name']."]" ?>" class="form-control">
+        <select
+                name="<?= $attribute['model_name']."[".$attribute['name']."]" ?>"
+                class="form-control"
+                <? if(isset($attribute['id'])){ ?> id="<?= $attribute["id"] ?>" <? } ?>
+        >
             <? if(!empty($attribute['options'])){
                 if($null_option){
                     echo "<option>Не выбрано</option>";

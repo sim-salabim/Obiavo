@@ -43,6 +43,21 @@ class RobotstxtController extends BaseController
             case 'obiavo.kz':
                 echo file_get_contents('../views/robotstxt/obiavo_kz.txt');
                 break;
+            case 'obiavo.com':
+                echo file_get_contents('../views/robotstxt/obiavo_com.txt');
+                break;
+            case 'obiavo.com.ng':
+                echo file_get_contents('../views/robotstxt/obiavo_com_ng.txt');
+                break;
+            case 'obiavo.in':
+                echo file_get_contents('../views/robotstxt/obiavo_in.txt');
+                break;
+            case 'obiavo.net':
+                echo file_get_contents('../views/robotstxt/obiavo_net.txt');
+                break;
+            case 'obiavo.co.uk':
+                echo file_get_contents('../views/robotstxt/obiavo_co_uk.txt');
+                break;
         }
 
     }

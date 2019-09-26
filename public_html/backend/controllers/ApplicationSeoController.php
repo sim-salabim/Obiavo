@@ -3,6 +3,7 @@ namespace backend\controllers;
 
 use common\helpers\JsonData;
 use common\models\AddApplication;
+use common\models\AddApplicationText;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -95,16 +96,27 @@ class ApplicationSeoController extends BaseController
     public function actionSaveLang($id,$languages_id){
         $page = AddApplication::find()
             ->where(['id' => $id])
-            ->withText($languages_id)
             ->one();
-
+        if(!$page){
+            return $this->sendJsonData([
+                JsonData::ERROR => "Страница с id ".$id." не найдена.",
+            ]);
+        }
+        $mttext = AddApplicationText::find()->where(['add_application_id' => $id, 'languages_id'=>$languages_id])->one();
+        if($mttext){
+            $page->_text = $mttext;
+        }else{
+            $page->_text = new AddApplicationText();
+            $page->_text->add_application_id = $page->id;
+            $page->_text->languages_id = $languages_id;
+        }
         if ($this->isJson()){
-            $text = $page->_mttext;
+            $text = $mttext;
             $text->add_application_id = $page->id;
             $text->languages_id = $languages_id;
             $text->load(Yii::$app->request->post());
 
-            if ($text->save()){
+            if ($text){
                 return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "\"{$text->url}\" успешно сохранено",
                     JsonData::REFRESHPAGE => '',

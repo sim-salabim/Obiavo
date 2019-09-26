@@ -90,13 +90,14 @@ $root_url = isset($root_url) ? $root_url : null;
                 </div>
                 <?
                 $home_url = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain();
-                $og_desc = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"'], [''],$ad->text))));
+                $og_desc = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->text))));
+                $og_name = json_decode(json_encode(str_replace(['"','\\'], ['',''],$ad->title)));
                 ?>
                 <script type="application/ld+json">
                     {
                         "@context": "http://schema.org/",
                         "@type": "Product",
-                        "name": "<?= $ad->title ?>",
+                        "name": "<?= $og_name; ?>",
                         "image": [
                         "<?= $home_url.$avatar ?>"
                         ],
@@ -109,6 +110,7 @@ $root_url = isset($root_url) ? $root_url : null;
                         "price": "<?= $ad->price ?>",
                         "seller": {
                         "@type": "Organization",
+                        "url" : "<?= \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain()."/".$ad->city->domain."/".$ad->url."/"?>"
                         "name": "<?= $ad->user->getFullName(); ?>"
                     }}}
                 </script>

@@ -32,7 +32,7 @@ $items = [
                        ]
                     ]
                 ],
-                ['name' => 'local_languages_id', 'label_name' => 'techname','type' => Form::SELECT, 'options' => \common\models\Language::getAllAsArray(), 'model_name' => 'Country','label' => 'Местный язык','model'=>$country, 'selected' => $local_lang, 'null_option' => true],
+                ['name' => 'local_languages_id', 'label_name' => 'techname','type' => Form::SELECT, 'options' => \common\models\Language::getAllAsArray(), 'model_name' => 'Country','label' => 'Местный язык','model'=>$country, 'selected' => $local_lang, 'null_option' => true, 'id'=>'country-local_languages_id'],
                 [
                     'name' => 'Country[currencies_id]',
                     'type' => Form::MULTISELECT,

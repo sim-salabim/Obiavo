@@ -55,7 +55,6 @@ class SitemapController extends BaseController
         $country = Country::findOne($id);
         $sitemap_task = new SitemapTasks();
         $sitemap_task->countries_id = $country->id;
-        $sitemap_task->persentage = 0;
         $sitemap_task->status = SitemapTasks::PENDING_STATUS;
         $sitemap_task->save();
         $toUrl = Url::toRoute('list');

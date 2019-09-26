@@ -238,11 +238,11 @@ class AdController extends BaseController
         Yii::$app->view->params['opengraph_ad_price'] = $ad->price;
         Yii::$app->view->params['opengraph_ad_currency'] = $ad->city->region->country->currency->iso_code;
         Yii::$app->view->params['opengraph_ad_user_name'] = $ad->user->getFullName();
-        Yii::$app->view->params['opengraph_title'] = $ad->title;
+        Yii::$app->view->params['opengraph_title'] = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->title))));
         Yii::$app->view->params['opengraph_website'] = true;
         Yii::$app->view->params['opengraph_url'] = Url::home(true).$ad->city->domain."/".$ad->url."/";
         Yii::$app->view->params['opengraph_image'] = (count($ad->files)) ? mb_substr(Url::home(true), 0, -1).$ad->files[0]->getImage(false) : mb_substr(Url::home(true).$ad->avatar(false), 0, -1);
-        Yii::$app->view->params['opengraph_desc'] = $ad->text;
+        Yii::$app->view->params['opengraph_desc'] = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->text))));
         AdsView::eraseView($ad->id, Yii::$app->user->id);
         Yii::$app->view->params['application_url'] = yii\helpers\Url::toRoute($ad->city->domain."/".\common\models\Ads::generateApplicationUrl());
         return $this->render('view', [
