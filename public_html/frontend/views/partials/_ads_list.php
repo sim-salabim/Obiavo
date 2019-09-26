@@ -105,12 +105,12 @@ $root_url = isset($root_url) ? $root_url : null;
                         "mpn": "<?= $ad->id ?>",
                         "offers": {
                         "@type": "Offer",
+                        "url" : "<?= \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain()."/".$ad->city->domain."/".$ad->url."/"?>",
                         "availability": "http://schema.org/InStock",
                         "priceCurrency": "<?= $ad->city->region->country->currency->iso_code ?>",
                         "price": "<?= $ad->price ?>",
                         "seller": {
                         "@type": "Organization",
-                        "url" : "<?= \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain()."/".$ad->city->domain."/".$ad->url."/"?>"
                         "name": "<?= $ad->user->getFullName(); ?>"
                     }}}
                 </script>
