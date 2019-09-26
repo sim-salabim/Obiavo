@@ -175,6 +175,18 @@ class Location extends Component {
         if(strpos($base_url, 'obiavo.com') !== false){
             $domain = "obiavo.com";
         }
+        if(strpos($base_url, 'obiavo.net') !== false){
+            $domain = "obiavo.net";
+        }
+        if(strpos($base_url, 'obiavo.co.uk') !== false){
+            $domain = "obiavo.co.uk";
+        }
+        if(strpos($base_url, 'obiavo.com.ng') !== false){
+            $domain = "obiavo.com.ng";
+        }
+        if(strpos($base_url, 'obiavo.in') !== false){
+            $domain = "obiavo.in";
+        }
         if(strpos($base_url, 'obiavo.site') !== false){
             $domain = "obiavo.com";
         }
@@ -204,6 +216,18 @@ class Location extends Component {
             $protocol = "https://";
         }
         if(strpos($base_url, 'obiavo.com') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.net') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.co.uk') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.com.ng') !== false){
+            $protocol = "https://";
+        }
+        if(strpos($base_url, 'obiavo.in') !== false){
             $protocol = "https://";
         }
         if(strpos($base_url, 'obiavo.site') !== false){
