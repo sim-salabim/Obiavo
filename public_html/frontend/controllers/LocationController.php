@@ -48,7 +48,7 @@ class LocationController extends BaseController
             ->from('regions')
             ->leftJoin('regions_text', 'regions_text.regions_id = regions.id')
             ->where(['countries_id' => Yii::$app->location->country->id])
-            ->andWhere(['regions_text.languages_id' => Language::getDefault()->id])
+            ->andWhere(['regions_text.languages_id' => Yii::$app->location->country->local_languages_id])
             ->orderBy(['name' => SORT_ASC])
             ->all();
         Yii::$app->view->params['h1'] = __('_Location');

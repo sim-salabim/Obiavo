@@ -3,6 +3,7 @@ return [
  //   ['class' => 'frontend\rules\url\CategoryUrlRule', 'connectionID' => 'db'],
     '<action:(login|registration|logout|recovery|reset)>' => 'auth/<action>',
     'GET /vybor-goroda' => 'location/vybor-goroda',
+    'GET /choose-city' => 'location/vybor-goroda',
   //  'GET /podat-obiavlenie' => 'ad/new-add/',
     'POST /podat-obiavlenie' => 'ad/new-add-login/',
     'POST /get-sub-categories' => 'categories/get-sub-categories',
@@ -66,6 +67,11 @@ return [
     [
         'class' => 'frontend\rules\url\AdEditUrlRule',
         'pattern' => '/redaktirovat/<adUrl:([0-9a-zA-Z\-]+)>/',
+        'route' => 'ad/edit',
+    ],
+    [
+        'class' => 'frontend\rules\url\AdEditUrlRule',
+        'pattern' => '/edit/<adUrl:([0-9a-zA-Z\-]+)>/',
         'route' => 'ad/edit',
     ],
     [

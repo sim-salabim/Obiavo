@@ -14,7 +14,12 @@ use yii\helpers\Url;
                  </div>
              <?php } ?>
             <div class="col-lg-3 col-md-4 col-sm-6 col-6 font-15">
-                <a href="<?= Url::toRoute(["/vybor-goroda/"])?>"><?= __('_City') ?></a>
+                <a href="<? if(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_RU){
+                            echo Url::toRoute(["/vybor-goroda/"]);
+                        }elseif(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_EN){
+                            echo Url::toRoute(["/choose-city/"]);
+                        }
+?>"><?= __('_City') ?></a>
             </div>
         <div class="w-100"><hr></div>
     <? }else{ ?>

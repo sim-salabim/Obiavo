@@ -191,7 +191,7 @@ class Location extends Component {
             $domain = "obiavo.com";
         }
         if(strpos($base_url, 'obiavo.loc') !== false){
-            $domain = "obiavo.ru";
+            $domain = "obiavo.com";
         }
         return $domain;
     }
@@ -242,14 +242,41 @@ class Location extends Component {
     public static function getDefaultLanguageId(){
         $base_url = Yii::$app->request->getHostInfo();
         $language = Language::LANG_RU;
+        if(strpos($base_url, 'obiavo.by') !== false){
+            $language = Language::LANG_RU;
+        }
+        if(strpos($base_url, 'obiavo.ru') !== false){
+            $language = Language::LANG_RU;
+        }
+        if(strpos($base_url, 'obiavo.uz') !== false){
+            $language = Language::LANG_RU;
+        }
+        if(strpos($base_url, 'obiavo.kz') !== false){
+            $language = Language::LANG_RU;
+        }
+        if(strpos($base_url, 'obiavo.su') !== false){
+            $language = Language::LANG_RU;
+        }
         if(strpos($base_url, 'obiavo.com') !== false){
             $language = Language::LANG_EN;
         }
-        if(strpos($base_url, 'obiavo.site') !== false){
+        if(strpos($base_url, 'obiavo.net') !== false){
             $language = Language::LANG_EN;
         }
-        if(strpos($base_url, 'obiavo.loc') !== false){
+        if(strpos($base_url, 'obiavo.co.uk') !== false){
+            $language = Language::LANG_EN;
+        }
+        if(strpos($base_url, 'obiavo.com.ng') !== false){
+            $language = Language::LANG_EN;
+        }
+        if(strpos($base_url, 'obiavo.in') !== false){
+            $language = Language::LANG_EN;
+        }
+        if(strpos($base_url, 'obiavo.site') !== false){
             $language = Language::LANG_RU;
+        }
+        if(strpos($base_url, 'obiavo.loc') !== false){
+            $language = Language::LANG_EN;
         }
         return $language;
     }
