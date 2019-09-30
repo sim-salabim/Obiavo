@@ -146,7 +146,7 @@ class SitemapController extends BaseController
         if(!$sm_index) throw new HttpException(404, 'Not Found');
         Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         Yii::$app->response->headers->add('Content-Type', 'text/xml');
-        $links = AddApplication::find()->all();
+        $links = AddApplication::find()->withText(Yii::$app->location->country->languages_id)->all();
         $cities = Yii::$app->cache->getOrSet("add-apply-city".$current_domain,
             function () {
                 return (new \yii\db\Query())
