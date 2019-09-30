@@ -190,6 +190,9 @@ class Location extends Component {
         if(strpos($base_url, 'obiavo.site') !== false){
             $domain = "obiavo.com";
         }
+        if(strpos($base_url, 'obiavodev.ru') !== false){
+            $domain = "obiavo.ru";
+        }
         if(strpos($base_url, 'obiavo.loc') !== false){
             $domain = "obiavo.com";
         }
@@ -233,6 +236,9 @@ class Location extends Component {
         if(strpos($base_url, 'obiavo.site') !== false){
             $protocol = "http://";
         }
+        if(strpos($base_url, 'obiavodev.ru') !== false){
+            $protocol = "http://";
+        }
         if(strpos($base_url, 'obiavo.loc') !== false){
             $protocol = "http://";
         }
@@ -273,6 +279,9 @@ class Location extends Component {
             $language = Language::LANG_EN;
         }
         if(strpos($base_url, 'obiavo.site') !== false){
+            $language = Language::LANG_RU;
+        }
+        if(strpos($base_url, 'obiavodev.ru') !== false){
             $language = Language::LANG_RU;
         }
         if(strpos($base_url, 'obiavo.loc') !== false){
