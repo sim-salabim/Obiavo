@@ -116,7 +116,7 @@ class ApplicationSeoController extends BaseController
             $text->languages_id = $languages_id;
             $text->load(Yii::$app->request->post());
 
-            if ($text){
+            if ($text->save()){
                 return $this->sendJsonData([
                     JsonData::SUCCESSMESSAGE => "\"{$text->url}\" успешно сохранено",
                     JsonData::REFRESHPAGE => '',
