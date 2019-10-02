@@ -38,7 +38,7 @@
                     </li>
                     <li class="footer-li-margin">
 
-                        <a rel="nofollow" href="/rules/"><?= __('Rules') ?></a>
+                        <a rel="nofollow" href="<? if($current_lang_id == \common\models\Language::LANG_RU){ echo "/rules/";}else{ echo "/terms-of-use/";}?>"><?= __('Rules') ?></a>
 
                     </li>
                     <li class="footer-li-margin">
