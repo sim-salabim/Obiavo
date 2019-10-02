@@ -93,10 +93,22 @@ class Cms extends \yii\db\ActiveRecord
      * @return array|null|\yii\db\ActiveRecord
      */
     public static function getByTechname($techname){
-        $cms = Cms::find()->where(['techname' => $techname])->withText(Yii::$app->location->country->localLanguage->id)->one();
-        if(!$cms){
-            $cms = Cms::find()->where(['techname' => $techname])->withText(Location::getDefaultLanguageId())->one();
+        $cms_page = Cms::find()
+            ->leftJoin('cms_text', '`cms_text`.`cms_id` = `cms`.`id`')
+            ->where(['techname' => $techname, 'cms_text.languages_id' => Yii::$app->location->country->localLanguage->id])
+            ->one();
+        if(!$cms_page){
+            $cms_page = Cms::find()
+                ->leftJoin('cms_text', '`cms_text`.`cms_id` = `cms`.`id`')
+                ->where(['techname' => $techname, 'cms_text.languages_id' => Location::getDefaultLanguageId()])
+                ->one();
         }
-        return $cms;
+        $cms_id = $cms_page->id;
+        $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => Yii::$app->location->country->localLanguage->id])->one();
+        if(!$cms_text){
+            $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => Location::getDefaultLanguageId()])->one();
+        }
+        $cms_page->_text = $cms_text;
+        return $cms_page;
     }
 }
