@@ -41,7 +41,7 @@ class CmsController extends BaseController
         $cms_id = $cms_page->id;
         $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => $country->localLanguage->id])->one();
         if(!$cms_text){
-            $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => Language::getDefault()->id])->one();
+            $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => Location::getDefaultLanguageId()])->one();
         }
         $this->setPageTitle($cms_text->seo_title);
         $breadcrumbs = [['label' => $cms_text->seo_title, 'link' => $cms_text->url, 'use_cookie' => true]];
