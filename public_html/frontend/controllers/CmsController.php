@@ -35,7 +35,7 @@ class CmsController extends BaseController
         if(!$cms_page){
             $cms_page = Cms::find()
                 ->leftJoin('cms_text', '`cms_text`.`cms_id` = `cms`.`id`')
-                ->where(['cms_text.url' => $cms_url, 'cms_text.languages_id' => Language::getDefault()->id])
+                ->where(['cms_text.url' => $cms_url, 'cms_text.languages_id' => Location::getDefaultLanguageId()])
                 ->one();
         }
         $cms_id = $cms_page->id;
