@@ -3,6 +3,8 @@
 namespace common\models;
 
 use common\models\scopes\CmsQuery;
+use frontend\components\Location;
+use Yii;
 
 /**
  * This is the model class for table "cms".
@@ -91,6 +93,10 @@ class Cms extends \yii\db\ActiveRecord
      * @return array|null|\yii\db\ActiveRecord
      */
     public static function getByTechname($techname){
-        return Cms::find()->where(['techname' => $techname])->withText(Language::getId())->one();
+        $cms = Cms::find()->where(['techname' => $techname])->withText(Yii::$app->location->country->localLanguage->id)->one();
+        if(!$cms){
+            $cms = Cms::find()->where(['techname' => $techname])->withText(Location::getDefaultLanguageId())->one();
+        }
+        return $cms;
     }
 }
