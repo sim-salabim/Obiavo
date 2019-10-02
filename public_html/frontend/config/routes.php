@@ -19,6 +19,8 @@ return [
     'GET /my-ads' => 'users/my-ads',
     'GET /poisk' => 'ad/search',
     'GET /search' => 'ad/search',
+    'GET /reset' => 'auth/reset',
+    'POST /reset' => 'auth/reset',
     'POST /apply-add/' => 'ad/add',
     'POST /edit-add/<id:([0-9\-]+)>/' => 'ad/edit-add',
 
