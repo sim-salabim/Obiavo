@@ -40,7 +40,7 @@ class Mailer {
                 break;
             case "obiavo.co.uk" :
 //                $from_arr = ['robot@obiavo.co.uk' => Yii::$app->name];
-                $from_arr = ['address'=>'robot@obiavo.co.uk', 'name' => Yii::$app->name];
+                $from_arr = ['robot@obiavo.co.uk' => Yii::$app->name];
                 break;
             case "obiavo.com.ng" :
                 $from_arr = ['robot@obiavo.com.ng' => Yii::$app->name];
