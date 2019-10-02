@@ -40,7 +40,7 @@ class Mailer {
                 break;
         }
         // если мы на тестовом серваке, то отпрвитель должен быть robot@obiavo.site
-        if($url == "http://obiavo.site"){
+        if($url == "http://obiavo.site" OR $url == "obiavodev.ru"){
             $from_arr = ['robot@obiavo.site' => Yii::$app->name];
         }
         Yii::$app

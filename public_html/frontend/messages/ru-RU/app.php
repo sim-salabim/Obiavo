@@ -238,4 +238,13 @@ return [
     'Join our communities to see the freshest ads' => 'Вступайте в группы свежих объявлений',
     'Personal office' => 'Личный кабинет',
     'Share it' => "Поделись",
+    'Hello' => "Здравствуйте",
+    'Sincerely yours Obiavo team' => "С уважение команда Obiavo",
+    'Please click to the following link to recover your password' => "Для восстановления пароля пройдите по ссылке ниже",
+    'Hello, we\'ve just posted your advertisement'  => "Здравствуйте, вы опубликовали объявление",
+    'Your ad'  => "Ваше объявление",
+    'To edit, raise or inactivate your ads please get authorised using your email and password then go to the following link'  => "Для того чтобы редактировать, поднимать или снимать с публикации ваши объявления пройдите по ссылке предварительно пройдя авторизацию с вашим электронным адресом и паролем",
+    'Welcome to our site of free ads'  => "Добро пожаловать на сайт бесплатных объявлений",
+    'Your _email'  => "Ваш email",
+    'Your pass'  => "Ваш пароль",
 ];
