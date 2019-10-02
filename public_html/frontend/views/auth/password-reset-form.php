@@ -45,7 +45,7 @@ $this->title = __('Password recovery');
         <input type="hidden" name="key" value="<?= $key ?>">
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button class="btn btn-default " data-input="#password-reset-form"><?= __('Save') ?></button>
+                <button class="btn btn-success" data-input="#password-reset-form"><?= __('Save') ?></button>
             </div>
         </div>
     <?php }else if(!$key_valid && !Yii::$app->session->getFlash('message')){ ?>

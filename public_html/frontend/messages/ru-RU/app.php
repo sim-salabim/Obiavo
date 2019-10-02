@@ -247,4 +247,5 @@ return [
     'Welcome to our site of free ads'  => "Добро пожаловать на сайт бесплатных объявлений",
     'Your _email'  => "Ваш email",
     'Your pass'  => "Ваш пароль",
+    'Confirm password'  => "Подтвердите пароль",
 ];
