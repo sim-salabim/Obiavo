@@ -7,7 +7,7 @@
     Please click to the following link to recover your password:
 </p>
 <p>
-    <a href="/reset?key=<?= $token ?>"><?= "https://".\frontend\components\Location::getCurrentDomain()."/reset?key=".$token ?></a>
+    <a href="<?= "https://".\frontend\components\Location::getCurrentDomain() ?>/reset?key=<?= $token ?>"><?= "https://".\frontend\components\Location::getCurrentDomain()."/reset?key=".$token ?></a>
 </p>
 <p>
     Sincerely yours Obiavo team
@@ -23,7 +23,7 @@
         Для восстановления пароля пройдите по ссылке ниже:
     </p>
     <p>
-        <a href="/reset?key=<?= $token ?>"><?= "https://".\frontend\components\Location::getCurrentDomain()."/reset?key=".$token ?></a>
+        <a href="<?= "https://".\frontend\components\Location::getCurrentDomain() ?>/reset?key=<?= $token ?>"><?= "https://".\frontend\components\Location::getCurrentDomain()."/reset?key=".$token ?></a>
     </p>
     <p>
         С уважением команда Объяво
