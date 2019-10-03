@@ -193,8 +193,8 @@ class AuthController extends BaseController
                 $pass_recovery->hash = base64_encode("email=".Yii::$app->request->post('email')."&time=".time());
                 $pass_recovery->updated_at = time();
                 $pass_recovery->save();
-                Mailer::send($user->email, 'Восстановление пароля', 'pass-recovery', ['user' => $user, 'token' => $pass_recovery->hash]);
-                \Yii::$app->getSession()->setFlash('message', 'На указанный адрес выслано письмо с дальнейшими инструкциями');
+                Mailer::send($user->email, __('Password recovery'), 'pass-recovery', ['user' => $user, 'token' => $pass_recovery->hash]);
+                \Yii::$app->getSession()->setFlash('message', __('An email with instructions has been sent to the email-address your set'));
                 return $this->redirect('/recovery/');
             }
         }
@@ -222,7 +222,7 @@ class AuthController extends BaseController
 
                 $pass_recovery = PasswordRecovery::findOne(['hash' => Yii::$app->request->post('key'), 'recovered' => PasswordRecovery::NOT_RECOVERED]);
                 if(!$pass_recovery){
-                    \Yii::$app->getSession()->setFlash('error', 'Пожалуйста запросите восстановление пароля еще раз или обратитесь к администраторам');
+                    \Yii::$app->getSession()->setFlash('error', __('Try to recover password again or ask for a help our support'));
                     return $this->redirect('/reset/');
                 }
                 $pass_recovery->recovered = PasswordRecovery::RECOVERED;
@@ -235,7 +235,7 @@ class AuthController extends BaseController
                 $user = User::findByEmail($email);
                 $user->setPassword(Yii::$app->request->post('pass'));
                 $user->save();
-                \Yii::$app->getSession()->setFlash('message', 'Пароль успешно обновлен, авторизуйтесь.');
+                \Yii::$app->getSession()->setFlash('message', __('Password successfully updated, you can authorize using it'));
                 return $this->redirect('/reset/');
             }
         }else{

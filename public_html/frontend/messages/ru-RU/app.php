@@ -248,4 +248,7 @@ return [
     'Your _email'  => "Ваш email",
     'Your pass'  => "Ваш пароль",
     'Confirm password'  => "Подтвердите пароль",
+    'An email with instructions has been sent to the email-address your set'  => "На указанный адрес выслано письмо с дальнейшими инструкциями",
+    'Try to recover password again or ask for a help our support'  => "Пожалуйста запросите восстановление пароля еще раз или обратитесь к администраторам",
+    'Password successfully updated, you can authorize using it'  => "Пароль успешно обновлен, авторизуйтесь.",
 ];

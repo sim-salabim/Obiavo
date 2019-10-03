@@ -39,7 +39,6 @@ class Mailer {
                 $from_arr = ['robot@obiavo.com' => Yii::$app->name];
                 break;
             case "obiavo.co.uk" :
-//                $from_arr = ['robot@obiavo.co.uk' => Yii::$app->name];
                 $from_arr = ['robot@obiavo.co.uk' => Yii::$app->name];
                 break;
             case "obiavo.com.ng" :

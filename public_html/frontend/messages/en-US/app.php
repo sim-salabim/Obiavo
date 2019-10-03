@@ -245,4 +245,7 @@ return [
     'Welcome to our site of free ads' => 'Welcome to our site of free ads',
     'Your _email' => 'Your email',
     'Your pass' => 'Your password',
+    'An email with instructions has been sent to the email-address your set' => 'An email with instructions has been sent to the email-address your set',
+    'Try to recover password again or ask for a help our support' => 'Try to recover password again or ask for a help our support',
+    'Password successfully updated, you can authorize using it' => 'Password successfully updated, you can authorize using it',
 ];
