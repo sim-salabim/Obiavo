@@ -89,11 +89,11 @@ return [
         'pattern' => '/<city:([0-9a-zA-Z\-]+)>/<adUrl:([0-9a-zA-Z\-]+)>/',
         'route' => 'ad/view',
     ],
-    [
-        'class' => 'frontend\rules\url\AdUrlRule',
-        'pattern' => '/<adUrl:([0-9a-zA-Z\-]+)>/<city:([0-9a-zA-Z\-]+)>',
-        'route' => 'ad/view',
-    ],
+//    [
+//        'class' => 'frontend\rules\url\AdUrlRule',
+//        'pattern' => '/<adUrl:([0-9a-zA-Z\-]+)>/<city:([0-9a-zA-Z\-]+)>',
+//        'route' => 'ad/view',
+//    ],
     /**
      *  CMS страницы
      */
