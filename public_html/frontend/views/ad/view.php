@@ -94,15 +94,15 @@
                     }})();</script>
             <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,twitter"></div>
         </div>
+        <?
+        $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_PAGE_BELOW_CONTACTS_BLOCK);
+        ?>
+        <? if($advertising_code ){ ?>
+            <div class="col-lg-12  col-sm-12 nonpadding-left-items">
+                <?= $advertising_code; ?>
+            </div>
+        <? } ?>
     </div>
-    <?
-    $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_PAGE_BELOW_CONTACTS_BLOCK);
-    ?>
-    <? if($advertising_code ){ ?>
-        <div class="col-lg-12  col-sm-12">
-            <?= $advertising_code; ?>
-        </div>
-    <? } ?>
     <div class="col-12"><hr></div>
     <?
     $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_PAGE_ABOVE_TEXT_BLOCK);
