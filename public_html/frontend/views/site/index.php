@@ -1,7 +1,14 @@
 <?php
 use yii\helpers\Url;
 ?>
-
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_ABOVE_CITIES_BLOCK);
+?>
+<? if($advertising_code ){ ?>
+    <div class="row">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 <div class="row site-index">
     <? if($show_cities_list){?>
         <div class="w-100"><hr></div>
@@ -21,12 +28,37 @@ use yii\helpers\Url;
                         }
 ?>"><?= __('_City') ?></a>
             </div>
+
+        <?
+        $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_BELOW_CITIES_BLOCK);
+        ?>
+        <? if($advertising_code ){ ?>
+            <div class="w-100">
+                <?= $advertising_code; ?>
+            </div>
+        <? } ?>
         <div class="w-100"><hr></div>
     <? }else{ ?>
         <div class="w-100"><hr></div>
     <? } ?>
     <? $div_row_unneeded = true; ?>
+    <?
+    $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_ABOVE_CATEGORIES_BLOCK);
+    ?>
+    <? if($advertising_code ){ ?>
+        <div class="w-100">
+            <?= $advertising_code; ?>
+        </div>
+    <? } ?>
     <?= $this->render('/categories/list', compact('categories', 'div_row_unneeded'));?>
+    <?
+    $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_BELOW_CATEGORIES_BLOCK);
+    ?>
+    <? if($advertising_code ){ ?>
+        <div class="w-100">
+            <?= $advertising_code; ?>
+        </div>
+    <? } ?>
 </div>
 <?
 $head_cms_page = \common\models\Cms::getByTechname('site-header');
@@ -36,6 +68,16 @@ if($head_cms_page and $head_cms_page->_text->seo_text2){ ?>
         <hr>
     </div>
 </div>
+    <?
+    $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_ABOVE_SEOTEXT_1_BLOCK);
+    ?>
+    <? if($advertising_code ){ ?>
+        <div class="row">
+            <div class="w-100">
+                <?= $advertising_code; ?>
+            </div>
+        </div>
+    <? } ?>
 <div class="row">
     <div class="col-12">
         <?
@@ -44,6 +86,16 @@ if($head_cms_page and $head_cms_page->_text->seo_text2){ ?>
         ?>
     </div>
 </div>
+    <?
+    $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_BELOW_SEOTEXT_1_BLOCK);
+    ?>
+    <? if($advertising_code ){ ?>
+        <div class="row">
+            <div class="w-100">
+                <?= $advertising_code; ?>
+            </div>
+        </div>
+    <? } ?>
 <div class="row">
     <div class="w-100">
         <hr>
@@ -59,6 +111,12 @@ if($head_cms_page and $head_cms_page->_text->seo_text2){ ?>
         'no_ads_title' => __('No ads found'),
         'show_sn_widgets' => true,
         'root_url' => $root_url,
+        'page_pagination_title' => $page_pagination_title,
+        'advertising_code_above_sorting_block' => \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_ABOVE_SORTING_BLOCK),
+        'advertising_code_below_sorting_block' => \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_BELOW_SORTING_BLOCK),
+        'advertising_code_above_ads_block' => \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_ABOVE_ADS_BLOCK),
+        'advertising_code_middle_ads_block' => \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_MIDDLE_ADS_BLOCK),
+        'advertising_code_below_ads_block' => \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_BELOW_ADS_BLOCK),
         'page_pagination_title' => $page_pagination_title,
 //            'current_category' => $current_category,
 //            'current_action' => $current_action

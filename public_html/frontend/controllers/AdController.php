@@ -5,6 +5,7 @@ use common\models\AddApplication;
 use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
+use common\models\Advertising;
 use common\models\AutopostingTasks;
 use common\models\CategoriesText;
 use common\models\Category;
@@ -245,6 +246,8 @@ class AdController extends BaseController
         Yii::$app->view->params['opengraph_desc'] = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->text))));
         AdsView::eraseView($ad->id, Yii::$app->user->id);
         Yii::$app->view->params['application_url'] = yii\helpers\Url::toRoute($ad->city->domain."/".\common\models\Ads::generateApplicationUrl());
+        Yii::$app->view->params['adveritising_block_above_crumbs'] = Advertising::getCodeByPlacement(Advertising::PLACEMENT_AD_PAGE_ABOVE_CRUMBS_BLOCK);
+        Yii::$app->view->params['adveritising_block_below_crumbs'] = Advertising::getCodeByPlacement(Advertising::PLACEMENT_AD_PAGE_BELOW_CRUMBS_BLOCK);
         return $this->render('view', [
             'ad'   => $ad,
 //            'show_phone_number' => (Yii::$app->request->get('show_phone_number') AND time() < $ad->expiry_date) ? Yii::$app->request->get('show_phone_number') : null,

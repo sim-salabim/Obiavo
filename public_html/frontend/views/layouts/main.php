@@ -146,12 +146,25 @@ AppAsset::register($this);
                 <? }elseif (isset($this->params['publish_page_hr']) and $this->params['publish_page_hr']) { ?>
                     <hr>
                 <? } ?>
+                <? if(isset($this->params['adveritising_block_above_crumbs']) and $this->params['adveritising_block_above_crumbs']){?>
+                    <div class="row">
+                        <div class="w-100"><?= $this->params['adveritising_block_above_crumbs']; ?></div>
+                    </div>
+                <? } ?>
                 <?= $this->render('breadcrumbs', ['breadcrumbs' => (isset($this->params['breadcrumbs'])) ? $this->params['breadcrumbs'] : []]); ?>
+                <? if(isset($this->params['adveritising_block_below_crumbs']) and $this->params['adveritising_block_below_crumbs']){?>
+                    <div class="row">
+                        <div class="w-100"><?= $this->params['adveritising_block_below_crumbs']; ?></div>
+                    </div>
+                <? } ?>
                 <?= $this->render(
                     'content',
                     ['content' => $content]
                 ) ?>
                 <div class="row padding-top-30">
+                    <? if(isset($this->params['adveritising_block_above_seo_2_block'])){?>
+                        <?= $this->params['adveritising_block_above_seo_2_block']; ?>
+                    <? } ?>
                     <? if(isset($this->params['seo_h2']) AND $this->params['seo_h2'] != ''){?>
 <!--                        <div class="col-12">-->
 <!--                            <h2>--><?// //$this->params['seo_h2'] ?><!--</h2>-->
@@ -161,6 +174,9 @@ AppAsset::register($this);
                         <div class="col-12">
                             <?= $this->params['seo_text'] ?>
                         </div>
+                    <? } ?>
+                    <? if(isset($this->params['adveritising_block_below_seo_2_block'])){?>
+                        <?= $this->params['adveritising_block_below_seo_2_block']; ?>
                     <? } ?>
                 </div>
             </div>
