@@ -100,7 +100,13 @@
                                 <span class="btn-user-menu-icon fa fa-edit fa-fw" aria-hidden="true">
                                     <a href="<?= yii\helpers\Url::toRoute('/moi-obiavleniya') ?>"></a>
                                 </span>
-                                <a href="<?= yii\helpers\Url::toRoute('/moi-obiavleniya') ?>"> <?= __('My ads') ?></a>
+                                <?
+                                $my_ads_url = yii\helpers\Url::toRoute('/moi-obiavleniya');
+                                if(\frontend\components\Location::getDefaultLanguageId() == \common\models\Language::LANG_EN){
+                                    $my_ads_url = yii\helpers\Url::toRoute('/my-ads');
+                                }
+                                ?>
+                                <a href="<?= $my_ads_url; ?>"> <?= __('My ads') ?></a>
                             </li>
                             <li>
                                 <span class="btn-user-menu-icon fa fa-sign-out fa-fw" aria-hidden="true">

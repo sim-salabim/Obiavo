@@ -381,7 +381,14 @@ class AdController extends BaseController
         }
         return $this->render('search',  [
             'library_search' => $librarySearch,
-            'page_pagination_title' => ''
+            'page_pagination_title' => '',
+            'advertising_code_above_categories' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_CATEGORIES_BLOCK),
+            'advertising_code_below_categories' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_CATEGORIES_BLOCK),
+            'advertising_code_above_sorting_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_SORTING_BLOCK),
+            'advertising_code_below_sorting_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_CATEGORIES_BLOCK),
+            'advertising_code_above_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_ADS_BLOCK),
+            'advertising_code_middle_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_MIDDLE_ADS_BLOCK),
+            'advertising_code_below_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_ADS_BLOCK),
         ]);
     }
 

@@ -4,5 +4,12 @@
         'ads_search' => (new \common\models\Ads())->getList($library_search),
         'no_ads_title' => __('No ads found'),
         'library_search' => $library_search,
-        'page_pagination_title' => $page_pagination_title
+        'page_pagination_title' => $page_pagination_title,
+        'advertising_code_above_categories' => $advertising_code_above_categories,
+        'advertising_code_below_categories' => $advertising_code_below_categories,
+        'advertising_code_above_sorting_block' => $advertising_code_above_sorting_block,
+        'advertising_code_below_sorting_block' => $advertising_code_below_sorting_block,
+        'advertising_code_above_ads_block' => $advertising_code_above_ads_block,
+        'advertising_code_middle_ads_block' => $advertising_code_middle_ads_block,
+        'advertising_code_below_ads_block' => $advertising_code_below_ads_block,
     ]) ?>

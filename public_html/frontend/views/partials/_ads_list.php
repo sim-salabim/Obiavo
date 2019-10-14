@@ -32,7 +32,7 @@ $root_url = isset($root_url) ? $root_url : null;
 <!--        --><?//= $this->render('/partials/_grid_settings.php', []); ?>
 <!--    </div>-->
     <? if($advertising_code_below_sorting_block){?>
-        <div class="w-100">
+        <div class="w-100 padding-top-20">
             <?= $advertising_code_below_sorting_block; ?>
         </div>
     <? } ?>
