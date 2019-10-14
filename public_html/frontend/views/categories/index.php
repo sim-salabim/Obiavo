@@ -19,5 +19,12 @@ $current_category = (isset($current_category))  ? $current_category : null;
         'current_category' => $current_category,
         'current_action' => $current_action,
         'root_url' => $root_url,
-        'page_pagination_title' => $page_pagination_title
+        'page_pagination_title' => $page_pagination_title,
+        'advertising_code_above_categories' => $advertising_code_above_categories,
+        'advertising_code_below_categories' => $advertising_code_below_categories,
+        'advertising_code_above_sorting_block' => $advertising_code_above_sorting_block,
+        'advertising_code_below_sorting_block' => $advertising_code_below_sorting_block,
+        'advertising_code_above_ads_block' => $advertising_code_above_ads_block,
+        'advertising_code_middle_ads_block' => $advertising_code_middle_ads_block,
+        'advertising_code_below_ads_block' => $advertising_code_below_ads_block,
     ]) ?>
