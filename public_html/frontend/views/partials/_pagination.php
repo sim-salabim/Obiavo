@@ -26,6 +26,11 @@ $current_category_link = $current_category ? "/$current_category->url/" : '';
 <div class="w-100">
     <hr>
 </div>
+<? if($advertising_code_below_ads_block){?>
+    <div class="w-100">
+        <?= $advertising_code_below_ads_block; ?>
+    </div>
+<? } ?>
 <div class="col-lg-12">
 
     <nav class="padding-top-10">

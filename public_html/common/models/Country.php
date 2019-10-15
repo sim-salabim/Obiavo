@@ -3,7 +3,6 @@
 namespace common\models;
 
 use common\models\scopes\CountryQuery;
-use phpDocumentor\Reflection\DocBlock\Tags\Property;
 
 /**
  * This is the model class for table "countries".

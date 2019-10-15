@@ -5,7 +5,7 @@ use common\models\AddApplication;
 use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
-use common\models\AutopostingTasks;
+use common\models\Advertising;
 use common\models\CategoriesText;
 use common\models\Category;
 use common\models\City;
@@ -245,6 +245,8 @@ class AdController extends BaseController
         Yii::$app->view->params['opengraph_desc'] = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->text))));
         AdsView::eraseView($ad->id, Yii::$app->user->id);
         Yii::$app->view->params['application_url'] = yii\helpers\Url::toRoute($ad->city->domain."/".\common\models\Ads::generateApplicationUrl());
+        Yii::$app->view->params['adveritising_block_above_crumbs'] = Advertising::getCodeByPlacement(Advertising::PLACEMENT_AD_PAGE_ABOVE_CRUMBS_BLOCK);
+        Yii::$app->view->params['adveritising_block_below_crumbs'] = Advertising::getCodeByPlacement(Advertising::PLACEMENT_AD_PAGE_BELOW_CRUMBS_BLOCK);
         return $this->render('view', [
             'ad'   => $ad,
 //            'show_phone_number' => (Yii::$app->request->get('show_phone_number') AND time() < $ad->expiry_date) ? Yii::$app->request->get('show_phone_number') : null,
@@ -378,7 +380,14 @@ class AdController extends BaseController
         }
         return $this->render('search',  [
             'library_search' => $librarySearch,
-            'page_pagination_title' => ''
+            'page_pagination_title' => '',
+            'advertising_code_above_categories' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_CATEGORIES_BLOCK),
+            'advertising_code_below_categories' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_CATEGORIES_BLOCK),
+            'advertising_code_above_sorting_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_SORTING_BLOCK),
+            'advertising_code_below_sorting_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_CATEGORIES_BLOCK),
+            'advertising_code_above_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_ADS_BLOCK),
+            'advertising_code_middle_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_MIDDLE_ADS_BLOCK),
+            'advertising_code_below_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_ADS_BLOCK),
         ]);
     }
 
@@ -404,8 +413,10 @@ class AdController extends BaseController
 
     public function actionRaise(){
         $post = Yii::$app->request->post();
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if(!isset($post['id']) or Yii::$app->request->isGet) throw new HttpException(404, "Not found");
         $ad = Ads::find()->where(['id'=>$post['id']])->one();
+        if(!$ad) throw new HttpException(404, "Not found");
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if(!$ad OR (time() - $ad->updated_at) < 86400){
             return "error";
         }
@@ -416,6 +427,7 @@ class AdController extends BaseController
 
     public function actionDeactivate(){
         $post = Yii::$app->request->post();
+        if(!isset($post['id']) or Yii::$app->request->isGet) throw new HttpException(404, "Not found");
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $ad = Ads::find()->where(['id'=>$post['id']])->one();
         if(!$ad){

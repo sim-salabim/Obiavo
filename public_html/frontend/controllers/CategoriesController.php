@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Ads;
+use common\models\Advertising;
 use common\models\Category;
 use common\models\CategoryPlacement;
 use common\models\City;
@@ -90,7 +91,7 @@ class CategoriesController extends BaseController
         }
 
         $category = Category::getByUrl($categoryUrl);
-        if(!$category->active){
+        if(!$category or !$category->active){
             throw new HttpException(404, 'Not Found');
         }
         $this->category = $category;
@@ -184,6 +185,8 @@ class CategoriesController extends BaseController
         $this->setPageTitle($this->seo_title);
         $this->setNextAndPrevious($ads_list, $librarySearch, $page);
         $page_pagination_title = "{page_num:key} ".__('of category').": ".$this->category->_text->name." ".__('in')." ".$place->_text->name_rp;
+        Yii::$app->view->params['adveritising_block_above_seo_2_block'] = Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_SEOTEXT_2_BLOCK);
+        Yii::$app->view->params['adveritising_block_below_seo_2_block'] = Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_SEOTEXT_2_BLOCK);
         return $this->render('index',  [
             'current_category'      => $this->category,
             'categories'    => $subCategories,
@@ -194,7 +197,14 @@ class CategoriesController extends BaseController
             'ads_search'    => $ads_list,
             'library_search'=> $librarySearch,
             'root_url' => $root_url,
-            'page_pagination_title' => $page_pagination_title
+            'page_pagination_title' => $page_pagination_title,
+            'advertising_code_above_categories' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_CATEGORIES_BLOCK),
+            'advertising_code_below_categories' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_CATEGORIES_BLOCK),
+            'advertising_code_above_sorting_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_SORTING_BLOCK),
+            'advertising_code_below_sorting_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_CATEGORIES_BLOCK),
+            'advertising_code_above_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_ABOVE_ADS_BLOCK),
+            'advertising_code_middle_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_MIDDLE_ADS_BLOCK),
+            'advertising_code_below_ads_block' => Advertising::getCodeByPlacement(Advertising::PLACEMENT_CATEGORIES_PAGE_BELOW_ADS_BLOCK),
         ]);
     }
 

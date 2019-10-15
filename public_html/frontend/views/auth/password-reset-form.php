@@ -1,6 +1,14 @@
 <?php 
 $this->title = __('Password recovery');
 ?>
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_TECHNICAL_PAGES_ABOVE_TEXT);
+?>
+<? if($advertising_code ){ ?>
+    <div class="col-lg-12 padding-left0 padding-bottom-10">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 <form class="form-horizontal" method="post" action="<?php  echo Yii::$app->urlManager->createAbsoluteUrl(['auth/reset']); ?>" id="password-recovery-form">
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
@@ -54,4 +62,12 @@ $this->title = __('Password recovery');
         </div>
     <?php } ?>
 </form>
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_TECHNICAL_PAGES_BELOW_TEXT);
+?>
+<? if($advertising_code ){ ?>
+    <div class="col-lg-12 padding-left0">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 

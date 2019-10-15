@@ -13,6 +13,13 @@ $show_sn_widgets = isset($show_sn_widgets) ? $show_sn_widgets : true;
 $root_url = isset($root_url) ? $root_url : null;
 ?>
 <!--<hr class="extra-margin-bottom45">-->
+<? if($advertising_code_above_sorting_block){?>
+    <div class="row">
+        <div class="w-100">
+            <?= $advertising_code_above_sorting_block; ?>
+        </div>
+    </div>
+<? } ?>
 <div class="row <? if(!isset($padding_top_20) or !$padding_top_20){?> <? }else{?> padding-top-20<? } ?>">
     <div class="col-lg-9 col-md-6 col-sm-12 text-align-left margin-top-11 filter-title">
         <? if(isset($title) and $title) echo "<h3 class='h3-main-page '>".$title."</h3>" ?>
@@ -24,17 +31,32 @@ $root_url = isset($root_url) ? $root_url : null;
 <!--    <div class="col-lg-2 col-md-3 col-sm-12 text-align-right-grid">-->
 <!--        --><?//= $this->render('/partials/_grid_settings.php', []); ?>
 <!--    </div>-->
+    <? if($advertising_code_below_sorting_block){?>
+        <div class="w-100 padding-top-20">
+            <?= $advertising_code_below_sorting_block; ?>
+        </div>
+    <? } ?>
     <div class="w-100">
         <hr>
     </div>
 </div>
 <div class="row">
+    <? if($advertising_code_above_ads_block){?>
+        <div class="w-100">
+            <?= $advertising_code_above_ads_block; ?>
+        </div>
+        <div class="w-100">
+            <hr>
+        </div>
+    <? } ?>
     <? if($ads_search['count'] == 0){?>
         <div class="col-12">
             <?= $no_ads_title; ?>
         </div>
-    <? }else{?>
-        <? foreach($ads_search['items'] as $k => $ad){?>
+    <? }else{ ?>
+        <?
+        $middle_showed = false;
+        foreach($ads_search['items'] as $k => $ad){?>
             <div class="col-lg-2 col-md-3 col-4 nonpadding-right image-div">
                 <? $avatar = $ad->avatar(true); ?>
                 <a href="/<?= $ad->url() ?>" >
@@ -92,6 +114,7 @@ $root_url = isset($root_url) ? $root_url : null;
                 $home_url = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain();
                 $og_desc = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->text))));
                 $og_name = json_decode(json_encode(str_replace(['"','\\'], ['',''],$ad->title)));
+                $og_user_name = json_decode(json_encode(str_replace(['"','\\'], ['',''],$ad->user->getFullName())));
                 ?>
                 <script type="application/ld+json">
                     {
@@ -111,10 +134,24 @@ $root_url = isset($root_url) ? $root_url : null;
                         "price": "<?= $ad->price ?>",
                         "seller": {
                         "@type": "Organization",
-                        "name": "<?= $ad->user->getFullName(); ?>"
+                        "name": "<?= $og_user_name; ?>"
                     }}}
                 </script>
             </div>
+            <? if($k > 0
+                and $advertising_code_middle_ads_block
+                and ceil(count($ads_search['items'])/$k) == 2
+                and !$middle_showed
+            ){
+                $middle_showed = true;
+                ?>
+                <div class="w-100">
+                    <hr>
+                </div>
+                <div class="w-100">
+                    <?= $advertising_code_middle_ads_block; ?>
+                </div>
+            <? } ?>
             <? if($k + 1 < count($ads_search['items'])){?>
                 <div class="w-100">
                     <hr>
@@ -129,7 +166,8 @@ $root_url = isset($root_url) ? $root_url : null;
                     'library_search'=> $library_search,
                     'current_category' => $current_category,
                     'current_action' => $current_action,
-                    'root_url'       => $root_url
+                    'root_url'       => $root_url,
+                    'advertising_code_below_ads_block'=> $advertising_code_below_ads_block
                 ])?>
         <? }?>
     <? } ?>

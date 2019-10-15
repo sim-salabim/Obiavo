@@ -217,7 +217,8 @@ class SiteController extends BaseController
         $country_amount = $ads_search['count'];
         $this->setNextAndPrevious($ads_search, $library_search, $page);
         $page_pagination_title = "{page_num:key} ".__('of category').": ".__('free ads')." ".__('in')." ".$place->_text->name_rp;
-
+        Yii::$app->view->params['adveritising_block_above_seo_2_block'] = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_ABOVE_SEOTEXT_2_BLOCK);
+        Yii::$app->view->params['adveritising_block_below_seo_2_block'] = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_MAIN_PAGE_BELOW_SEOTEXT_2_BLOCK);
         return $this->render('index',
             compact(
                 'categories',

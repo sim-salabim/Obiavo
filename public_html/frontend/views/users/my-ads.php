@@ -6,5 +6,12 @@
         'title' => __('My ads'),
         'no_ads_title' => __('You have no ads yet'),
         'show_sn_widgets' => false,
-        'root_url' => Yii::$app->request->pathInfo
+        'root_url' => Yii::$app->request->pathInfo,
+        'advertising_code_above_categories' => $advertising_code_above_categories,
+        'advertising_code_below_categories' => $advertising_code_below_categories,
+        'advertising_code_above_sorting_block' => $advertising_code_above_sorting_block,
+        'advertising_code_below_sorting_block' => $advertising_code_below_sorting_block,
+        'advertising_code_above_ads_block' => $advertising_code_above_ads_block,
+        'advertising_code_middle_ads_block' => $advertising_code_middle_ads_block,
+        'advertising_code_below_ads_block' => $advertising_code_below_ads_block,
     ]) ?>
