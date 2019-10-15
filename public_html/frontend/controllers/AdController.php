@@ -6,7 +6,6 @@ use common\models\AddApplicationText;
 use common\models\Ads;
 use common\models\AdsView;
 use common\models\Advertising;
-use common\models\AutopostingTasks;
 use common\models\CategoriesText;
 use common\models\Category;
 use common\models\City;
@@ -414,8 +413,10 @@ class AdController extends BaseController
 
     public function actionRaise(){
         $post = Yii::$app->request->post();
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if(!isset($post['id']) or Yii::$app->request->isGet) throw new HttpException(404, "Not found");
         $ad = Ads::find()->where(['id'=>$post['id']])->one();
+        if(!$ad) throw new HttpException(404, "Not found");
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if(!$ad OR (time() - $ad->updated_at) < 86400){
             return "error";
         }
@@ -426,6 +427,7 @@ class AdController extends BaseController
 
     public function actionDeactivate(){
         $post = Yii::$app->request->post();
+        if(!isset($post['id']) or Yii::$app->request->isGet) throw new HttpException(404, "Not found");
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $ad = Ads::find()->where(['id'=>$post['id']])->one();
         if(!$ad){

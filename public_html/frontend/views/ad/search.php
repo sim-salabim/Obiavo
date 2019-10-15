@@ -3,6 +3,7 @@
         'title' => __('Ads'),
         'ads_search' => (new \common\models\Ads())->getList($library_search),
         'no_ads_title' => __('No ads found'),
+        'padding_top_20' => true,
         'library_search' => $library_search,
         'page_pagination_title' => $page_pagination_title,
         'advertising_code_above_categories' => $advertising_code_above_categories,

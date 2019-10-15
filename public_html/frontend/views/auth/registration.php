@@ -7,6 +7,14 @@ $this->title = $cms->_text->seo_title;
 $model = Yii::$app->session->getFlash('model');
 $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cities_id])->_text->name : '';
 ?>
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_TECHNICAL_PAGES_ABOVE_TEXT);
+?>
+<? if($advertising_code ){ ?>
+    <div class="col-lg-12 padding-left0 padding-bottom-10">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 <form class="form-horizontal" method="post" id="registr-form">
     <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
            value="<?=Yii::$app->request->csrfToken?>"/>
@@ -170,7 +178,14 @@ $city_name = ($model AND $model->cities_id) ? City::findOne(['id' => $model->cit
 
 
 </form>
-
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_TECHNICAL_PAGES_BELOW_TEXT);
+?>
+<? if($advertising_code ){ ?>
+    <div class="col-lg-12 padding-left0 padding-top-10">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 <script type="text/javascript">
     $.widget("ui.autocomplete", $.ui.autocomplete, {
 

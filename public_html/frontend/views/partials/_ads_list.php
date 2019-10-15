@@ -114,6 +114,7 @@ $root_url = isset($root_url) ? $root_url : null;
                 $home_url = \frontend\components\Location::getCurrentProtocol().\frontend\components\Location::getCurrentDomain();
                 $og_desc = json_decode(str_replace('\n', ' ',json_encode(str_replace(['"',"",'\\'], ['',''],$ad->text))));
                 $og_name = json_decode(json_encode(str_replace(['"','\\'], ['',''],$ad->title)));
+                $og_user_name = json_decode(json_encode(str_replace(['"','\\'], ['',''],$ad->user->getFullName())));
                 ?>
                 <script type="application/ld+json">
                     {
@@ -133,7 +134,7 @@ $root_url = isset($root_url) ? $root_url : null;
                         "price": "<?= $ad->price ?>",
                         "seller": {
                         "@type": "Organization",
-                        "name": "<?= $ad->user->getFullName(); ?>"
+                        "name": "<?= $og_user_name; ?>"
                     }}}
                 </script>
             </div>

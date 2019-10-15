@@ -1,12 +1,12 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Cms;
 use common\models\CmsText;
 use common\models\Country;
-use common\models\Language;
 use frontend\components\Location;
 use Yii;
-use common\models\Cms;
+use yii\web\HttpException;
 
 class CmsController extends BaseController
 {
@@ -38,6 +38,7 @@ class CmsController extends BaseController
                 ->where(['cms_text.url' => $cms_url, 'cms_text.languages_id' => Location::getDefaultLanguageId()])
                 ->one();
         }
+        if(!$cms_page) throw new HttpException(404, "Not found");
         $cms_id = $cms_page->id;
         $cms_text = CmsText::find()->where(['cms_id'=>$cms_id, "languages_id" => $country->localLanguage->id])->one();
         if(!$cms_text){

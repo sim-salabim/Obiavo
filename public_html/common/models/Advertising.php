@@ -4,7 +4,7 @@ namespace common\models;
 use ReflectionClass;
 
 /**
- * This is the model class for table "countries".
+ * This is the model class for table "advertising".
  *
  * @property integer $id
  * @property string $name
@@ -38,14 +38,19 @@ class Advertising extends \yii\db\ActiveRecord
     const PLACEMENT_CATEGORIES_PAGE_BELOW_ADS_BLOCK = 21;
     const PLACEMENT_CATEGORIES_PAGE_ABOVE_SEOTEXT_BLOCK = 22;
     const PLACEMENT_CATEGORIES_PAGE_BELOW_SEOTEXT_BLOCK = 23;
-    const PLACEMENT_CATEGORIES_PAGE_ABOVE_SEOTEXT_2_BLOCK = 30;
-    const PLACEMENT_CATEGORIES_PAGE_BELOW_SEOTEXT_2_BLOCK = 31;
     const PLACEMENT_AD_PAGE_ABOVE_CRUMBS_BLOCK = 24;
     const PLACEMENT_AD_PAGE_BELOW_CRUMBS_BLOCK = 25;
-    const PLACEMENT_AD_PAGE_ABOVE_CONTACTS_BLOCK = 26;
+    const PLACEMENT_AD_PAGE_MIDDLE_CONTACTS_BLOCK = 26;
     const PLACEMENT_AD_PAGE_BELOW_CONTACTS_BLOCK = 27;
     const PLACEMENT_AD_PAGE_ABOVE_TEXT_BLOCK = 28;
     const PLACEMENT_AD_PAGE_BELOW_TEXT_BLOCK = 29;
+    const PLACEMENT_CATEGORIES_PAGE_ABOVE_SEOTEXT_2_BLOCK = 30;
+    const PLACEMENT_CATEGORIES_PAGE_BELOW_SEOTEXT_2_BLOCK = 31;
+    const PLACEMENT_AD_PAGE_ABOVE_CONTACTS_BLOCK = 32;
+    const PLACEMENT_TECHNICAL_PAGES_ABOVE_TEXT = 33;
+    const PLACEMENT_TECHNICAL_PAGES_BELOW_TEXT = 34;
+    const PLACEMENT_AD_APPLY_PAGE_ABOWE_FORM = 35;
+    const PLACEMENT_AD_APPLY_PAGE_BELOW_SEOTEXT = 36;
     /**
      * @inheritdoc
      */

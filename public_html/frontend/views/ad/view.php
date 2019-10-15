@@ -43,6 +43,14 @@
             ><?= __('Edit') ?></button>
         </div>
         <? } ?>
+        <?
+        $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_PAGE_ABOVE_CONTACTS_BLOCK);
+        ?>
+        <? if($advertising_code ){ ?>
+            <div class="col-lg-12 col-sm-4 nonpadding-left-items">
+                <?= $advertising_code; ?>
+            </div>
+        <? } ?>
         <div class="price-title">
             <?= $ad->price . " ". Yii::$app->location->country->currency->_text->name_short ?>
         </div>
@@ -61,7 +69,7 @@
         </div>
         <div class="w-100"></div>
         <?
-        $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_PAGE_ABOVE_CONTACTS_BLOCK);
+        $advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_PAGE_MIDDLE_CONTACTS_BLOCK);
         ?>
         <? if($advertising_code ){ ?>
             <div class="col-lg-12 col-sm-4 nonpadding-left-items">

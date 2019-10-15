@@ -5,6 +5,14 @@ $selectCity = __('Select a city');
 $ad = isset($ad) ? $ad : null;
 ?>
 <hr>
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_APPLY_PAGE_ABOWE_FORM);
+?>
+<? if($advertising_code ){ ?>
+    <div class="col-lg-12 padding-left0 padding-bottom-10">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 <?= $text->seo_text1; ?>
 <div class="<? if(!$user){?> not-authorized-form<? } ?>">
     <? if($user or (isset($_COOKIE['session_token']) and $ad and $_COOKIE['session_token'] == $ad->session_token)) {
@@ -410,6 +418,14 @@ if($ad){
     <?= $text->seo_text7 ?>
 </form>
 </div>
+<?
+$advertising_code = \common\models\Advertising::getCodeByPlacement(\common\models\Advertising::PLACEMENT_AD_APPLY_PAGE_BELOW_SEOTEXT);
+?>
+<? if($advertising_code ){ ?>
+    <div class="col-lg-12 padding-left0">
+        <?= $advertising_code; ?>
+    </div>
+<? } ?>
 <script>
     $(document).ready(function(){
 
