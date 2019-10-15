@@ -279,7 +279,7 @@ class Location extends Component {
             $language = Language::LANG_EN;
         }
         if(strpos($base_url, 'obiavo.site') !== false){
-            $language = Language::LANG_RU;
+            $language = Language::LANG_EN;
         }
         if(strpos($base_url, 'obiavodev.ru') !== false){
             $language = Language::LANG_RU;
